@@ -1,3 +1,9 @@
+molior-web (1.4.0~alpha68) stable; urgency=medium
+
+  * bump version 1.4.0~alpha68
+
+ -- André Roth <neolynx@gmail.com>  Mon, 06 Jul 2020 21:47:40 +0200
+
 molior-web (1.4.0~alpha67) stable; urgency=medium
 
   * rewrite in Angular 8
