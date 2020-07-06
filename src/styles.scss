@@ -1,0 +1,530 @@
+
+$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+@import '~material-design-icons-iconfont/src/material-design-icons';
+
+html, body {
+    font-family: 'Roboto', Arial, sans-serif;
+    height: 100%;
+    line-height: 1;
+    margin: 0;
+}
+
+a {
+    cursor: pointer !important;
+}
+
+.h1, h1 {
+    font-size: 2.0rem;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: 500;
+    line-height: 32px;
+}
+
+.h2, h2 {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    font-weight: normal;
+}
+
+// colors
+$primary-color: #571845;
+
+// data table
+table { width: 100%; }
+
+.mat-form-field-wrapper {
+    padding-bottom: 0em;
+    background-color: white;
+}
+
+.mat-paginator-page-size-select {
+    width: 4em !important;
+}
+
+.mat-paginator-icon {
+    transform: rotate(90deg);
+}
+
+.mat-table thead, [mat-header-row], mat-header-row {
+    background: $primary-color;
+    text-color: white;
+}
+
+th.mat-header-cell {
+    color: white;
+}
+
+.mat-row:hover {
+    background: #5718450f !important;
+}
+
+.mat-row:nth-child(odd) {
+  background: #F5F5F5;
+}
+
+// make form field smaller
+.mat-header-cell > .mat-form-field > .mat-form-field-wrapper {
+    padding-bottom: 0em;
+    border-radius: 3px;
+}
+.mat-header-cell > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix {
+    padding: 0px;
+}
+
+.mat-form-field-underline {
+    bottom: 16px !important;
+}
+
+// make form line disapear
+.mat-header-cell > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-underline {
+    display: none;
+}
+
+// increase font size
+.mat-header-cell {
+    font-size: medium;
+    font-weight: 500;
+}
+
+input.mat-input-element {
+    color: black;
+    padding-left: 2px;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-label {
+    top: 0.5em !important;
+    color: rgba(0,0,0,.74) !important;
+    font-weight: 500 !important;
+    padding-left: 4px !important;
+}
+
+.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label,.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+   transform:translateY(-0.49em) scale(.75) !important;;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+    background-color: $primary-color;
+}
+
+.action-menu {
+    padding-right: 0px !important;
+    text-align: right !important;
+}
+
+// paginator
+.mat-paginator-container {
+    min-height: 20px !important;
+    padding-bottom: 3px !important;
+    padding-left: 0px !important;
+}
+//.mat-icon-button {
+//    height: 34px !important;
+//}
+.mat-paginator-page-size-select {
+    text-align: right !important;
+    margin: 0px !important;
+}
+.mat-paginator-range-label {
+    margin: 0 10px 0 10px !important;
+//    padding-top: 6px !important;
+}
+.mat-paginator-range-actions > .mat-icon-button {
+    transform: scale(.80);
+    height: 20px;
+    margin-top: -7px;
+}
+
+.mat-paginator-page-size-select > .mat-form-field-wrapper {
+    padding: 0px;
+}
+
+.mat-paginator-page-size-select > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix {
+    border: 0px;
+    padding: 0px;
+}
+
+.mat-paginator-page-size-select > .mat-form-field-wrapper > .mat-form-field-underline {
+    display: none;
+}
+
+.mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+    color: unset !important;
+}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: unset !important;
+}
+
+.mat-select-value {
+    color: unset !important;
+}
+
+// icons in cells
+.mat-cell > .mat-icon, .mat-cell > div > .mat-icon {
+    cursor: default;
+}
+
+// toolbar
+.mat-toolbar.mat-primary {
+    background: $primary-color;
+}
+.mat-toolbar-single-row {
+    height: unset !important;
+}
+
+// sidenav
+.mat-drawer-container {
+    height: 100%;
+}
+.mat-drawer-content {
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-top: 1em;
+}
+.active-link {
+  color: white !important;
+  background: #571845; //rgba(0, 0, 0, 0.04);
+}
+.mat-list-item:focus, .mat-nav-list .mat-list-item:hover {
+    background: #571845 !important;
+    color: white !important;
+}
+.mat-menu-item:hover:not([disabled]) {
+    background: $primary-color !important;
+    color: white;
+}
+button:focus {
+    outline: none !important;
+}
+
+// icons
+.mat-icon {
+    margin-right: 10px;
+    // color: rgba(0,0,0,.54);
+}
+//.mat-icon:hover {
+//    color: white;
+//}
+.mat-icon-button {
+    line-height: 20px !important;
+//    color: white !important;
+}
+
+// logo
+.molior-logo {
+    background-image: url(/assets/moliorlogo.png);
+    width: 80px;
+    height: 37.44px;
+    background-size: 100% 100%;
+}
+
+// tabs
+.mat-ink-bar {
+    background-color: $primary-color !important;
+}
+.mat-tab-group, .mat-tab-body-wrapper {
+    height: 100%;
+}
+.mat-tab-body-content {
+    padding-left: 10px;
+}
+a {
+    cursor: default;
+}
+.mat-tab-label-active {
+    background: #57184512;
+    border-radius: 20px 20px 0px 0px;
+}
+
+// titles
+.title {
+    font-size: 2.0rem;
+    margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 32px;
+    color: unset !important;
+    text-decoration: unset;
+}
+
+.hintlink {
+    color: $primary-color;
+}
+
+// dialogs
+.mat-dialog-content .mat-form-field {
+    width: 100%;
+}
+.mat-dialog-content .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix {
+    border: 0px;
+    padding: 0px;
+}
+.mat-dialog-actions {
+    justify-content: flex-end;
+}
+
+
+
+// grid
+.container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-gap: 0px;
+    grid-template-areas:
+    "header header"
+    "nav content"
+    "footer footer";
+    height: 100vh;
+  }
+
+.app-header {
+    grid-area: header;
+}
+
+.app-nav {
+    grid-area: nav;
+}
+
+.app-footer {
+    grid-area: footer;
+    padding: 4px 0 4px 0;
+    text-align: center;
+    font-size: small;
+    color: gray;
+}
+
+.app-main {
+    grid-area: content;
+    padding: 15px 15px 0px 15px;
+}
+
+// info
+.info-table {
+    width: unset;
+    margin-top: 20px;
+    padding: 10px 30px 20px 0;
+    background: #5718450f;
+}
+
+.info-table > tr > td {
+    padding-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+// step
+.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
+    background-color: $primary-color !important;
+}
+
+.mat-horizontal-stepper-header {
+    height: 36px !important;
+}
+
+.mat-horizontal-content-container {
+    margin-top: 12px;
+    padding-bottom: 0px !important;
+}
+
+// checkbox
+.mat-checkbox {
+  padding-right: 20px;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: $primary-color;
+}
+
+
+// validation
+app-validation-error {
+    font-size: smaller;
+}
+
+// radio
+.mat-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.mat-radio-button {
+  margin: 5px;
+  display: block !important;
+}
+
+.mat-radio-group > div > p {
+    padding-left: 34px;
+    margin-top: 5px;
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: $primary-color !important;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: $primary-color !important;
+}
+
+// code listing
+
+.log-table {
+    color: lime;
+    font-family: "Courier New";
+    white-space: pre-wrap;
+    border-collapse: collapse;
+    table-layout: fixed;
+    padding: 10px 10px 10px 10px;
+}
+
+.log-table > tbody > tr:hover {
+    background: grey;
+}
+
+.log-scroll {
+    min-width: 850px;
+}
+
+.line {
+    color: unset;
+    text-decoration: unset;
+}
+
+.lognr {
+    color: green;
+    padding: 0 5px 0 0;
+    width: 2.5em;
+    text-align: right;
+    vertical-align: top;
+    user-select: none;
+}
+
+.logline {
+  word-wrap: break-word;
+  padding: 0 0 0 5px;
+}
+
+.blinking-cursor {
+  text-align: left;
+  padding-left: 5px;
+  animation: 1s blink step-end infinite;
+}
+
+@keyframes "blink" {
+  from, to {
+    color: inherit;
+  }
+  50% {
+    color: transparent;
+  }
+}
+
+// progress percentage
+.progress {
+    font-family: monospace;
+    float: right;
+    font-size: 11px;
+    padding-top: 7px;
+    padding-right: 12px;
+}
+
+// buildstate
+
+// rotating
+@-webkit-keyframes rotating {
+    from {
+        -moz-transform: rotate(-360deg);
+        -webkit-transform: rotate(-360deg);
+        transform: rotate(-360deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.rotating {
+    -webkit-animation: rotating 2s linear infinite reverse;
+    -moz-animation: rotating 2s linear infinite reverse;
+    animation: rotating 2s linear infinite reverse;
+}
+
+
+// buildstates
+.buildstate {
+    margin-right: 0px;
+}
+
+.buildstate-publishing {
+    color: rgb(33,150,243);
+}
+
+.buildstate-building {
+    color: rgb(33,150,243);
+    animation: rotating 2s linear infinite reverse;
+}
+
+.buildstate-successful {
+    color: #388e3c;
+}
+
+// buildstates with _
+$buildstate-publish-failed: 'publish_failed';
+.buildstate {
+    &-#{$buildstate-publish-failed} {
+        color: #A20000;
+    }
+}
+
+$buildstate-build-failed: 'build_failed';
+.buildstate {
+    &-#{$buildstate-build-failed} {
+        color: #A20000;
+    }
+}
+
+$buildstate-already-exists: 'already_exists';
+.buildstate {
+    &-#{$buildstate-already-exists} {
+        color: #388e3c;
+    }
+}
+
+$buildstate-nothing-done: 'nothing_done';
+.buildstate {
+    &-#{$buildstate-nothing-done} {
+        color: #388e3c;
+    }
+}
+
+// needed ?
+//.buildstate-new .buildstate-needs_build .buildstate-scheduled .buildstate-needs_publish {
+//    color: #616161;
+//}
+
+.mat-raised-button {
+    background-color: $primary-color;
+    color: white;
+}
+

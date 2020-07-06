@@ -1,0 +1,73 @@
+// type
+td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
+    max-width: 4em;
+    width: 4em;
+}
+
+
+// tree
+.branch {
+    transform: rotate(-90deg);
+    width: 3.1em;
+    display: inline-block;
+    margin-right: 2px;
+    max-height: 2px;
+    margin-top: 0px;
+    margin-bottom: 2.3em;
+    margin-left: -0.7em;
+    border-top: 0px;
+    border-bottom: 2px dotted #aaa;
+    border-left: 0px;
+    border-right: 0px;
+}
+.leaf {
+    width: 12px;
+    display: inline-block;
+    margin-right: 2px;
+    max-height: 2px;
+    margin-top: 0px;
+    margin-bottom: 0.8em;
+    margin-left: -1.656em;
+    border-top: 0px;
+    border-bottom: 2px dotted #aaa;
+    border-left: 0px;
+    border-right: 0px;
+}
+.branch2 {
+    transform: rotate(-90deg);
+    width: 2.62em;
+    display: inline-block;
+    margin-right: 2px;
+    max-height: 2px;
+    margin-top: 0px;
+    margin-bottom: 2.02em;
+    margin-left: 1.4em;
+    border-top: 0px;
+    border-bottom: 2px dotted #aaa;
+    border-left: 0px;
+    border-right: 0px;
+}
+.leaf2 {
+    width: 12px;
+    display: inline-block;
+    margin-right: 2px;
+    max-height: 2px;
+    margin-top: 0px;
+    margin-bottom: 0.8em;
+    margin-left: -1.39em;
+    border-top: 0px;
+    border-bottom: 2px dotted #aaa;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.mat-row:nth-child(odd) {
+  background: unset;
+}
+
+// set app-build component
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}

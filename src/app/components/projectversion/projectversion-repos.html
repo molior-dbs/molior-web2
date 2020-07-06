@@ -1,0 +1,72 @@
+<a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span>
+
+<nav mat-tab-nav-bar>
+    <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'info']">Info</a>
+    <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
+    <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'admin']">Admin</a>
+</nav>
+
+<mat-paginator [pageSizeOptions]="[10, 50, 100, 1000]" showFirstLastButtons></mat-paginator>
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '300px'}">Name</th>
+        <td mat-cell *matCellDef="let element">
+            <strong> {{element.name}} </strong>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="url">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '600px'}"><mat-form-field>
+            <input matInput placeholder="Git URL" #inputURL>
+        </mat-form-field></th>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'user-select': 'all'}">{{element.url}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="architectures">
+        <th mat-header-cell *matHeaderCellDef>Architectures</th>
+        <td mat-cell *matCellDef="let element">{{element.architectures}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef>State</th>
+        <td mat-cell *matCellDef="let element">{{element.state}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef>
+            <button mat-icon-button aria-label="create" (click)="create()"><mat-icon>control_point</mat-icon></button>
+        </th>
+        <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="edit(element)"><mat-icon>edit</mat-icon>Edit</button>
+                <button mat-menu-item (click)="delete(element.id)"><mat-icon>delete</mat-icon>Delete</button>
+                <button mat-menu-item (click)="build(element.id)"><mat-icon>list</mat-icon>Build</button>
+                <button mat-menu-item (click)="reclone(element.id)"><mat-icon>list</mat-icon>Re-clone</button>
+            </mat-menu>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;" (contextmenu)="contextmenu($event, i)"></tr>
+    <ng-container matColumnDef="footer">
+        <td mat-footer-cell *matFooterCellDef colspan="100%">
+            <div *ngIf="(dataSource.total$ | async) == -1">
+                Loading...
+            </div>
+            <div *ngIf="(dataSource.total$ | async) == 0">
+                No entries found
+            </div>
+            <div *ngIf="(dataSource.total$ | async) === -404" [ngStyle]="{color: 'red'}">
+                Unable to load data ({{dataSource.error$ | async }})
+            </div>
+        </td>
+    </ng-container>
+    <tr mat-footer-row *matFooterRowDef="['footer']" [ngStyle]="(dataSource.total$ | async) < 1 ? {} : {display: 'none'}"></tr>
+</table>
+

@@ -1,0 +1,39 @@
+<div class="molior-login" style="display:flex;flex-direction:column;justify-content:center;align-items:center;">
+   <mat-card-header>
+      <div class="login-box-header">
+         <img src="assets/moliorlogo-large.png">
+      </div>
+   </mat-card-header>
+   <mat-card-content>
+      <br>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+         <mat-form-field [ngStyle]="{width: '20em'}">
+            <mat-label>Username</mat-label>
+            <input matInput placeholder="" type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+            <mat-icon matSuffix>perm_identity</mat-icon>
+         </mat-form-field>
+         <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+            <div *ngIf="f.username.errors.required">Username is required</div>
+         </div>
+      </div>
+      <div class="form-group">
+         <mat-form-field  [ngStyle]="{width: '20em'}">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="" type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+            <mat-icon matSuffix>lock</mat-icon>
+         </mat-form-field>
+         <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+         </div>
+      </div>
+      <br>
+      <div class="form-group">
+         <button mat-raised-button [disabled]="loading" class="btn-primary" style="float: right;">
+         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+         Login
+         </button>
+      </div>
+      </form>
+   </mat-card-content>
+</div>

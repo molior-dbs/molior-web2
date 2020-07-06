@@ -1,0 +1,28 @@
+<mat-icon style="float: left; padding-top: 4px;">person</mat-icon>
+<h1 mat-dialog-titlei *ngIf="!user">Create User</h1>
+<h1 mat-dialog-titlei *ngIf="user">Edit User: {{user.username}}</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form">
+        <p *ngIf="!user">User Name <app-validation-error [control]="form.get('name')"></app-validation-error></p>
+        <mat-form-field *ngIf="!user">
+            <input matInput autocomplete="new-password" formControlName="name" cdkFocusInitial [readonly]="user">
+        </mat-form-field>
+        <p [ngStyle]="{'font-weight': 'bold'}">Email<app-validation-error [control]="form.get('email')"></app-validation-error></p>
+        <mat-form-field>
+            <input matInput autocomplete="new-password" type="email" formControlName="email">
+        </mat-form-field>
+        <p [ngStyle]="{'font-weight': 'bold'}">Attributes <app-validation-error [control]="form.get('isAdmin')"></app-validation-error></p>
+        <mat-checkbox formControlName="isAdmin">Administrator</mat-checkbox>
+        <p *ngIf="!user" [ngStyle]="{'font-weight': 'bold'}">Set Password<app-validation-error [control]="form.get('password')"></app-validation-error></p>
+        <p *ngIf="user"  [ngStyle]="{'font-weight': 'bold'}">Change Password (or leave empty):<app-validation-error [control]="form.get('password')"></app-validation-error></p>
+        <mat-form-field>
+            <input matInput autocomplete="new-password" type="password" formControlName="password" (input)="changePassword()">
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <app-alert></app-alert>
+    <button mat-button (click)="dialog.close()">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="!form.valid">Ok</button>
+</div>
+

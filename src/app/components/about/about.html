@@ -1,0 +1,36 @@
+        <h1>About</h1>
+        <p class="paragraph">
+            The purpose of molior is to build Debian packages out of git repositories based on a mirror of a specific Debian version and therefore creating reproducible builds. Build environments are structured into projects and versions, which may include mirrors and versions of other projects.
+        </p>
+
+        Molior performs the following tasks:
+        <ul>
+            <li>create mirrors of Debian repositories</li>
+            <li>create projects based on a Debian mirror, include dependencies to other projects or mirrors</li>
+            <li>build packages into project repositories (i386, amd64, armhf, arm64)</li>
+            <li>create deployments of projects (ISO Installer, VirtualBox, images, ...)</li>
+        </ul>
+        <ul layout="row" flex layout-wrap layout-align="center center" class="small-container buckets">
+            <li flex="20">
+                <md-button layout="column" href="/userdoc/source" target="_blank">
+                    <ng-md-icon icon="subject" size="30"></ng-md-icon>
+                    <span flex>User Docs</span>
+                </md-button>
+            </li>
+            <li flex="20">
+                <md-button layout="column" href="/api/doc" target="_blank">
+                    <ng-md-icon icon="subject" size="30"></ng-md-icon>
+                    <span flex>Backend Docs</span>
+                </md-button>
+            </li>
+            <li flex="20">
+                <md-button layout="column" href="/release-notes">
+                    <ng-md-icon icon="access_time" size="30"></ng-md-icon>
+                    <span flex>Release Notes</span>
+                </md-button>
+            </li>
+        </ul>
+
+<h1>SSH Public Key</h1>
+<br>
+<div class="sshkey">{{status.sshkey}}</div>

@@ -1,0 +1,12 @@
+// ::ng-deep .mat-checkbox-frame {
+//     border-color: white;
+//     transition: none;
+// }
+//
+// ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+//     background-color: unset;
+// }
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: unset;
+}

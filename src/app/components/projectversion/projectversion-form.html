@@ -1,0 +1,38 @@
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Create Project Version</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form" [ngStyle]="{height: '360px'}">
+
+        <p><strong>Project Version</strong><app-validation-error [control]="form.get('version')"></app-validation-error></p>
+        <mat-form-field>
+            <input matInput formControlName="version" required cdkFocusInitial>
+        </mat-form-field>
+
+        <p>Description <app-validation-error [control]="form.get('description')"></app-validation-error></p>
+        <mat-form-field>
+            <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+
+        <p><strong>Base Mirror</strong><app-validation-error [control]="form.get('basemirror')"></app-validation-error></p>
+        <mat-form-field floatLabel="never">
+            <!-- mat-select disableRipple required (change)="filterForeCasts($event.target.value)" -->
+            <mat-select placeholder="-- Select Base Mirror --" formControlName="basemirror" (selectionChange)="getArchitectures($event)">
+                <mat-option *ngFor="let entry of basemirrors | keyvalue" value={{entry.key}}>
+                    {{ entry.key }} ({{ entry.value }})
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <p><strong>Architectures</strong><app-validation-error [control]="form.get('architectures')"></app-validation-error></p>
+        <!--mat-form-field floatLabel="never" -->
+
+        <mat-checkbox *ngFor="let arch of mirrorArchs; let i = index" formControlName="architecture{{ i }}" (change)="updateArchs()">{{ arch }}</mat-checkbox>
+        <span *ngIf="mirrorArchs.length == 0">Please select Base Mirror</span>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="dialog.close()">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="!form.valid">Ok</button>
+</div>
+
+
+

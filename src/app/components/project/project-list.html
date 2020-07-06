@@ -1,0 +1,52 @@
+<h1>Projects</h1>
+<mat-paginator [pageSizeOptions]="[10, 50, 100, 1000]" showFirstLastButtons></mat-paginator>
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '25em', 'padding-right': '1em'}"><mat-form-field>
+            <input matInput placeholder="Name" #inputName>
+        </mat-form-field></th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['../project/'+element.name]">
+            <strong> {{element.name}} </strong>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '100%'}">Description</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['../project/'+element.name]">
+            {{element.description}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef [ngStyle]="{width: '4em'}">
+            <button mat-icon-button aria-label="create" (click)="create()"><mat-icon>control_point</mat-icon></button>
+        </th>
+        <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="edit(element)">                    <mat-icon>edit</mat-icon>Edit</button>
+                <button mat-menu-item [routerLink]="['../project/'+element.name]"><mat-icon>list</mat-icon>Details</button>
+            </mat-menu>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;" (contextmenu)="contextmenu($event, i)"></tr>
+    <ng-container matColumnDef="footer">
+        <td mat-footer-cell *matFooterCellDef colspan="100%">
+            <div *ngIf="(dataSource.total$ | async) == -1">
+                Loading...
+            </div>
+            <div *ngIf="(dataSource.total$ | async) == 0">
+                No entries found
+            </div>
+            <div *ngIf="(dataSource.total$ | async) === -404" [ngStyle]="{color: 'red'}">
+                Unable to load data ({{dataSource.error$ | async }})
+            </div>
+        </td>
+    </ng-container>
+    <tr mat-footer-row *matFooterRowDef="['footer']" [ngStyle]="(dataSource.total$ | async) < 1 ? {} : {display: 'none'}"></tr>
+</table>

@@ -1,0 +1,65 @@
+<div class="container">
+    <div class="app-header">
+
+        <mat-toolbar color="primary">
+            <div class="molior-logo"></div>
+            <div style="text-align: right; width: 100%;" *ngIf="authenticated();">
+                <div [ngStyle]="{display: 'inline-block', 'vertical-align': 'top', 'margin-top': '0px'}">
+                    <mat-icon [ngStyle]="{'font-size': '10px', cursor: 'default', height: '12px', width: '12px', 'margin-right': '5px', 'margin-top': '15px', color: connectionColor$ | async }">lens</mat-icon>
+                </div>
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+                    <mat-icon>person</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                        <mat-icon>settings</mat-icon>
+                        <span>Settings</span>
+                    </button>
+                    <button mat-menu-item (click)="logout()">
+                        <mat-icon>logout</mat-icon>
+                        <span>Logout</span>
+                    </button>
+                </mat-menu>
+            </div>
+        </mat-toolbar>
+    </div>
+
+    <div class="app-nav">
+        <mat-sidenav mode="side" opened>
+            <mat-nav-list>
+                <a mat-list-item routerLinkActive="active-link" routerLink="/builds">
+                    <mat-icon>library_books</mat-icon>
+                    <span>Builds</span>
+                </a>
+                <a mat-list-item routerLinkActive="active-link" routerLink="/projects">
+                    <mat-icon>class</mat-icon>
+                    <span>Projects</span>
+                </a>
+                <a mat-list-item routerLinkActive="active-link" routerLink="/mirrors">
+                    <mat-icon>folder_special</mat-icon>
+                    <span>Mirrors</span>
+                </a>
+                <a mat-list-item routerLinkActive="active-link" routerLink="/users">
+                    <mat-icon>people</mat-icon>
+                    <span>Users</span>
+                </a>
+                <a mat-list-item routerLinkActive="active-link" routerLink="/nodes">
+                    <mat-icon>developer_board</mat-icon>
+                    <span>Nodes</span>
+                </a>
+                <a mat-list-item routerLinkActive="active-link" routerLink="/about">
+                    <mat-icon>question_answer</mat-icon>
+                    <span>About</span>
+                </a>
+            </mat-nav-list>
+        </mat-sidenav>
+    </div>
+
+    <div class="app-main">
+        <router-outlet></router-outlet>
+    </div>
+
+    <div class="app-footer">
+        Molior Debian Build System {{ status.version }}
+    </div>
+</div>

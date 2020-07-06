@@ -1,0 +1,5 @@
+molior-web (1.4.0~alpha67) stable; urgency=medium
+
+  * rewrite in Angular 8
+
+ -- André Roth <neolynx@gmail.com>  Mon, 06 Jul 2020 07:53:41 +0000
