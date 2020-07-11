@@ -1,8 +1,6 @@
 <h1>Builds</h1>
 <mat-paginator [pageSizeOptions]="[10, 50, 100, 1000]" showFirstLastButtons></mat-paginator>
-
 <div id="table-wrapper" [ngStyle]="{display: 'flex', 'flex-direction': 'column', 'flex-grow': 1 }" (window:resize)="resize2parent()">
-
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" (wheel)="scroll($event)">
 
     <ng-container matColumnDef="buildstate">

@@ -14,7 +14,8 @@ import {RepositoryService, RepositoryDataSource, Repository} from '../../service
 
 @Component({
     selector: 'app-projectversion-repos',
-    templateUrl: './projectversion-repos.html'
+    templateUrl: './projectversion-repos.html',
+    styleUrls: ['./projectversion-repos.scss']
 })
 export class ProjectversionReposComponent extends TableComponent {
     dataSource: RepositoryDataSource;

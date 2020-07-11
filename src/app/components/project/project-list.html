@@ -1,6 +1,7 @@
 <h1>Projects</h1>
 <mat-paginator [pageSizeOptions]="[10, 50, 100, 1000]" showFirstLastButtons></mat-paginator>
-<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+<div id="table-wrapper" [ngStyle]="{display: 'flex', 'flex-direction': 'column', 'flex-grow': 1 }" (window:resize)="resize2parent()">
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" (wheel)="scroll($event)">
 
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '25em', 'padding-right': '1em'}"><mat-form-field>
@@ -50,3 +51,4 @@
     </ng-container>
     <tr mat-footer-row *matFooterRowDef="['footer']" [ngStyle]="(dataSource.total$ | async) < 1 ? {} : {display: 'none'}"></tr>
 </table>
+</div>

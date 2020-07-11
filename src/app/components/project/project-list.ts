@@ -12,8 +12,9 @@ import {ValidationService} from '../../services/validation.service';
 
 
 @Component({
-  selector: 'app-project-list',
-  templateUrl: './project-list.html'
+    selector: 'app-project-list',
+    templateUrl: './project-list.html',
+    styleUrls: ['./project-list.scss']
 })
 export class ProjectListComponent extends TableComponent {
     dataSource: ProjectDataSource;

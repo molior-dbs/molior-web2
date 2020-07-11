@@ -176,6 +176,20 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
         return false;
     }
 
+    scroll(event) {
+        if (event.ctrlKey) {
+            return;
+        }
+        if (event.deltaY > 0 && (this.paginator.pageIndex + 1) * this.paginator.pageSize < this.paginator.length) {
+            this.paginator.pageIndex = this.paginator.pageIndex + 1;
+            this.paginator.page.next();
+        } else if (event.deltaY < 0 && this.paginator.pageIndex > 0) {
+            this.paginator.pageIndex = this.paginator.pageIndex - 1;
+            this.paginator.page.next();
+        }
+    }
+
+
     // virtual
     loadData() {
         console.error('not implemented yet');

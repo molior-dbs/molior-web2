@@ -7,9 +7,9 @@ import {RepositoryService} from '../../services/repository.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
 
 @Component({
-  selector: 'app-build-list',
-  templateUrl: './build-list.html',
-  styleUrls: ['./build-list.scss']
+    selector: 'app-build-list',
+    templateUrl: './build-list.html',
+    styleUrls: ['./build-list.scss']
 })
 export class BuildListComponent extends TableComponent implements OnDestroy {
     buildicon;
@@ -109,19 +109,6 @@ export class BuildListComponent extends TableComponent implements OnDestroy {
             }
         }
         return null;
-    }
-
-    scroll(event) {
-        if (event.ctrlKey) {
-            return;
-        }
-        if (event.deltaY > 0 && (this.paginator.pageIndex + 1) * this.paginator.pageSize < this.paginator.length) {
-            this.paginator.pageIndex = this.paginator.pageIndex + 1;
-            this.paginator.page.next();
-        } else if (event.deltaY < 0 && this.paginator.pageIndex > 0) {
-            this.paginator.pageIndex = this.paginator.pageIndex - 1;
-            this.paginator.page.next();
-        }
     }
 
     rebuild(id: number) {
