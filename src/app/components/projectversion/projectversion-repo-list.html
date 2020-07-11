@@ -14,7 +14,7 @@
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" (wheel)="scroll($event)">
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '300px'}">Name</th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
             <strong> {{element.name}} </strong>
         </td>
     </ng-container>
@@ -23,17 +23,23 @@
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '600px'}"><mat-form-field>
             <input matInput placeholder="Git URL" #inputURL>
         </mat-form-field></th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'user-select': 'all'}">{{element.url}}</td>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'user-select': 'all'}" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
+            {{element.url}}
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="architectures">
         <th mat-header-cell *matHeaderCellDef>Architectures</th>
-        <td mat-cell *matCellDef="let element">{{element.architectures}}</td>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
+            {{element.architectures}}
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="state">
         <th mat-header-cell *matHeaderCellDef>State</th>
-        <td mat-cell *matCellDef="let element">{{element.state}}</td>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
+            {{element.state}}
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="actions">

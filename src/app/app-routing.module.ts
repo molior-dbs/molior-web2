@@ -5,7 +5,7 @@ import {BuildDetailComponent} from './components/build/build-detail';
 import {ProjectListComponent} from './components/project/project-list';
 import {ProjectversionListComponent} from './components/projectversion/projectversion-list';
 import {ProjectversionInfoComponent} from './components/projectversion/projectversion-info';
-import {ProjectversionReposComponent} from './components/projectversion/projectversion-repos';
+import {ProjectversionRepoListComponent} from './components/projectversion/projectversion-repo-list';
 import {MirrorListComponent} from './components/mirror/mirror-list';
 import {MirrorDetailComponent} from './components/mirror/mirror-detail';
 import {NodeListComponent} from './components/node/node-list';
@@ -31,8 +31,7 @@ const routes: Routes = [
                 children: [
                     { path: '',              redirectTo: 'info', pathMatch: 'full' },
                     { path: 'info',          component: ProjectversionInfoComponent,  canActivate: [AuthGuard] },
-                    { path: 'repos',         component: ProjectversionReposComponent, canActivate: [AuthGuard] },
-                    // { path: 'admin',         component: ProjectversionComponent, canActivate: [AuthGuard] },
+                    { path: 'repos',         component: ProjectversionRepoListComponent, canActivate: [AuthGuard] },
                 ]
             }
         ]

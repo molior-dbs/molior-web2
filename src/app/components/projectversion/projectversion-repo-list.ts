@@ -13,11 +13,11 @@ import {RepositoryService, RepositoryDataSource, Repository} from '../../service
 
 
 @Component({
-    selector: 'app-projectversion-repos',
-    templateUrl: './projectversion-repos.html',
-    styleUrls: ['./projectversion-repos.scss']
+    selector: 'app-projectversion-repo-list',
+    templateUrl: './projectversion-repo-list.html',
+    styleUrls: ['./projectversion-repo-list.scss']
 })
-export class ProjectversionReposComponent extends TableComponent {
+export class ProjectversionRepoListComponent extends TableComponent {
     dataSource: RepositoryDataSource;
     projectversion: ProjectVersion;
     displayedColumns: string[] = [

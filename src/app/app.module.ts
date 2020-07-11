@@ -36,7 +36,7 @@ import {RepositoryService} from './services/repository.service';
 
 import {ProjectversionListComponent, ProjectversionDialogComponent} from './components/projectversion/projectversion-list';
 import {ProjectversionInfoComponent, DependencyDialogComponent} from './components/projectversion/projectversion-info';
-import {ProjectversionReposComponent, SourcerepoDialogComponent} from './components/projectversion/projectversion-repos';
+import {ProjectversionRepoListComponent, SourcerepoDialogComponent} from './components/projectversion/projectversion-repo-list';
 
 import {BuildListComponent} from './components/build/build-list';
 import {BuildDetailComponent} from './components/build/build-detail';
@@ -85,7 +85,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectversionListComponent,
         ProjectversionDialogComponent,
         ProjectversionInfoComponent,
-        ProjectversionReposComponent,
+        ProjectversionRepoListComponent,
         DependencyDialogComponent,
 
         SourcerepoDialogComponent,
