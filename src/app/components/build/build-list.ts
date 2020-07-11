@@ -125,10 +125,10 @@ export class BuildListComponent extends TableComponent implements OnDestroy {
     }
 
     rebuild(id: number) {
-        this.buildService.rebuild(id);
+        this.buildService.rebuild(id).subscribe();
     }
 
     buildlatest(id) {
-        this.repositoryService.build(id);
+        this.repositoryService.build(id).subscribe();
     }
 }
