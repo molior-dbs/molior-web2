@@ -6,6 +6,7 @@ import {ProjectListComponent} from './components/project/project-list';
 import {ProjectversionListComponent} from './components/projectversion/projectversion-list';
 import {ProjectversionInfoComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent} from './components/projectversion/projectversion-repo-list';
+import {ProjectversionRepoComponent} from './components/projectversion/projectversion-repo-info';
 import {MirrorListComponent} from './components/mirror/mirror-list';
 import {MirrorDetailComponent} from './components/mirror/mirror-detail';
 import {NodeListComponent} from './components/node/node-list';
@@ -32,6 +33,11 @@ const routes: Routes = [
                     { path: '',              redirectTo: 'info', pathMatch: 'full' },
                     { path: 'info',          component: ProjectversionInfoComponent,  canActivate: [AuthGuard] },
                     { path: 'repos',         component: ProjectversionRepoListComponent, canActivate: [AuthGuard] },
+                    { path: 'repo/:id',
+                        children: [
+                            { path: '',      component: ProjectversionRepoComponent,  canActivate: [AuthGuard] }
+                        ]
+                    }
                 ]
             }
         ]
