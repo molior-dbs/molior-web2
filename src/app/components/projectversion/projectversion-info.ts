@@ -63,7 +63,9 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     removeDependency(name: string, version: string) {
-        this.projectversionService.removeDependency(this.projectversion, `${name}/${version}`);
+        this.projectversionService.removeDependency(this.projectversion, `${name}/${version}`).subscribe( r => {
+            this.loadData();
+        });
     }
 }
 
@@ -97,8 +99,9 @@ export class DependencyDialogComponent {
     }
 
     save(): void {
-        this.projectversionService.addDependency(this.projectversion, this.form.value.dependency);
-        this.dialog.close();
+        this.projectversionService.addDependency(this.projectversion, this.form.value.dependency).subscribe( r => {
+            this.dialog.close();
+        });
     }
 }
 

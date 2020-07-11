@@ -73,11 +73,11 @@ export class ProjectversionReposComponent extends TableComponent {
     }
 
     reclone(id: number) {
-        this.repositoryService.reclone(id);
+        this.repositoryService.reclone(id).subscribe();
     }
 
     build(id: number) {
-        this.repositoryService.build(id);
+        this.repositoryService.build(id).subscribe();
     }
 
     edit(element) {
@@ -88,7 +88,9 @@ export class ProjectversionReposComponent extends TableComponent {
 
     delete(id: number) {
         if (confirm(`Delete repository from ${this.projectversion.project_name}/${this.projectversion.name} ?`)) {
-            this.repositoryService.delete(id, this.projectversion.id);
+            this.repositoryService.delete(id, this.projectversion.id).subscribe( r => {
+                this.loadData();
+            });
         }
     }
 }
@@ -187,9 +189,10 @@ export class SourcerepoDialogComponent implements OnInit {
     save(): void {
         this.updateArchs();
         if (!this.repo) {
-            this.repositoryService.add(this.data.projectversion, this.form.value.url.trim(), this.form.value.architectures);
+            this.repositoryService.add(this.data.projectversion, this.form.value.url.trim(), this.form.value.architectures).subscribe();
         } else {
-            this.repositoryService.edit(this.data.projectversion, this.repo.id, this.form.value.url.trim(), this.form.value.architectures);
+            this.repositoryService.edit(this.data.projectversion, this.repo.id,
+                                        this.form.value.url.trim(), this.form.value.architectures).subscribe();
         }
         this.dialog.close();
     }

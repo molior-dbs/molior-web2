@@ -5,8 +5,6 @@
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'info']">Info</a>
     <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
-    <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
-       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'admin']">Admin</a>
 </nav>
 
 <mat-paginator [pageSizeOptions]="[10, 50, 100, 1000]" showFirstLastButtons></mat-paginator>
@@ -46,7 +44,7 @@
             <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="edit(element)"><mat-icon>edit</mat-icon>Edit</button>
                 <button mat-menu-item (click)="delete(element.id)"><mat-icon>delete</mat-icon>Delete</button>
-                <button mat-menu-item (click)="build(element.id)"><mat-icon>list</mat-icon>Build</button>
+                <button mat-menu-item (click)="build(element.id)"><mat-icon>list</mat-icon>Check for new builds</button>
                 <button mat-menu-item (click)="reclone(element.id)"><mat-icon>list</mat-icon>Re-clone</button>
             </mat-menu>
         </td>

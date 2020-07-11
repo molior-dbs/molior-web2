@@ -43,24 +43,24 @@ export class RepositoryService extends TableService<Repository> {
 
     add(projectversion, url, architectures) {
         return this.http.post(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/repositories`,
-            { url, architectures }).subscribe();
+            { url, architectures });
     }
 
     reclone(id: number) {
-        return this.http.post(`${apiURL()}/api/repositories/${id}/clone`, null).subscribe();
+        return this.http.post(`${apiURL()}/api/repositories/${id}/clone`, null);
     }
 
     build(id: number) {
-        return this.http.post(`${apiURL()}/api/repositories/${id}/build`, null).subscribe();
+        return this.http.post(`${apiURL()}/api/repositories/${id}/build`, null);
     }
 
     delete(id: number, ProjectversionID: number) {
-        return this.http.delete(`${apiURL()}/api/projectversions/${ProjectversionID}/repositories/${id}`).subscribe();
+        return this.http.delete(`${apiURL()}/api/projectversions/${ProjectversionID}/repositories/${id}`);
     }
 
     edit(projectversion, id: number, url: string, architectures: string[]) {
         return this.http.put(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/repository/${id}`,
                              {url, architectures}
-                            ).subscribe();
+                            );
     }
 }

@@ -95,15 +95,12 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         );
     }
 
-    addDependency(projectversion: ProjectVersion, dependency: string) {
-        return this.http.post(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/dependencies`,
-            { dependency }).subscribe();
+    addDependency(pv: ProjectVersion, dependency: string) {
+        return this.http.post(`${apiURL()}/api2/project/${pv.project_name}/${pv.name}/dependencies`, { dependency });
     }
 
-    removeDependency(projectversion: ProjectVersion, dependency: string) {
-        return this.http.delete(
-            `${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/dependency/${dependency}`
-        ).subscribe();
+    removeDependency(p: ProjectVersion, dependency: string) {
+        return this.http.delete(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependency/${dependency}`);
     }
 
 }

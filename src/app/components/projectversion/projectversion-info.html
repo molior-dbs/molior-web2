@@ -5,8 +5,6 @@
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'info']">Info</a>
     <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
-    <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
-       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'admin']">Admin</a>
 </nav>
 
 <table class="mat-elevation-z8 info-table">
