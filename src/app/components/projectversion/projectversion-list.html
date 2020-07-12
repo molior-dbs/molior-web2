@@ -1,5 +1,5 @@
-<h1>{{project.name}}</h1>
-<div [ngStyle]="{ height: '1em' }">{{ project.description }}</div>
+<h1><mat-icon>class</mat-icon>Project {{project.name}}</h1>
+<div [ngStyle]="{ 'padding': '10px' }">{{ project.description }}</div>
 
 <nav mat-tab-nav-bar>
     <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"

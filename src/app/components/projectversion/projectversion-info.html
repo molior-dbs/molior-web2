@@ -1,4 +1,4 @@
-<a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span>
+<h1><mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span></h1>
 
 <nav mat-tab-nav-bar>
     <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
@@ -23,7 +23,7 @@
 </table>
 
 <br/>
-<h1>Repository Dependencies</h1>
+<h2>Repository Dependencies</h2>
 <mat-paginator [pageSizeOptions]="[10, 50, 100, 1000]" showFirstLastButtons></mat-paginator>
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
