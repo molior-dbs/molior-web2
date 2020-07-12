@@ -302,15 +302,18 @@ a {
 // info
 .info-table {
     width: unset;
-    margin-top: 20px;
-    padding: 10px 30px 20px 0;
+    margin-top: 5px;
+    padding: 10px 20px 10px 10px;
     background: #5718450f;
+    display: flex;
 }
 
 .info-table > tr > td {
     padding-left: 20px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+}
+
+.info-table > div >table > tr > td {
+    padding: 0px 20px 10px 0px;
 }
 
 // step

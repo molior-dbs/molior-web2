@@ -7,20 +7,28 @@
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
 </nav>
 
-<table class="mat-elevation-z8 info-table">
-    <tr>
-        <td><strong>APT Repository</strong></td>
-        <td><a href="{{ projectversion.apt_url }}" target="_blank">{{ projectversion.apt_url }}</a></td>
-    </tr>
-    <tr>
-        <td><strong>Base Mirror</strong></td>
-        <td><a [routerLink]="['/mirror/' + projectversion.basemirror ]">{{ projectversion.basemirror }}</a></td>
-    </tr>
-    <tr>
-        <td><strong>Architectures</strong></td>
-        <td>{{ projectversion.architectures }}</td>
-    </tr>
-</table>
+<div class="mat-elevation-z8 info-table">
+    <div>
+        <table style="border-collapse: collapse">
+            <tr>
+                <td><strong>APT Repository</strong></td>
+                <td><a href="{{ projectversion.apt_url }}" target="_blank">{{ projectversion.apt_url }}</a></td>
+            </tr>
+            <tr style="user-select: none">
+                <td><strong>Base Mirror</strong></td>
+                <td><a [routerLink]="['/mirror/' + projectversion.basemirror ]">{{ projectversion.basemirror }}</a></td>
+            </tr>
+            <tr style="user-select: none">
+                <td><strong>Architectures</strong></td>
+                <td>{{ projectversion.architectures }}</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <strong style="user-select: none">APT Sources</strong>
+        <pre style="margin: 0px;">{{apt_sources}}</pre>
+    </div>
+</div>
 
 <br/>
 <h2>Repository Dependencies</h2>

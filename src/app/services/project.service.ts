@@ -103,6 +103,10 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         return this.http.delete(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependency/${dependency}`);
     }
 
+    get_apt_sources(name: string, version: string) {
+        return this.http.get<string>(`${apiURL()}/api/projectsources/${name}/${version}`);
+    }
+
 }
 
 

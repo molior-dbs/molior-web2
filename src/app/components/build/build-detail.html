@@ -1,21 +1,27 @@
 <span class="title"><mat-icon>library_books</mat-icon>Build {{build.id}}: {{build.sourcename}} {{build.version}}</span>
 
-<table class="mat-elevation-z8 info-table">
-    <tr>
-        <td><strong>Source Name</strong></td>
-        <td>{{build.sourcename}}</td>
-    </tr>
-    <tr>
-        <td><strong>Version</strong></td>
-        <td>{{build.version}}</td>
-    </tr>
-    <tr>
-        <td><strong>State</strong></td>
-        <td>
-            <mat-icon class="mat-icon notranslate material-icons buildstate buildstate-{{build.buildstate}}" matTooltip="{{build.buildstate}}" [matTooltipPosition]="'left'">{{buildicon(build.buildstate)}}</mat-icon>
-            <span [ngClass]="'progress'" *ngIf="build.progress && ( build.buildstate == 'building' || build.buildstate == 'publishing' )">{{build.progress | number:'1.0-0'}}%</span>
-        </td>
-</table>
+<div class="mat-elevation-z8 info-table">
+    <div>
+        <table style="border-collapse: collapse">
+            <tr>
+                <td><strong>Source Name</strong></td>
+                <td>{{build.sourcename}}</td>
+            </tr>
+            <tr *ngIf="build.version">
+                <td><strong>Version</strong></td>
+                <td>{{build.version}}</td>
+            </tr>
+            <tr>
+                <td><strong>State</strong></td>
+                <td>
+                    <mat-icon class="mat-icon notranslate material-icons buildstate buildstate-{{build.buildstate}}" matTooltip="{{build.buildstate}}" [matTooltipPosition]="'left'" [ngStyle]="{'font-size': '19px', height: 'unset', width: 'unset'}">{{buildicon(build.buildstate)}}</mat-icon>
+                    <span [ngClass]="'progress'" *ngIf="build.progress && ( build.buildstate == 'building' || build.buildstate == 'publishing' )">{{build.progress | number:'1.0-0'}}%</span>
+                </td>
+        </table>
+    </div>
+    <div>
+    </div>
+</div>
 
 <h2>Build Log</h2>
 <mat-paginator hidePageSize showFirstLastButtons></mat-paginator>

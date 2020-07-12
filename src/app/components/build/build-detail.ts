@@ -21,7 +21,8 @@ export class BuildDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     loglines: number;
     incompleteline: string;
     up: boolean;
-    subscription;
+    subscriptionBuild;
+    subscriptionLog;
     cursor;
     buildicon;
     @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
@@ -63,7 +64,7 @@ export class BuildDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit() {
-        this.moliorService.builds.subscribe((event: UpdateEvent) => {
+        this.subscriptionBuild = this.moliorService.builds.subscribe((event: UpdateEvent) => {
             const idkey = 'id';
             if (event.event === 'changed' && event.data[idkey] === this.build.id) {
                 for (const key in event.data) {
@@ -93,7 +94,7 @@ export class BuildDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 logline.className = 'logline';
             }
 
-            this.subscription = this.moliorService.buildlog.subscribe(log => {
+            this.subscriptionLog = this.moliorService.buildlog.subscribe(log => {
                 if (log.hasOwnProperty('event') && log.event === 'done') {
                     this.up = false;
                     if (this.cursor) {
@@ -173,8 +174,13 @@ export class BuildDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 data: {build_id: this.build.id}
             });
         }
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+        if (this.subscriptionBuild) {
+            this.subscriptionBuild.unsubscribe();
+            this.subscriptionBuild = null;
+        }
+        if (this.subscriptionLog) {
+            this.subscriptionLog.unsubscribe();
+            this.subscriptionLog = null;
         }
     }
 
