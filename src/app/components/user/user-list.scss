@@ -10,3 +10,10 @@
 .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
     background-color: unset;
 }
+
+// set app component for table resize
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
