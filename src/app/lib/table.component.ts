@@ -63,7 +63,6 @@ export class TableParams {
         }
         return urlparams;
     }
-
 }
 
 export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -89,7 +88,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit() {
-
         this.sParams = this.route.queryParams.subscribe(params => {
             this.params.load(params);
             this.resize2parent();
@@ -172,7 +170,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     contextmenu(event, id) {
         this.menubuttons.toArray()[id + this.contextmenuIndex].openMenu();
-        setTimeout(this.setmenupos, 0, event);
+        setTimeout(this.setmenupos, 100, event);
         return false;
     }
 

@@ -62,7 +62,7 @@
             </mat-form-field>
         </th>
         <td mat-cell *matCellDef="let element" [ngStyle]="{'text-align': 'center'}">
-            <a *ngIf="element.project" [routerLink]="['../project', element.project.name, element.project.version]" [ngStyle]="{'text-decoration': 'none', color: 'unset'}">
+            <a *ngIf="element.project" [routerLink]="['../project', element.project.name, element.project.version]" [ngStyle]="{'text-decoration': 'none', color: 'unset', 'font-weight': 'bold'}">
                 {{element.project.name}}/{{element.project.version}}
             </a>
         </td>
