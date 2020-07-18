@@ -9,7 +9,7 @@ import {TableService, TableDataSource, MoliorResult} from '../lib/table.datasour
 export interface Repository {
     id: number;
     name: string;
-    statue: string;
+    status: string;
     url: string;
 }
 
@@ -62,5 +62,9 @@ export class RepositoryService extends TableService<Repository> {
         return this.http.put(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/repository/${id}`,
                              {url, architectures}
                             );
+    }
+
+    get_projectversion_repo(name: string, version: string, repoID: number) {
+        return this.http.get<Repository>(`${apiURL()}/api2/project/${name}/${version}/repository/${repoID}`);
     }
 }

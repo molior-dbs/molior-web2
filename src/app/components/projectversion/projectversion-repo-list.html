@@ -17,12 +17,16 @@
         </td>
     </ng-container>
 
-    <ng-container matColumnDef="url">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '600px'}"><mat-form-field>
-            <input matInput placeholder="Git URL" #inputURL>
-        </mat-form-field></th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'user-select': 'all'}" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
-            {{element.url}}
+    <ng-container matColumnDef="last_build">
+        <th mat-header-cell *matHeaderCellDef>Last Build</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
+            <div *ngIf="element.last_build">
+                <mat-icon class="mat-icon notranslate material-icons buildstate buildstate-{{element.last_build.buildstate}}"
+                    matTooltip="{{element.last_build.buildstate}}" [matTooltipPosition]="'left'">
+                    {{buildicon(element.last_build.buildstate)}}
+                </mat-icon>
+                <span>{{element.last_build.version}}</span>
+            </div>
         </td>
     </ng-container>
 
@@ -30,6 +34,15 @@
         <th mat-header-cell *matHeaderCellDef>Architectures</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
             {{element.architectures}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="url">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '600px'}"><mat-form-field>
+            <input matInput placeholder="Git URL" #inputURL>
+        </mat-form-field></th>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'user-select': 'all'}" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
+            {{element.url}}
         </td>
     </ng-container>
 

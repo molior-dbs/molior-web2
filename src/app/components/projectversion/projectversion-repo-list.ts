@@ -10,6 +10,7 @@ import {MatOptionSelectionChange} from '@angular/material';
 import {TableComponent} from '../../lib/table.component';
 import {ProjectVersion, ProjectVersionService} from '../../services/project.service';
 import {RepositoryService, RepositoryDataSource, Repository} from '../../services/repository.service';
+import {buildicon} from '../../services/build.service';
 
 
 @Component({
@@ -18,12 +19,14 @@ import {RepositoryService, RepositoryDataSource, Repository} from '../../service
     styleUrls: ['./projectversion-repo-list.scss']
 })
 export class ProjectversionRepoListComponent extends TableComponent {
+    buildicon;
     dataSource: RepositoryDataSource;
     projectversion: ProjectVersion;
     displayedColumns: string[] = [
         'name',
-        'url',
+        'last_build',
         'architectures',
+        'url',
         'state',
         'actions'
     ];
@@ -42,6 +45,7 @@ export class ProjectversionRepoListComponent extends TableComponent {
         this.projectversionService.get(this.projectversion.project_name,
             this.projectversion.name).subscribe((res: ProjectVersion) => this.projectversion = res);
         this.contextmenuIndex = 0;  // no previous context menus
+        this.buildicon = buildicon;
     }
 
     loadData() {
