@@ -98,6 +98,9 @@ export class TableDataSource<T extends {}> implements DataSource<T>, Observer<Mo
             return;
         }
         if (event.event === 'added') {
+            if (this.paginator.pageIndex !== 0) {
+                return;
+            }
             let insertat = null;
             if (event.data.hasOwnProperty(parentkey) && event.data[parentkey] !== null) {
                 this.currentResults.forEach((item, i) => {
