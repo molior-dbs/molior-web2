@@ -41,7 +41,7 @@
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '600px'}"><mat-form-field>
             <input matInput placeholder="Git URL" #inputURL>
         </mat-form-field></th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'user-select': 'all'}" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'user-select': 'all'}">
             {{element.url}}
         </td>
     </ng-container>

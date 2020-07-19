@@ -31,14 +31,14 @@ export class ProjectversionInfoComponent extends TableComponent {
         this.dataSource = new ProjectVersionDataSource(projectversionService);
         this.contextmenuIndex = 0;  // no previous context menus
         this.apt_sources = '';
-        this.projectversionService.get(this.projectversion.project_name,
-            this.projectversion.name).subscribe((res: ProjectVersion) => this.projectversion = res);
-        this.projectversionService.get_apt_sources(this.projectversion.project_name,
-            this.projectversion.name).subscribe((res: string) => this.apt_sources = res);
     }
 
     loadData() {
         this.dataSource.load(`/api2/project/${this.projectversion.project_name}/${this.projectversion.name}/dependencies`, this.params);
+        this.projectversionService.get(this.projectversion.project_name,
+            this.projectversion.name).subscribe((res: ProjectVersion) => this.projectversion = res);
+        this.projectversionService.get_apt_sources(this.projectversion.project_name,
+            this.projectversion.name).subscribe((res: string) => this.apt_sources = res);
     }
 
     initElements() {
