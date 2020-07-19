@@ -1,10 +1,18 @@
 <h1><mat-icon>people</mat-icon>User <span class="title">{{user.username}}</span></h1>
 
-<table class="mat-elevation-z8 info-table">
+<div class="mat-elevation-z8 info-table">
+<table>
     <tr>
         <td><strong>Email</strong></td>
         <td>{{user.email}}</td>
     </tr>
+    <tr>
+        <td><strong>Administrator</strong></td>
+        <td>
+            <mat-icon *ngIf="user.is_admin">done</mat-icon>
+        </td>
+    </tr>
 </table>
+</div>
 
 

@@ -30,8 +30,7 @@ a {
 // colors
 $primary-color: #571845;
 
-// data table
-table { width: 100%; }
+.mat-table { width: 100%; }
 
 .mat-form-field-wrapper {
     padding-bottom: 0em;
@@ -312,7 +311,7 @@ a {
     padding-left: 20px;
 }
 
-.info-table > div >table > tr > td {
+.info-table > div > table > tr > td, .info-table > table > tr > td {
     padding: 0px 20px 10px 0px;
 }
 
