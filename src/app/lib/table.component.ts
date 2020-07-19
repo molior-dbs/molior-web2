@@ -165,7 +165,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
     setmenupos(event) {
         const menu = document.getElementsByClassName('cdk-overlay-connected-position-bounding-box')[0] as HTMLDivElement;
         menu.style.right = window.innerWidth - event.pageX - (menu.firstChild as HTMLDivElement).clientWidth + 'px';
-        menu.style.top = event.pageY + 'px';
     }
 
     contextmenu(event, id) {
