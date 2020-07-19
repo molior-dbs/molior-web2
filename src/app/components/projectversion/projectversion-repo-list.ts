@@ -41,7 +41,7 @@ export class ProjectversionRepoListComponent extends TableComponent {
         this.dataSource = new RepositoryDataSource(repositoryService);
         this.projectversion = {id: -1, name: this.route.parent.snapshot.paramMap.get('version'), is_locked: false,
                                project_name: this.route.parent.parent.snapshot.paramMap.get('name'),
-                               apt_url: '', architectures: [], basemirror: ''};
+                               apt_url: '', architectures: [], basemirror: '', is_mirror: false};
         this.projectversionService.get(this.projectversion.project_name,
             this.projectversion.name).subscribe((res: ProjectVersion) => this.projectversion = res);
         this.contextmenuIndex = 0;  // no previous context menus

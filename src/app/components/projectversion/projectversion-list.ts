@@ -32,12 +32,12 @@ export class ProjectversionListComponent extends TableComponent {
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
                 protected projectService: ProjectService,
-                protected projectVersionsService: ProjectVersionService,
+                protected projectversionService: ProjectVersionService,
                 protected dialog: MatDialog) {
         super(route, router, [['filter_name', '']]);
         this.project = {id: null, name: this.route.parent.snapshot.paramMap.get('name'), description: ''};
         this.projectService.get(this.project.name).subscribe((res: Project) => this.project = res);
-        this.dataSource = new ProjectVersionDataSource(projectVersionsService);
+        this.dataSource = new ProjectVersionDataSource(projectversionService);
         this.contextmenuIndex = 0;  // no previous context menus
     }
 

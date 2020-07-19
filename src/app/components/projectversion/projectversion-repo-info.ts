@@ -19,7 +19,7 @@ export class ProjectversionRepoComponent {
                 protected repositoryService: RepositoryService) {
         this.projectversion = {id: -1, name: this.route.parent.snapshot.paramMap.get('version'), is_locked: false,
                                project_name: this.route.parent.parent.snapshot.paramMap.get('name'),
-                               apt_url: '', architectures: [], basemirror: ''};
+                               apt_url: '', architectures: [], basemirror: '', is_mirror: false};
         this.repository = {id: +this.route.parent.snapshot.paramMap.get('id'), name: '', status: '', url: ''};
         this.projectversionService.get(this.projectversion.project_name,
             this.projectversion.name).subscribe((res: ProjectVersion) => this.projectversion = res);

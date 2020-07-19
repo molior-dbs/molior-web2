@@ -12,10 +12,13 @@ import {TableComponent} from '../../lib/table.component';
 })
 export class ProjectversionInfoComponent extends TableComponent {
     projectversion: ProjectVersion;
-    apt_sources: string;
+    aptSources: string;
     dataSource: ProjectVersionDataSource;
     displayedColumns: string[] = [
         'dependency',
+        'architectures',
+        'basemirror',
+        'is_locked',
         'actions'
     ];
     @ViewChild('inputName', { static: false }) inputName: ElementRef;
@@ -27,10 +30,10 @@ export class ProjectversionInfoComponent extends TableComponent {
         super(route, router, [['filter_name', '']]);
         this.projectversion = {id: -1, name: this.route.parent.snapshot.paramMap.get('version'), is_locked: false,
                                project_name: this.route.parent.parent.snapshot.paramMap.get('name'),
-                               apt_url: '', architectures: [], basemirror: ''};
+                               apt_url: '', architectures: [], basemirror: '', is_mirror: false};
         this.dataSource = new ProjectVersionDataSource(projectversionService);
         this.contextmenuIndex = 0;  // no previous context menus
-        this.apt_sources = '';
+        this.aptSources = '';
     }
 
     loadData() {
@@ -38,7 +41,7 @@ export class ProjectversionInfoComponent extends TableComponent {
         this.projectversionService.get(this.projectversion.project_name,
             this.projectversion.name).subscribe((res: ProjectVersion) => this.projectversion = res);
         this.projectversionService.get_apt_sources(this.projectversion.project_name,
-            this.projectversion.name).subscribe((res: string) => this.apt_sources = res);
+            this.projectversion.name).subscribe((res: string) => this.aptSources = res);
     }
 
     initElements() {

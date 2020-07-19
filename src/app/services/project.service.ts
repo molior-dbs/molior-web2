@@ -20,6 +20,7 @@ export interface ProjectVersion {
     apt_url: string;
     architectures: string[];
     basemirror: string;
+    is_mirror: boolean;
 }
 
 export class ProjectDataSource extends TableDataSource<Project> {
