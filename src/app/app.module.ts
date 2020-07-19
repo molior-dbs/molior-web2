@@ -40,19 +40,19 @@ import {ProjectversionRepoListComponent, SourcerepoDialogComponent} from './comp
 import {ProjectversionRepoComponent} from './components/projectversion/projectversion-repo-info';
 
 import {BuildListComponent} from './components/build/build-list';
-import {BuildDetailComponent} from './components/build/build-detail';
+import {BuildInfoComponent} from './components/build/build-info';
 import {BuildService} from './services/build.service';
 
 import {MirrorListComponent, MirrorDialogComponent} from './components/mirror/mirror-list';
-import {MirrorDetailComponent} from './components/mirror/mirror-detail';
+import {MirrorInfoComponent} from './components/mirror/mirror-info';
 import {MirrorService} from './services/mirror.service';
 
 import {NodeListComponent} from './components/node/node-list';
-import {NodeDetailComponent} from './components/node/node';
+import {NodeInfoComponent} from './components/node/node-info';
 import {NodeService} from './services/node.service';
 
 import {UserListComponent, UserDialogComponent} from './components/user/user-list';
-import {UserDetailComponent} from './components/user/user-detail';
+import {UserInfoComponent} from './components/user/user-info';
 import {UserService} from './services/user.service';
 
 import {WebsocketService, MoliorService} from './services/websocket';
@@ -66,18 +66,18 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectCreateDialogComponent,
 
         BuildListComponent,
-        BuildDetailComponent,
+        BuildInfoComponent,
 
         MirrorListComponent,
-        MirrorDetailComponent,
+        MirrorInfoComponent,
         MirrorDialogComponent,
 
         NodeListComponent,
-        NodeDetailComponent,
+        NodeInfoComponent,
 
         UserListComponent,
         UserDialogComponent,
-        UserDetailComponent,
+        UserInfoComponent,
 
         AboutComponent,
         LoginComponent,

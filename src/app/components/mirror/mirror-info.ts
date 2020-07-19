@@ -5,10 +5,10 @@ import {MirrorService, Mirror} from '../../services/mirror.service';
 
 @Component({
     selector: 'app-mirror',
-    templateUrl: './mirror-detail.html',
-    styleUrls: ['./mirror-detail.scss']
+    templateUrl: './mirror-info.html',
+    styleUrls: ['./mirror-info.scss']
 })
-export class MirrorDetailComponent implements OnInit {
+export class MirrorInfoComponent implements OnInit {
     mirror: Mirror;
 
     constructor(protected route: ActivatedRoute,

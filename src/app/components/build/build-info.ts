@@ -10,10 +10,10 @@ import {MoliorService, UpdateEvent} from '../../services/websocket';
 
 @Component({
     selector: 'app-build',
-    templateUrl: 'build-detail.html',
-    styleUrls: ['build-detail.scss'],
+    templateUrl: 'build-info.html',
+    styleUrls: ['build-info.scss'],
 })
-export class BuildDetailComponent implements OnInit, OnDestroy, AfterViewInit {
+export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     build: Build;
     selectedLine: number;
     LastSelectedLine: number;

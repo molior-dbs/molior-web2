@@ -4,9 +4,9 @@ import {NodeService, Node} from '../../services/node.service';
 
 @Component({
     selector: 'app-node',
-    templateUrl: './node.html',
+    templateUrl: './node-info.html',
 })
-export class NodeDetailComponent implements OnInit {
+export class NodeInfoComponent implements OnInit {
     node: Node;
 
     constructor(protected route: ActivatedRoute,

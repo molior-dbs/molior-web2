@@ -3,10 +3,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {UserService, User} from '../../services/user.service';
 
 @Component({
-    selector: 'app-user-detail',
-    templateUrl: './user-detail.html',
+    selector: 'app-user-info',
+    templateUrl: './user-info.html',
 })
-export class UserDetailComponent implements OnInit {
+export class UserInfoComponent implements OnInit {
     user: User;
 
     constructor(protected route: ActivatedRoute,
