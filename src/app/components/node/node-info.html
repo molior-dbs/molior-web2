@@ -1,10 +1,30 @@
-<h1><mat-icon>developer_board</mat-icon>Node <span class="title">{{node.name}}/{{node.arch}}</span></h1>
+<h1><mat-icon>developer_board</mat-icon>Node <span class="title">{{node.name}}</span></h1>
 
 <div class="mat-elevation-z8 info-table">
 <table>
     <tr>
         <td><strong>Node</strong></td>
         <td>{{node.name}}</td>
+    </tr>
+    <tr>
+        <td><strong>Architecture</strong></td>
+        <td>{{node.arch}}</td>
+    </tr>
+    <tr>
+        <td><strong>State</strong></td>
+        <td>{{node.state}}</td>
+    </tr>
+    <tr>
+        <td><strong>Load</strong></td>
+        <td>
+            <mat-icon [ngStyle]="{'color': getLoadColor(node.load[0]) }" matTooltip="1min: {{ node.load[0] }}">stop</mat-icon>
+            <mat-icon [ngStyle]="{'color': getLoadColor(node.load[1]) }" matTooltip="5min: {{ node.load[1] }}">stop</mat-icon>
+            <mat-icon [ngStyle]="{'color': getLoadColor(node.load[2]) }" matTooltip="15min: {{ node.load[2] }}">stop</mat-icon>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Uptime</strong></td>
+        <td>{{getUptime(node)}}</td>
     </tr>
 </table>
 </div>

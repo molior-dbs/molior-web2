@@ -38,3 +38,30 @@ export class NodeService extends TableService<Node> {
         return this.http.get<Node>(`${apiURL()}/api/node/${name}`);
     }
 }
+
+export function getLoadColor(load: number) {
+    let color = 'blue';
+    if (load < 1.0) {
+        color = `hsl(${ 128 - load * 64 }, 100%, 34%)`;
+    } else if (load < 3.0) {
+        color = `hsl(${ 64 - (load - 1.0) * 16 }, 100%, 34%)`;
+    } else {
+        color = `hsl(${ 32 - (load - 3.0) * 4 }, 100%, 34%)`;
+    }
+    return color;
+}
+
+export function getUptime(node) {
+    const d = Math.floor(node.uptime_seconds / 3600.0 / 24.0);
+    const h = Math.floor((node.uptime_seconds % (3600.0 * 24.0 * d)) / 3600.0);
+    const m = Math.floor((node.uptime_seconds % 3600.0) / 60.0);
+    if (d > 0) {
+        const hrs = `${h}`.padStart(2, '0');
+        const mins = `${m}`.padStart(2, '0');
+        return `${d}d ${hrs}h ${mins}m`;
+    } else if (h > 0) {
+        const mins = `${m}`.padStart(2, '0');
+        return `${h}h ${mins}m`;
+    }
+    return `${m}m`;
+}

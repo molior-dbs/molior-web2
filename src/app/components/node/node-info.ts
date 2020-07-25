@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {NodeService, Node} from '../../services/node.service';
+
+import {NodeService, Node, getLoadColor, getUptime} from '../../services/node.service';
 
 @Component({
     selector: 'app-node',
@@ -8,6 +9,8 @@ import {NodeService, Node} from '../../services/node.service';
 })
 export class NodeInfoComponent implements OnInit {
     node: Node;
+    getLoadColor = getLoadColor;
+    getUptime = getUptime;
 
     constructor(protected route: ActivatedRoute,
                 protected nodeService: NodeService) {
