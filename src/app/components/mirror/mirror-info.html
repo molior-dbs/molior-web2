@@ -3,8 +3,28 @@
 <div class="mat-elevation-z8 info-table">
 <table>
     <tr>
-        <td><strong>APT Mirror</strong></td>
-        <td>{{mirror.name}}/{{mirror.version}}</td>
+        <td><strong>URL</strong></td>
+        <td>{{mirror.url}} <mat-icon *ngIf="mirror.is_basemirror" svgIcon="debian" [ngStyle]="{'margin-right': '0px'}"></mat-icon></td>
+    </tr>
+    <tr>
+        <td><strong>Distribution</strong></td>
+        <td>{{mirror.distribution}}</td>
+    </tr>
+    <tr>
+        <td><strong>Components</strong></td>
+        <td>{{mirror.components}}</td>
+    </tr>
+    <tr>
+        <td><strong>Architectures</strong></td>
+        <td>{{mirror.architectures}}</td>
+    </tr>
+    <tr>
+        <td><strong>Base Mirror</strong></td>
+        <td>{{mirror.basemirror_name}}</td>
+    </tr>
+    <tr>
+        <td><strong>State</strong></td>
+        <td>{{mirror.state}}</td>
     </tr>
 </table>
 </div>
