@@ -65,7 +65,7 @@ export class TableParams {
     }
 }
 
-export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TableComponent implements AfterViewInit, OnDestroy {
     params: TableParams;
     @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
     sParams: Subscription;
@@ -82,9 +82,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.params = new TableParams(URLParams);
         this.firstload = true;
         this.contextmenuIndex = 1;
-    }
-
-    ngOnInit() {
     }
 
     ngAfterViewInit() {

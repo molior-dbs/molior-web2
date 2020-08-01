@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, ViewChild, ElementRef, Inject} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
@@ -12,6 +12,8 @@ import {TableComponent} from '../../lib/table.component';
 })
 export class ProjectversionInfoComponent extends TableComponent {
     projectversion: ProjectVersion;
+    projectName: string;
+    projectVersion: string;
     aptSources: string;
     dataSource: ProjectVersionDataSource;
     displayedColumns: string[] = [
@@ -28,8 +30,8 @@ export class ProjectversionInfoComponent extends TableComponent {
                 protected projectversionService: ProjectVersionService,
                 protected dialog: MatDialog) {
         super(route, router, [['filter_name', '']]);
-        this.projectversion = {id: -1, name: this.route.parent.snapshot.paramMap.get('version'), is_locked: false,
-                               project_name: this.route.parent.parent.snapshot.paramMap.get('name'),
+        this.projectversion = {id: -1, name: this.projectVersion, is_locked: false,
+                               project_name: this.projectName,
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false};
         this.dataSource = new ProjectVersionDataSource(projectversionService);
         this.contextmenuIndex = 0;  // no previous context menus
@@ -37,11 +39,17 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     loadData() {
-        this.dataSource.load(`/api2/project/${this.projectversion.project_name}/${this.projectversion.name}/dependencies`, this.params);
-        this.projectversionService.get(this.projectversion.project_name,
-            this.projectversion.name).subscribe((res: ProjectVersion) => this.projectversion = res);
-        this.projectversionService.get_apt_sources(this.projectversion.project_name,
-            this.projectversion.name).subscribe((res: string) => this.aptSources = res);
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.projectName = params.get('name');
+            this.projectVersion = params.get('version');
+            this.projectversionService.get(this.projectName,
+                this.projectVersion).subscribe((res: ProjectVersion) => {
+                    this.projectversion = res;
+                });
+            this.dataSource.load(`/api2/project/${this.projectName}/${this.projectVersion}/dependencies`, this.params);
+            this.projectversionService.get_apt_sources(this.projectName,
+                this.projectVersion).subscribe((res: string) => this.aptSources = res);
+        });
     }
 
     initElements() {
@@ -73,6 +81,14 @@ export class ProjectversionInfoComponent extends TableComponent {
         this.projectversionService.removeDependency(this.projectversion, `${name}/${version}`).subscribe( r => {
             this.loadData();
         });
+    }
+
+    getDependencyLink(element) {
+        if (element.is_mirror) {
+            return ['/mirror', element.project_name, element.name];
+        } else {
+            return ['/project', element.project_name, element.name];
+        }
     }
 }
 

@@ -4,6 +4,8 @@
     <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'info']">Info</a>
     <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'builds']">Builds</a>
+    <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
 </nav>
 
@@ -28,6 +30,18 @@
         <strong style="user-select: none">APT Sources</strong>
         <pre style="margin: 0px;">{{aptSources}}</pre>
     </div>
+    <div style="flex-grow: 1; text-align: right;">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="edit()">      <mat-icon>edit</mat-icon>Edit</button>
+                <button mat-menu-item (click)="clone()">   <mat-icon>content_copy</mat-icon>Clone</button>
+                <button mat-menu-item (click)="snapshot()"><mat-icon>horizontal_split</mat-icon>Create Overlay</button>
+                <button mat-menu-item (click)="snapshot()"><mat-icon>trending_up</mat-icon>Create Release Snapshot</button>
+                <button mat-menu-item (click)="snapshot()"><mat-icon>lock</mat-icon>Lock</button>
+            </mat-menu>
+    </div>
 </div>
 
 <br/>
@@ -39,7 +53,7 @@
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '200px'}"><mat-form-field>
                 <input matInput placeholder="Dependency" #inputName>
             </mat-form-field></th>
-            <td mat-cell *matCellDef="let element" [routerLink]="['/project', element.project_name, element.name]">
+            <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)">
                 <strong style="display: flex;align-items: center;">
                     <mat-icon *ngIf="element.is_mirror">folder_special</mat-icon>
                     <mat-icon *ngIf="!element.is_mirror">class</mat-icon>
@@ -50,7 +64,7 @@
 
     <ng-container matColumnDef="architectures">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center', width: '100px'}">Architectures</th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['/project', element.project_name, element.name]" [ngStyle]="{'text-align': 'center'}">
+        <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)" [ngStyle]="{'text-align': 'center'}">
             {{ element.architectures }}
         </td>
     </ng-container>
@@ -65,7 +79,7 @@
 
     <ng-container matColumnDef="is_locked">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center', width: '100px'}">Locked</th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['/project', element.project_name, element.name]" [ngStyle]="{'text-align': 'center'}">
+        <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)" [ngStyle]="{'text-align': 'center'}">
             <mat-icon *ngIf="element.is_locked">lock</mat-icon>
             <mat-icon *ngIf="!element.is_locked">remove</mat-icon>
         </td>
@@ -80,7 +94,7 @@
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item [routerLink]="['/project', element.project_name, element.name]">
+                <button mat-menu-item [routerLink]="getDependencyLink(element)">
                     <mat-icon>list</mat-icon>Details
                 </button>
                 <button mat-menu-item (click)="removeDependency(element.project_name, element.name)"><mat-icon>delete</mat-icon> Delete</button>
