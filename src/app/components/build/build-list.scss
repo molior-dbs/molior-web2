@@ -1,7 +1,5 @@
-// type
-td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
-    max-width: 4em;
-    width: 4em;
+td.mat-cell, th.mat-header-cell {
+    padding-left: 10px;
 }
 
 

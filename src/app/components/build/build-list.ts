@@ -17,7 +17,6 @@ export class BuildListComponent extends TableComponent implements OnDestroy {
     displayedColumns: string[] = [
         'buildstate',
         'sourcename',
-        'buildvariant',
         'project',
         'maintainer',
         // 'git_ref',
@@ -30,7 +29,6 @@ export class BuildListComponent extends TableComponent implements OnDestroy {
     @ViewChild('inputName', { static: false }) inputName: ElementRef;
     @ViewChild('inputMaintainer', { static: false }) inputMaintainer: ElementRef;
     @ViewChild('inputProject', { static: false }) inputProject: ElementRef;
-    @ViewChild('inputBuildvariant', { static: false }) inputBuildvariant: ElementRef;
     @ViewChild('inputCommit', { static: false }) inputCommit: ElementRef;
 
     constructor(protected route: ActivatedRoute,
@@ -41,7 +39,6 @@ export class BuildListComponent extends TableComponent implements OnDestroy {
         super(route, router, [['filter_name', ''],
                               ['filter_maintainer', ''],
                               ['filter_project', ''],
-                              ['filter_buildvariant', ''],
                               ['filter_commit', ''],
                              ]);
         this.dataSource = new BuildDataSource(buildService);
@@ -58,7 +55,6 @@ export class BuildListComponent extends TableComponent implements OnDestroy {
         this.inputName.nativeElement.value = this.params.get('filter_name');
         this.inputMaintainer.nativeElement.value = this.params.get('filter_maintainer');
         this.inputProject.nativeElement.value = this.params.get('filter_project');
-        this.inputBuildvariant.nativeElement.value = this.params.get('filter_buildvariant');
         this.inputCommit.nativeElement.value = this.params.get('filter_commit');
     }
 
@@ -66,7 +62,6 @@ export class BuildListComponent extends TableComponent implements OnDestroy {
         this.params.set('filter_name', this.inputName.nativeElement.value);
         this.params.set('filter_maintainer', this.inputMaintainer.nativeElement.value);
         this.params.set('filter_project', this.inputProject.nativeElement.value);
-        this.params.set('filter_buildvariant', this.inputBuildvariant.nativeElement.value);
         this.params.set('filter_commit', this.inputCommit.nativeElement.value);
     }
 
@@ -76,7 +71,6 @@ export class BuildListComponent extends TableComponent implements OnDestroy {
         this.initFilter(this.inputMaintainer.nativeElement);
         this.initFilter(this.inputProject.nativeElement);
         this.initFilter(this.inputCommit.nativeElement);
-        this.initFilter(this.inputBuildvariant.nativeElement);
         this.updateSubscription = this.moliorService.builds.subscribe((evt: UpdateEvent) => { this.dataSource.update(evt); });
     }
 
