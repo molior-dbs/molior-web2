@@ -90,6 +90,16 @@ export class ProjectversionInfoComponent extends TableComponent {
             return ['/project', element.project_name, element.name];
         }
     }
+
+    edit() {
+    }
+
+    clone() {
+    }
+
+    snapshot() {
+    }
+
 }
 
 
