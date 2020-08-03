@@ -1,0 +1,122 @@
+<mat-paginator [pageSizeOptions]="[10, 50, 100, 1000]" showFirstLastButtons></mat-paginator>
+<div id="table-wrapper" [ngStyle]="{display: 'flex', 'flex-direction': 'column', 'flex-grow': 1 }" (window:resize)="resize2parent()">
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" (wheel)="scroll($event)">
+
+    <ng-container matColumnDef="buildstate">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '26px'}"></th>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'text-align': 'right'}" [routerLink]="['./'+element.id]">
+            <mat-icon class="mat-icon notranslate material-icons buildstate buildstate-{{element.buildstate}}" matTooltip="{{element.buildstate}}" [matTooltipPosition]="'left'">{{buildicon(element.buildstate)}}</mat-icon>
+            <span [ngClass]="'progress'" *ngIf="element.progress && ( element.buildstate == 'building' || element.buildstate == 'publishing' )">{{element.progress | number:'1.0-0'}}%</span></td>
+    </ng-container>
+
+    <ng-container matColumnDef="sourcename">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'min-width': '22em'}">
+            <mat-form-field [ngStyle]="{'min-width': '22em'}">
+                <input matInput placeholder="Name / Version" #inputName>
+            </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.id]" [ngStyle]="{'padding-right': '1em'}">
+            <div [ngSwitch]="element.buildtype" [ngStyle]="{'float': 'left'}">
+                <mat-icon *ngSwitchCase="'build'" matTooltip="Build Task" [matTooltipPosition]="'left'">launch</mat-icon>
+
+                <hr [ngClass]="'branch'" *ngSwitchCase="'source'"/>
+                <hr [ngClass]="'leaf'" *ngSwitchCase="'source'"/>
+                <mat-icon *ngSwitchCase="'source'" matTooltip="Source Package" [matTooltipPosition]="'left'">library_books</mat-icon>
+
+                <hr [ngClass]="'branch2'" *ngSwitchCase="'deb'"/>
+                <hr [ngClass]="'leaf2'" *ngSwitchCase="'deb'"/>
+                <mat-icon *ngSwitchCase="'deb'"matTooltip="Debian Package" [matTooltipPosition]="'left'">pages</mat-icon>
+
+                <mat-icon *ngSwitchCase="'mirror'" matTooltip="Debian Mirror" [matTooltipPosition]="'left'">folder_special</mat-icon>
+                <mat-icon *ngSwitchCase="'debootstrap'" [ngStyle]="{'margin-left': '1em'}" matTooltip="Debootstrap Archive" [matTooltipPosition]="'left'">eco</mat-icon>
+
+                <hr [ngClass]="'branch'" *ngSwitchCase="'chroot'"/>
+                <hr [ngClass]="'leaf'" *ngSwitchCase="'chroot'"/>
+                <mat-icon *ngSwitchCase="'chroot'" matTooltip="Schroot Archive" [matTooltipPosition]="'left'">account_tree</mat-icon>
+            </div>
+            <div [ngStyle]="{'margin-top': '5px'}">
+                <strong>{{element.sourcename}}</strong>
+                <strong [ngStyle]="{'float': 'right'}" *ngIf="element.buildtype == 'build'">{{element.version}}</strong>
+                <strong [ngStyle]="{'float': 'right'}" *ngIf="element.buildtype == 'mirror'">{{element.version}} ({{element.architectures}})</strong>
+                <strong [ngStyle]="{'float': 'right'}" *ngIf="element.buildtype == 'chroot'">{{element.architecture}}</strong>
+                <span [ngStyle]="{'float': 'right'}" *ngIf="element.buildtype == 'deb'">{{element.buildvariant}}</span>
+            </div>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="project" *ngIf="!projectversion">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'min-width': '11em'}">
+            <mat-form-field>
+                <input matInput placeholder="Project" #inputProject>
+            </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'text-align': 'center'}">
+            <a *ngIf="element.project" [routerLink]="['../project', element.project.name, element.project.version]" [ngStyle]="{'text-decoration': 'none', color: 'unset', 'font-weight': 'bold'}">
+                {{element.project.name}}/{{element.project.version}}
+            </a>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="maintainer">
+        <th mat-header-cell *matHeaderCellDef>
+            <mat-form-field>
+                <input matInput placeholder="Maintainer" #inputMaintainer>
+            </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'text-align': 'center'}">
+            <strong matTooltip={{element.maintainer_email}} [matTooltipPosition]="'right'" *ngIf="element.buildtype == 'build' || element.buildtype == 'mirror'"> {{element.maintainer}} </strong>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="commit">
+        <th mat-header-cell *matHeaderCellDef>
+            <mat-form-field>
+                <input matInput placeholder="Commit" #inputCommit>
+            </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['./', element.id]" [ngStyle]="{'text-align': 'center'}">
+            <span *ngIf="element.buildtype == 'build'">{{element.git_ref | slice:0:10 }}</span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '70px'}">Duration</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['./', element.id]" [ngStyle]="{'text-align': 'right'}">
+            <span>{{duration(element) || element.runtime || '' }}</span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef [ngStyle]="{width: '100%'}">
+        </th>
+        <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item [routerLink]="['./', element.id]"><mat-icon>list</mat-icon>   Details</button>
+                <button mat-menu-item>                                  <mat-icon>delete</mat-icon> Delete</button>
+                <button mat-menu-item (click)="rebuild(element.id)">    <mat-icon>replay</mat-icon> Retry Build</button>
+                <button mat-menu-item (click)="buildlatest(element.sourcerepository_id)"><mat-icon>replay</mat-icon>Check for new builds</button>
+            </mat-menu>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;" (contextmenu)="contextmenu($event, i)" [ngStyle]="{'background': getRowBackground(row.buildtype)}"></tr>
+    <ng-container matColumnDef="footer">
+        <td mat-footer-cell *matFooterCellDef colspan="100%">
+            <div *ngIf="(dataSource.total$ | async) == -1">
+                Loading...
+            </div>
+            <div *ngIf="(dataSource.total$ | async) == 0">
+                No entries found
+            </div>
+            <div *ngIf="(dataSource.total$ | async) === -404" [ngStyle]="{color: 'red'}">
+                Unable to load data ({{dataSource.error$ | async }})
+            </div>
+        </td>
+    </ng-container>
+    <tr mat-footer-row *matFooterRowDef="['footer']" [ngStyle]="(dataSource.total$ | async) < 1 ? {} : {display: 'none'}"></tr>
+</table>
+</div>

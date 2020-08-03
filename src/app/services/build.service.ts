@@ -107,11 +107,23 @@ export class BuildService extends TableService<Build> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('version', params.get('filter_name'))
-                .set('maintainer', params.get('filter_maintainer'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('filter_name')) {
+            p.version = params.get('filter_name');
+        }
+        if (params.get('filter_maintainer')) {
+            p.maintainer = params.get('filter_maintainer');
+        }
+        if (params.get('filter_project')) {
+            p.project = params.get('filter_project');
+        }
+        if (params.get('page')) {
+            p.page = params.get('page').toString();
+        }
+        if (params.get('pagesize')) {
+            p.page_size = params.get('pagesize').toString();
+        }
+        return p;
     }
 
     get(id: number) {

@@ -40,6 +40,7 @@ import {ProjectversionRepoListComponent, SourcerepoDialogComponent} from './comp
 import {ProjectversionRepoComponent} from './components/projectversion/projectversion-repo-info';
 import {ProjectversionBuildListComponent} from './components/projectversion/projectversion-build-list';
 
+import {BuildTableComponent} from './components/build/build-table';
 import {BuildListComponent} from './components/build/build-list';
 import {BuildInfoComponent} from './components/build/build-info';
 import {BuildService} from './services/build.service';
@@ -66,6 +67,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectListComponent,
         ProjectCreateDialogComponent,
 
+        BuildTableComponent,
         BuildListComponent,
         BuildInfoComponent,
 
