@@ -78,5 +78,12 @@ export class AppComponent implements OnInit {
     authenticated() {
         return this.authService.currentUserValue != null;
     }
+
+    getLoggedUserName(): string {
+        if (this.authService.currentUserValue) {
+            return this.authService.currentUserValue.username;
+        }
+        return '';
+    }
 }
 

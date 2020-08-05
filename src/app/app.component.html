@@ -7,6 +7,7 @@
                 <div [ngStyle]="{display: 'inline-block', 'vertical-align': 'top', 'margin-top': '0px'}">
                     <mat-icon [ngStyle]="{'font-size': '10px', cursor: 'default', height: '12px', width: '12px', 'margin-right': '5px', 'margin-top': '15px', color: connectionColor$ | async }">lens</mat-icon>
                 </div>
+		<span [ngStyle]="{display: 'inline-block', 'vertical-align': 'top', 'margin-top': '3px'}">{{ getLoggedUserName() }}</span>
                 <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
                     <mat-icon>person</mat-icon>
                 </button>
