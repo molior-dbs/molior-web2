@@ -2,7 +2,7 @@
     <div class="app-header">
 
         <mat-toolbar color="primary">
-            <div class="molior-logo"></div>
+            <a href="/" class="molior-logo"></a>
             <div style="text-align: right; width: 100%;" *ngIf="authenticated();">
                 <div [ngStyle]="{display: 'inline-block', 'vertical-align': 'top', 'margin-top': '0px'}">
                     <mat-icon [ngStyle]="{'font-size': '10px', cursor: 'default', height: '12px', width: '12px', 'margin-right': '5px', 'margin-top': '15px', color: connectionColor$ | async }">lens</mat-icon>
