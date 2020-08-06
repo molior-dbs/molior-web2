@@ -17,7 +17,7 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
     dataSource: BuildDataSource;
     displayedColumns: string[];
     updateSubscription;
-    @ViewChild('inputName', { static: false }) inputName: ElementRef;
+    @ViewChild('inputSearch', { static: false }) inputSearch: ElementRef;
     @ViewChild('inputMaintainer', { static: false }) inputMaintainer: ElementRef;
     @ViewChild('inputProject', { static: false }) inputProject: ElementRef;
     @ViewChild('inputCommit', { static: false }) inputCommit: ElementRef;
@@ -28,10 +28,10 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
                 protected buildService: BuildService,
                 protected moliorService: MoliorService,
                 protected repositoryService: RepositoryService) {
-        super(route, router, [['filter_name', ''],
-                              ['filter_maintainer', ''],
-                              ['filter_project', ''],
-                              ['filter_commit', ''],
+        super(route, router, [['search', ''],
+                              ['maintainer', ''],
+                              ['project', ''],
+                              ['commit', ''],
                              ]);
         this.dataSource = new BuildDataSource(buildService);
         this.buildicon = buildicon;
@@ -56,33 +56,32 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
     loadData() {
         const params = this.params;
         if (this.projectversion) {
-            params.set('filter_project', this.projectversion.project_name + '/' + this.projectversion.name);
+            params.set('project', this.projectversion.project_name + '/' + this.projectversion.name);
         }
-        console.log('loadData', params);
         this.dataSource.load('/api/builds', params);
     }
 
     initElements() {
-        this.inputName.nativeElement.value = this.params.get('filter_name');
-        this.inputMaintainer.nativeElement.value = this.params.get('filter_maintainer');
+        this.inputSearch.nativeElement.value = this.params.get('search');
+        this.inputMaintainer.nativeElement.value = this.params.get('maintainer');
         if (!this.projectversion) {
-            this.inputProject.nativeElement.value = this.params.get('filter_project');
+            this.inputProject.nativeElement.value = this.params.get('project');
         }
-        this.inputCommit.nativeElement.value = this.params.get('filter_commit');
+        this.inputCommit.nativeElement.value = this.params.get('commit');
     }
 
     setParams() {
-        this.params.set('filter_name', this.inputName.nativeElement.value);
-        this.params.set('filter_maintainer', this.inputMaintainer.nativeElement.value);
+        this.params.set('search', this.inputSearch.nativeElement.value);
+        this.params.set('maintainer', this.inputMaintainer.nativeElement.value);
         if (!this.projectversion) {
-            this.params.set('filter_project', this.inputProject.nativeElement.value);
+            this.params.set('project', this.inputProject.nativeElement.value);
         }
-        this.params.set('filter_commit', this.inputCommit.nativeElement.value);
+        this.params.set('commit', this.inputCommit.nativeElement.value);
     }
 
     AfterViewInit() {
         this.dataSource.setPaginator(this.paginator);
-        this.initFilter(this.inputName.nativeElement);
+        this.initFilter(this.inputSearch.nativeElement);
         this.initFilter(this.inputMaintainer.nativeElement);
         if (!this.projectversion) {
             this.initFilter(this.inputProject.nativeElement);

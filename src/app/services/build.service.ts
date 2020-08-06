@@ -108,14 +108,14 @@ export class BuildService extends TableService<Build> {
 
     getAPIParams(params) {
         const p: any = {};
-        if (params.get('filter_name')) {
-            p.version = params.get('filter_name');
+        if (params.get('search')) {
+            p.search = params.get('search');
         }
-        if (params.get('filter_maintainer')) {
-            p.maintainer = params.get('filter_maintainer');
+        if (params.get('maintainer')) {
+            p.maintainer = params.get('maintainer');
         }
-        if (params.get('filter_project')) {
-            p.project = params.get('filter_project');
+        if (params.get('project')) {
+            p.project = params.get('project');
         }
         if (params.get('page')) {
             p.page = params.get('page').toString();

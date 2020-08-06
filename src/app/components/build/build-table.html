@@ -12,7 +12,7 @@
     <ng-container matColumnDef="sourcename">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{'min-width': '22em'}">
             <mat-form-field [ngStyle]="{'min-width': '22em'}">
-                <input matInput placeholder="Name / Version" #inputName>
+                <input matInput placeholder="Name / Version" #inputSearch>
             </mat-form-field>
         </th>
         <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.id]" [ngStyle]="{'padding-right': '1em'}">
