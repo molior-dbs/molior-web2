@@ -85,5 +85,12 @@ export class AppComponent implements OnInit {
         }
         return '';
     }
+
+    goToHomePage() {
+        // redirect to home if already logged in
+        if (this.authService.currentUserValue) {
+            this.router.navigate(['/']);
+        }
+    }
 }
 
