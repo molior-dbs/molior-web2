@@ -10,6 +10,8 @@ import {ProjectversionRepoComponent} from './components/projectversion/projectve
 import {ProjectversionBuildListComponent} from './components/projectversion/projectversion-build-list';
 import {MirrorListComponent} from './components/mirror/mirror-list';
 import {MirrorInfoComponent} from './components/mirror/mirror-info';
+import {RepositoryListComponent} from './components/repo/repo-list';
+import {RepositoryInfoComponent} from './components/repo/repo-info';
 import {NodeListComponent} from './components/node/node-list';
 import {NodeInfoComponent} from './components/node/node-info';
 import {UserListComponent} from './components/user/user-list';
@@ -46,6 +48,8 @@ const routes: Routes = [
     },
     { path: 'mirrors',                       component: MirrorListComponent,     canActivate: [AuthGuard] },
     { path: 'mirror/:name/:version',         component: MirrorInfoComponent,   canActivate: [AuthGuard] },
+    { path: 'repos',                         component: RepositoryListComponent,     canActivate: [AuthGuard] },
+    { path: 'repo/:name',         	     component: RepositoryInfoComponent,   canActivate: [AuthGuard] },
     { path: 'nodes',                         component: NodeListComponent,       canActivate: [AuthGuard] },
     { path: 'nodes/:name',                   component: NodeInfoComponent,     canActivate: [AuthGuard] },
     { path: 'users',                         component: UserListComponent,       canActivate: [AuthGuard] },
