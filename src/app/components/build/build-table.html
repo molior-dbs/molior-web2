@@ -4,7 +4,7 @@
 
     <ng-container matColumnDef="buildstate">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '26px'}"></th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'text-align': 'right'}" [routerLink]="['./'+element.id]">
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'text-align': 'right'}" [routerLink]="['/build', element.id]">
             <mat-icon class="mat-icon notranslate material-icons buildstate buildstate-{{element.buildstate}}" matTooltip="{{element.buildstate}}" [matTooltipPosition]="'left'">{{buildicon(element.buildstate)}}</mat-icon>
             <span [ngClass]="'progress'" *ngIf="element.progress && ( element.buildstate == 'building' || element.buildstate == 'publishing' )">{{element.progress | number:'1.0-0'}}%</span></td>
     </ng-container>
@@ -15,7 +15,7 @@
                 <input matInput placeholder="Name / Version" #inputSearch>
             </mat-form-field>
         </th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.id]" [ngStyle]="{'padding-right': '1em'}">
+        <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]" [ngStyle]="{'padding-right': '1em'}">
             <div [ngSwitch]="element.buildtype" [ngStyle]="{'float': 'left'}">
                 <mat-icon *ngSwitchCase="'build'" matTooltip="Build Task" [matTooltipPosition]="'left'">launch</mat-icon>
 
@@ -74,14 +74,14 @@
                 <input matInput placeholder="Commit" #inputCommit>
             </mat-form-field>
         </th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['./', element.id]" [ngStyle]="{'text-align': 'center'}">
+        <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]" [ngStyle]="{'text-align': 'center'}">
             <span *ngIf="element.buildtype == 'build'">{{element.git_ref | slice:0:10 }}</span>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="duration">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '70px'}">Duration</th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['./', element.id]" [ngStyle]="{'text-align': 'right'}">
+        <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]" [ngStyle]="{'text-align': 'right'}">
             <span>{{duration(element) || element.runtime || '' }}</span>
         </td>
     </ng-container>
@@ -94,7 +94,7 @@
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item [routerLink]="['./', element.id]"><mat-icon>list</mat-icon>   Details</button>
+                <button mat-menu-item [routerLink]="['/build', element.id]"><mat-icon>list</mat-icon>   Details</button>
                 <button mat-menu-item disabled>                         <mat-icon>delete</mat-icon> Delete</button>
                 <button mat-menu-item (click)="rebuild(element.id)">    <mat-icon>replay</mat-icon> Retry Build</button>
                 <button mat-menu-item (click)="buildlatest(element.sourcerepository_id)"><mat-icon>replay</mat-icon>Check for new builds</button>

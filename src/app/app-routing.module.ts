@@ -24,7 +24,7 @@ import {AuthGuard} from './lib/auth.guard';
 const routes: Routes = [
     { path: 'login',                         component: LoginComponent },
     { path: 'builds',                        component: BuildListComponent,      canActivate: [AuthGuard] },
-    { path: 'builds/:id',                    component: BuildInfoComponent,    canActivate: [AuthGuard] },
+    { path: 'build/:id',                     component: BuildInfoComponent,    canActivate: [AuthGuard] },
     { path: 'projects',                      component: ProjectListComponent,    canActivate: [AuthGuard] },
     { path: 'project/:name',
         children: [
