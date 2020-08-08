@@ -63,28 +63,21 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cursor = null;
     }
 
-    ngOnInit() {
-        this.subscriptionBuild = this.moliorService.builds.subscribe((event: UpdateEvent) => {
-            const idkey = 'id';
-            if (event.event === 'changed' && event.data[idkey] === this.build.id) {
-                for (const key in event.data) {
-                    if (key) {
-                        if (key !== idkey) {
-                            this.build[key] = event.data[key];
-                        }
-                    }
-                }
-            }
-        });
-
+    fetchLogs() {
         this.buildService.get(this.build.id).subscribe((res: Build) => {
+            const tbody = document.getElementById('buildlog') as HTMLTableElement;
+            tbody.innerHTML = '';
+            this.loglines = 0;
+            this.incompleteline = '';
+            this.up = true;
+            this.cursor = null;
+
             this.build = res;
             if ( this.build.buildstate === 'new' ||
                  this.build.buildstate === 'needs_build' ||
                  this.build.buildstate === 'building' ||
                  this.build.buildstate === 'needs_publish' ||
                  this.build.buildstate === 'publishing' ) {
-                const tbody = document.getElementById('buildlog') as HTMLTableElement;
                 this.cursor = tbody.insertRow(0);
                 this.cursor.id = 'row-cursor';
                 const linenr = this.cursor.insertCell(0);
@@ -153,6 +146,23 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
             setTimeout(() => this.highlightLine(), 2000);
         });
+    }
+
+    ngOnInit() {
+        this.subscriptionBuild = this.moliorService.builds.subscribe((event: UpdateEvent) => {
+            const idkey = 'id';
+            if (event.event === 'changed' && event.data[idkey] === this.build.id) {
+                for (const key in event.data) {
+                    if (key) {
+                        if (key !== idkey) {
+                            this.build[key] = event.data[key];
+                        }
+                    }
+                }
+            }
+        });
+
+        this.fetchLogs();
     }
 
     ngAfterViewInit() {
@@ -241,7 +251,9 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     rebuild(id: number) {
-        this.buildService.rebuild(id).subscribe();
+        this.buildService.rebuild(id).subscribe( res => {
+            this.fetchLogs();
+        });
     }
 
 }
