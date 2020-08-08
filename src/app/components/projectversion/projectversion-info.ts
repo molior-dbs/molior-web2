@@ -100,6 +100,12 @@ export class ProjectversionInfoComponent extends TableComponent {
     snapshot() {
     }
 
+    overlay() {
+    }
+
+    lock() {
+    }
+
 }
 
 
