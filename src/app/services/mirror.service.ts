@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {AbstractControl} from '@angular/forms';
 
 import {apiURL} from '../lib/url';
 import {TableService, TableDataSource, MoliorResult} from '../lib/table.datasource';
@@ -149,3 +150,11 @@ export class MirrorService extends TableService<Mirror> {
         return this.http.post(`${apiURL()}/api/mirror/${id}/update`, null).subscribe();
     }
 }
+
+export function BaseMirrorValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    if (control.value !== undefined && this.basemirrors && !this.basemirrors.hasOwnProperty(control.value)) {
+        return { invalidValue: true };
+    }
+    return null;
+}
+

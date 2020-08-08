@@ -6,7 +6,7 @@ import {MatOptionSelectionChange} from '@angular/material';
 
 import {TableComponent} from '../../lib/table.component';
 import {ProjectService, ProjectVersionService, ProjectVersionDataSource, ProjectVersion, Project} from '../../services/project.service';
-import {MirrorService, Mirror} from '../../services/mirror.service';
+import {MirrorService, Mirror, BaseMirrorValidator} from '../../services/mirror.service';
 import {ValidationService} from '../../services/validation.service';
 
 
@@ -84,7 +84,7 @@ export class ProjectversionDialogComponent {
                                       Validators.minLength(2),
                                       ValidationService.versionValidator]),
         description: new FormControl('', [Validators.maxLength(255)]),
-        basemirror: new FormControl('', [Validators.required]),
+        basemirror: new FormControl('', [Validators.required, BaseMirrorValidator.bind(this)]),
         architectures: new FormControl([]),
         architecture0: new FormControl(true),
         architecture1: new FormControl(true),
@@ -126,10 +126,18 @@ export class ProjectversionDialogComponent {
         this.dialog.close();
     }
 
-    getArchitectures(event: MatOptionSelectionChange) {
-        /* tslint:disable:no-string-literal */
-        this.mirrorArchs = this.basemirrors[event['value']];
-        /* tslint:enable:no-string-literal */
+    changeBaseMirror() {
+        if (this.form.value.basemirror && this.form.value.basemirror in this.basemirrors) {
+            this.mirrorArchs = this.basemirrors[this.form.value.basemirror];
+        } else {
+            this.mirrorArchs = [];
+        }
+        this.mirrorService.getBaseMirrors(this.form.value.basemirror).subscribe(res => {
+            this.basemirrors = {};
+            for (const entry of res) {
+                this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
+            }
+        });
     }
 }
 

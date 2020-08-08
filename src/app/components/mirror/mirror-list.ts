@@ -6,7 +6,7 @@ import {FormGroup, FormBuilder, FormControl, Validators, AbstractControl, FormAr
 import {ValidationService} from '../../services/validation.service';
 
 import {TableComponent} from '../../lib/table.component';
-import {MirrorService, MirrorDataSource, Mirror} from '../../services/mirror.service';
+import {MirrorService, MirrorDataSource, Mirror, BaseMirrorValidator} from '../../services/mirror.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
 import {AlertService} from '../../services/alert.service';
 
@@ -204,13 +204,6 @@ export class MirrorDialogComponent {
         return this.form.get('formArray') as FormArray;
     }
 
-    BaseMirrorValidator(control: AbstractControl): { [key: string]: boolean } | null {
-        if (control.value !== undefined && !this.basemirrors.hasOwnProperty(control.value)) {
-            return { invalidValue: true };
-        }
-        return null;
-    }
-
     updateArchs(): void {
         this.formArray.get([1]).patchValue({architectures: null});
         const archs = [];
@@ -276,7 +269,7 @@ export class MirrorDialogComponent {
 
     chooseAdditionalMirror() {
         const form = this.formArray.get([0]);
-        form.get('basemirror').setValidators([Validators.required, this.BaseMirrorValidator.bind(this)]);
+        form.get('basemirror').setValidators([Validators.required, BaseMirrorValidator.bind(this)]);
         form.get('basemirror').markAsTouched();
         form.get('basemirror').updateValueAndValidity();
         if (this.distpreset !== '' && this.formArray.value[1].mirrordist.trim() === this.distpreset) {

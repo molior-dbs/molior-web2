@@ -14,19 +14,17 @@
 
         <p><strong>Base Mirror</strong><app-validation-error [control]="form.get('basemirror')"></app-validation-error></p>
         <mat-form-field floatLabel="never">
-            <!-- mat-select disableRipple required (change)="filterForeCasts($event.target.value)" -->
-            <mat-select placeholder="-- Select Base Mirror --" formControlName="basemirror" (selectionChange)="getArchitectures($event)">
+            <input matInput formControlName="basemirror" placeholder="-- Select Base Mirror --" [matAutocomplete]="autoBasemirror" (input)="changeBaseMirror()">
+            <mat-autocomplete #autoBasemirror="matAutocomplete" (optionSelected)="changeBaseMirror()">
                 <mat-option *ngFor="let entry of basemirrors | keyvalue" value={{entry.key}}>
                     {{ entry.key }} ({{ entry.value }})
                 </mat-option>
-            </mat-select>
+            </mat-autocomplete>
         </mat-form-field>
 
         <p><strong>Architectures</strong><app-validation-error [control]="form.get('architectures')"></app-validation-error></p>
-        <!--mat-form-field floatLabel="never" -->
-
         <mat-checkbox *ngFor="let arch of mirrorArchs; let i = index" formControlName="architecture{{ i }}" (change)="updateArchs()">{{ arch }}</mat-checkbox>
-        <span *ngIf="mirrorArchs.length == 0">Please select Base Mirror</span>
+        <span *ngIf="mirrorArchs.length == 0">Please select a Base Mirror</span>
     </form>
 </div>
 <div mat-dialog-actions>
