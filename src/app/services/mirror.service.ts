@@ -52,8 +52,23 @@ export class MirrorService extends TableService<Mirror> {
         return this.http.get<Mirror>(`${apiURL()}/api/mirror/${name}/${version}`);
     }
 
-    getBaseMirrors() {
-        const p = new HttpParams().set('basemirror', 'true');
+    getMirrors(url: string = '') {
+        let p = {};
+        if (url) {
+            p = new HttpParams().set('url', url);
+        }
+        return this.http.get(`${apiURL()}/api/mirrors`, { params: p }).pipe(
+            /* tslint:disable:no-string-literal */
+            map(res => new MoliorResult<Mirror>(res['total_result_count'], res['results']))
+            /* tslint:enable:no-string-literal */
+            );
+    }
+
+    getBaseMirrors(search: string = '') {
+        const p: any = {basemirror: 'true'};
+        if (search) {
+            p.q = search;
+        }
         return this.http.get(`${apiURL()}/api/mirrors`, { params: p }).pipe(
             /* tslint:disable:no-string-literal */
             map(res => new MoliorResult<Mirror>(res['total_result_count'], res['results']))

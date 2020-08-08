@@ -104,6 +104,7 @@ export class MirrorDialogComponent {
     basemirrors: { [id: string]: string[]; };
     architectures = [ 'amd64', 'i386', 'arm64', 'armhf' ];
     distpreset: string;
+    mirrorurls = [];
     form = this.fb.group({
          formArray: this.fb.array([
              this.fb.group({
@@ -141,10 +142,16 @@ export class MirrorDialogComponent {
                 @Inject(MAT_DIALOG_DATA) public mirror: Mirror) {
         this.basemirrors = {};
         this.distpreset = '';
-        mirrorService.getBaseMirrors().subscribe(res => {
+        this.mirrorService.getBaseMirrors().subscribe(res => {
             this.basemirrors = {};
             for (const entry of res) {
                 this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
+            }
+        });
+        this.mirrorService.getMirrors().subscribe(res => {
+            this.mirrorurls = [];
+            for (const entry of res) {
+                this.mirrorurls.push(entry.url);
             }
         });
         if (this.mirror) {
@@ -219,6 +226,16 @@ export class MirrorDialogComponent {
         this.formArray.get([1]).get('architectures').updateValueAndValidity();
     }
 
+    changeMirrorURL() {
+        const data = this.formArray.value;
+        this.mirrorService.getMirrors(data[0].mirrorurl).subscribe(res => {
+            this.mirrorurls = [];
+            for (const entry of res) {
+                this.mirrorurls.push(entry.url);
+            }
+        });
+    }
+
     changeName() {
         if (this.formArray.value[0].mirrortype === '1' && this.formArray.value[1].mirrordist.trim() === this.distpreset) {
             this.distpreset = this.formArray.value[0].mirrorname.trim();
@@ -228,6 +245,13 @@ export class MirrorDialogComponent {
 
     changeBaseMirror() {
         this.formArray.get([0]).patchValue({mirrortype: '2'});
+        const data = this.formArray.value;
+        this.mirrorService.getBaseMirrors(data[0].basemirror).subscribe(res => {
+            this.basemirrors = {};
+            for (const entry of res) {
+                this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
+            }
+        });
         this.chooseAdditionalMirror();
     }
 

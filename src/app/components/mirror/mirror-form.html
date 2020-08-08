@@ -11,7 +11,12 @@
                 <app-validation-error [control]="formArray.get('0').get('mirrorurl')"></app-validation-error>
                 <span style="width: 130px; display: inline-block;"><strong>Mirror URL</strong></span>
                 <mat-form-field style="width: 500px;">
-                    <input matInput formControlName="mirrorurl" required cdkFocusInitial>
+                    <input matInput formControlName="mirrorurl" [matAutocomplete]="autoURL" (input)="changeMirrorURL()">
+                    <mat-autocomplete #autoURL="matAutocomplete">
+                        <mat-option *ngFor="let url of mirrorurls" [value]="url">
+                            {{ url }}
+                        </mat-option>
+                    </mat-autocomplete>
                 </mat-form-field>
                 </p>
 
@@ -45,19 +50,12 @@
                       <div>
                       <app-validation-error [control]="formArray.get('0').get('basemirror')"></app-validation-error>
                       <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
-
                         <input matInput formControlName="basemirror" placeholder="-- Select Base Mirror --" [matAutocomplete]="auto" (input)="changeBaseMirror()">
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeBaseMirror()">
                             <mat-option *ngFor="let entry of basemirrors | keyvalue" [value]="entry.key">
                                 {{ entry.key }} ({{ entry.value }})
                             </mat-option>
                         </mat-autocomplete>
-
-                          <!--mat-select placeholder="-- Select Base Mirror --" formControlName="basemirror" (selectionChange)="changeBaseMirror()">
-                              <mat-option *ngFor="let entry of basemirrors | keyvalue" value={{entry.key}}>
-                                  {{ entry.key }} ({{ entry.value }})
-                              </mat-option>
-                          </mat-select-->
                       </mat-form-field>
                       </div>
                     </div>
