@@ -239,4 +239,9 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
             this.paginator.length = this.loglines;
         }
     }
+
+    rebuild(id: number) {
+        this.buildService.rebuild(id).subscribe();
+    }
+
 }
