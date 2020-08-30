@@ -16,7 +16,7 @@ export class RepositoryInfoComponent implements OnInit {
         this.repo = {id: 0,
             name: this.route.snapshot.paramMap.get('name'),
             url: '',
-            status: ''
+            state: ''
         };
     }
 

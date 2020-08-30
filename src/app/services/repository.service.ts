@@ -9,7 +9,7 @@ import {TableService, TableDataSource, MoliorResult} from '../lib/table.datasour
 export interface Repository {
     id: number;
     name: string;
-    status: string;
+    state: string;
     url: string;
 }
 
