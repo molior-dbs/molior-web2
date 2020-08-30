@@ -105,8 +105,8 @@ export class HookDialogComponent implements OnInit {
             this.repositoryService.addHook(this.data.projectversion, this.data.repository,
                                            this.form.value.url.trim()).subscribe();
         } else {
-            this.repositoryService.editHook(this.data.projectversion, this.data.repository,
-                                            this.form.value.url.trim()).subscribe();
+            // this.repositoryService.editHook(this.data.projectversion, this.data.repository,
+                                            // this.form.value.url.trim()).subscribe();
         }
         this.dialog.close();
     }
