@@ -26,10 +26,11 @@ export class RepositoryService extends TableService<Repository> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('filter_url', params.get('filter_url'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('filter_url')) { p.filter_url = params.get('filter_url'); }
+        if (params.get('page')) { p.page = params.get('page'); }
+        if (params.get('pagesize')) { p.page_size = params.get('pagesize'); }
+        return p;
     }
 
     find(url, excludeProjectversionID = -1) {
@@ -67,4 +68,10 @@ export class RepositoryService extends TableService<Repository> {
     get_projectversion_repo(name: string, version: string, repoID: number) {
         return this.http.get<Repository>(`${apiURL()}/api2/project/${name}/${version}/repository/${repoID}`);
     }
+
+    addHook(pv: any, repo: Repository, url: string) {
+        return this.http.post(`${apiURL()}/api2/project/${pv.project_name}/${pv.name}/repository/${repo.id}/hook`,
+            { url });
+    }
+
 }

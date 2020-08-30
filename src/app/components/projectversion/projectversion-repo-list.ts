@@ -1,7 +1,6 @@
-import {Component, ElementRef, ViewChild, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, ViewChild, Input, OnInit, Inject} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable, BehaviorSubject} from 'rxjs';
-import {Inject} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {ValidationService} from '../../services/validation.service';
