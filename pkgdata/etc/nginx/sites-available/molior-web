@@ -36,18 +36,6 @@ server {
             proxy_pass                      http://localhost:8888;
         }
 
-        location /plogin {
-            proxy_set_header                Host            $host;
-            proxy_set_header                X-Real-Ip       $remote_addr;
-            proxy_pass                      http://localhost:8888/login;
-        }
-
-        location /logout {
-            proxy_set_header                Host            $host;
-            proxy_set_header                X-Real-Ip       $remote_addr;
-            proxy_pass                      http://localhost:8888/logout;
-        }
-
         location /api/websocket {
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;

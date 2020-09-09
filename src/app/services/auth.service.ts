@@ -30,7 +30,7 @@ export class AuthService {
         const body = new HttpParams()
             .set('username', username)
             .set('password', password);
-        return this.http.post<any>(`${apiURL()}/plogin`, body.toString(),
+        return this.http.post<any>(`${apiURL()}/api/login`, body.toString(),
             {...this.headers, observe: 'response', withCredentials: true })
             .pipe(map((res: HttpResponse<object>) => {
                 const user = new User();
@@ -44,6 +44,6 @@ export class AuthService {
     logout() {
         this.currentUserSubject.next(null);
         localStorage.removeItem('currentUser');
-        this.http.post(`${apiURL()}/logout`, '', {withCredentials: true}).subscribe();
+        this.http.post(`${apiURL()}/api/logout`, '', {withCredentials: true}).subscribe();
     }
 }
