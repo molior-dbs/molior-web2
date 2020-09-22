@@ -45,6 +45,8 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
             'sourcename',
             'maintainer',
             'commit',
+            'starttime',
+            'endtime',
             'duration',
             'actions'
         ];
@@ -117,6 +119,34 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
             } else {
                 return `${secs}''`;
             }
+        }
+        return null;
+    }
+
+    startTime(build) {
+        if (build.startstamp !== '') {
+            const date = new Date(build.startstamp);
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const day = date.getDay();
+            const hrs = date.getHours();
+            const mins = date.getMinutes();
+            const secs = date.getSeconds();
+            return year + '.' + month + '.' + day + ' ' + hrs + ':' + mins + ':' + secs;
+        }
+        return null;
+    }
+
+    endTime(build) {
+        if (build.endstamp !== '') {
+            const date = new Date(build.endstamp);
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const day = date.getDay();
+            const hrs = date.getHours();
+            const mins = date.getMinutes();
+            const secs = date.getSeconds();
+            return year + '.' + month + '.' + day + ' ' + hrs + ':' + mins + ':' + secs;
         }
         return null;
     }

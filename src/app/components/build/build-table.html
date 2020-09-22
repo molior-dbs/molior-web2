@@ -79,6 +79,20 @@
         </td>
     </ng-container>
 
+    <ng-container matColumnDef="starttime">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '70px'}">Start</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]" [ngStyle]="{'text-align': 'right'}">
+            <span>{{startTime(element) || element.startstamp || '' }}</span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="endtime">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '70px'}">End</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]" [ngStyle]="{'text-align': 'right'}">
+            <span>{{endTime(element) || element.endstamp || '' }}</span>
+        </td>
+    </ng-container>
+
     <ng-container matColumnDef="duration">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '70px'}">Duration</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]" [ngStyle]="{'text-align': 'right'}">
