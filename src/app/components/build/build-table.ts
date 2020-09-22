@@ -127,8 +127,8 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
         if (build.startstamp !== '') {
             const date = new Date(build.startstamp);
             const year = date.getFullYear();
-            const month = date.getMonth();
-            const day = date.getDay();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
             const hrs = date.getHours();
             const mins = date.getMinutes();
             const secs = date.getSeconds();
@@ -141,8 +141,8 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
         if (build.endstamp !== '') {
             const date = new Date(build.endstamp);
             const year = date.getFullYear();
-            const month = date.getMonth();
-            const day = date.getDay();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
             const hrs = date.getHours();
             const mins = date.getMinutes();
             const secs = date.getSeconds();
