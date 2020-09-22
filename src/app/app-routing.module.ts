@@ -49,7 +49,7 @@ const routes: Routes = [
     { path: 'mirrors',                       component: MirrorListComponent,     canActivate: [AuthGuard] },
     { path: 'mirror/:name/:version',         component: MirrorInfoComponent,   canActivate: [AuthGuard] },
     { path: 'repos',                         component: RepositoryListComponent,     canActivate: [AuthGuard] },
-    { path: 'repo/:name',         	     component: RepositoryInfoComponent,   canActivate: [AuthGuard] },
+    { path: 'repo/:id',                      component: RepositoryInfoComponent,   canActivate: [AuthGuard] },
     { path: 'nodes',                         component: NodeListComponent,       canActivate: [AuthGuard] },
     { path: 'nodes/:name',                   component: NodeInfoComponent,     canActivate: [AuthGuard] },
     { path: 'users',                         component: UserListComponent,       canActivate: [AuthGuard] },

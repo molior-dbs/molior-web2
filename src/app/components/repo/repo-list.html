@@ -9,7 +9,7 @@
                 <input matInput placeholder="Name" #inputName>
             </mat-form-field>
         </th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['../repo', element.name]" [ngStyle]="{'padding-left': '6px'}">
+        <td mat-cell *matCellDef="let element" [routerLink]="['../repo', element.id]" [ngStyle]="{'padding-left': '6px'}">
             <strong> {{element.name}} </strong>
         </td>
     </ng-container>

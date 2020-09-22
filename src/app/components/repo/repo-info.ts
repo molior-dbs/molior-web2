@@ -1,7 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 
-import {RepositoryService, Repository} from '../../services/repository.service';
+import {Repository} from '../../services/repository.service';
+import {apiURL} from '../../lib/url';
+import {HttpClient, HttpParams} from '@angular/common/http';
+
+
+export interface Repositories {
+    total_result_count: number;
+    results: Repository[];
+}
 
 @Component({
     selector: 'app-repo',
@@ -9,19 +17,26 @@ import {RepositoryService, Repository} from '../../services/repository.service';
     styleUrls: ['./repo-info.scss']
 })
 export class RepositoryInfoComponent implements OnInit {
-    repo: Repository;
+    repos: Repositories;
+    repoID: number;
 
-    constructor(protected route: ActivatedRoute,
-                protected repoService: RepositoryService) {
-        this.repo = {id: 0,
-            name: this.route.snapshot.paramMap.get('name'),
-            url: '',
-            state: ''
-        };
+    constructor(protected http: HttpClient,
+                protected route: ActivatedRoute) {
+    }
+
+    loadData() {
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.repoID = Number(params.get('id'));
+            console.log('id ' + this.repoID);
+            });
+        const p = new HttpParams().set('id', `${this.repoID}`);
+        this.http.get<Repositories>(`${apiURL()}/api2/repositories/byid`, {params: p}).subscribe(
+            res => {
+                this.repos = res;
+        });
     }
 
     ngOnInit() {
-        this.repoService.get_projectversion_repo(this.repo.name, this.repo.url, this.repo.id).subscribe(
-          (res: Repository) => this.repo = res);
+        this.loadData();
     }
 }
