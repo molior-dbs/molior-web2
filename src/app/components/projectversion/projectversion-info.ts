@@ -95,6 +95,15 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     clone() {
+        const dialog = this.dialog.open(CloneDialogComponent, {
+            data: { projectversion: this.projectversion },
+            disableClose: true,
+            width: '40%',
+        });
+
+        dialog.afterClosed().subscribe(result => {
+            this.loadData();
+        });
     }
 
     snapshot() {
@@ -144,3 +153,30 @@ export class DependencyDialogComponent {
     }
 }
 
+
+@Component({
+    selector: 'app-clone-dialog',
+    templateUrl: 'projectversion-clone-form.html',
+})
+export class CloneDialogComponent {
+    projectversion: ProjectVersion;
+    form = this.fb.group({
+        name: new FormControl('', [Validators.required]),
+    });
+
+    constructor(public dialog: MatDialogRef<CloneDialogComponent>,
+                private fb: FormBuilder,
+                protected projectversionService: ProjectVersionService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
+    ) {
+        this.projectversion = data.projectversion;
+    }
+
+    save(): void {
+        this.projectversionService.clone(this.projectversion, this.form.value.name).subscribe( r => {
+            this.dialog.close();
+            this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
+        });
+    }
+}

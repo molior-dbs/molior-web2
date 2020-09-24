@@ -86,18 +86,18 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
             { name: version, description, basemirror, architectures }).subscribe();
     }
 
-    getDependencies(projectversion: ProjectVersion) {
-        const p = new HttpParams().set('candidates', 'true');
-        return this.http.get(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/dependencies`,
-                             { params: p }).pipe(
+    getDependencies(p: ProjectVersion) {
+        const h = new HttpParams().set('candidates', 'true');
+        return this.http.get(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependencies`,
+                             { params: h }).pipe(
             /* tslint:disable:no-string-literal */
             map(res => new MoliorResult<ProjectVersion>(res['total_result_count'], res['results']))
             /* tslint:enable:no-string-literal */
         );
     }
 
-    addDependency(pv: ProjectVersion, dependency: string) {
-        return this.http.post(`${apiURL()}/api2/project/${pv.project_name}/${pv.name}/dependencies`, { dependency });
+    addDependency(p: ProjectVersion, dependency: string) {
+        return this.http.post(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependencies`, { dependency });
     }
 
     removeDependency(p: ProjectVersion, dependency: string) {
@@ -108,6 +108,9 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         return this.http.get<string>(`${apiURL()}/api/projectsources/${name}/${version}`);
     }
 
+    clone(p: ProjectVersion, name: string) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/clone`, { name });
+    }
 }
 
 
