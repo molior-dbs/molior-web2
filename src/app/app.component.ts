@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
         protected http: HttpClient
     ) {
         this.matIconRegistry.addSvgIcon('debian', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/debian.svg'));
+        this.matIconRegistry.addSvgIcon('git', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/git.svg'));
         this.connectionColor = new BehaviorSubject<string>('red');
         this.connectionColor$ = this.connectionColor.asObservable();
         this.connectionColor.next('red');

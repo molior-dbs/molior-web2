@@ -1,14 +1,14 @@
-<div *ngIf="repos">
-    <h1><mat-icon>layers</mat-icon>Repository<span class="title">&nbsp;{{repos.results[0].name}}</span></h1>
+<div>
+    <h1><mat-icon>layers</mat-icon>Repository<span class="title">&nbsp;{{repo.name}} ({{repo.id}})</span></h1>
 
     <div class="mat-elevation-z8 info-table">
         <table>
             <tr>
                 <th><strong>URL</strong></th>
-                <th><strong>State</strong></th>
+                <td><span class="link">{{repo.url}}</span></td>
             </tr>
-            <tr *ngFor="let repo of repos.results">
-                <td>{{repo.url}}</td>
+            <tr>
+                <th><strong>State</strong></th>
                 <td>{{repo.state}}</td>
             </tr>
         </table>
