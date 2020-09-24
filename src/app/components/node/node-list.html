@@ -1,5 +1,5 @@
 <h1><mat-icon>developer_board</mat-icon>Nodes</h1>
-<mat-paginator [pageSizeOptions]="[10, 50, 100, 1000]" showFirstLastButtons></mat-paginator>
+<mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '200px'}"><mat-form-field>
