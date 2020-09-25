@@ -100,13 +100,14 @@ export class ProjectversionInfoComponent extends TableComponent {
             disableClose: true,
             width: '40%',
         });
-
-        dialog.afterClosed().subscribe(result => {
-            this.loadData();
-        });
     }
 
     snapshot() {
+        const dialog = this.dialog.open(SnapshotDialogComponent, {
+            data: { projectversion: this.projectversion },
+            disableClose: true,
+            width: '40%',
+        });
     }
 
     overlay() {
@@ -114,10 +115,6 @@ export class ProjectversionInfoComponent extends TableComponent {
             data: { projectversion: this.projectversion },
             disableClose: true,
             width: '40%',
-        });
-
-        dialog.afterClosed().subscribe(result => {
-            this.loadData();
         });
     }
 
