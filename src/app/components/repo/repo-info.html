@@ -4,12 +4,18 @@
     <div class="mat-elevation-z8 info-table">
         <table>
             <tr>
+                <td><strong>Name</strong></td>
+                <td>{{repo.name}}</td>
+            </tr>
+            <tr>
                 <td><strong>URL</strong></td>
                 <td><span class="link">{{repo.url}}</span></td>
             </tr>
             <tr>
                 <td><strong>State</strong></td>
-                <td>{{repo.state}}</td>
+                <mat-icon *ngIf="repo.state == 'ready'" class="buildstate-successful">done</mat-icon>
+                <mat-icon *ngIf="repo.state == 'busy'" class="buildstate-building">sync</mat-icon>
+                <mat-icon *ngIf="repo.state == 'error'" class="buildstate-build_failed">clear</mat-icon>
             </tr>
         </table>
     </div>
