@@ -165,6 +165,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
     }
 
     contextmenu(event, id) {
+        // FIXME: menubuttons out of date when items added to table
         this.menubuttons.toArray()[id + this.contextmenuIndex].openMenu();
         setTimeout(this.setmenupos, 100, event);
         return false;

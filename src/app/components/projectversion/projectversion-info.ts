@@ -94,6 +94,9 @@ export class ProjectversionInfoComponent extends TableComponent {
     edit() {
     }
 
+    delete() {
+    }
+
     clone() {
         const dialog = this.dialog.open(CloneDialogComponent, {
             data: { projectversion: this.projectversion },
