@@ -1,0 +1,17 @@
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Create Overlay Project Version</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form" [ngStyle]="{height: '360px'}">
+
+        <p><strong>Overlay Version</strong><app-validation-error [control]="form.get('name')"></app-validation-error></p>
+        <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
+            <input matInput formControlName="name">
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="dialog.close()">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="!form.valid">Ok</button>
+</div>
+
+
+

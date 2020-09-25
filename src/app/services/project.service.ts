@@ -115,6 +115,10 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     lock(p: ProjectVersion) {
         return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/lock`, {});
     }
+
+    overlay(p: ProjectVersion, name: string) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/overlay`, { name });
+    }
 }
 
 
