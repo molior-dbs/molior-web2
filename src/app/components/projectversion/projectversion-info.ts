@@ -239,3 +239,29 @@ export class OverlayDialogComponent {
         });
     }
 }
+
+
+@Component({
+    selector: 'app-snapshot-dialog',
+    templateUrl: 'projectversion-snapshot-form.html',
+})
+export class SnapshotDialogComponent {
+    projectversion: ProjectVersion;
+    form = this.fb.group({
+        name: new FormControl('', [Validators.required]),  // FIXME: name validator
+    });
+
+    constructor(public dialog: MatDialogRef<SnapshotDialogComponent>,
+                private fb: FormBuilder,
+                protected projectversionService: ProjectVersionService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
+    ) { this.projectversion = data.projectversion; }
+
+    save(): void {
+        this.projectversionService.snapshot(this.projectversion, this.form.value.name).subscribe( r => {
+            this.dialog.close();
+            this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
+        });
+    }
+}

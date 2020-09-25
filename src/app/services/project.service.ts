@@ -119,6 +119,10 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     overlay(p: ProjectVersion, name: string) {
         return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/overlay`, { name });
     }
+
+    snapshot(p: ProjectVersion, name: string) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/snapshot`, { name });
+    }
 }
 
 
