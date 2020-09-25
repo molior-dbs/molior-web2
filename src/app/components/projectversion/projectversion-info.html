@@ -24,6 +24,13 @@
                 <td><strong>Architectures</strong></td>
                 <td>{{ projectversion.architectures }}</td>
             </tr>
+            <tr style="user-select: none">
+                <td><strong>State</strong></td>
+                <td>
+                    <mat-icon *ngIf="projectversion.is_locked">lock</mat-icon>
+                    <mat-icon *ngIf="!projectversion.is_locked">lock_open</mat-icon>
+                </td>
+            </tr>
         </table>
     </div>
     <div>
@@ -39,7 +46,7 @@
                 <button mat-menu-item (click)="clone()">   <mat-icon>content_copy</mat-icon>Clone</button>
                 <button mat-menu-item disabled (click)="overlay()"><mat-icon>horizontal_split</mat-icon>Create Overlay</button>
                 <button mat-menu-item disabled (click)="snapshot()"><mat-icon>trending_up</mat-icon>Create Release Snapshot</button>
-                <button mat-menu-item disabled (click)="lock()"><mat-icon>lock</mat-icon>Lock</button>
+                <button mat-menu-item (click)="lock()"><mat-icon>lock</mat-icon>Lock</button>
             </mat-menu>
     </div>
 </div>

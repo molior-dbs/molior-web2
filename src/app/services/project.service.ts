@@ -111,6 +111,10 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     clone(p: ProjectVersion, name: string) {
         return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/clone`, { name });
     }
+
+    lock(p: ProjectVersion) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/lock`, {});
+    }
 }
 
 

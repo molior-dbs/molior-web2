@@ -113,6 +113,15 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     lock() {
+        const dialog = this.dialog.open(LockDialogComponent, {
+            data: { projectversion: this.projectversion },
+            disableClose: true,
+            width: '40%',
+        });
+
+        dialog.afterClosed().subscribe(result => {
+            this.loadData();
+        });
     }
 
 }
@@ -161,7 +170,7 @@ export class DependencyDialogComponent {
 export class CloneDialogComponent {
     projectversion: ProjectVersion;
     form = this.fb.group({
-        name: new FormControl('', [Validators.required]),
+        name: new FormControl('', [Validators.required]),  // FIXME: name validator
     });
 
     constructor(public dialog: MatDialogRef<CloneDialogComponent>,
@@ -169,14 +178,29 @@ export class CloneDialogComponent {
                 protected projectversionService: ProjectVersionService,
                 protected router: Router,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) {
-        this.projectversion = data.projectversion;
-    }
+    ) { this.projectversion = data.projectversion; }
 
     save(): void {
         this.projectversionService.clone(this.projectversion, this.form.value.name).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
         });
+    }
+}
+
+
+@Component({
+    selector: 'app-lock-dialog',
+    templateUrl: 'projectversion-lock-form.html',
+})
+export class LockDialogComponent {
+    projectversion: ProjectVersion;
+    constructor(public dialog: MatDialogRef<LockDialogComponent>,
+                protected projectversionService: ProjectVersionService,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
+    ) { this.projectversion = data.projectversion; }
+
+    save(): void {
+        this.projectversionService.lock(this.projectversion).subscribe( r => this.dialog.close());
     }
 }
