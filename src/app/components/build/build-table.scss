@@ -70,3 +70,7 @@ td.mat-cell, th.mat-header-cell {
   min-height: 100%;
   flex-grow: 1;
 }
+
+::ng-deep .duration-tooltip {
+    white-space: pre-line;
+}

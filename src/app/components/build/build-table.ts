@@ -45,8 +45,6 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
             'sourcename',
             'maintainer',
             'commit',
-            'starttime',
-            'endtime',
             'duration',
             'actions'
         ];
