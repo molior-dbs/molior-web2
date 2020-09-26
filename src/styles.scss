@@ -11,6 +11,7 @@ html, body {
 
 a {
     cursor: pointer !important;
+    text-decoration: unset;
 }
 
 .h1, h1 {
@@ -28,7 +29,7 @@ a {
 
 .mat-list-base .mat-list-item {
     font-size: 14px;
-    font-weight: bold;
+    font-weight: unset !important;
 }
 
 // colors

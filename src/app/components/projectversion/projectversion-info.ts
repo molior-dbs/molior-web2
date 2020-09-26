@@ -95,6 +95,11 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     delete() {
+        const dialog = this.dialog.open(DeleteDialogComponent, {
+            data: { projectversion: this.projectversion },
+            disableClose: true,
+            width: '40%',
+        });
     }
 
     clone() {
@@ -262,6 +267,27 @@ export class SnapshotDialogComponent {
         this.projectversionService.snapshot(this.projectversion, this.form.value.name).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
+        });
+    }
+}
+
+
+@Component({
+    selector: 'app-delete-dialog',
+    templateUrl: 'projectversion-delete-form.html',
+})
+export class DeleteDialogComponent {
+    projectversion: ProjectVersion;
+    constructor(public dialog: MatDialogRef<DeleteDialogComponent>,
+                protected projectversionService: ProjectVersionService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
+    ) { this.projectversion = data.projectversion; }
+
+    save(): void {
+        this.projectversionService.delete(this.projectversion).subscribe( r => {
+            this.dialog.close();
+            this.router.navigate(['/project', this.projectversion.project_name]);
         });
     }
 }

@@ -28,6 +28,7 @@
     <div *ngIf="authenticated()" class="app-nav">
         <mat-sidenav mode="side" opened>
             <mat-nav-list>
+                <!-- FIXME: https://stackoverflow.com/questions/48466718/make-router-link-active-on-two-different-routes -->
                 <a mat-list-item routerLinkActive="active-link" routerLink="/builds">
                     <mat-icon>library_books</mat-icon>
                     <span>Builds</span>
