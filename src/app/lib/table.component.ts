@@ -72,6 +72,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
     pParams: Subscription;
     firstload: boolean;
     contextmenuIndex: number;
+    rowHeight = 42;
     @ViewChildren(MatMenuTrigger) menubuttons: QueryList<MatMenuTrigger>;
 
     constructor(protected route: ActivatedRoute,
@@ -134,7 +135,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
         const parent = document.getElementById('table-wrapper') as HTMLElement;
         if (parent) {
             (parent.firstChild as HTMLTableElement).style.display = 'none';
-            const rows = Math.floor((parent.getBoundingClientRect().height - 56) / 48);
+            const rows = Math.floor((parent.getBoundingClientRect().height - this.rowHeight - (this.rowHeight / 2)) / this.rowHeight);
             (parent.firstChild as HTMLTableElement).style.display = 'table';
             if (+this.params.get('pagesize') !== rows) {
                 this.params.set('pagesize', rows);

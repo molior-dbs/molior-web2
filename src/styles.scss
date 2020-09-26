@@ -30,6 +30,7 @@ a {
 .mat-list-base .mat-list-item {
     font-size: 14px;
     font-weight: unset !important;
+    height: 36px !important;
 }
 
 // colors
@@ -77,6 +78,10 @@ th.mat-header-cell {
 
 .mat-row:nth-child(odd) {
   background: #F5F5F5;
+}
+
+tr.mat-footer-row, tr.mat-row {
+    height: 42px !important;
 }
 
 // make form field smaller
