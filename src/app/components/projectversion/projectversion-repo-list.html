@@ -71,8 +71,9 @@
             <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="edit(element)"><mat-icon>edit</mat-icon>Edit</button>
                 <button mat-menu-item (click)="delete(element.id)"><mat-icon>delete</mat-icon>Delete</button>
-                <button mat-menu-item (click)="build(element.id)"><mat-icon>list</mat-icon>Check for new builds</button>
-                <button mat-menu-item (click)="reclone(element.id)"><mat-icon>list</mat-icon>Re-clone</button>
+                <button mat-menu-item (click)="build(element.id)"><mat-icon>sync_alt</mat-icon>Check for new builds</button>
+                <button mat-menu-item (click)="cibuild(element)"><mat-icon>trending_up</mat-icon>Create CI build</button>
+                <button mat-menu-item (click)="reclone(element.id)"><mat-icon>swap_vert</mat-icon>Re-clone</button>
             </mat-menu>
         </td>
     </ng-container>

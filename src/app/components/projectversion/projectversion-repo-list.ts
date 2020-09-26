@@ -43,7 +43,7 @@ export class ProjectversionRepoListComponent extends TableComponent {
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false};
         this.projectversionService.get(this.projectversion.project_name,
             this.projectversion.name).subscribe((res: ProjectVersion) => this.projectversion = res);
-        this.contextmenuIndex = 0;  // no previous context menus
+        this.contextmenuIndex = 1;
         this.buildicon = buildicon;
     }
 
@@ -96,6 +96,12 @@ export class ProjectversionRepoListComponent extends TableComponent {
                 this.loadData();
             });
         }
+    }
+
+    cibuild(element) {
+        const dialogRef = this.dialog.open(CIBuildDialogComponent, {data: {
+            repo: element}, disableClose: true, width: '900px'});
+        dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 }
 
@@ -199,5 +205,32 @@ export class SourcerepoDialogComponent implements OnInit {
                                         this.form.value.url.trim(), this.form.value.architectures).subscribe();
         }
         this.dialog.close();
+    }
+}
+
+@Component({
+    selector: 'app-cibuild-dialog',
+    templateUrl: 'projectversion-cibuild-form.html',
+})
+export class CIBuildDialogComponent {
+    public repo: any;
+    form = this.fb.group({
+        gitref: new FormControl('', [Validators.required]),
+    });
+
+    constructor(public dialog: MatDialogRef<CIBuildDialogComponent>,
+                private fb: FormBuilder,
+                protected repositoryService: RepositoryService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repo: any }
+    ) {
+        this.repo = data.repo;
+        console.log(this.repo);
+    }
+
+    save(): void {
+        this.repositoryService.cibuild(this.repo.url, this.form.value.gitref.trim()).subscribe(r => {
+            this.dialog.close();
+        });
     }
 }

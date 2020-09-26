@@ -74,4 +74,7 @@ export class RepositoryService extends TableService<Repository> {
             { url });
     }
 
+    cibuild(url: string, gitref: string) {
+        return this.http.post(`${apiURL()}/api/build`, {repository: url, git_ref: gitref});
+    }
 }
