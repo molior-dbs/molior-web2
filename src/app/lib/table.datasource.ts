@@ -118,6 +118,7 @@ export class TableDataSource<T extends {}> implements DataSource<T>, Observer<Mo
                 this.currentResults.pop();
             }
             this.currentResults.splice(insertat, 0, event.data as T);
+            this.dataHook(this.currentResults);
             this.next(this.currentResults);
         } else if (event.event === 'changed') {
             this.currentResults.forEach((item, i) => {
@@ -129,6 +130,7 @@ export class TableDataSource<T extends {}> implements DataSource<T>, Observer<Mo
                             }
                         }
                     }
+                    this.dataHook(this.currentResults);
                     this.next(this.currentResults);
                     this.total.next(this.currentResults.length);
                 }
