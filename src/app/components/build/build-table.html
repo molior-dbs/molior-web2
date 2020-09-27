@@ -36,7 +36,7 @@
             <div [ngStyle]="{'margin-top': '5px'}">
                 <strong *ngIf="element.buildtype == 'build'">{{element.sourcename}}</strong>
                 <strong *ngIf="element.buildtype == 'source'">{{element.version}}</strong>
-                <strong *ngIf="element.buildtype == 'deb'">{{element.buildvariant}}</strong>
+                <span *ngIf="element.buildtype == 'deb'">{{element.buildvariant}}</span>
                 <strong *ngIf="element.buildtype == 'mirror'">{{element.sourcename}}/{{element.version}} ({{element.architectures}})</strong>
                 <strong *ngIf="element.buildtype == 'chroot'">{{element.architecture}}</strong>
                 <span [ngClass]="'progress'" [ngStyle]="{'float': 'right'}" *ngIf="element.progress && ( element.buildstate == 'building' || element.buildstate == 'publishing' )">{{element.progress | number:'1.0-0'}}%</span>

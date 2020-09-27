@@ -86,7 +86,7 @@ export class MirrorListComponent extends TableComponent {
 
     delete(id: number) {
         if (confirm('Delete mirror ?')) {
-            this.mirrorService.delete(id);
+            this.mirrorService.delete(id).subscribe(r => this.loadData());
         }
     }
 

@@ -143,7 +143,7 @@ export class MirrorService extends TableService<Mirror> {
     }
 
     delete(id: number) {
-        return this.http.delete(`${apiURL()}/api/mirror/${id}`).subscribe();
+        return this.http.delete(`${apiURL()}/api/mirror/${id}`);
     }
 
     update(id: number) {

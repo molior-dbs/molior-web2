@@ -92,6 +92,7 @@ export class ProjectCreateDialogComponent {
     constructor(public dialog: MatDialogRef<ProjectCreateDialogComponent>,
                 protected projectService: ProjectService,
                 private fb: FormBuilder,
+                protected router: Router,
                 @Inject(MAT_DIALOG_DATA) public project: Project) {
         if (project) {
             this.form.patchValue({name: this.project.name, description: this.project.description});
@@ -105,5 +106,8 @@ export class ProjectCreateDialogComponent {
             this.projectService.edit(this.project.id, this.form.value.description);
         }
         this.dialog.close();
+        if (!this.project) {
+            this.router.navigate(['/project', this.form.value.name]);
+        }
     }
 }

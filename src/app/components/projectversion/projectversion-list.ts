@@ -77,6 +77,7 @@ export class ProjectversionListComponent extends TableComponent {
     templateUrl: 'projectversion-form.html',
 })
 export class ProjectversionDialogComponent {
+    projectName: string;
     basemirrors: { [id: string]: string[]; };
     mirrorArchs: string[];
     form = this.fb.group({
@@ -96,8 +97,10 @@ export class ProjectversionDialogComponent {
                 private fb: FormBuilder,
                 protected mirrorService: MirrorService,
                 protected projectVersionService: ProjectVersionService,
+                protected router: Router,
                 @Inject(MAT_DIALOG_DATA) private data: { projectName: string }
     ) {
+        this.projectName = data.projectName;
         this.basemirrors = {};
         this.mirrorArchs = [];
         mirrorService.getBaseMirrors().subscribe(res => {
@@ -123,6 +126,7 @@ export class ProjectversionDialogComponent {
             this.form.value.description,
             this.form.value.basemirror,
             this.form.value.architectures);
+        this.router.navigate(['/project', this.projectName, this.form.value.version]);
         this.dialog.close();
     }
 
