@@ -110,6 +110,8 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
         if (build.endstamp !== '' && build.startstamp !== '' && (
                 build.buildstate === 'successful' ||
                 build.buildstate === 'build_failed' ||
+                build.buildstate === 'already_exists' ||
+                build.buildstate === 'nothing_done' ||
                 build.buildstate === 'publish_failed')) {
             const interval = (new Date(build.endstamp).getTime() - new Date(build.startstamp).getTime()) / 1000.0;
             const mins = Math.floor(interval / 60.0);
