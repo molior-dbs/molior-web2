@@ -13,7 +13,6 @@
         <mat-form-field>
             <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
-
         <p><strong>Base Mirror</strong><app-validation-error [control]="form.get('basemirror')"></app-validation-error></p>
         <mat-form-field floatLabel="never">
             <input matInput formControlName="basemirror" placeholder="-- Select Base Mirror --" [matAutocomplete]="autoBasemirror" (input)="changeBaseMirror()">
@@ -26,7 +25,22 @@
 
         <p><strong>Architectures</strong><app-validation-error [control]="form.get('architectures')"></app-validation-error></p>
         <mat-checkbox *ngFor="let arch of mirrorArchs; let i = index" formControlName="architecture{{ i }}" (change)="updateArchs()">{{ arch }}</mat-checkbox>
-        <span *ngIf="mirrorArchs.length == 0">Please select a Base Mirror</span>
+        <span *ngIf="mirrorArchs.length == 0">Please select a Base Mirror above</span>
+
+        <p><strong>Dependency Policy</strong><app-validation-error [control]="form.get('dependencylevel')"></app-validation-error></p>
+        <div *ngIf="form.value.version">
+		Specify which other project versions may use {{projectName}}/{{form.value.version || 'unknown'}}:
+                <br>
+		<mat-form-field floatLabel="never" appearance="standard" *ngIf="form.value.basemirror">
+			<mat-select [(value)]="defaultDependencyLevel">
+				<mat-option value="strict">Use in {{form.value.basemirror}} based projects</mat-option>
+				<mat-option value="distribution">Use in {{form.value.basemirror.split('/')[0]}} based projects</mat-option>
+				<mat-option value="any">Use with any base mirror based projects</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<span *ngIf="!form.value.basemirror">Please define a Base Mirror above</span>
+        </div>
+        <span *ngIf="!form.value.version">Please define a Version above</span>
     </form>
 </div>
 <div mat-dialog-actions>

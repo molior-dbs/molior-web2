@@ -82,6 +82,7 @@ export class ProjectversionDialogComponent {
     projectversion: ProjectVersion;
     basemirrors: { [id: string]: string[]; };
     mirrorArchs: string[];
+    defaultDependencyLevel: 'strict';
     form = this.fb.group({
         version: new FormControl('', [Validators.required,
                                       Validators.minLength(2),
@@ -92,7 +93,8 @@ export class ProjectversionDialogComponent {
         architecture0: new FormControl(true),
         architecture1: new FormControl(true),
         architecture2: new FormControl(true),
-        architecture3: new FormControl(true)
+        architecture3: new FormControl(true),
+        dependencylevel: new FormControl('strict', [Validators.required])
     });
 
     constructor(public dialog: MatDialogRef<ProjectversionDialogComponent>,
@@ -111,6 +113,8 @@ export class ProjectversionDialogComponent {
             for (const entry of res) {
                 this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
             }
+            this.mirrorArchs = this.basemirrors[this.form.value.basemirror];
+            this.updateArchs();
         });
         if (this.projectversion) {
           this.form.patchValue({version: this.projectversion.name});
@@ -131,15 +135,16 @@ export class ProjectversionDialogComponent {
     save(): void {
         this.updateArchs();
         if (this.editMode()) {
-        this.projectVersionService.edit(this.data.projectName,
-            this.projectversion.name,
-            this.form.value.description);
+            this.projectVersionService.edit(this.data.projectName,
+                                            this.projectversion.name,
+                                            this.form.value.description);
+            // FIXME: .sunscribe(... handle error)
         } else {
-        this.projectVersionService.create(this.data.projectName,
-            this.form.value.version,
-            this.form.value.description,
-            this.form.value.basemirror,
-            this.form.value.architectures);
+            this.projectVersionService.create(this.data.projectName,
+                                              this.form.value.version,
+                                              this.form.value.description,
+                                              this.form.value.basemirror,
+                                              this.form.value.architectures);
         }
         this.router.navigate(['/project', this.projectName, this.form.value.version]);
         this.dialog.close();
