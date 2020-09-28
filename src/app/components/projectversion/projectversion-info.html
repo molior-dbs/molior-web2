@@ -1,4 +1,5 @@
 <h1><mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span></h1>
+<div [ngStyle]="{ 'padding': '10px' }">{{ projectversion.description }}</div>
 
 <nav mat-tab-nav-bar>
     <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
@@ -30,10 +31,6 @@
                     <mat-icon *ngIf="projectversion.is_locked">lock</mat-icon>
                     <mat-icon *ngIf="!projectversion.is_locked">lock_open</mat-icon>
                 </td>
-            </tr>
-            <tr style="user-select: none">
-                <td><strong>Description</strong></td>
-                <td>{{ projectversion.description }}</td>
             </tr>
         </table>
     </div>
