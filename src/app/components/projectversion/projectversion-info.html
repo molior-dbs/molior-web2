@@ -31,6 +31,10 @@
                     <mat-icon *ngIf="!projectversion.is_locked">lock_open</mat-icon>
                 </td>
             </tr>
+            <tr style="user-select: none">
+                <td><strong>Description</strong></td>
+                <td>{{ projectversion.description }}</td>
+            </tr>
         </table>
     </div>
     <div>
@@ -90,6 +94,13 @@
         <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)" [ngStyle]="{'text-align': 'center'}">
             <mat-icon *ngIf="element.is_locked">lock</mat-icon>
             <mat-icon *ngIf="!element.is_locked">remove</mat-icon>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center', width: '100px'}">Description</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)" [ngStyle]="{'width': '100%'}">
+            {{element.description}}
         </td>
     </ng-container>
 

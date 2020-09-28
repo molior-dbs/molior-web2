@@ -17,7 +17,7 @@ export class ProjectversionBuildListComponent {
                 protected projectversionService: ProjectVersionService) {
         this.projectversion = {id: -1, name: this.route.parent.snapshot.paramMap.get('version'), is_locked: false,
                                project_name: this.route.parent.parent.snapshot.paramMap.get('name'),
-                               apt_url: '', architectures: [], basemirror: '', is_mirror: false};
+                               apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: ''};
         this.projectversionService.get(this.projectversion.project_name,
             this.projectversion.name).subscribe((res: ProjectVersion) => this.projectversion = res);
     }

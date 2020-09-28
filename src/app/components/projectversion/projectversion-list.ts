@@ -25,6 +25,7 @@ export class ProjectversionListComponent extends TableComponent {
         'basemirror',
         'is_locked',
         'ci_builds_enabled',
+        'description',
         'actions'
     ];
     @ViewChild('inputName', { static: false }) inputName: ElementRef;
@@ -78,7 +79,6 @@ export class ProjectversionListComponent extends TableComponent {
 })
 export class ProjectversionDialogComponent {
     projectName: string;
-    projectDescription: string;
     projectversion: ProjectVersion;
     basemirrors: { [id: string]: string[]; };
     mirrorArchs: string[];
@@ -100,10 +100,9 @@ export class ProjectversionDialogComponent {
                 protected mirrorService: MirrorService,
                 protected projectVersionService: ProjectVersionService,
                 protected router: Router,
-                @Inject(MAT_DIALOG_DATA) private data: { projectName: string, projectversion: ProjectVersion, projectDescription: string }
+                @Inject(MAT_DIALOG_DATA) private data: { projectName: string, projectversion: ProjectVersion}
     ) {
         this.projectName = data.projectName;
-        this.projectDescription = data.projectDescription;
         this.projectversion = data.projectversion;
         this.basemirrors = {};
         this.mirrorArchs = [];
@@ -117,9 +116,7 @@ export class ProjectversionDialogComponent {
           this.form.patchValue({version: this.projectversion.name});
           this.form.patchValue({basemirror: this.projectversion.basemirror});
           this.form.patchValue({architectures: this.projectversion.architectures});
-        }
-        if (this.projectDescription) {
-          this.form.patchValue({description: this.projectDescription});
+          this.form.patchValue({description: this.projectversion.description});
         }
     }
 
@@ -133,11 +130,17 @@ export class ProjectversionDialogComponent {
 
     save(): void {
         this.updateArchs();
+        if (this.editMode()) {
+        this.projectVersionService.edit(this.data.projectName,
+            this.projectversion.name,
+            this.form.value.description);
+        } else {
         this.projectVersionService.create(this.data.projectName,
             this.form.value.version,
             this.form.value.description,
             this.form.value.basemirror,
             this.form.value.architectures);
+        }
         this.router.navigate(['/project', this.projectName, this.form.value.version]);
         this.dialog.close();
     }
@@ -154,6 +157,13 @@ export class ProjectversionDialogComponent {
                 this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
             }
         });
+    }
+
+    editMode(): boolean {
+        if (this.projectversion && this.projectversion.name) {
+           return true;
+        }
+        return false;
     }
 }
 

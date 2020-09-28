@@ -21,6 +21,7 @@ export interface ProjectVersion {
     architectures: string[];
     basemirror: string;
     is_mirror: boolean;
+    description: string;
 }
 
 export class ProjectDataSource extends TableDataSource<Project> {
@@ -84,6 +85,12 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         console.log(`creating projectversion: ${project}/${version} on ${basemirror} for ${architectures}`);
         return this.http.post<Project>(`${apiURL()}/api2/project/${project}/versions`,
             { name: version, description, basemirror, architectures }).subscribe();
+    }
+
+    edit(project: string, version: string, description: string) {
+        console.log(`editing projectversion: ${project}/${version}`);
+        return this.http.put<Project>(`${apiURL()}/api2/project/${project}/${version}`,
+            { description }).subscribe();
     }
 
     getDependencies(p: ProjectVersion) {
