@@ -78,6 +78,8 @@ export class ProjectversionListComponent extends TableComponent {
 })
 export class ProjectversionDialogComponent {
     projectName: string;
+    projectDescription: string;
+    projectversion: ProjectVersion;
     basemirrors: { [id: string]: string[]; };
     mirrorArchs: string[];
     form = this.fb.group({
@@ -98,9 +100,11 @@ export class ProjectversionDialogComponent {
                 protected mirrorService: MirrorService,
                 protected projectVersionService: ProjectVersionService,
                 protected router: Router,
-                @Inject(MAT_DIALOG_DATA) private data: { projectName: string }
+                @Inject(MAT_DIALOG_DATA) private data: { projectName: string, projectversion: ProjectVersion, projectDescription: string }
     ) {
         this.projectName = data.projectName;
+        this.projectDescription = data.projectDescription;
+        this.projectversion = data.projectversion;
         this.basemirrors = {};
         this.mirrorArchs = [];
         mirrorService.getBaseMirrors().subscribe(res => {
@@ -109,6 +113,14 @@ export class ProjectversionDialogComponent {
                 this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
             }
         });
+        if (this.projectversion) {
+          this.form.patchValue({version: this.projectversion.name});
+          this.form.patchValue({basemirror: this.projectversion.basemirror});
+          this.form.patchValue({architectures: this.projectversion.architectures});
+        }
+        if (this.projectDescription) {
+          this.form.patchValue({description: this.projectDescription});
+        }
     }
 
     updateArchs(): void {

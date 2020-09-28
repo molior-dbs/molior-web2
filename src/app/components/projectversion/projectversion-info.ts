@@ -3,8 +3,9 @@ import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import {ProjectVersion, ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
+import {ProjectVersion, ProjectVersionService, ProjectVersionDataSource, ProjectService, Project} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
+import {ProjectversionDialogComponent} from '../projectversion/projectversion-list';
 
 @Component({
     selector: 'app-projectversion-info',
@@ -13,6 +14,7 @@ import {TableComponent} from '../../lib/table.component';
 export class ProjectversionInfoComponent extends TableComponent {
     projectversion: ProjectVersion;
     projectName: string;
+    projectDescription: string;
     projectVersion: string;
     aptSources: string;
     dataSource: ProjectVersionDataSource;
@@ -27,7 +29,9 @@ export class ProjectversionInfoComponent extends TableComponent {
 
     constructor(public route: ActivatedRoute,
                 protected router: Router,
+                private fb: FormBuilder,
                 protected projectversionService: ProjectVersionService,
+                protected projectService: ProjectService,
                 protected dialog: MatDialog) {
         super(route, router, [['filter_name', '']]);
         this.projectversion = {id: -1, name: this.projectVersion, is_locked: false,
@@ -42,6 +46,9 @@ export class ProjectversionInfoComponent extends TableComponent {
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.projectName = params.get('name');
             this.projectVersion = params.get('version');
+            this.projectService.get(this.projectName).subscribe((res: Project) => {
+                this.projectDescription = res.description;
+            });
             this.projectversionService.get(this.projectName,
                 this.projectVersion).subscribe((res: ProjectVersion) => {
                     this.projectversion = res;
@@ -92,6 +99,10 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     edit() {
+       const dialogRef = this.dialog.open(ProjectversionDialogComponent,
+         {data: { projectName: this.projectName, projectversion: this.projectversion, projectDescription: this.projectDescription},
+       disableClose: true, width: '40%'});
+       dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
     delete() {
