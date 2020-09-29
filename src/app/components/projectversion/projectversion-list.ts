@@ -106,6 +106,12 @@ export class ProjectversionDialogComponent {
     ) {
         this.projectName = data.projectName;
         this.projectversion = data.projectversion;
+        if (this.projectversion) {
+          this.form.patchValue({version: this.projectversion.name});
+          this.form.patchValue({basemirror: this.projectversion.basemirror});
+          this.form.patchValue({architectures: this.projectversion.architectures});
+          this.form.patchValue({description: this.projectversion.description});
+        }
         this.basemirrors = {};
         this.mirrorArchs = [];
         mirrorService.getBaseMirrors().subscribe(res => {
@@ -114,14 +120,9 @@ export class ProjectversionDialogComponent {
                 this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
             }
             this.mirrorArchs = this.basemirrors[this.form.value.basemirror];
+            this.form.get('basemirror').updateValueAndValidity();
             this.updateArchs();
         });
-        if (this.projectversion) {
-          this.form.patchValue({version: this.projectversion.name});
-          this.form.patchValue({basemirror: this.projectversion.basemirror});
-          this.form.patchValue({architectures: this.projectversion.architectures});
-          this.form.patchValue({description: this.projectversion.description});
-        }
     }
 
     updateArchs(): void {
