@@ -151,7 +151,9 @@ export class MirrorDialogComponent {
         this.mirrorService.getMirrors().subscribe(res => {
             this.mirrorurls = [];
             for (const entry of res) {
-                this.mirrorurls.push(entry.url);
+                if (!this.mirrorurls.includes(entry.url)) {
+                    this.mirrorurls.push(entry.url);
+                }
             }
         });
         if (this.mirror) {
@@ -224,7 +226,9 @@ export class MirrorDialogComponent {
         this.mirrorService.getMirrors(data[0].mirrorurl).subscribe(res => {
             this.mirrorurls = [];
             for (const entry of res) {
-                this.mirrorurls.push(entry.url);
+                if (!this.mirrorurls.includes(entry.url)) {
+                    this.mirrorurls.push(entry.url);
+                }
             }
         });
     }
