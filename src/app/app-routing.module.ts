@@ -3,7 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {BuildListComponent} from './components/build/build-list';
 import {BuildInfoComponent} from './components/build/build-info';
 import {ProjectListComponent} from './components/project/project-list';
-import {ProjectversionListComponent} from './components/projectversion/projectversion-list';
+import {ProjectInfoComponent} from './components/projectversion/projectinfo';
 import {ProjectversionInfoComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent} from './components/projectversion/projectversion-repo-list';
 import {ProjectversionRepoComponent} from './components/projectversion/projectversion-repo-info';
@@ -30,7 +30,7 @@ const routes: Routes = [
         children: [
             { path: '',                      redirectTo: 'versions', pathMatch: 'full' },
             // { path: 'admin',                 component: ProjectComponent,        canActivate: [AuthGuard] },
-            { path: 'versions',              component: ProjectversionListComponent, canActivate: [AuthGuard] },
+            { path: 'versions',              component: ProjectInfoComponent, canActivate: [AuthGuard] },
             { path: ':version',
                 children: [
                     { path: '',              redirectTo: 'info', pathMatch: 'full' },

@@ -12,10 +12,10 @@ import {ValidationService} from '../../services/validation.service';
 
 @Component({
     selector: 'app-projectversions',
-    templateUrl: './projectversion-list.html',
-    styleUrls: ['./projectversion-list.scss']
+    templateUrl: './projectinfo.html',
+    styleUrls: ['./projectinfo.scss']
 })
-export class ProjectversionListComponent extends TableComponent {
+export class ProjectInfoComponent extends TableComponent {
     dataSource: ProjectVersionDataSource;
     project: Project;
     projectversion: ProjectVersion;

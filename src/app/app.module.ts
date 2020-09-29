@@ -34,7 +34,7 @@ import {ProjectListComponent, ProjectCreateDialogComponent} from './components/p
 import {ProjectService, ProjectVersionService} from './services/project.service';
 import {RepositoryService} from './services/repository.service';
 
-import {ProjectversionListComponent, ProjectversionDialogComponent} from './components/projectversion/projectversion-list';
+import {ProjectInfoComponent, ProjectversionDialogComponent} from './components/projectversion/projectinfo';
 import {ProjectversionInfoComponent, DependencyDialogComponent,
         CloneDialogComponent, LockDialogComponent, OverlayDialogComponent,
         SnapshotDialogComponent, DeleteDialogComponent} from './components/projectversion/projectversion-info';
@@ -96,7 +96,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         LoginComponent,
         AlertComponent,
 
-        ProjectversionListComponent,
+        ProjectInfoComponent,
         ProjectversionDialogComponent,
         ProjectversionInfoComponent,
         ProjectversionRepoListComponent,
