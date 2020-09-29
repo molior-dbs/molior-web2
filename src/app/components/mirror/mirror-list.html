@@ -47,15 +47,19 @@
     </ng-container>
 
     <ng-container matColumnDef="basemirror">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}">Base Mirror</th>
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '15em', 'padding-left': '6px'}">
+            <mat-form-field [ngStyle]="{width: '15em'}">
+                <input matInput placeholder="Basemirror" #inputBasemirror>
+            </mat-form-field>
+        </th>
         <td mat-cell *matCellDef="let element" [ngStyle]="{cursor: 'pointer', 'text-align': 'center'}" [routerLink]="['../mirror'].concat(element.basemirror_name.split('/'))">
             {{element.basemirror_name}}
         </td>
     </ng-container>
 
     <ng-container matColumnDef="url">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: 'auto', 'min-width': '7em'}">Source URL</th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'user-select': 'all'}">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'padding-left': '6px', width: 'auto', 'min-width': '7em'}">Source URL</th>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'padding-left': '6px', 'user-select': 'all'}">
             <strong [ngStyle]="{'font-size': '8pt'}">{{element.url}}</strong>
         </td>
     </ng-container>

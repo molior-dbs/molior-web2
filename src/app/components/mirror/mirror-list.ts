@@ -29,13 +29,14 @@ export class MirrorListComponent extends TableComponent {
         'actions'
     ];
     @ViewChild('inputName', { static: false }) inputName: ElementRef;
+    @ViewChild('inputBasemirror', { static: false }) inputBasemirror: ElementRef;
 
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
                 protected dialog: MatDialog,
                 protected mirrorService: MirrorService,
                 protected moliorService: MoliorService) {
-        super(route, router, [['filter_name', '']]);
+        super(route, router, [['filter_name', ''],['filter_basemirror', '']]);
         this.dataSource = new MirrorDataSource(mirrorService);
     }
 
@@ -45,15 +46,18 @@ export class MirrorListComponent extends TableComponent {
 
     initElements() {
         this.inputName.nativeElement.value = this.params.get('filter_name');
+        this.inputBasemirror.nativeElement.value = this.params.get('filter_basemirror');
     }
 
     setParams() {
         this.params.set('filter_name', this.inputName.nativeElement.value);
+        this.params.set('filter_basemirror', this.inputBasemirror.nativeElement.value);
     }
 
     AfterViewInit() {
         this.dataSource.setPaginator(this.paginator);
         this.initFilter(this.inputName.nativeElement);
+        this.initFilter(this.inputBasemirror.nativeElement);
         this.moliorService.mirrors.subscribe((evt: UpdateEvent) => { this.dataSource.update(evt); });
     }
 

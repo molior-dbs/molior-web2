@@ -45,6 +45,7 @@ export class MirrorService extends TableService<Mirror> {
     getAPIParams(params) {
         return new HttpParams()
                 .set('q', params.get('filter_name'))
+                .set('basemirror', params.get('filter_basemirror'))
                 .set('page', params.get('page').toString())
                 .set('page_size', params.get('pagesize').toString());
     }
