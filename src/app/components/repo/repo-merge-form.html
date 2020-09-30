@@ -1,0 +1,20 @@
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon>
+<h1 mat-dialog-title>Merge Duplicate Git Repository</h1>
+<div mat-dialog-content>
+    <strong>Duplicate: </strong>{{repo.url}}
+    <form [formGroup]="form">
+        <p><strong>Original: </strong> <app-validation-error [control]="form.get('duplicate_id')"></app-validation-error></p>
+        <mat-form-field>
+            <input matInput formControlName="duplicate_id" required cdkFocusInitial [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let entry of repos$ | async | keyvalue" [value]="entry.key">
+                    {{entry.value}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="dialog.close()">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="!form.valid">Ok</button>
+</div>

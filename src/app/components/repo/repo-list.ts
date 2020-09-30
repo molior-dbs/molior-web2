@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild, Inject} from '@angular/core';
+import {Component, ElementRef, ViewChild, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatStepper} from '@angular/material/stepper';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
@@ -9,7 +9,7 @@ import {TableComponent} from '../../lib/table.component';
 import {RepositoryService, RepositoryDataSource, Repository} from '../../services/repository.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
 import {AlertService} from '../../services/alert.service';
-
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-repos',
@@ -21,6 +21,7 @@ export class RepositoryListComponent extends TableComponent {
     displayedColumns: string[] = [
         'name',
         'url',
+        'actions',
     ];
     @ViewChild('inputName', { static: false }) inputName: ElementRef;
 
@@ -69,6 +70,16 @@ export class RepositoryListComponent extends TableComponent {
     update(id: number) {
         // this.repoService.update(id);
     }
+
+    mergeDuplicate(repo: Repository) {
+        const dialog = this.dialog.open(RepoMergeDialogComponent, {
+            data: { repo },
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
+    }
+
 }
 
 @Component({
@@ -112,5 +123,47 @@ export class RepositoryDialogComponent {
     }
 
     save(): void {
+    }
+}
+
+@Component({
+    selector: 'app-repo-dialog',
+    templateUrl: 'repo-merge-form.html',
+})
+export class RepoMergeDialogComponent implements OnInit {
+    public repo: Repository;
+    private repos = new BehaviorSubject<{}>({});
+    repos$ = this.repos.asObservable();
+    form = this.fb.group({
+        duplicate_id: new FormControl('', [Validators.required])
+    });
+
+    constructor(public dialog: MatDialogRef<RepoMergeDialogComponent>,
+                protected repositoryService: RepositoryService,
+                private fb: FormBuilder,
+                @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
+    ) {
+        this.repo = data.repo;
+    }
+
+    ngOnInit() {
+        this.form.controls.duplicate_id.valueChanges.subscribe(
+            r => {
+                this.repositoryService.find(r).subscribe( r2 => {
+                        const repos = {};
+                        for (const entry of r2) {
+                            repos[entry.id] = entry.url;
+                        }
+                        this.repos.next(repos);
+                    }
+                );
+            }
+        );
+    }
+
+    save(): void {
+        this.repositoryService.mergeDuplicate(this.repo.id,
+                                              this.form.value.duplicate_id.trim()).subscribe();
+        this.dialog.close();
     }
 }

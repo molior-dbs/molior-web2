@@ -78,4 +78,8 @@ export class RepositoryService extends TableService<Repository> {
     cibuild(url: string, gitref: string) {
         return this.http.post(`${apiURL()}/api/build`, {repository: url, git_ref: gitref});
     }
+
+    mergeDuplicate(id: number, duplicate: number) {
+        return this.http.put(`${apiURL()}/api2/repository/${id}/merge`, {duplicate});
+    }
 }
