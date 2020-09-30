@@ -35,7 +35,8 @@ export class ProjectversionInfoComponent extends TableComponent {
         super(route, router, [['filter_name', '']]);
         this.projectversion = {id: -1, name: this.projectVersion, is_locked: false,
                                project_name: this.projectName,
-                               apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: ''};
+                               apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
+                               dependency_policy: 'strict'};
         this.dataSource = new ProjectVersionDataSource(projectversionService);
         this.contextmenuIndex = 0;  // no previous context menus
         this.aptSources = '';

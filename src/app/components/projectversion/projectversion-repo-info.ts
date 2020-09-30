@@ -29,7 +29,8 @@ export class ProjectversionRepoComponent extends TableComponent {
         super(route, router, []);
         this.projectversion = {id: -1, name: this.route.parent.snapshot.paramMap.get('version'), is_locked: false,
                                project_name: this.route.parent.parent.snapshot.paramMap.get('name'),
-                               apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: ''};
+                               apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
+                               dependency_policy: 'strict'};
         this.repository = {id: +this.route.parent.snapshot.paramMap.get('id'), name: '', state: '', url: ''};
         this.dataSource = new RepositoryDataSource(this.repositoryService);
         this.contextmenuIndex = 0;  // no previous context menus

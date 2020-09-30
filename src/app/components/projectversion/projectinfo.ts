@@ -111,17 +111,20 @@ export class ProjectversionDialogComponent {
           this.form.patchValue({basemirror: this.projectversion.basemirror});
           this.form.patchValue({architectures: this.projectversion.architectures});
           this.form.patchValue({description: this.projectversion.description});
+          this.form.patchValue({dependencylevel: this.projectversion.dependency_policy});
         }
-        this.basemirrors = {};
         this.mirrorArchs = [];
+        this.basemirrors = {};
         mirrorService.getBaseMirrors().subscribe(res => {
             this.basemirrors = {};
             for (const entry of res) {
                 this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
             }
-            this.mirrorArchs = this.basemirrors[this.form.value.basemirror];
-            this.form.get('basemirror').updateValueAndValidity();
-            this.updateArchs();
+            if (this.editMode()) {
+                this.mirrorArchs = this.basemirrors[this.form.value.basemirror];
+                this.form.get('basemirror').updateValueAndValidity();
+                this.updateArchs();
+            }
         });
     }
 
@@ -138,12 +141,14 @@ export class ProjectversionDialogComponent {
         if (this.editMode()) {
             this.projectVersionService.edit(this.data.projectName,
                                             this.projectversion.name,
-                                            this.form.value.description);
+                                            this.form.value.description,
+                                            this.form.value.dependencylevel);
             // FIXME: .sunscribe(... handle error)
         } else {
             this.projectVersionService.create(this.data.projectName,
                                               this.form.value.version,
                                               this.form.value.description,
+                                              this.form.value.dependencylevel,
                                               this.form.value.basemirror,
                                               this.form.value.architectures);
         }
