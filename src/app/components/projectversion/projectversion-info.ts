@@ -103,7 +103,7 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     delete() {
-        const dialog = this.dialog.open(DeleteDialogComponent, {
+        const dialog = this.dialog.open(ProjectversionDeleteDialogComponent, {
             data: { projectversion: this.projectversion },
             disableClose: true,
             width: '40%',
@@ -281,12 +281,12 @@ export class SnapshotDialogComponent {
 
 
 @Component({
-    selector: 'app-delete-dialog',
+    selector: 'app-projectversion-delete-dialog',
     templateUrl: 'projectversion-delete-form.html',
 })
-export class DeleteDialogComponent {
+export class ProjectversionDeleteDialogComponent {
     projectversion: ProjectVersion;
-    constructor(public dialog: MatDialogRef<DeleteDialogComponent>,
+    constructor(public dialog: MatDialogRef<ProjectversionDeleteDialogComponent>,
                 protected projectversionService: ProjectVersionService,
                 protected router: Router,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }

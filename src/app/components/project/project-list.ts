@@ -52,27 +52,29 @@ export class ProjectListComponent extends TableComponent {
     }
 
     create(): void {
-        const dialogRef = this.dialog.open(ProjectCreateDialogComponent, {
-            // data: {},
+        const dialog = this.dialog.open(ProjectCreateDialogComponent, {
             disableClose: true,
             width: '40%',
         });
-
-        dialogRef.afterClosed().subscribe(result => {
-            this.loadData();
-        });
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 
     edit(project): void {
-        const dialogRef = this.dialog.open(ProjectCreateDialogComponent, {
+        const dialog = this.dialog.open(ProjectCreateDialogComponent, {
             data: project,
             disableClose: true,
             width: '40%',
         });
+        dialog.afterClosed().subscribe(r => this.loadData());
+    }
 
-        dialogRef.afterClosed().subscribe(result => {
-            // this.loadData();
+    delete(projectName: string): void {
+        const dialog = this.dialog.open(ProjectDeleteDialogComponent, {
+            data: { projectName },
+            disableClose: true,
+            width: '40%',
         });
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 }
 
@@ -109,5 +111,23 @@ export class ProjectCreateDialogComponent {
         if (!this.project) {
             this.router.navigate(['/project', this.form.value.name]);
         }
+    }
+}
+
+@Component({
+    selector: 'app-project-delete-dialog',
+    templateUrl: 'project-delete-form.html',
+})
+export class ProjectDeleteDialogComponent {
+    projectName: string;
+    constructor(public dialog: MatDialogRef<ProjectDeleteDialogComponent>,
+                protected projectService: ProjectService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { projectName: string }
+    ) { this.projectName = data.projectName; }
+    save(): void {
+        this.projectService.delete(this.projectName).subscribe(r => {
+            this.dialog.close();
+        });
     }
 }

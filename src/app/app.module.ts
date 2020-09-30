@@ -30,14 +30,14 @@ import {AboutComponent} from './components/about/about';
 import {LoginComponent} from './components/login/login';
 import {AlertComponent} from './components/alert/alert';
 
-import {ProjectListComponent, ProjectCreateDialogComponent} from './components/project/project-list';
+import {ProjectListComponent, ProjectCreateDialogComponent, ProjectDeleteDialogComponent} from './components/project/project-list';
 import {ProjectService, ProjectVersionService} from './services/project.service';
 import {RepositoryService} from './services/repository.service';
 
 import {ProjectInfoComponent, ProjectversionDialogComponent} from './components/projectversion/projectinfo';
 import {ProjectversionInfoComponent, DependencyDialogComponent,
         CloneDialogComponent, LockDialogComponent, OverlayDialogComponent,
-        SnapshotDialogComponent, DeleteDialogComponent} from './components/projectversion/projectversion-info';
+        SnapshotDialogComponent, ProjectversionDeleteDialogComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent, SourcerepoDialogComponent,
         CIBuildDialogComponent} from './components/projectversion/projectversion-repo-list';
 import {ProjectversionRepoComponent, HookDialogComponent} from './components/projectversion/projectversion-repo-info';
@@ -106,7 +106,8 @@ import {WebsocketService, MoliorService} from './services/websocket';
         LockDialogComponent,
         OverlayDialogComponent,
         SnapshotDialogComponent,
-        DeleteDialogComponent,
+        ProjectDeleteDialogComponent,
+        ProjectversionDeleteDialogComponent,
         ProjectversionBuildListComponent,
 
         SourcerepoDialogComponent,
@@ -173,7 +174,8 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       LockDialogComponent,
                       OverlayDialogComponent,
                       SnapshotDialogComponent,
-                      DeleteDialogComponent,
+                      ProjectDeleteDialogComponent,
+                      ProjectversionDeleteDialogComponent,
                      ],
 })
 export class AppModule { }

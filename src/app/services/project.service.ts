@@ -57,6 +57,11 @@ export class ProjectService extends TableService<Project> {
         console.log('editing project:', id);
         return this.http.put<Project>(`${apiURL()}/api/project/${id}`, {description}).subscribe();
     }
+
+    delete(name: string) {
+        console.log('deleting project:', name);
+        return this.http.delete(`${apiURL()}/api2/project/${name}`);
+    }
 }
 
 export class ProjectVersionDataSource extends TableDataSource<ProjectVersion> {
