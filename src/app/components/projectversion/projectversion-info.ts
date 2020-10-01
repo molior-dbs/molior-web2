@@ -155,7 +155,7 @@ export class ProjectversionInfoComponent extends TableComponent {
 })
 export class DependencyDialogComponent {
     projectversion: ProjectVersion;
-    dependencies: any;
+    dependencies: ProjectVersion[];
     form = this.fb.group({
         dependency: new FormControl('', [Validators.required]),
     });
@@ -167,14 +167,18 @@ export class DependencyDialogComponent {
     ) {
         this.projectversion = data.projectversion;
         projectversionService.getDependencies(data.projectversion).subscribe(res => {
-            this.dependencies = {};
+            this.dependencies = [];
             for (const entry of res) {
-                this.dependencies[entry.id] = `${entry.project_name}/${entry.name}`;
+                this.dependencies.push(entry);
             }
         });
     }
 
     changeDependency() {
+    }
+
+    getDependencyName(entry) {
+        return `${entry.project_name}/${entry.name}`;
     }
 
     save(): void {

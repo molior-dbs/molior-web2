@@ -379,6 +379,11 @@ app-validation-error {
   margin: 15px 0;
 }
 
+// select
+.mat-option {
+  line-height: 28px !important;
+  height: 28px !important;
+}
 .mat-radio-button {
   margin: 5px;
   display: block !important;
