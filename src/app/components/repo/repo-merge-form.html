@@ -7,9 +7,11 @@
         <mat-form-field>
             <input matInput formControlName="original_id" required cdkFocusInitial [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let entry of repos$ | async | keyvalue" [value]="entry.key">
+                <ng-container *ngFor="let entry of repos$ | async | keyvalue">
+                <mat-option *ngIf="!entry.value.includes(repo.url)" [value]="entry.key">
                     {{entry.value}}
                 </mat-option>
+                </ng-container>
             </mat-autocomplete>
         </mat-form-field>
     </form>
