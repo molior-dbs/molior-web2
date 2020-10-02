@@ -166,4 +166,8 @@ export class RepoMergeDialogComponent implements OnInit {
                                               this.repo.id).subscribe();
         this.dialog.close();
     }
+
+    excludeDuplicate(original: string): boolean {
+       return !original.includes(this.repo.url);
+    }
 }
