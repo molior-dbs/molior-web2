@@ -135,7 +135,7 @@ export class RepoMergeDialogComponent implements OnInit {
     private repos = new BehaviorSubject<{}>({});
     repos$ = this.repos.asObservable();
     form = this.fb.group({
-        duplicate_id: new FormControl('', [Validators.required])
+        original_id: new FormControl('')
     });
 
     constructor(public dialog: MatDialogRef<RepoMergeDialogComponent>,
@@ -147,7 +147,7 @@ export class RepoMergeDialogComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form.controls.duplicate_id.valueChanges.subscribe(
+        this.form.controls.original_id.valueChanges.subscribe(
             r => {
                 this.repositoryService.find(r).subscribe( r2 => {
                         const repos = {};
@@ -162,8 +162,8 @@ export class RepoMergeDialogComponent implements OnInit {
     }
 
     save(): void {
-        this.repositoryService.mergeDuplicate(this.repo.id,
-                                              this.form.value.duplicate_id.trim()).subscribe();
+        this.repositoryService.mergeDuplicate(this.form.value.original_id.trim(),
+                                              this.repo.id).subscribe();
         this.dialog.close();
     }
 }

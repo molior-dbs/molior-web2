@@ -3,9 +3,9 @@
 <div mat-dialog-content>
     <strong>Duplicate: </strong>{{repo.url}}
     <form [formGroup]="form">
-        <p><strong>Original: </strong> <app-validation-error [control]="form.get('duplicate_id')"></app-validation-error></p>
+        <p><strong>Original: </strong> <app-validation-error [control]="form.get('original_id')"></app-validation-error></p>
         <mat-form-field>
-            <input matInput formControlName="duplicate_id" required cdkFocusInitial [matAutocomplete]="auto">
+            <input matInput formControlName="original_id" required cdkFocusInitial [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let entry of repos$ | async | keyvalue" [value]="entry.key">
                     {{entry.value}}
