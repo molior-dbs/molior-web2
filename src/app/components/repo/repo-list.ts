@@ -132,11 +132,11 @@ export class RepositoryDialogComponent {
 })
 export class RepoMergeDialogComponent implements OnInit {
     public repo: Repository;
-    private repos = new BehaviorSubject<{}>({});
-    repos$ = this.repos.asObservable();
     form = this.fb.group({
-        original_id: new FormControl('')
+        // FIXME add repo url validator
+        original_url: new FormControl('', [Validators.required])
     });
+    repos: string[];
 
     constructor(public dialog: MatDialogRef<RepoMergeDialogComponent>,
                 protected repositoryService: RepositoryService,
@@ -144,27 +144,32 @@ export class RepoMergeDialogComponent implements OnInit {
                 @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
     ) {
         this.repo = data.repo;
+        this.repos = [];
     }
 
     ngOnInit() {
-        this.form.controls.original_id.valueChanges.subscribe(
+        this.form.controls.original_url.valueChanges.subscribe(
             r => {
                 this.repositoryService.find(r).subscribe( r2 => {
-                        const repos = {};
-                        for (const entry of r2) {
-                            repos[entry.id] = entry.url;
-                        }
-                        this.repos.next(repos);
+                    this.repos = [];
+                    for (const entry of r2) {
+                        this.repos.push(entry.url);
                     }
-                );
-            }
-        );
+                    console.log(this.repos);
+                });
+            });
     }
 
     save(): void {
-        this.repositoryService.mergeDuplicate(this.form.value.original_id.trim(),
-                                              this.repo.id).subscribe();
-        this.dialog.close();
+        let originalID = -1;
+        this.repositoryService.find(this.form.value.original_url.trim()).subscribe( r => {
+            for (const entry of r) {
+                originalID = entry.id; // just one
+            }
+            this.repositoryService.mergeDuplicate(originalID,
+                                                  this.repo.id).subscribe();
+            this.dialog.close();
+        });
     }
 
     excludeDuplicate(original: string): boolean {
