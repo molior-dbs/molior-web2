@@ -101,7 +101,7 @@ export class ProjectversionRepoListComponent extends TableComponent {
 
     cibuild(element) {
         const dialogRef = this.dialog.open(CIBuildDialogComponent, {data: {
-            repo: element}, disableClose: true, width: '900px'});
+            projectversion: this.projectversion, repo: element}, disableClose: true, width: '900px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 }
@@ -214,7 +214,8 @@ export class SourcerepoDialogComponent implements OnInit {
     templateUrl: 'projectversion-cibuild-form.html',
 })
 export class CIBuildDialogComponent {
-    public repo: any;
+    public projectversion: ProjectVersion;
+    public repo: Repository;
     form = this.fb.group({
         gitref: new FormControl('', [Validators.required]),
     });
@@ -223,14 +224,16 @@ export class CIBuildDialogComponent {
                 private fb: FormBuilder,
                 protected repositoryService: RepositoryService,
                 protected router: Router,
-                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repo: any }
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repo: Repository }
     ) {
+        this.projectversion = data.projectversion;
         this.repo = data.repo;
         console.log(this.repo);
     }
 
     save(): void {
-        this.repositoryService.cibuild(this.repo.url, this.form.value.gitref.trim()).subscribe(r => {
+        const target = `${this.projectversion.project_name}/${this.projectversion.name}`;
+        this.repositoryService.cibuild(target, this.repo.url, this.form.value.gitref.trim()).subscribe(r => {
             this.dialog.close();
         });
     }
