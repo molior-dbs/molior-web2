@@ -113,16 +113,16 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.incompleteline = lines.pop();
                 }
                 let lastrow = null;
-                const tbody = document.getElementById('buildlog') as HTMLTableElement;
+                const tbody2 = document.getElementById('buildlog') as HTMLTableElement;
                 lines.forEach( line => {
                     if (!this.up) {
                         return;
                     }
                     const nr = this.loglines + 1;
-                    const row = tbody.insertRow(this.loglines);
+                    const row = tbody2.insertRow(this.loglines);
                     row.id = `row-${nr}`;
                     const linenr = row.insertCell(0);
-                    linenr.innerHTML = `<a href="builds/${this.build.id}#line-${nr}" id="line-${nr}" class="line">${nr}</a>`;
+                    linenr.innerHTML = `<a href="build/${this.build.id}#line-${nr}" id="line-${nr}" class="line">${nr}</a>`;
                     linenr.className = 'lognr';
                     const logline = row.insertCell(1);
                     logline.innerHTML = this.ansiup.ansi_to_html(line);
