@@ -21,7 +21,7 @@ export class ValidationService {
     }
 
     static nameValidator(control) {
-        if (control.value.match(/^[a-z][a-z0-9-]*$/)) {
+        if (control.value.match(/^[a-zA-Z][a-zA-Z0-9-]*$/)) {
             // FIXME: not end with -
             return null;
         } else {
@@ -30,7 +30,7 @@ export class ValidationService {
     }
 
     static versionValidator(control) {
-        if (control.value.match(/^[a-z0-9\.-]*$/)) {
+        if (control.value.match(/^[a-zA-Z0-9\.-]*$/)) {
             // FIXME: not start/end with -
             return null;
         } else {
