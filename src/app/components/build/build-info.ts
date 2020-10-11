@@ -25,6 +25,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     subscriptionLog;
     cursor;
     buildicon;
+    follow: boolean;
     @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
     constructor(protected route: ActivatedRoute,
@@ -61,6 +62,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.incompleteline = '';
         this.up = true;
         this.cursor = null;
+        this.follow = true;
     }
 
     fetchLogs() {
@@ -94,7 +96,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         const parent = document.getElementById('buildlog') as HTMLTableElement;
                         parent.removeChild(this.cursor);
                         const endrow = document.getElementById('row-' + this.loglines) as HTMLElement;
-                        if (endrow) {
+                        if (endrow && this.follow) {
                             endrow.scrollIntoView();
                         }
                     }
@@ -133,7 +135,9 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (lastrow && this.up && ( this.build.buildstate === 'building' ||
                                             this.build.buildstate === 'needs_publish' ||
                                             this.build.buildstate === 'publishing' )) {
-                    lastrow.scrollIntoView();
+                    if (this.follow) {
+                        lastrow.scrollIntoView();
+                    }
                     this.updatePaginator();
                 }
             });
@@ -240,10 +244,12 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         }
         if (end !== null) {
+            this.follow = false;
             this.paginator.pageSize = end - start + 1;
             this.paginator.pageIndex = ((start  - 1) / this.paginator.pageSize);
             this.paginator.length = this.loglines;
         } else {
+            this.follow = true;
             this.paginator.pageIndex = 0;
             this.paginator.pageSize = this.loglines;
             this.paginator.length = this.loglines;

@@ -30,8 +30,11 @@
     </div>
 </div>
 
+<div>
 <h2>Build Log</h2>
+<mat-checkbox [checked]="follow">Follow</mat-checkbox>
 <mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
+</div>
 <div id="log-wrapper" class="mat-elevation-z8" (window:resize)="updatePaginator()">
   <div id="log-scroll" class="log-scroll" (scroll)="updatePaginator()">
     <table class="log-table" cdkFocusInitial>
