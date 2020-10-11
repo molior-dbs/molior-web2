@@ -27,10 +27,14 @@ a {
     font-weight: normal;
 }
 
+.mat-list-base {
+    padding-top: 1px !important;
+}
+
 .mat-list-base .mat-list-item {
     font-size: 14px;
     font-weight: unset !important;
-    height: 36px !important;
+    height: 42px !important;
 }
 
 // colors
@@ -196,7 +200,7 @@ input.mat-input-element {
     background: $primary-color;
 }
 .mat-toolbar-single-row {
-    height: unset !important;
+    height: 42px !important;
 }
 
 // sidenav
