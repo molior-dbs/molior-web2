@@ -54,6 +54,11 @@ $primary-color: #571845;
 .mat-table thead, [mat-header-row], mat-header-row {
     background: $primary-color;
     text-color: white;
+    font-size: 12px;
+}
+
+tr.mat-header-row {
+    height: 42px !important;
 }
 
 td.mat-cell {
@@ -70,6 +75,7 @@ th.mat-header-cell:first-of-type {
 
 th.mat-header-cell {
     color: white;
+    font-size: unset;
 }
 
 .mat-row:hover {
@@ -102,21 +108,20 @@ tr.mat-footer-row, tr.mat-row {
     display: none;
 }
 
-// increase font size
 .mat-header-cell {
-    font-size: medium;
     font-weight: bold;
 }
 
 input.mat-input-element {
     color: black;
     padding-left: 2px;
+    font-weight: normal;
 }
 
 .mat-form-field-appearance-legacy .mat-form-field-label {
     top: 0.5em !important;
     color: rgba(0,0,0,.74) !important;
-    font-weight: 500 !important;
+    font-weight: bold;
     padding-left: 4px !important;
 }
 

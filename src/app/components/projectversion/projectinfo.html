@@ -19,38 +19,38 @@
     </ng-container>
 
     <ng-container matColumnDef="architectures">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center', width: '100px'}">Architectures</th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]" [ngStyle]="{'text-align': 'center'}">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '12em'}">Architectures</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]">
             {{ element.architectures }}
         </td>
     </ng-container>
 
 
     <ng-container matColumnDef="basemirror">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center', width: '8em'}">Base Mirror</th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{cursor: 'pointer', 'text-align': 'center'}" [routerLink]="['/mirror'].concat(element.basemirror.split('/'))">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '12em'}">Base Mirror</th>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{cursor: 'pointer'}" [routerLink]="['/mirror'].concat(element.basemirror.split('/'))">
             {{element.basemirror}}
         </td>
     </ng-container>
 
     <ng-container matColumnDef="is_locked">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center', width: '100px'}">Locked</th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]" [ngStyle]="{'text-align': 'center'}">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '100px'}">Locked</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]">
             <mat-icon *ngIf="element.is_locked">lock</mat-icon>
             <mat-icon *ngIf="!element.is_locked">remove</mat-icon>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="ci_builds_enabled">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center', width: '100px', 'min-width': '80px'}">CI Builds</th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]" [ngStyle]="{'text-align': 'center'}">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '100px', 'min-width': '80px'}">CI Builds</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]">
             <mat-icon *ngIf="element.ci_builds_enabled">done</mat-icon>
             <mat-icon *ngIf="!element.ci_builds_enabled">remove</mat-icon>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '100%'}">Description</th>
+        <th mat-header-cell *matHeaderCellDef>Description</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]">
             {{element.description}}
         </td>
