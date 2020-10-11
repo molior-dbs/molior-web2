@@ -118,7 +118,7 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     }
 
     get_apt_sources(name: string, version: string) {
-        return this.http.get<string>(`${apiURL()}/api/projectsources/${name}/${version}`);
+        return this.http.get<string>(`${apiURL()}/api/projectsources/${name}/${version}`, {responseType: 'text' as 'json'});
     }
 
     clone(p: ProjectVersion, name: string) {
