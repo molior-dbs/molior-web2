@@ -117,6 +117,7 @@ export class MirrorDialogComponent {
                  mirrorversion: new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.versionValidator]),
                  mirrortype:    ['1'],
                  basemirror:    new FormControl(''),
+                 external_repo: false,
              }),
              this.fb.group({
                  mirrorsrc: false,
@@ -326,6 +327,7 @@ export class MirrorDialogComponent {
                                       data[0].mirrorversion,
                                       data[0].mirrortype,
                                       data[0].basemirror,
+                                      data[0].external_repo,
                                       data[0].mirrorurl,
                                       data[1].mirrordist,
                                       data[1].mirrorcomponents,
@@ -345,6 +347,7 @@ export class MirrorDialogComponent {
                                     data[0].mirrortype,
                                     data[0].basemirror,
                                     data[0].mirrorurl,
+                                    data[0].external_repo,
                                     data[1].mirrordist,
                                     data[1].mirrorcomponents,
                                     data[1].architectures,
