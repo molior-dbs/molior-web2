@@ -31,7 +31,6 @@ export class ProjectListComponent extends TableComponent {
                 protected dialog: MatDialog) {
         super(route, router, [['filter_name', '']]);
         this.dataSource = new ProjectDataSource(projectService);
-        this.contextmenuIndex = 0;  // no previous context menus
     }
 
     loadData() {

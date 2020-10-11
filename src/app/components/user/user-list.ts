@@ -33,7 +33,6 @@ export class UserListComponent extends TableComponent {
                 protected dialog: MatDialog) {
         super(route, router, [['name', ''], ['email', ''], ['admin', false]]);
         this.dataSource = new UserDataSource(userService);
-        this.contextmenuIndex = 0;  // no previous context menus
     }
 
     loadData() {

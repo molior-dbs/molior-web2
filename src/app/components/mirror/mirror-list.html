@@ -71,7 +71,7 @@
             <mat-menu #menu="matMenu"><button mat-menu-item>Create</button></mat-menu>
         </th>
         <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+            <button mat-icon-button [matMenuTriggerFor]="menu" id="menu_{{element.id}}" aria-label="">
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
@@ -83,7 +83,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;" (contextmenu)="contextmenu($event, i)"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" (contextmenu)="contextmenu($event, element)"></tr>
     <ng-container matColumnDef="footer">
         <td mat-footer-cell *matFooterCellDef colspan="100%">
             <div *ngIf="(dataSource.total$ | async) == -1">

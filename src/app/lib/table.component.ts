@@ -1,4 +1,4 @@
-import {AfterViewInit, OnInit, ViewChild, ViewChildren, OnDestroy, QueryList} from '@angular/core';
+import {AfterViewInit, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MatPaginator, MatMenuTrigger} from '@angular/material';
 import {Router} from '@angular/router';
@@ -71,9 +71,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
     sParams: Subscription;
     pParams: Subscription;
     firstload: boolean;
-    contextmenuIndex: number;
     rowHeight = 42;
-    @ViewChildren(MatMenuTrigger) menubuttons: QueryList<MatMenuTrigger>;
 
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
@@ -82,7 +80,6 @@ export class TableComponent implements AfterViewInit, OnDestroy {
         URLParams.push(['pagesize', 10]);
         this.params = new TableParams(URLParams);
         this.firstload = true;
-        this.contextmenuIndex = 1;
     }
 
     ngAfterViewInit() {
@@ -165,10 +162,9 @@ export class TableComponent implements AfterViewInit, OnDestroy {
         menu.style.right = window.innerWidth - event.pageX - (menu.firstChild as HTMLDivElement).clientWidth + 'px';
     }
 
-    contextmenu(event, id) {
-        // FIXME: menubuttons out of date when items added to table
-        this.menubuttons.toArray()[id + this.contextmenuIndex].openMenu();
-        setTimeout(this.setmenupos, 100, event);
+    contextmenu(event, element) {
+        document.getElementById(`menu_${element.id}`).click();
+        setTimeout(this.setmenupos, 10, event);
         return false;
     }
 

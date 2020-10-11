@@ -33,7 +33,6 @@ export class ProjectversionRepoComponent extends TableComponent {
                                dependency_policy: 'strict'};
         this.repository = {id: +this.route.parent.snapshot.paramMap.get('id'), name: '', state: '', url: ''};
         this.dataSource = new RepositoryDataSource(this.repositoryService);
-        this.contextmenuIndex = 0;  // no previous context menus
     }
 
     loadData() {

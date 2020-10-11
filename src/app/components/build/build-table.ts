@@ -35,7 +35,6 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
                              ]);
         this.dataSource = new BuildDataSource(buildService);
         this.buildicon = buildicon;
-        this.contextmenuIndex = 0;  // no previous context menus
         this.updateSubscription = null;
     }
 

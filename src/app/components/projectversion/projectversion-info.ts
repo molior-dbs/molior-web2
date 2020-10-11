@@ -38,7 +38,6 @@ export class ProjectversionInfoComponent extends TableComponent {
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
                                dependency_policy: 'strict'};
         this.dataSource = new ProjectVersionDataSource(projectversionService);
-        this.contextmenuIndex = 0;  // no previous context menus
         this.aptSources = '';
     }
 

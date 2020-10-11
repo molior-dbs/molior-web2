@@ -44,7 +44,6 @@ export class ProjectversionRepoListComponent extends TableComponent {
                                dependency_policy: 'strict'};
         this.projectversionService.get(this.projectversion.project_name,
             this.projectversion.name).subscribe((res: ProjectVersion) => this.projectversion = res);
-        this.contextmenuIndex = 1;
         this.buildicon = buildicon;
     }
 
