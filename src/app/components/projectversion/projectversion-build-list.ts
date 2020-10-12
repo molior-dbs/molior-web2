@@ -9,7 +9,7 @@ import {ProjectVersion, ProjectVersionService} from '../../services/project.serv
     templateUrl: './projectversion-build-list.html',
     styleUrls: ['./projectversion-build-list.scss']
 })
-export class ProjectversionBuildListComponent {
+export class ProjectversionBuildListComponent implements OnInit {
     buildicon;
     projectversion: ProjectVersion;
 
@@ -19,6 +19,9 @@ export class ProjectversionBuildListComponent {
                                project_name: '',
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
                                dependency_policy: 'strict', ci_builds_enabled: false};
+    }
+
+    ngOnInit() {
         this.route.parent.paramMap.subscribe((params: ParamMap) => {
             const version = params.get('version');
             this.route.parent.parent.paramMap.subscribe((params2: ParamMap) => {
