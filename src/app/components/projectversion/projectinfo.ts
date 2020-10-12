@@ -1,5 +1,5 @@
 import {Component, ElementRef, ViewChild, Inject} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {MatOptionSelectionChange} from '@angular/material';
@@ -36,8 +36,11 @@ export class ProjectInfoComponent extends TableComponent {
                 protected projectversionService: ProjectVersionService,
                 protected dialog: MatDialog) {
         super(route, router, [['filter_name', '']]);
-        this.project = {id: null, name: this.route.parent.snapshot.paramMap.get('name'), description: ''};
-        this.projectService.get(this.project.name).subscribe((res: Project) => this.project = res);
+        this.project = {id: null, name: '', description: ''};
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            const name = params.get('name');
+            this.projectService.get(name).subscribe((res: Project) => this.project = res);
+        });
         this.dataSource = new ProjectVersionDataSource(projectversionService);
     }
 
@@ -50,7 +53,6 @@ export class ProjectInfoComponent extends TableComponent {
     }
 
     setParams() {
-        this.params.set('filter_name', this.inputName.nativeElement.value);
         this.params.set('filter_name', this.inputName.nativeElement.value);
     }
 

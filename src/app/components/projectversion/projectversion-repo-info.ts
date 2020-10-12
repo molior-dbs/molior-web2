@@ -27,11 +27,11 @@ export class ProjectversionRepoComponent extends TableComponent {
                 protected repositoryService: RepositoryService,
                 protected dialog: MatDialog) {
         super(route, router, []);
-        this.projectversion = {id: -1, name: this.route.parent.snapshot.paramMap.get('version'), is_locked: false,
-                               project_name: this.route.parent.parent.snapshot.paramMap.get('name'),
+        this.projectversion = {id: -1, name: '', is_locked: false,
+                               project_name: '',
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
                                dependency_policy: 'strict', ci_builds_enabled: false};
-        this.repository = {id: +this.route.parent.snapshot.paramMap.get('id'), name: '', state: '', url: ''};
+        this.repository = {id: -1, name: '', state: '', url: ''};
         this.dataSource = new RepositoryDataSource(this.repositoryService);
     }
 

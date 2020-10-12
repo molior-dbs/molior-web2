@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 
 import {NodeService, Node, getLoadColor, getUptime} from '../../services/node.service';
 
@@ -15,7 +15,7 @@ export class NodeInfoComponent implements OnInit {
     constructor(protected route: ActivatedRoute,
                 protected nodeService: NodeService) {
         this.node = {id: 0,
-            name: this.route.snapshot.paramMap.get('name'),
+            name: '',
             arch: '',
             state: '',
             load: [0, 0, 0],
@@ -24,6 +24,9 @@ export class NodeInfoComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.nodeService.get(this.node.name).subscribe((res: Node) => this.node = res);
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            const name = params.get('name');
+            this.nodeService.get(name).subscribe((res: Node) => this.node = res);
+        });
     }
 }

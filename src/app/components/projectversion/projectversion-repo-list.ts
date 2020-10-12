@@ -1,5 +1,5 @@
 import {Component, ElementRef, ViewChild, Input, OnInit, Inject} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {Observable, BehaviorSubject} from 'rxjs';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
@@ -38,12 +38,15 @@ export class ProjectversionRepoListComponent extends TableComponent {
                 protected dialog: MatDialog) {
         super(route, router, [['filter_url', '']]);
         this.dataSource = new RepositoryDataSource(repositoryService);
-        this.projectversion = {id: -1, name: this.route.parent.snapshot.paramMap.get('version'), is_locked: false,
-                               project_name: this.route.parent.parent.snapshot.paramMap.get('name'),
+        this.projectversion = {id: -1, name: '', is_locked: false,
+                               project_name: '',
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
                                dependency_policy: 'strict', ci_builds_enabled: false};
-        this.projectversionService.get(this.projectversion.project_name,
-            this.projectversion.name).subscribe((res: ProjectVersion) => this.projectversion = res);
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            const name = params.get('name');
+            const version = params.get('version');
+            this.projectversionService.get(name, version).subscribe((res: ProjectVersion) => this.projectversion = res);
+        });
         this.buildicon = buildicon;
     }
 

@@ -36,7 +36,7 @@ export class MirrorListComponent extends TableComponent {
                 protected dialog: MatDialog,
                 protected mirrorService: MirrorService,
                 protected moliorService: MoliorService) {
-        super(route, router, [['filter_name', ''],['filter_basemirror', '']]);
+        super(route, router, [['filter_name', ''], ['filter_basemirror', '']]);
         this.dataSource = new MirrorDataSource(mirrorService);
     }
 

@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
 import {default as AnsiUp} from 'ansi_up';
 import {DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
@@ -32,7 +32,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                 protected buildService: BuildService,
                 protected moliorService: MoliorService) {
         this.buildicon = buildicon;
-        this.build = {id: +this.route.snapshot.paramMap.get('id'),
+        this.build = {id: -1,
             can_rebuild: false,
             buildstate: '',
             buildtype: '',
@@ -65,8 +65,57 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.follow = true;
     }
 
-    fetchLogs() {
-        this.buildService.get(this.build.id).subscribe((res: Build) => {
+    ngOnInit() {
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            const id = +params.get('id');
+            this.subscriptionBuild = this.moliorService.builds.subscribe((event: UpdateEvent) => {
+                const idkey = 'id';
+                if (event.event === 'changed' && event.data[idkey] === id) {
+                    for (const key in event.data) {
+                        if (key) {
+                            if (key !== idkey) {
+                                this.build[key] = event.data[key];
+                            }
+                        }
+                    }
+                }
+            });
+            this.fetchLogs(id);
+        });
+    }
+
+    ngAfterViewInit() {
+        this.paginator.page.subscribe(p => {
+            const linenumber = Math.round(p.pageIndex * p.pageSize) + 1;
+            const row = document.getElementById('row-' + linenumber) as HTMLElement;
+            if (row) {
+                row.scrollIntoView();
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        if (this.up) {
+            this.up = false;
+            this.moliorService.send({
+                subject: 8, // buildlog
+                action: 5,  // stop
+                data: {build_id: this.build.id}
+            });
+        }
+        if (this.subscriptionBuild) {
+            this.subscriptionBuild.unsubscribe();
+            this.subscriptionBuild = null;
+        }
+        if (this.subscriptionLog) {
+            this.subscriptionLog.unsubscribe();
+            this.subscriptionLog = null;
+        }
+    }
+
+    fetchLogs(id: number) {
+        this.buildService.get(id).subscribe((res: Build) => {
+            this.build = res;
             const tbody = document.getElementById('buildlog') as HTMLTableElement;
             tbody.innerHTML = '';
             this.loglines = 0;
@@ -74,7 +123,6 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
             this.up = true;
             this.cursor = null;
 
-            this.build = res;
             if ( this.build.buildstate === 'new' ||
                  this.build.buildstate === 'needs_build' ||
                  this.build.buildstate === 'building' ||
@@ -152,52 +200,6 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    ngOnInit() {
-        this.subscriptionBuild = this.moliorService.builds.subscribe((event: UpdateEvent) => {
-            const idkey = 'id';
-            if (event.event === 'changed' && event.data[idkey] === this.build.id) {
-                for (const key in event.data) {
-                    if (key) {
-                        if (key !== idkey) {
-                            this.build[key] = event.data[key];
-                        }
-                    }
-                }
-            }
-        });
-
-        this.fetchLogs();
-    }
-
-    ngAfterViewInit() {
-        this.paginator.page.subscribe(p => {
-            const linenumber = Math.round(p.pageIndex * p.pageSize) + 1;
-            const row = document.getElementById('row-' + linenumber) as HTMLElement;
-            if (row) {
-                row.scrollIntoView();
-            }
-        });
-    }
-
-    ngOnDestroy() {
-        if (this.up) {
-            this.up = false;
-            this.moliorService.send({
-                subject: 8, // buildlog
-                action: 5,  // stop
-                data: {build_id: this.build.id}
-            });
-        }
-        if (this.subscriptionBuild) {
-            this.subscriptionBuild.unsubscribe();
-            this.subscriptionBuild = null;
-        }
-        if (this.subscriptionLog) {
-            this.subscriptionLog.unsubscribe();
-            this.subscriptionLog = null;
-        }
-    }
-
     highlightLine() {
         if (!this.selectedLine) {
             return;
@@ -258,7 +260,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
     rebuild(id: number) {
         this.buildService.rebuild(id).subscribe( res => {
-            this.fetchLogs();
+            this.fetchLogs(id);
         });
     }
 
