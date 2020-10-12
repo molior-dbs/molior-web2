@@ -36,17 +36,19 @@ export class ProjectversionRepoComponent extends TableComponent {
     }
 
     loadData() {
-        this.route.paramMap.subscribe((params: ParamMap) => {
-            const projectName = params.get('name');
+        this.route.parent.paramMap.subscribe((params: ParamMap) => {
             const projectVersion = params.get('version');
             const repoID = +params.get('id');
-            this.projectversionService.get(projectName, projectVersion).subscribe((res: ProjectVersion) => {
+            this.route.parent.parent.paramMap.subscribe((params2: ParamMap) => {
+                const projectName = params2.get('name');
+                this.projectversionService.get(projectName, projectVersion).subscribe((res: ProjectVersion) => {
                     this.projectversion = res;
                     this.repositoryService.get_projectversion_repo(projectName, projectVersion, repoID).subscribe((res2: Repository) => {
-                        this.repository = res2;
-                        this.dataSource.load(`/api2/project/${projectName}/${projectVersion}/repository/${repoID}/hooks`, this.params);
+                            this.repository = res2;
+                            this.dataSource.load(`/api2/project/${projectName}/${projectVersion}/repository/${repoID}/hooks`, this.params);
+                        });
                     });
-                });
+            });
         });
     }
 

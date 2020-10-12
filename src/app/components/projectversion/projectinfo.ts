@@ -36,16 +36,16 @@ export class ProjectInfoComponent extends TableComponent {
                 protected projectversionService: ProjectVersionService,
                 protected dialog: MatDialog) {
         super(route, router, [['filter_name', '']]);
-        this.project = {id: null, name: '', description: ''};
-        this.route.paramMap.subscribe((params: ParamMap) => {
-            const name = params.get('name');
-            this.projectService.get(name).subscribe((res: Project) => this.project = res);
-        });
+        this.project = {id: -1, name: '', description: ''};
         this.dataSource = new ProjectVersionDataSource(projectversionService);
     }
 
     loadData() {
-        this.dataSource.load(`/api2/project/${this.project.name}/versions`, this.params);
+        this.route.parent.paramMap.subscribe((params: ParamMap) => {
+            const name = params.get('name');
+            this.projectService.get(name).subscribe((res: Project) => this.project = res);
+            this.dataSource.load(`/api2/project/${name}/versions`, this.params);
+        });
     }
 
     initElements() {
