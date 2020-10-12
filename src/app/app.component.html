@@ -4,8 +4,8 @@
         <mat-toolbar color="primary">
             <a (click)="goToHomePage()" class="molior-logo"></a>
             <div style="text-align: right; width: 100%;" *ngIf="authenticated();">
-		<span [ngStyle]="{display: 'inline-block', 'vertical-align': 'top', 'margin-top': '3px', 'font-size': '15px'}">{{ getLoggedUserName() }}</span>
-                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu" [ngStyle]="{'width': 'unset'}">
+		    <span [ngStyle]="{display: 'inline-block', 'vertical-align': 'top', 'margin-top': '3px', 'font-size': '15px'}">{{ getLoggedUserName() }}</span>
                     <mat-icon>person</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
