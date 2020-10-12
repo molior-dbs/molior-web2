@@ -45,6 +45,9 @@
             <span *ngIf="!form.value.basemirror">Please define a Base Mirror above</span>
         </div>
         <span *ngIf="!form.value.version">Please define a Version above</span>
+        <br>
+        <p><strong>CI Builds</strong></p>
+        <mat-checkbox formControlName="cibuilds" matTooltip="Enable/Disable CI Builds"></mat-checkbox>
     </form>
 </div>
 <div mat-dialog-actions>

@@ -23,6 +23,7 @@ export interface ProjectVersion {
     is_mirror: boolean;
     description: string;
     dependency_policy: string;
+    ci_builds_enabled: boolean;
 }
 
 export class ProjectDataSource extends TableDataSource<Project> {
@@ -87,16 +88,17 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         return this.http.get<ProjectVersion>(`${apiURL()}/api2/project/${name}/${version}`);
     }
 
-    create(project: string, version: string, description: string, dependencylevel: string, basemirror: string, architectures: string[]) {
+    create(project: string, version: string, description: string, dependencylevel: string, basemirror: string, architectures: string[],
+           cibuilds: boolean) {
         console.log(`creating projectversion: ${project}/${version} on ${basemirror} for ${architectures}`);
         return this.http.post<ProjectVersion>(`${apiURL()}/api2/project/${project}/versions`,
-            { name: version, description, dependency_policy: dependencylevel, basemirror, architectures }).subscribe();
+            { name: version, description, dependency_policy: dependencylevel, basemirror, architectures, cibuilds }).subscribe();
     }
 
-    edit(project: string, version: string, description: string, dependencylevel: string) {
+    edit(project: string, version: string, description: string, dependencylevel: string, cibuilds: boolean) {
         console.log(`editing projectversion: ${project}/${version}`);
         return this.http.put<ProjectVersion>(`${apiURL()}/api2/project/${project}/${version}`,
-            { description, dependency_policy: dependencylevel }).subscribe();
+            { description, dependency_policy: dependencylevel, cibuilds }).subscribe();
     }
 
     getDependencies(p: ProjectVersion) {

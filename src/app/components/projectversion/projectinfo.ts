@@ -93,7 +93,8 @@ export class ProjectversionDialogComponent {
         architecture1: new FormControl(true),
         architecture2: new FormControl(true),
         architecture3: new FormControl(true),
-        dependencylevel: new FormControl('strict', [Validators.required])
+        dependencylevel: new FormControl('strict', [Validators.required]),
+        cibuilds: new FormControl(false)
     });
 
     constructor(public dialog: MatDialogRef<ProjectversionDialogComponent>,
@@ -111,6 +112,7 @@ export class ProjectversionDialogComponent {
           this.form.patchValue({architectures: this.projectversion.architectures});
           this.form.patchValue({description: this.projectversion.description});
           this.form.patchValue({dependencylevel: this.projectversion.dependency_policy});
+          this.form.patchValue({cibuilds: this.projectversion.ci_builds_enabled});
         }
         this.mirrorArchs = [];
         this.basemirrors = {};
@@ -141,7 +143,8 @@ export class ProjectversionDialogComponent {
             this.projectVersionService.edit(this.data.projectName,
                                             this.projectversion.name,
                                             this.form.value.description,
-                                            this.form.value.dependencylevel);
+                                            this.form.value.dependencylevel,
+                                            this.form.value.cibuilds);
             // FIXME: .sunscribe(... handle error)
         } else {
             this.projectVersionService.create(this.data.projectName,
@@ -149,7 +152,8 @@ export class ProjectversionDialogComponent {
                                               this.form.value.description,
                                               this.form.value.dependencylevel,
                                               this.form.value.basemirror,
-                                              this.form.value.architectures);
+                                              this.form.value.architectures,
+                                              this.form.value.cibuilds);
         }
         this.router.navigate(['/project', this.projectName, this.form.value.version]);
         this.dialog.close();
