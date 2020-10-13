@@ -1,12 +1,14 @@
-<h1><mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span></h1>
+<div *ngIf="projectversion">
+    <h1><mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span></h1>
 
-<nav mat-tab-nav-bar>
-    <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
-       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'info']">Info</a>
-    <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
-       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'builds']">Builds</a>
-    <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
-       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
-</nav>
+    <nav mat-tab-nav-bar>
+        <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
+           [routerLink]="['/project', projectversion.project_name, projectversion.name, 'info']">Info</a>
+        <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
+           [routerLink]="['/project', projectversion.project_name, projectversion.name, 'builds']">Builds</a>
+        <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
+           [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
+    </nav>
 
-<app-build-table [projectversion]=projectversion></app-build-table>
+    <app-build-table [projectversion]=projectversion></app-build-table>
+</div>
