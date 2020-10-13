@@ -76,7 +76,7 @@ export class ProjectInfoComponent extends TableComponent {
 
 @Component({
     selector: 'app-projectversion-dialog',
-    templateUrl: 'projectversion-form.html',
+    templateUrl: '../projectversion/projectversion-form.html',
 })
 export class ProjectversionDialogComponent {
     projectName: string;
