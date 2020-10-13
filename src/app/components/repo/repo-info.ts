@@ -1,28 +1,70 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild, ElementRef} from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 
-import {Repository} from '../../services/repository.service';
+import {Repository, RepositoryService} from '../../services/repository.service';
 import {apiURL} from '../../lib/url';
 import {HttpClient} from '@angular/common/http';
 
+import {ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
+import {TableComponent} from '../../lib/table.component';
 
 @Component({
     selector: 'app-repo',
     templateUrl: './repo-info.html',
     styleUrls: ['./repo-info.scss']
 })
-export class RepositoryInfoComponent {
+export class RepositoryInfoComponent extends TableComponent {
     repo: Repository;
     repoID: number;
+    dataSource: ProjectVersionDataSource;
+    displayedColumns: string[] = [
+        'dependent',
+        'architectures',
+        'basemirror',
+        'is_locked',
+        'description'
+    ];
+    @ViewChild('inputName', { static: false }) inputName: ElementRef;
 
     constructor(protected http: HttpClient,
+                protected router: Router,
+                protected projectversionService: ProjectVersionService,
+                protected repoService: RepositoryService,
                 protected route: ActivatedRoute) {
+        super(route, router, [['filter_name', '']]);
         this.repo = {id: 0, name: '', url: '', state: ''};
+        this.dataSource = new ProjectVersionDataSource(projectversionService);
+    }
+
+    AfterViewInit() {
+        this.dataSource.setPaginator(this.paginator);
+        this.initFilter(this.inputName.nativeElement);
+    }
+
+    loadData() {
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.repoID = Number(params.get('id'));
             this.http.get<Repository>(`${apiURL()}/api2/repository/${this.repoID}`).subscribe(
-                res => this.repo = res
-            );
+                res => {
+                    this.repo = res;
+                    this.dataSource.load(`/api2/repository/${this.repoID}/dependents`, this.params);
+            });
         });
+    }
+
+    initElements() {
+        this.inputName.nativeElement.value = this.params.get('filter_name');
+    }
+
+    setParams() {
+        this.params.set('filter_name', this.inputName.nativeElement.value);
+    }
+
+    getDependentLink(element) {
+        if (element.is_mirror) {
+            return ['/mirror', element.project_name, element.name];
+        } else {
+            return ['/project', element.project_name, element.name];
+        }
     }
 }
