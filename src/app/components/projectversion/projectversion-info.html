@@ -32,6 +32,10 @@
                     <mat-icon *ngIf="!projectversion.is_locked">lock_open</mat-icon>
                 </td>
             </tr>
+            <tr style="user-select: none">
+                <td><strong>Dependency policy</strong></td>
+                <td>{{ projectversion.dependency_policy }}</td>
+            </tr>
         </table>
     </div>
     <div>
