@@ -34,7 +34,7 @@ import {ProjectListComponent, ProjectCreateDialogComponent, ProjectDeleteDialogC
 import {ProjectService, ProjectVersionService} from './services/project.service';
 import {RepositoryService} from './services/repository.service';
 
-import {ProjectInfoComponent, ProjectversionDialogComponent} from './components/projectversion/projectinfo';
+import {ProjectInfoComponent, ProjectversionDialogComponent} from './components/projectversion/project-info';
 import {ProjectversionInfoComponent, DependencyDialogComponent,
         CloneDialogComponent, LockDialogComponent, OverlayDialogComponent,
         SnapshotDialogComponent, ProjectversionDeleteDialogComponent} from './components/projectversion/projectversion-info';

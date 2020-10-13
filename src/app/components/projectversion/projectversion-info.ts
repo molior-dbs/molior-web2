@@ -5,7 +5,7 @@ import {FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import {ProjectVersion, ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
-import {ProjectversionDialogComponent} from '../projectversion/projectinfo';
+import {ProjectversionDialogComponent} from '../projectversion/project-info';
 
 @Component({
     selector: 'app-projectversion-info',

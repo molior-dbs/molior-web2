@@ -3,7 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {BuildListComponent} from './components/build/build-list';
 import {BuildInfoComponent} from './components/build/build-info';
 import {ProjectListComponent} from './components/project/project-list';
-import {ProjectInfoComponent} from './components/projectversion/projectinfo';
+import {ProjectInfoComponent} from './components/projectversion/project-info';
 import {ProjectversionInfoComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent} from './components/projectversion/projectversion-repo-list';
 import {ProjectversionRepoComponent} from './components/projectversion/projectversion-repo-info';

@@ -12,8 +12,8 @@ import {ValidationService} from '../../services/validation.service';
 
 @Component({
     selector: 'app-projectversions',
-    templateUrl: './projectinfo.html',
-    styleUrls: ['./projectinfo.scss']
+    templateUrl: './project-info.html',
+    styleUrls: ['./project-info.scss']
 })
 export class ProjectInfoComponent extends TableComponent {
     dataSource: ProjectVersionDataSource;
