@@ -8,7 +8,7 @@ import {TableComponent} from '../../lib/table.component';
 import {ProjectService, ProjectVersionService, ProjectVersionDataSource, ProjectVersion, Project} from '../../services/project.service';
 import {MirrorService, Mirror, BaseMirrorValidator} from '../../services/mirror.service';
 import {ValidationService} from '../../services/validation.service';
-
+import {ProjectversionDeleteDialogComponent} from '../projectversion/projectversion-info';
 
 @Component({
     selector: 'app-projectversions',
@@ -18,7 +18,6 @@ import {ValidationService} from '../../services/validation.service';
 export class ProjectInfoComponent extends TableComponent {
     dataSource: ProjectVersionDataSource;
     project: Project;
-    projectversion: ProjectVersion;
     displayedColumns: string[] = [
         'name',
         'architectures',
@@ -70,6 +69,14 @@ export class ProjectInfoComponent extends TableComponent {
 
         dialog.afterClosed().subscribe(result => {
             this.loadData();
+        });
+    }
+
+    delete(projectversion: ProjectVersion): void {
+        const dialog = this.dialog.open(ProjectversionDeleteDialogComponent, {
+            data: { projectversion },
+            disableClose: true,
+            width: '40%',
         });
     }
 }
