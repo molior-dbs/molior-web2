@@ -36,6 +36,13 @@
                 <td><strong>Dependency policy</strong></td>
                 <td>{{ projectversion.dependency_policy }}</td>
             </tr>
+            <tr style="user-select: none">
+                <td><strong>CI Builds</strong></td>
+                <td>
+                    <mat-icon *ngIf="projectversion.ci_builds_enabled">check_circle_outline</mat-icon>
+                    <mat-icon *ngIf="!projectversion.ci_builds_enabled">remove</mat-icon>
+                </td>
+            </tr>
         </table>
     </div>
     <div>
