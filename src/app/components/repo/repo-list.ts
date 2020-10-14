@@ -61,10 +61,12 @@ export class RepositoryListComponent extends TableComponent {
         // dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
-    delete(id: number) {
-        if (confirm('Delete repo ?')) {
-            // this.repoService.delete(id);
-        }
+    delete(repo: Repository) {
+        const dialog = this.dialog.open(RepoDeleteDialogComponent, {
+            data: { repo },
+            disableClose: true,
+            width: '40%',
+        });
     }
 
     update(id: number) {
@@ -174,5 +176,25 @@ export class RepoMergeDialogComponent implements OnInit {
 
     excludeDuplicate(original: string): boolean {
        return !original.includes(this.repo.url);
+    }
+}
+
+@Component({
+    selector: 'app-repo-dialog',
+    templateUrl: 'repo-delete-form.html',
+})
+export class RepoDeleteDialogComponent {
+    repo: Repository;
+    constructor(public dialog: MatDialogRef<RepoDeleteDialogComponent>,
+                protected repoService: RepositoryService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
+    ) { this.repo = data.repo; }
+
+    save(): void {
+        this.repoService.delete_repo(this.repo.id).subscribe( r => {
+            this.dialog.close();
+            this.router.navigate(['/repos']);
+        });
     }
 }

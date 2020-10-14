@@ -52,7 +52,8 @@ import {MirrorListComponent, MirrorDialogComponent} from './components/mirror/mi
 import {MirrorInfoComponent} from './components/mirror/mirror-info';
 import {MirrorService} from './services/mirror.service';
 
-import {RepositoryListComponent, RepositoryDialogComponent, RepoMergeDialogComponent} from './components/repo/repo-list';
+import {RepositoryListComponent, RepositoryDialogComponent,
+        RepoMergeDialogComponent, RepoDeleteDialogComponent} from './components/repo/repo-list';
 import {RepositoryInfoComponent} from './components/repo/repo-info';
 
 import {NodeListComponent} from './components/node/node-list';
@@ -85,6 +86,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         RepositoryInfoComponent,
         RepositoryDialogComponent,
         RepoMergeDialogComponent,
+        RepoDeleteDialogComponent,
 
         NodeListComponent,
         NodeInfoComponent,
@@ -167,6 +169,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       MirrorDialogComponent,
                       RepositoryDialogComponent,
                       RepoMergeDialogComponent,
+                      RepoDeleteDialogComponent,
                       SourcerepoDialogComponent,
                       CIBuildDialogComponent,
                       HookDialogComponent,

@@ -59,6 +59,10 @@ export class RepositoryService extends TableService<Repository> {
         return this.http.delete(`${apiURL()}/api/projectversions/${ProjectversionID}/repositories/${id}`);
     }
 
+    delete_repo(id: number) {
+        return this.http.delete(`${apiURL()}/api2/repository/${id}`);
+    }
+
     edit(projectversion, id: number, url: string, architectures: string[]) {
         return this.http.put(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/repository/${id}`,
                              {url, architectures}
