@@ -5,7 +5,7 @@ import {FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import {ProjectVersion, ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
-import {ProjectversionDialogComponent} from '../project/project-info';
+import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent} from '../project/project-info';
 
 @Component({
     selector: 'app-projectversion-info',
@@ -283,22 +283,3 @@ export class SnapshotDialogComponent {
 }
 
 
-@Component({
-    selector: 'app-projectversion-delete-dialog',
-    templateUrl: 'projectversion-delete-form.html',
-})
-export class ProjectversionDeleteDialogComponent {
-    projectversion: ProjectVersion;
-    constructor(public dialog: MatDialogRef<ProjectversionDeleteDialogComponent>,
-                protected projectversionService: ProjectVersionService,
-                protected router: Router,
-                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) { this.projectversion = data.projectversion; }
-
-    save(): void {
-        this.projectversionService.delete(this.projectversion).subscribe( r => {
-            this.dialog.close();
-            this.router.navigate(['/project', this.projectversion.project_name]);
-        });
-    }
-}

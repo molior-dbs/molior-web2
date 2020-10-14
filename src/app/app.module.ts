@@ -34,10 +34,10 @@ import {ProjectListComponent, ProjectCreateDialogComponent, ProjectDeleteDialogC
 import {ProjectService, ProjectVersionService} from './services/project.service';
 import {RepositoryService} from './services/repository.service';
 
-import {ProjectInfoComponent, ProjectversionDialogComponent} from './components/project/project-info';
+import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDeleteDialogComponent} from './components/project/project-info';
 import {ProjectversionInfoComponent, DependencyDialogComponent,
         CloneDialogComponent, LockDialogComponent, OverlayDialogComponent,
-        SnapshotDialogComponent, ProjectversionDeleteDialogComponent} from './components/projectversion/projectversion-info';
+        SnapshotDialogComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent, SourcerepoDialogComponent,
         CIBuildDialogComponent} from './components/projectversion/projectversion-repo-list';
 import {ProjectversionRepoComponent, HookDialogComponent} from './components/projectversion/projectversion-repo-info';

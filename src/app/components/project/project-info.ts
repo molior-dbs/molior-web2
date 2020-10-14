@@ -8,7 +8,6 @@ import {TableComponent} from '../../lib/table.component';
 import {ProjectService, ProjectVersionService, ProjectVersionDataSource, ProjectVersion, Project} from '../../services/project.service';
 import {MirrorService, Mirror, BaseMirrorValidator} from '../../services/mirror.service';
 import {ValidationService} from '../../services/validation.service';
-import {ProjectversionDeleteDialogComponent} from '../projectversion/projectversion-info';
 
 @Component({
     selector: 'app-projectversions',
@@ -190,3 +189,22 @@ export class ProjectversionDialogComponent {
     }
 }
 
+@Component({
+    selector: 'app-projectversion-delete-dialog',
+    templateUrl: '../projectversion/projectversion-delete-form.html',
+})
+export class ProjectversionDeleteDialogComponent {
+    projectversion: ProjectVersion;
+    constructor(public dialog: MatDialogRef<ProjectversionDeleteDialogComponent>,
+                protected projectversionService: ProjectVersionService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
+    ) { this.projectversion = data.projectversion; }
+
+    save(): void {
+        this.projectversionService.delete(this.projectversion).subscribe( r => {
+            this.dialog.close();
+            this.router.navigate(['/project', this.projectversion.project_name]);
+        });
+    }
+}
