@@ -26,12 +26,11 @@ export class RepositoryService extends TableService<Repository> {
     }
 
     getAPIParams(params) {
-        const p: any = {};
-        if (params.get('filter_url')) { p.filter_url = params.get('filter_url'); }
-        if (params.get('filter_name')) { p.filter_name = params.get('filter_name'); }
-        if (params.get('page')) { p.page = params.get('page'); }
-        if (params.get('pagesize')) { p.page_size = params.get('pagesize'); }
-        return p;
+        return new HttpParams()
+                .set('q', params.get('filter_name'))
+                .set('filter_url', params.get('filter_url'))
+                .set('page', params.get('page').toString())
+                .set('page_size', params.get('pagesize').toString());
     }
 
     find(url, excludeProjectversionID = -1) {
