@@ -157,6 +157,7 @@ export class DependencyDialogComponent {
     dependencies: ProjectVersion[];
     form = this.fb.group({
         dependency: new FormControl('', [Validators.required]),
+        use_cibuilds: new FormControl(false),
     });
 
     constructor(public dialog: MatDialogRef<DependencyDialogComponent>,
@@ -181,7 +182,8 @@ export class DependencyDialogComponent {
     }
 
     save(): void {
-        this.projectversionService.addDependency(this.projectversion, this.form.value.dependency).subscribe( r => {
+        this.projectversionService.addDependency(this.projectversion, this.form.value.dependency,
+                                                 this.form.value.use_cibuilds).subscribe( r => {
             this.dialog.close();
         });
     }

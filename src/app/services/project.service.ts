@@ -111,8 +111,9 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         );
     }
 
-    addDependency(p: ProjectVersion, dependency: string) {
-        return this.http.post(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependencies`, { dependency });
+    addDependency(p: ProjectVersion, dependency: string, useCIBuilds: boolean) {
+        return this.http.post(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependencies`, { dependency,
+                                                                                                     use_cibuilds: useCIBuilds });
     }
 
     removeDependency(p: ProjectVersion, dependency: string) {
