@@ -138,6 +138,7 @@ export class ProjectversionDialogComponent {
     }
 
     updateArchs(): void {
+        this.form.patchValue({architectures: []});
         this.mirrorArchs.forEach((item, index) => {
             if (this.form.value[`architecture${index}`] === true) {
                 this.form.value.architectures.push(item);
