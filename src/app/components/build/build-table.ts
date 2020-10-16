@@ -30,7 +30,6 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
                 protected repositoryService: RepositoryService) {
         super(route, router, [['search', ''],
                               ['maintainer', ''],
-                              ['project', ''],
                               ['commit', ''],
                              ]);
         this.dataSource = new BuildDataSource(buildService);
@@ -49,6 +48,10 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
         ];
         if (!this.projectversion) {
             this.displayedColumns.splice(2, 0, 'project');
+            /* tslint:disable:no-string-literal */
+            this.params.DefaultParams['project'] = '';
+            this.params.CurrentParams = {...this.params.DefaultParams};
+            /* tslint:enable:no-string-literal */
         }
     }
 

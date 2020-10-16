@@ -1,4 +1,4 @@
-<div *ngIf="projectversion">
+<div *ngIf="projectversion" style="display: flex; flex-direction: column; flex-grow: 1">
     <h1><mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span></h1>
 
     <nav mat-tab-nav-bar>
@@ -10,5 +10,5 @@
            [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
     </nav>
 
-    <app-build-table [projectversion]=projectversion></app-build-table>
+<app-build-table [projectversion]=projectversion></app-build-table>
 </div>
