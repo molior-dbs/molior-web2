@@ -49,9 +49,9 @@
     </ng-container>
 
     <ng-container matColumnDef="architectures">
-            {{ element.architectures }}
         <th mat-header-cell *matHeaderCellDef>Architectures</th>
         <td mat-cell *matCellDef="let element" [routerLink]="getDependentLink(element)">
+            {{ element.architectures.join(', ') }}
         </td>
     </ng-container>
 

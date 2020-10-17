@@ -23,7 +23,7 @@
             </tr>
             <tr style="user-select: none">
                 <td><strong>Architectures</strong></td>
-                <td>{{ projectversion.architectures }}</td>
+                <td>{{ projectversion.architectures.join(', ') }}</td>
             </tr>
             <tr style="user-select: none">
                 <td><strong>State</strong></td>
@@ -85,7 +85,7 @@
     <ng-container matColumnDef="architectures">
         <th mat-header-cell *matHeaderCellDef>Architectures</th>
         <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)">
-            {{ element.architectures }}
+            {{ element.architectures.join(', ') }}
         </td>
     </ng-container>
 
