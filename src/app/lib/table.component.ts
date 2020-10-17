@@ -77,7 +77,6 @@ export class TableComponent implements AfterViewInit, OnDestroy {
                 protected router: Router,
                 URLParams: [string, any][]) {
         URLParams.push(['page', 1]);
-        URLParams.push(['pagesize', 10]);
         this.params = new TableParams(URLParams);
         this.firstload = true;
     }
@@ -85,7 +84,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         this.sParams = this.route.queryParams.subscribe(params => {
             this.params.load(params);
-            this.resize2parent();
+            this.calculateSize();
 
             if (this.firstload) {
                 this.firstload = false;
@@ -95,6 +94,15 @@ export class TableComponent implements AfterViewInit, OnDestroy {
         });
         this.pParams = this.paginator.page.subscribe(
             () => {
+                /* tslint:disable:no-string-literal */
+                if (this.paginator.pageIndex > 0) {
+                    this.params.DefaultParams['pagesize'] = '';
+                } else {
+                    delete this.params.DefaultParams['pagesize'];
+                }
+                delete this.params.ExtraParams['pagesize'];
+                /* tslint:enable:no-string-literal */
+                this.params.CurrentParams = {...this.params.DefaultParams};
                 this.params.set('page',     this.paginator.pageIndex + 1);
                 this.params.set('pagesize', this.paginator.pageSize);
                 this.loadPage();
@@ -128,7 +136,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
         this.loadData();
     }
 
-    resize2parent() {
+    calculateSize() {
         const parent = document.getElementById('table-wrapper') as HTMLElement;
         if (parent) {
             (parent.firstChild as HTMLTableElement).style.display = 'none';
@@ -136,9 +144,16 @@ export class TableComponent implements AfterViewInit, OnDestroy {
             (parent.firstChild as HTMLTableElement).style.display = 'table';
             if (+this.params.get('pagesize') !== rows) {
                 this.params.set('pagesize', rows);
-                this.updateElements();
-                this.loadPage();
+                return true;
             }
+        }
+        return false;
+    }
+
+    resize2parent() {
+        if (this.calculateSize()) {
+            this.updateElements();
+            this.loadPage();
         }
     }
 
@@ -168,6 +183,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
         return false;
     }
 
+    // mouse scroll
     scroll(event) {
         if (event.ctrlKey) {
             return;
