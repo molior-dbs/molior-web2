@@ -170,9 +170,6 @@ export class DependencyDialogComponent {
         });
     }
 
-    changeDependency() {
-    }
-
     getDependencyName(entry) {
         return `${entry.project_name}/${entry.name}`;
     }
