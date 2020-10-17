@@ -65,10 +65,7 @@ export class ProjectInfoComponent extends TableComponent {
             disableClose: true,
             width: '40%',
         });
-
-        dialog.afterClosed().subscribe(result => {
-            this.loadData();
-        });
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 
     delete(projectversion: ProjectVersion): void {
@@ -77,6 +74,7 @@ export class ProjectInfoComponent extends TableComponent {
             disableClose: true,
             width: '40%',
         });
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 }
 

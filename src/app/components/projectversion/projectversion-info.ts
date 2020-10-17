@@ -75,15 +75,13 @@ export class ProjectversionInfoComponent extends TableComponent {
             width: '40%',
         });
 
-        dialog.afterClosed().subscribe(result => {
-            this.loadData();
-        });
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 
     removeDependency(name: string, version: string) {
-        this.projectversionService.removeDependency(this.projectversion, `${name}/${version}`).subscribe( r => {
-            this.loadData();
-        });
+        this.projectversionService.removeDependency(this.projectversion, `${name}/${version}`).subscribe(r =>
+            this.loadData()
+        );
     }
 
     getDependencyLink(element) {
@@ -95,10 +93,10 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     edit() {
-       const dialogRef = this.dialog.open(ProjectversionDialogComponent,
-         {data: { projectName: this.projectName, projectversion: this.projectversion},
-       disableClose: true, width: '40%'});
-       dialogRef.afterClosed().subscribe(result => this.loadData());
+        const dialog = this.dialog.open(ProjectversionDialogComponent,
+          {data: { projectName: this.projectName, projectversion: this.projectversion},
+        disableClose: true, width: '40%'});
+        dialog.afterClosed().subscribe(result => this.loadData());
     }
 
     delete() {
@@ -107,6 +105,7 @@ export class ProjectversionInfoComponent extends TableComponent {
             disableClose: true,
             width: '40%',
         });
+        dialog.afterClosed().subscribe(result => this.loadData());
     }
 
     clone() {
@@ -139,10 +138,7 @@ export class ProjectversionInfoComponent extends TableComponent {
             disableClose: true,
             width: '40%',
         });
-
-        dialog.afterClosed().subscribe(result => {
-            this.loadData();
-        });
+        dialog.afterClosed().subscribe(result => this.loadData());
     }
 
 }
@@ -182,10 +178,10 @@ export class DependencyDialogComponent {
     }
 
     save(): void {
-        this.projectversionService.addDependency(this.projectversion, this.form.value.dependency,
-                                                 this.form.value.use_cibuilds).subscribe( r => {
-            this.dialog.close();
-        });
+        this.projectversionService.addDependency(
+            this.projectversion,
+            this.form.value.dependency,
+            this.form.value.use_cibuilds).subscribe(r => this.dialog.close());
     }
 }
 
@@ -228,7 +224,7 @@ export class LockDialogComponent {
     ) { this.projectversion = data.projectversion; }
 
     save(): void {
-        this.projectversionService.lock(this.projectversion).subscribe( r => this.dialog.close());
+        this.projectversionService.lock(this.projectversion).subscribe(r => this.dialog.close());
     }
 }
 
@@ -277,11 +273,9 @@ export class SnapshotDialogComponent {
     ) { this.projectversion = data.projectversion; }
 
     save(): void {
-        this.projectversionService.snapshot(this.projectversion, this.form.value.name).subscribe( r => {
+        this.projectversionService.snapshot(this.projectversion, this.form.value.name).subscribe(r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
         });
     }
 }
-
-
