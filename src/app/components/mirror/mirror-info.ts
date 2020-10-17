@@ -16,7 +16,6 @@ export class MirrorInfoComponent extends TableComponent {
     displayedColumns: string[] = [
         'dependent',
         'architectures',
-        'basemirror',
         'is_locked',
         'description'
     ];
