@@ -9,7 +9,7 @@
     </ng-container>
 
     <ng-container matColumnDef="sourcename">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'min-width': '25em'}">
+        <th mat-header-cell *matHeaderCellDef>
             <mat-form-field [ngStyle]="{'min-width': '25em'}">
                 <input matInput placeholder="Name / Version" #inputSearch>
             </mat-form-field>
@@ -45,12 +45,12 @@
     </ng-container>
 
     <ng-container matColumnDef="project" *ngIf="!projectversion">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'min-width': '11em'}">
+        <th mat-header-cell *matHeaderCellDef>
             <mat-form-field>
                 <input matInput placeholder="Project" #inputProject>
             </mat-form-field>
         </th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'text-align': 'center'}">
+        <td mat-cell *matCellDef="let element">
             <a *ngIf="element.project" [routerLink]="['../project', element.project.name, element.project.version]" [ngStyle]="{'text-decoration': 'none', color: 'unset', 'font-weight': 'bold'}">
                 {{element.project.name}}/{{element.project.version}}
             </a>
@@ -63,7 +63,7 @@
                 <input matInput placeholder="Maintainer" #inputMaintainer>
             </mat-form-field>
         </th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'text-align': 'center'}">
+        <td mat-cell *matCellDef="let element">
             <strong matTooltip={{element.maintainer_email}} [matTooltipPosition]="'right'" *ngIf="element.buildtype == 'build' || element.buildtype == 'mirror'"> {{element.maintainer}} </strong>
         </td>
     </ng-container>
@@ -74,20 +74,20 @@
                 <input matInput placeholder="Commit" #inputCommit>
             </mat-form-field>
         </th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]" [ngStyle]="{'text-align': 'center'}">
+        <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]">
             <span *ngIf="element.buildtype == 'build'">{{element.git_ref | slice:0:10 }}</span>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="duration">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '70px'}">Duration</th>
+        <th mat-header-cell *matHeaderCellDef>Duration</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]" [ngStyle]="{'text-align': 'right'}">
             <span matTooltip="Start time: {{startTime(element)}}&#13;End time: &nbsp;&nbsp;{{endTime(element)}}" [matTooltipClass]="'duration-tooltip'" [matTooltipPosition]="'right'">{{duration(element) || element.runtime || '' }}</span>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-        <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef [ngStyle]="{width: '100%'}">
+        <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef>
         </th>
         <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
             <button mat-icon-button [matMenuTriggerFor]="menu" id="menu_{{element.id}}" aria-label="">
