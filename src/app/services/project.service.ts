@@ -78,10 +78,17 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('q', params.get('filter_name'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('filter_name')) {
+            p.q = params.get('filter_name');
+        }
+        if (params.get('page')) {
+            p.page = params.get('page');
+        }
+        if (params.get('pagesize')) {
+            p.page_size = params.get('pagesize');
+        }
+        return p;
     }
 
     get(name: string, version: string) {

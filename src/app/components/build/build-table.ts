@@ -21,6 +21,7 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
     @ViewChild('inputMaintainer', { static: false }) inputMaintainer: ElementRef;
     @ViewChild('inputProject', { static: false }) inputProject: ElementRef;
     @ViewChild('inputCommit', { static: false }) inputCommit: ElementRef;
+    /* tslint:disable-next-line:no-input-rename */
     @Input('projectversion') projectversion: ProjectVersion;
 
     constructor(protected route: ActivatedRoute,
