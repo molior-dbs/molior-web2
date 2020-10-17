@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 data => {
                     this.moliorService.connect();
-                    this.router.navigate([this.returnUrl]);
+                    this.router.navigateByUrl(this.returnUrl);
                 },
                 error => {
                     this.alertService.error(error);
