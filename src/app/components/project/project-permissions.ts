@@ -58,6 +58,9 @@ export class ProjectPermissionsComponent extends TableComponent {
     create(): void {
     }
 
-    delete(projectversion: ProjectVersion): void {
+    edit(element) {
+    }
+
+    delete(id: number) {
     }
 }
