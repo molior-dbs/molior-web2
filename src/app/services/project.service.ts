@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -39,10 +39,17 @@ export class ProjectService extends TableService<Project> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('q', params.get('filter_name'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('filter_name')) {
+            p.q = params.get('filter_name');
+        }
+        if (params.get('page')) {
+            p.page = params.get('page');
+        }
+        if (params.get('pagesize')) {
+            p.page_size = params.get('pagesize');
+        }
+        return p;
     }
 
     get(name: string) {
@@ -109,7 +116,7 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     }
 
     getDependencies(p: ProjectVersion) {
-        const h = new HttpParams().set('candidates', 'true');
+        const h: any = {candidates: true};
         return this.http.get(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependencies`,
                              { params: h }).pipe(
             /* tslint:disable:no-string-literal */

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -26,15 +26,24 @@ export class RepositoryService extends TableService<Repository> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('q', params.get('filter_name'))
-                .set('filter_url', params.get('filter_url'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('filter_name')) {
+            p.q = params.get('filter_name');
+        }
+        if (params.get('filter_url')) {
+            p.filter_url = params.get('filter_url');
+        }
+        if (params.get('page')) {
+            p.page = params.get('page');
+        }
+        if (params.get('pagesize')) {
+            p.page_size = params.get('pagesize');
+        }
+        return p;
     }
 
     find(url, excludeProjectversionID = -1) {
-        const p = new HttpParams().set('url', url).set('exclude_projectversion_id', excludeProjectversionID.toString());
+        const p: any = {url, exclude_projectversion_id: excludeProjectversionID.toString()};
         return this.http.get(`${apiURL()}/api2/repositories`, { params: p }).pipe(
             /* tslint:disable:no-string-literal */
             map(res => new MoliorResult<Repository>(res['total_result_count'], res['results']))

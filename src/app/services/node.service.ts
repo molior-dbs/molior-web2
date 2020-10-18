@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -28,10 +28,17 @@ export class NodeService extends TableService<Node> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('q', params.get('filter'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('filter')) {
+            p.q = params.get('filter');
+        }
+        if (params.get('page')) {
+            p.page = params.get('page');
+        }
+        if (params.get('pagesize')) {
+            p.page_size = params.get('pagesize');
+        }
+        return p;
     }
 
     get(name: string) {

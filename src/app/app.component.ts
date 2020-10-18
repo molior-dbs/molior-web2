@@ -9,7 +9,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {AuthService} from './services/auth.service';
 import {UserService} from './services/user.service';
 import {MoliorService} from './services/websocket';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {apiURL} from './lib/url';
 
 interface Status {

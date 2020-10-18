@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {AbstractControl} from '@angular/forms';
@@ -43,11 +43,20 @@ export class MirrorService extends TableService<Mirror> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('q', params.get('filter_name'))
-                .set('q_basemirror', params.get('filter_basemirror'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('filter_name')) {
+            p.q = params.get('filter_name');
+        }
+        if (params.get('filter_basemirror')) {
+            p.q_basemirror = params.get('filter_basemirror');
+        }
+        if (params.get('page')) {
+            p.page = params.get('page');
+        }
+        if (params.get('pagesize')) {
+            p.page_size = params.get('pagesize');
+        }
+        return p;
     }
 
     get(name: string, version: string) {
@@ -55,9 +64,9 @@ export class MirrorService extends TableService<Mirror> {
     }
 
     getMirrors(url: string = '') {
-        let p = {};
+        const p: any = {};
         if (url) {
-            p = new HttpParams().set('url', url);
+            p.url = url;
         }
         return this.http.get(`${apiURL()}/api/mirrors`, { params: p }).pipe(
             /* tslint:disable:no-string-literal */

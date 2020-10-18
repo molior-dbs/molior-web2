@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
 import {apiURL} from '../../lib/url';
 
@@ -16,14 +16,13 @@ export class AboutComponent implements OnInit {
     status: Status;
 
     constructor(protected http: HttpClient) {
-        this.status = { sshkey: '' };
+        this.status = {sshkey: ''};
     }
 
     ngOnInit() {
         this.http.get<Status>(`${apiURL()}/api/status`).subscribe(
-            r => {
-                this.status = r;
-            },
-            err => console.log('Error getting server status', err));
+            r => this.status = r,
+            err => console.log('Error getting server status', err)
+        );
     }
 }

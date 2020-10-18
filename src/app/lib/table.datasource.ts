@@ -1,7 +1,7 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {Observable, Observer, BehaviorSubject, throwError} from 'rxjs';
 import {MatPaginator} from '@angular/material';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {map, catchError} from 'rxjs/operators';
 
 import {apiURL} from '../lib/url';
