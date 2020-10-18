@@ -116,9 +116,9 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     }
 
     getDependencies(p: ProjectVersion) {
-        const h: any = {candidates: true};
+        const params: any = {candidates: true};
         return this.http.get(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependencies`,
-                             { params: h }).pipe(
+                             {params}).pipe(
             /* tslint:disable:no-string-literal */
             map(res => new MoliorResult<ProjectVersion>(res['total_result_count'], res['results']))
             /* tslint:enable:no-string-literal */
@@ -134,8 +134,12 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         return this.http.delete(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependency/${dependency}`);
     }
 
-    get_apt_sources(name: string, version: string) {
-        return this.http.get<string>(`${apiURL()}/api/projectsources/${name}/${version}`, {responseType: 'text' as 'json'});
+    get_apt_sources(name: string, version: string, ci: boolean = false) {
+        const params: any = {};
+        if (ci) {
+            params.unstable = true;
+        }
+        return this.http.get<string>(`${apiURL()}/api/projectsources/${name}/${version}`, {params, responseType: 'text' as 'json'});
     }
 
     clone(p: ProjectVersion, name: string) {

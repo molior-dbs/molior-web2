@@ -15,7 +15,6 @@ export class ProjectversionInfoComponent extends TableComponent {
     projectversion: ProjectVersion;
     projectName: string;
     projectVersion: string;
-    aptSources: string;
     dataSource: ProjectVersionDataSource;
     displayedColumns: string[] = [
         'dependency',
@@ -40,7 +39,6 @@ export class ProjectversionInfoComponent extends TableComponent {
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
                                dependency_policy: 'strict', ci_builds_enabled: false};
         this.dataSource = new ProjectVersionDataSource(projectversionService);
-        this.aptSources = '';
     }
 
     loadData() {
@@ -52,8 +50,6 @@ export class ProjectversionInfoComponent extends TableComponent {
                     this.projectversion = res;
                 });
             this.dataSource.load(`/api2/project/${this.projectName}/${this.projectVersion}/dependencies`, this.params);
-            this.projectversionService.get_apt_sources(this.projectName,
-                this.projectVersion).subscribe((res: string) => this.aptSources = res);
         });
     }
 

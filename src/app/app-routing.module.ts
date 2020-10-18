@@ -8,6 +8,7 @@ import {ProjectversionInfoComponent} from './components/projectversion/projectve
 import {ProjectversionRepoListComponent} from './components/projectversion/projectversion-repo-list';
 import {ProjectversionRepoComponent} from './components/projectversion/projectversion-repo-info';
 import {ProjectversionBuildListComponent} from './components/projectversion/projectversion-build-list';
+import {ProjectversionAPTSourcesComponent} from './components/projectversion/projectversion-aptsources';
 import {MirrorListComponent} from './components/mirror/mirror-list';
 import {MirrorInfoComponent} from './components/mirror/mirror-info';
 import {RepositoryListComponent} from './components/repo/repo-list';
@@ -23,37 +24,37 @@ import {AuthGuard} from './lib/auth.guard';
 
 const routes: Routes = [
     { path: 'login',                         component: LoginComponent },
-    { path: 'builds',                        component: BuildListComponent,      canActivate: [AuthGuard] },
+    { path: 'builds',                        component: BuildListComponent,    canActivate: [AuthGuard] },
     { path: 'build/:id',                     component: BuildInfoComponent,    canActivate: [AuthGuard] },
-    { path: 'projects',                      component: ProjectListComponent,    canActivate: [AuthGuard] },
+    { path: 'projects',                      component: ProjectListComponent,  canActivate: [AuthGuard] },
     { path: 'project/:name',
         children: [
             { path: '',                      redirectTo: 'versions', pathMatch: 'full' },
-            // { path: 'admin',                 component: ProjectComponent,        canActivate: [AuthGuard] },
-            { path: 'versions',              component: ProjectInfoComponent, canActivate: [AuthGuard] },
+            { path: 'versions',              component: ProjectInfoComponent,  canActivate: [AuthGuard] },
             { path: ':version',
                 children: [
                     { path: '',              redirectTo: 'info', pathMatch: 'full' },
-                    { path: 'info',          component: ProjectversionInfoComponent,  canActivate: [AuthGuard] },
-                    { path: 'builds',        component: ProjectversionBuildListComponent, canActivate: [AuthGuard] },
-                    { path: 'repos',         component: ProjectversionRepoListComponent, canActivate: [AuthGuard] },
+                    { path: 'info',          component: ProjectversionInfoComponent,        canActivate: [AuthGuard] },
+                    { path: 'builds',        component: ProjectversionBuildListComponent,   canActivate: [AuthGuard] },
+                    { path: 'repos',         component: ProjectversionRepoListComponent,    canActivate: [AuthGuard] },
                     { path: 'repo/:id',
                         children: [
-                            { path: '',      component: ProjectversionRepoComponent,  canActivate: [AuthGuard] }
+                            { path: '',      component: ProjectversionRepoComponent,        canActivate: [AuthGuard] }
                         ]
-                    }
+                    },
+                    { path: 'aptsources',    component: ProjectversionAPTSourcesComponent,  canActivate: [AuthGuard] },
                 ]
             }
         ]
     },
     { path: 'mirrors',                       component: MirrorListComponent,     canActivate: [AuthGuard] },
-    { path: 'mirror/:name/:version',         component: MirrorInfoComponent,   canActivate: [AuthGuard] },
-    { path: 'repos',                         component: RepositoryListComponent,     canActivate: [AuthGuard] },
-    { path: 'repo/:id',                      component: RepositoryInfoComponent,   canActivate: [AuthGuard] },
+    { path: 'mirror/:name/:version',         component: MirrorInfoComponent,     canActivate: [AuthGuard] },
+    { path: 'repos',                         component: RepositoryListComponent, canActivate: [AuthGuard] },
+    { path: 'repo/:id',                      component: RepositoryInfoComponent, canActivate: [AuthGuard] },
     { path: 'nodes',                         component: NodeListComponent,       canActivate: [AuthGuard] },
-    { path: 'nodes/:name',                   component: NodeInfoComponent,     canActivate: [AuthGuard] },
+    { path: 'nodes/:name',                   component: NodeInfoComponent,       canActivate: [AuthGuard] },
     { path: 'users',                         component: UserListComponent,       canActivate: [AuthGuard] },
-    { path: 'users/:username',               component: UserInfoComponent,     canActivate: [AuthGuard] },
+    { path: 'users/:username',               component: UserInfoComponent,       canActivate: [AuthGuard] },
     { path: 'about',                         component: AboutComponent,          canActivate: [AuthGuard] },
     { path: '**', redirectTo: '/builds'}
 ];

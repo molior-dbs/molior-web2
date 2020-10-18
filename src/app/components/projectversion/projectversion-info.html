@@ -8,6 +8,10 @@
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'builds']">Builds</a>
     <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
+    <a mat-tab-link routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'aptsources']">APT Sources</a>
+    <a mat-tab-link routerLinkActive #rla5="routerLinkActive" [active]="rla5.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'permissions']">Permissions</a>
 </nav>
 
 <div class="mat-elevation-z8 info-table">
@@ -16,27 +20,24 @@
             <tr>
                 <td><strong>APT Repository</strong></td>
                 <td><a class="link" href="{{ projectversion.apt_url }}" target="_blank">{{ projectversion.apt_url }}</a></td>
-            </tr>
-            <tr style="user-select: none">
-                <td><strong>Base Mirror</strong></td>
-                <td><a class="link" [routerLink]="['/mirror/' + projectversion.basemirror ]">{{ projectversion.basemirror }}</a></td>
-            </tr>
-            <tr style="user-select: none">
-                <td><strong>Architectures</strong></td>
-                <td>{{ projectversion.architectures.join(', ') }}</td>
-            </tr>
-            <tr style="user-select: none">
+
                 <td><strong>State</strong></td>
                 <td>
                     <mat-icon *ngIf="projectversion.is_locked">lock</mat-icon>
                     <mat-icon *ngIf="!projectversion.is_locked">lock_open</mat-icon>
                 </td>
             </tr>
-            <tr style="user-select: none">
+            <tr>
+                <td><strong>Base Mirror</strong></td>
+                <td><a class="link" [routerLink]="['/mirror/' + projectversion.basemirror ]">{{ projectversion.basemirror }}</a></td>
+
                 <td><strong>Dependency policy</strong></td>
                 <td>{{ projectversion.dependency_policy }}</td>
             </tr>
-            <tr style="user-select: none">
+            <tr>
+                <td><strong>Architectures</strong></td>
+                <td>{{ projectversion.architectures.join(', ') }}</td>
+
                 <td><strong>CI Builds</strong></td>
                 <td>
                     <mat-icon *ngIf="projectversion.ci_builds_enabled">check_circle_outline</mat-icon>
@@ -44,10 +45,6 @@
                 </td>
             </tr>
         </table>
-    </div>
-    <div>
-        <strong style="user-select: none">APT Sources</strong>
-        <pre style="margin: 0px;">{{aptSources}}</pre>
     </div>
     <div style="flex-grow: 1; text-align: right;">
             <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">

@@ -7,6 +7,10 @@
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'builds']">Builds</a>
     <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
+    <a mat-tab-link routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'aptsources']">APT Sources</a>
+    <a mat-tab-link routerLinkActive #rla5="routerLinkActive" [active]="rla5.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'permissions']">Permissions</a>
 </nav>
 
 <mat-paginator showFirstLastButtons hidePageSize></mat-paginator>

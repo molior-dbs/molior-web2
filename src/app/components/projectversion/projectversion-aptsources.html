@@ -1,0 +1,25 @@
+<h1><mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span></h1>
+
+<nav mat-tab-nav-bar>
+    <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'info']">Info</a>
+    <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'builds']">Builds</a>
+    <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
+    <a mat-tab-link routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'aptsources']">APT Sources</a>
+    <a mat-tab-link routerLinkActive #rla5="routerLinkActive" [active]="rla5.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'permissions']">Permissions</a>
+</nav>
+
+<div class="mat-elevation-z8 info-table">
+    <div style="margin-right: 25px;">
+        <strong style="margin-bottom: 5px;">APT Sources</strong>
+        <div class="aptsources" [innerHTML]="getAPTSources()"></div>
+    </div>
+    <div *ngIf="projectversion.ci_builds_enabled">
+        <strong>APT Sources (CI Builds)</strong>
+        <div class="aptsources" [innerHTML]="getAPTSources(true)"></div>
+    </div>
+</div>
