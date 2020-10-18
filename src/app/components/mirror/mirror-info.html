@@ -12,11 +12,11 @@
     </tr>
     <tr>
         <td><strong>Components</strong></td>
-        <td>{{mirror.components}}</td>
+        <td>{{mirror.components.split(',').join(', ')}}</td>
     </tr>
     <tr>
         <td><strong>Architectures</strong></td>
-        <td>{{mirror.architectures}}</td>
+        <td>{{mirror.architectures.join(', ')}}</td>
     </tr>
     <tr>
         <td><strong>Base Mirror</strong></td>
@@ -49,14 +49,14 @@
     </ng-container>
 
     <ng-container matColumnDef="architectures">
-        <th mat-header-cell *matHeaderCellDef>Architectures</th>
-        <td mat-cell *matCellDef="let element" [routerLink]="getDependentLink(element)">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}">Architectures</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="getDependentLink(element)" [ngStyle]="{'text-align': 'center'}">
             {{ element.architectures.join(', ') }}
         </td>
     </ng-container>
 
     <ng-container matColumnDef="is_locked">
-        <th mat-header-cell *matHeaderCellDef>Locked</th>
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}">Locked</th>
         <td mat-cell *matCellDef="let element" [routerLink]="getDependentLink(element)" [ngStyle]="{'text-align': 'center'}">
             <mat-icon *ngIf="element.is_locked">lock</mat-icon>
             <mat-icon *ngIf="!element.is_locked">remove</mat-icon>
