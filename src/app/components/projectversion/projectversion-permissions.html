@@ -30,7 +30,6 @@
             <button mat-icon-button [matMenuTriggerFor]="menu" aria-label=""><mat-icon>menu</mat-icon></button>
             <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="create()"><mat-icon>control_point</mat-icon> Add Repository</button>
-                <button mat-menu-item><mat-icon>playlist_add</mat-icon> Import Repositories</button>
             </mat-menu>
         </th>
         <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
