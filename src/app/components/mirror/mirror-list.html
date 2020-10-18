@@ -25,7 +25,7 @@
         </th>
         <td mat-cell *matCellDef="let element" [routerLink]="['../mirror', element.name, element.version]" [ngStyle]="{'padding-left': '6px'}">
             <strong> {{element.name}}/{{element.version}} </strong>
-            <span *ngIf="element.name != element.distribution" [ngStyle]="{float: 'right'}">{{element.distribution}}</span>
+            <span *ngIf="element.name != element.distribution" [ngStyle]="{float: 'right', 'margin-right': '10px'}">{{element.distribution}}</span>
             <span [ngClass]="'progress'" *ngIf="element.progress && ( element.state == 'updating' || element.state == 'publishing' )">{{element.progress | number:'1.0-0'}}%</span>
         </td>
     </ng-container>
@@ -33,7 +33,7 @@
     <ng-container matColumnDef="components">
         <th mat-header-cell *matHeaderCellDef>Components</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['../mirror', element.name, element.version]">
-            {{element.components}}
+            {{element.components.split(',').join(', ')}}
         </td>
     </ng-container>
 
