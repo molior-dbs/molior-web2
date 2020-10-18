@@ -33,7 +33,7 @@ export class ProjectversionAPTSourcesComponent {
         });
     }
 
-    getAPTSources(ci: boolean) {
+    getAPTSources(ci: boolean = false) {
         let sources = '';
         let aptsources = this.aptSources;
         if (ci) {
