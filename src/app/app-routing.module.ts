@@ -4,6 +4,7 @@ import {BuildListComponent} from './components/build/build-list';
 import {BuildInfoComponent} from './components/build/build-info';
 import {ProjectListComponent} from './components/project/project-list';
 import {ProjectInfoComponent} from './components/project/project-info';
+import {ProjectPermissionsComponent} from './components/project/project-permissions';
 import {ProjectversionInfoComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent} from './components/projectversion/projectversion-repo-list';
 import {ProjectversionRepoComponent} from './components/projectversion/projectversion-repo-info';
@@ -25,13 +26,14 @@ import {AuthGuard} from './lib/auth.guard';
 
 const routes: Routes = [
     { path: 'login',                         component: LoginComponent },
-    { path: 'builds',                        component: BuildListComponent,    canActivate: [AuthGuard] },
-    { path: 'build/:id',                     component: BuildInfoComponent,    canActivate: [AuthGuard] },
-    { path: 'projects',                      component: ProjectListComponent,  canActivate: [AuthGuard] },
+    { path: 'builds',                        component: BuildListComponent,      canActivate: [AuthGuard] },
+    { path: 'build/:id',                     component: BuildInfoComponent,      canActivate: [AuthGuard] },
+    { path: 'projects',                      component: ProjectListComponent,    canActivate: [AuthGuard] },
     { path: 'project/:name',
         children: [
             { path: '',                      redirectTo: 'versions', pathMatch: 'full' },
-            { path: 'versions',              component: ProjectInfoComponent,  canActivate: [AuthGuard] },
+            { path: 'versions',              component: ProjectInfoComponent,    canActivate: [AuthGuard] },
+            { path: 'permissions',           component: ProjectPermissionsComponent,        canActivate: [AuthGuard] },
             { path: ':version',
                 children: [
                     { path: '',              redirectTo: 'info', pathMatch: 'full' },
@@ -46,7 +48,7 @@ const routes: Routes = [
                     { path: 'aptsources',    component: ProjectversionAPTSourcesComponent,  canActivate: [AuthGuard] },
                     { path: 'permissions',   component: ProjectversionPermissionsComponent, canActivate: [AuthGuard] },
                 ]
-            }
+            },
         ]
     },
     { path: 'mirrors',                       component: MirrorListComponent,     canActivate: [AuthGuard] },
