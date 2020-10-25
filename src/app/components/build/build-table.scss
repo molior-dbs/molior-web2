@@ -63,6 +63,72 @@ td.mat-cell, th.mat-header-cell {
   background: unset;
 }
 
+
+/* Element | http://localhost:8888/ */
+
+app-build.ng-star-inserted > div:nth-child(3) > h2:nth-child(1) {
+  display: flex;
+  flex-grow: 1;
+}
+
+/* Inline #10 | http://localhost:8888/build/1160 */
+
+.mat-paginator {
+  /* display: block; */
+  display: inline;
+  margin-bottom: 6px;
+}
+
+.mat-paginator-container {
+  /* display: flex; */
+  /* width: 100%; */
+  display: inline;
+}
+
+.mat-paginator-outer-container {
+  /* display: flex; */
+  display: inline;
+}
+
+.mat-paginator-range-actions {
+  /* display: flex; */
+}
+
+/* Element | http://localhost:8888/ */
+
+#mat-checkbox-1 {
+  display: inline;
+  font-size: 12px;
+}
+
+/* Element | http://localhost:8888/ */
+
+.mat-paginator-range-label {
+  display: inline;
+}
+
+/* Element | http://localhost:8888/ */
+
+.mat-paginator-range-actions {
+  display: inline;
+}
+
+/* Element | http://localhost:8888/ */
+
+app-build.ng-star-inserted > div:nth-child(3) {
+  display: flex;
+  align-items: end;
+}
+
+/* Inline #1 | http://localhost:8888/build/1160 */
+
+.h2, h2 {
+  /* margin-top: 10px; */
+  /* margin-bottom: 0px; */
+  margin-top: 25px;
+  margin-bottom: 7px;
+}
+
 // set app component for table resize
 :host {
   display: flex;
