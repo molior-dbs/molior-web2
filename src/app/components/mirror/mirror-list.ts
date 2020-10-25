@@ -88,9 +88,9 @@ export class MirrorListComponent extends TableComponent {
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
-    delete(id: number) {
+    delete(mirror: Mirror) {
         if (confirm('Delete mirror ?')) {
-            this.mirrorService.delete(id).subscribe(r => this.loadData());
+            this.mirrorService.delete(mirror).subscribe(r => this.loadData());
         }
     }
 
