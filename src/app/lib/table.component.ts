@@ -99,10 +99,10 @@ export class TableComponent implements AfterViewInit, OnDestroy {
                     this.params.DefaultParams['pagesize'] = '';
                 } else {
                     delete this.params.DefaultParams['pagesize'];
+                    delete this.params.CurrentParams['pagesize'];
                 }
                 delete this.params.ExtraParams['pagesize'];
                 /* tslint:enable:no-string-literal */
-                this.params.CurrentParams = {...this.params.DefaultParams};
                 this.params.set('page',     this.paginator.pageIndex + 1);
                 this.params.set('pagesize', this.paginator.pageSize);
                 this.loadPage();
@@ -165,6 +165,11 @@ export class TableComponent implements AfterViewInit, OnDestroy {
                 tap(() => {
                     this.paginator.pageIndex = 0;
                     this.params.set('page', 1);
+                    /* tslint:disable:no-string-literal */
+                    delete this.params.DefaultParams['pagesize'];
+                    delete this.params.CurrentParams['pagesize'];
+                    delete this.params.ExtraParams['pagesize'];
+                    /* tslint:enable:no-string-literal */
                     this.setParams();
                     this.loadPage();
                 }),
