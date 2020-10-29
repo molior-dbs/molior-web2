@@ -6,7 +6,7 @@
         <ng-container matColumnDef="username">
             <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '200px'}">
                 <mat-form-field>
-                    <input matInput placeholder="Name" #inputName>
+                    <input matInput placeholder="Username" #inputName>
                 </mat-form-field>
             </th>
             <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.username]">
