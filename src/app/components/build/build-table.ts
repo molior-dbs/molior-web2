@@ -117,14 +117,25 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
                 build.buildstate === 'nothing_done' ||
                 build.buildstate === 'publish_failed')) {
             const interval = (new Date(build.endstamp).getTime() - new Date(build.startstamp).getTime()) / 1000.0;
-            const mins = Math.floor(interval / 60.0);
+            const hrs = Math.floor(interval / 3600.0);
+            const mins = Math.floor((interval - (hrs * 3600.0)) / 60.0);
             let secs = `${Math.floor(interval % 60.0)}`;
-            if (mins > 0) {
-                secs = secs.padStart(2, '0');
-                return `${mins}'${secs}''`;
-            } else {
-                return `${secs}''`;
+            let t = '';
+            if (hrs > 0) {
+                const h = `${hrs}h`;
+                t += h;
             }
+
+            if (mins > 0) {
+                const m = `${mins}m`;
+                t += m;
+            }
+            if (hrs > 0 || mins > 0) {
+                secs = secs.padStart(2, '0');
+            }
+            const s = `${secs}s`;
+            t += s;
+            return t;
         }
         return null;
     }
