@@ -76,6 +76,15 @@ export class ProjectInfoComponent extends TableComponent {
         });
         dialog.afterClosed().subscribe(r => this.loadData());
     }
+
+    clone(projectversion: ProjectVersion): void {
+        const dialog = this.dialog.open(ProjectversionCloneDialogComponent, {
+            data: { projectversion },
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
+    }
 }
 
 @Component({
@@ -207,3 +216,29 @@ export class ProjectversionDeleteDialogComponent {
         });
     }
 }
+
+@Component({
+    selector: 'app-projectversion-clone-dialog',
+    templateUrl: '../projectversion/projectversion-clone-form.html',
+})
+export class ProjectversionCloneDialogComponent {
+    projectversion: ProjectVersion;
+    form = this.fb.group({
+        name: new FormControl('', [Validators.required]),  // FIXME: name validator
+    });
+
+    constructor(public dialog: MatDialogRef<ProjectversionCloneDialogComponent>,
+                private fb: FormBuilder,
+                protected projectversionService: ProjectVersionService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
+    ) { this.projectversion = data.projectversion; }
+
+    save(): void {
+        this.projectversionService.clone(this.projectversion, this.form.value.name).subscribe( r => {
+            this.dialog.close();
+            this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
+        });
+    }
+}
+

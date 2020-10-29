@@ -34,10 +34,11 @@ import {ProjectListComponent, ProjectCreateDialogComponent, ProjectDeleteDialogC
 import {ProjectService, ProjectVersionService} from './services/project.service';
 import {RepositoryService} from './services/repository.service';
 
-import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDeleteDialogComponent} from './components/project/project-info';
+import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
+        ProjectversionCloneDialogComponent} from './components/project/project-info';
 import {ProjectPermissionsComponent} from './components/project/project-permissions';
 import {ProjectversionInfoComponent, DependencyDialogComponent,
-        CloneDialogComponent, LockDialogComponent, OverlayDialogComponent,
+        LockDialogComponent, OverlayDialogComponent,
         SnapshotDialogComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent, SourcerepoDialogComponent,
         CIBuildDialogComponent} from './components/projectversion/projectversion-repo-list';
@@ -109,12 +110,12 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectversionRepoListComponent,
         ProjectversionRepoComponent,
         DependencyDialogComponent,
-        CloneDialogComponent,
         LockDialogComponent,
         OverlayDialogComponent,
         SnapshotDialogComponent,
         ProjectDeleteDialogComponent,
         ProjectversionDeleteDialogComponent,
+        ProjectversionCloneDialogComponent,
         ProjectversionBuildListComponent,
         ProjectversionAPTSourcesComponent,
         ProjectversionPermissionsComponent,
@@ -181,12 +182,12 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       HookDialogComponent,
                       UserDialogComponent,
                       DependencyDialogComponent,
-                      CloneDialogComponent,
                       LockDialogComponent,
                       OverlayDialogComponent,
                       SnapshotDialogComponent,
                       ProjectDeleteDialogComponent,
                       ProjectversionDeleteDialogComponent,
+                      ProjectversionCloneDialogComponent
                      ],
 })
 export class AppModule { }

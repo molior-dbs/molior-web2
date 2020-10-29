@@ -5,7 +5,7 @@ import {FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import {ProjectVersion, ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
-import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent} from '../project/project-info';
+import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent, ProjectversionCloneDialogComponent} from '../project/project-info';
 
 @Component({
     selector: 'app-projectversion-info',
@@ -107,7 +107,7 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     clone() {
-        const dialog = this.dialog.open(CloneDialogComponent, {
+        const dialog = this.dialog.open(ProjectversionCloneDialogComponent, {
             data: { projectversion: this.projectversion },
             disableClose: true,
             width: '40%',
@@ -177,32 +177,6 @@ export class DependencyDialogComponent {
             this.projectversion,
             this.form.value.dependency,
             this.form.value.use_cibuilds).subscribe(r => this.dialog.close());
-    }
-}
-
-
-@Component({
-    selector: 'app-clone-dialog',
-    templateUrl: 'projectversion-clone-form.html',
-})
-export class CloneDialogComponent {
-    projectversion: ProjectVersion;
-    form = this.fb.group({
-        name: new FormControl('', [Validators.required]),  // FIXME: name validator
-    });
-
-    constructor(public dialog: MatDialogRef<CloneDialogComponent>,
-                private fb: FormBuilder,
-                protected projectversionService: ProjectVersionService,
-                protected router: Router,
-                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) { this.projectversion = data.projectversion; }
-
-    save(): void {
-        this.projectversionService.clone(this.projectversion, this.form.value.name).subscribe( r => {
-            this.dialog.close();
-            this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
-        });
     }
 }
 
