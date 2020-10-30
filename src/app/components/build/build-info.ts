@@ -7,6 +7,7 @@ import {MatPaginator} from '@angular/material';
 
 import {BuildService, Build, buildicon} from '../../services/build.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
+import {RepositoryService} from '../../services/repository.service';
 
 @Component({
     selector: 'app-build',
@@ -30,6 +31,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(protected route: ActivatedRoute,
                 protected buildService: BuildService,
+                protected repositoryService: RepositoryService,
                 protected moliorService: MoliorService) {
         this.buildicon = buildicon;
         this.build = {id: -1,
@@ -258,10 +260,14 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    rebuild(id: number) {
-        this.buildService.rebuild(id).subscribe( res => {
-            this.fetchLogs(id);
+    rebuild() {
+        this.buildService.rebuild(this.build.id).subscribe( res => {
+            this.fetchLogs(this.build.id);
         });
+    }
+
+    buildlatest() {
+        this.repositoryService.build(this.build.sourcerepository_id).subscribe();
     }
 
 }
