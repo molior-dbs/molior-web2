@@ -24,13 +24,14 @@ export class RepositoryListComponent extends TableComponent {
         'actions',
     ];
     @ViewChild('inputName', { static: false }) inputName: ElementRef;
+    @ViewChild('inputURL', { static: false }) inputURL: ElementRef;
 
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
                 protected dialog: MatDialog,
                 protected repoService: RepositoryService,
                 protected moliorService: MoliorService) {
-        super(route, router, [['filter_name', '']]);
+        super(route, router, [['filter_name', ''], ['filter_url', '']]);
         this.dataSource = new RepositoryDataSource(repoService);
     }
 
@@ -40,15 +41,18 @@ export class RepositoryListComponent extends TableComponent {
 
     initElements() {
         this.inputName.nativeElement.value = this.params.get('filter_name');
+        this.inputURL.nativeElement.value = this.params.get('filter_url');
     }
 
     setParams() {
         this.params.set('filter_name', this.inputName.nativeElement.value);
+        this.params.set('filter_url', this.inputURL.nativeElement.value);
     }
 
     AfterViewInit() {
         this.dataSource.setPaginator(this.paginator);
         this.initFilter(this.inputName.nativeElement);
+        this.initFilter(this.inputURL.nativeElement);
     }
 
     create() {
