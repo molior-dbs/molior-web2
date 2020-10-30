@@ -13,6 +13,14 @@ export interface Node {
   state: string;
   load: [number, number, number];
   uptime_seconds: number;
+  cpu_cores: number;
+  ram_used: number;
+  ram_total: number;
+  disk_used: number;
+  disk_total: number;
+  machine_id: string;
+  ip: string;
+  client_ver: string;
 }
 
 export class NodeDataSource extends TableDataSource<Node> {
@@ -71,4 +79,14 @@ export function getUptime(node) {
         return `${h}h ${mins}m`;
     }
     return `${m}m`;
+}
+
+export function getMemory(node): string {
+    return String((node.ram_used / 1024.0 / 1024.0 / 1024.0).toFixed(2)) + ' / ' +
+           String((node.ram_total / 1024.0 / 1024.0 / 1024.0).toFixed(2)); // GB
+}
+
+export function getDisk(node): string {
+    return String((node.disk_used / 1024.0 / 1024.0 / 1024.0).toFixed(2)) + ' / ' +
+           String((node.disk_total / 1024.0 / 1024.0 / 1024.0).toFixed(2)); // GB
 }

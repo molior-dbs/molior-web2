@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 
-import {NodeService, Node, getLoadColor, getUptime} from '../../services/node.service';
+import {NodeService, Node, getLoadColor, getUptime, getMemory, getDisk} from '../../services/node.service';
 
 @Component({
     selector: 'app-node',
@@ -11,6 +11,8 @@ export class NodeInfoComponent implements OnInit {
     node: Node;
     getLoadColor = getLoadColor;
     getUptime = getUptime;
+    getMemory = getMemory;
+    getDisk = getDisk;
 
     constructor(protected route: ActivatedRoute,
                 protected nodeService: NodeService) {
@@ -19,7 +21,15 @@ export class NodeInfoComponent implements OnInit {
             arch: '',
             state: '',
             load: [0, 0, 0],
-            uptime_seconds: 0
+            uptime_seconds: 0,
+            cpu_cores: 0,
+            ram_used: 0,
+            ram_total: 0,
+            disk_used: 0,
+            disk_total: 0,
+            machine_id: '',
+            ip: '',
+            client_ver: '',
         };
     }
 

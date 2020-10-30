@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import {TableComponent} from '../../lib/table.component';
-import {NodeService, NodeDataSource, getLoadColor, getUptime} from '../../services/node.service';
+import {NodeService, NodeDataSource, getLoadColor, getUptime, getMemory, getDisk} from '../../services/node.service';
 
 @Component({
   selector: 'app-nodes',
@@ -10,9 +10,12 @@ import {NodeService, NodeDataSource, getLoadColor, getUptime} from '../../servic
 })
 export class NodeListComponent extends TableComponent {
     dataSource: NodeDataSource;
-    displayedColumns: string[] = ['name', 'arch', 'state', 'load', 'uptime_seconds', 'actions'];
+    displayedColumns: string[] = ['name', 'arch', 'state', 'load', 'cpu_cores', 'ram_mem', 'disk',
+                                  'machine_id', 'ip', 'client_ver', 'uptime_seconds', 'actions'];
     getLoadColor = getLoadColor;
     getUptime = getUptime;
+    getMemory = getMemory;
+    getDisk = getDisk;
     @ViewChild('input', { static: false }) input: ElementRef;
 
     constructor(protected route: ActivatedRoute,
