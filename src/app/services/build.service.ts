@@ -117,6 +117,9 @@ export class BuildService extends TableService<Build> {
         if (params.get('project')) {
             p.project = params.get('project');
         }
+        if (params.get('commit')) {
+            p.commit = params.get('commit');
+        }
         if (params.get('page')) {
             p.page = params.get('page').toString();
         }
