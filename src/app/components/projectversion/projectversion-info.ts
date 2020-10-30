@@ -5,7 +5,9 @@ import {FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import {ProjectVersion, ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
-import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent, ProjectversionCloneDialogComponent} from '../project/project-info';
+import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
+        ProjectversionCloneDialogComponent, ProjectversionOverlayDialogComponent,
+        ProjectversionLockDialogComponent, ProjectversionSnapshotDialogComponent} from '../project/project-info';
 
 @Component({
     selector: 'app-projectversion-info',
@@ -115,7 +117,7 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     snapshot() {
-        const dialog = this.dialog.open(SnapshotDialogComponent, {
+        const dialog = this.dialog.open(ProjectversionSnapshotDialogComponent, {
             data: { projectversion: this.projectversion },
             disableClose: true,
             width: '40%',
@@ -123,7 +125,7 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     overlay() {
-        const dialog = this.dialog.open(OverlayDialogComponent, {
+        const dialog = this.dialog.open(ProjectversionOverlayDialogComponent, {
             data: { projectversion: this.projectversion },
             disableClose: true,
             width: '40%',
@@ -131,7 +133,7 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     lock() {
-        const dialog = this.dialog.open(LockDialogComponent, {
+        const dialog = this.dialog.open(ProjectversionLockDialogComponent, {
             data: { projectversion: this.projectversion },
             disableClose: true,
             width: '40%',
@@ -177,74 +179,5 @@ export class DependencyDialogComponent {
             this.projectversion,
             this.form.value.dependency,
             this.form.value.use_cibuilds).subscribe(r => this.dialog.close());
-    }
-}
-
-
-@Component({
-    selector: 'app-lock-dialog',
-    templateUrl: 'projectversion-lock-form.html',
-})
-export class LockDialogComponent {
-    projectversion: ProjectVersion;
-    constructor(public dialog: MatDialogRef<LockDialogComponent>,
-                protected projectversionService: ProjectVersionService,
-                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) { this.projectversion = data.projectversion; }
-
-    save(): void {
-        this.projectversionService.lock(this.projectversion).subscribe(r => this.dialog.close());
-    }
-}
-
-
-@Component({
-    selector: 'app-overlay-dialog',
-    templateUrl: 'projectversion-overlay-form.html',
-})
-export class OverlayDialogComponent {
-    projectversion: ProjectVersion;
-    form = this.fb.group({
-        name: new FormControl('', [Validators.required]),  // FIXME: name validator
-    });
-
-    constructor(public dialog: MatDialogRef<OverlayDialogComponent>,
-                private fb: FormBuilder,
-                protected projectversionService: ProjectVersionService,
-                protected router: Router,
-                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) { this.projectversion = data.projectversion; }
-
-    save(): void {
-        this.projectversionService.overlay(this.projectversion, this.form.value.name).subscribe( r => {
-            this.dialog.close();
-            this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
-        });
-    }
-}
-
-
-@Component({
-    selector: 'app-snapshot-dialog',
-    templateUrl: 'projectversion-snapshot-form.html',
-})
-export class SnapshotDialogComponent {
-    projectversion: ProjectVersion;
-    form = this.fb.group({
-        name: new FormControl('', [Validators.required]),  // FIXME: name validator
-    });
-
-    constructor(public dialog: MatDialogRef<SnapshotDialogComponent>,
-                private fb: FormBuilder,
-                protected projectversionService: ProjectVersionService,
-                protected router: Router,
-                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) { this.projectversion = data.projectversion; }
-
-    save(): void {
-        this.projectversionService.snapshot(this.projectversion, this.form.value.name).subscribe(r => {
-            this.dialog.close();
-            this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
-        });
     }
 }

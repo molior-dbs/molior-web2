@@ -68,6 +68,13 @@ export class ProjectInfoComponent extends TableComponent {
         dialog.afterClosed().subscribe(r => this.loadData());
     }
 
+    edit(projectversion: ProjectVersion) {
+        const dialog = this.dialog.open(ProjectversionDialogComponent,
+          {data: { projectName: this.project.name, projectversion},
+        disableClose: true, width: '40%'});
+        dialog.afterClosed().subscribe(result => this.loadData());
+    }
+
     delete(projectversion: ProjectVersion): void {
         const dialog = this.dialog.open(ProjectversionDeleteDialogComponent, {
             data: { projectversion },
@@ -84,6 +91,31 @@ export class ProjectInfoComponent extends TableComponent {
             width: '40%',
         });
         dialog.afterClosed().subscribe(r => this.loadData());
+    }
+
+    snapshot(projectversion: ProjectVersion) {
+        const dialog = this.dialog.open(ProjectversionSnapshotDialogComponent, {
+            data: { projectversion },
+            disableClose: true,
+            width: '40%',
+        });
+    }
+
+    overlay(projectversion: ProjectVersion) {
+        const dialog = this.dialog.open(ProjectversionOverlayDialogComponent, {
+            data: { projectversion },
+            disableClose: true,
+            width: '40%',
+        });
+    }
+
+    lock(projectversion: ProjectVersion) {
+        const dialog = this.dialog.open(ProjectversionLockDialogComponent, {
+            data: { projectversion },
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(result => this.loadData());
     }
 }
 
@@ -242,3 +274,70 @@ export class ProjectversionCloneDialogComponent {
     }
 }
 
+@Component({
+    selector: 'app-lock-dialog',
+    templateUrl: '../projectversion/projectversion-lock-form.html',
+})
+export class ProjectversionLockDialogComponent {
+    projectversion: ProjectVersion;
+    constructor(public dialog: MatDialogRef<ProjectversionLockDialogComponent>,
+                protected projectversionService: ProjectVersionService,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
+    ) { this.projectversion = data.projectversion; }
+
+    save(): void {
+        this.projectversionService.lock(this.projectversion).subscribe(r => this.dialog.close());
+    }
+}
+
+
+@Component({
+    selector: 'app-overlay-dialog',
+    templateUrl: '../projectversion/projectversion-overlay-form.html',
+})
+export class ProjectversionOverlayDialogComponent {
+    projectversion: ProjectVersion;
+    form = this.fb.group({
+        name: new FormControl('', [Validators.required]),  // FIXME: name validator
+    });
+
+    constructor(public dialog: MatDialogRef<ProjectversionOverlayDialogComponent>,
+                private fb: FormBuilder,
+                protected projectversionService: ProjectVersionService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
+    ) { this.projectversion = data.projectversion; }
+
+    save(): void {
+        this.projectversionService.overlay(this.projectversion, this.form.value.name).subscribe( r => {
+            this.dialog.close();
+            this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
+        });
+    }
+}
+
+
+@Component({
+    selector: 'app-snapshot-dialog',
+    templateUrl: '../projectversion/projectversion-snapshot-form.html',
+})
+export class ProjectversionSnapshotDialogComponent {
+    projectversion: ProjectVersion;
+    form = this.fb.group({
+        name: new FormControl('', [Validators.required]),  // FIXME: name validator
+    });
+
+    constructor(public dialog: MatDialogRef<ProjectversionSnapshotDialogComponent>,
+                private fb: FormBuilder,
+                protected projectversionService: ProjectVersionService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
+    ) { this.projectversion = data.projectversion; }
+
+    save(): void {
+        this.projectversionService.snapshot(this.projectversion, this.form.value.name).subscribe(r => {
+            this.dialog.close();
+            this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
+        });
+    }
+}

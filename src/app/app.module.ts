@@ -35,11 +35,10 @@ import {ProjectService, ProjectVersionService} from './services/project.service'
 import {RepositoryService} from './services/repository.service';
 
 import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
+        ProjectversionLockDialogComponent, ProjectversionOverlayDialogComponent, ProjectversionSnapshotDialogComponent,
         ProjectversionCloneDialogComponent} from './components/project/project-info';
 import {ProjectPermissionsComponent} from './components/project/project-permissions';
-import {ProjectversionInfoComponent, DependencyDialogComponent,
-        LockDialogComponent, OverlayDialogComponent,
-        SnapshotDialogComponent} from './components/projectversion/projectversion-info';
+import {ProjectversionInfoComponent, DependencyDialogComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent, SourcerepoDialogComponent,
         CIBuildDialogComponent} from './components/projectversion/projectversion-repo-list';
 import {ProjectversionRepoComponent, HookDialogComponent} from './components/projectversion/projectversion-repo-info';
@@ -110,12 +109,12 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectversionRepoListComponent,
         ProjectversionRepoComponent,
         DependencyDialogComponent,
-        LockDialogComponent,
-        OverlayDialogComponent,
-        SnapshotDialogComponent,
         ProjectDeleteDialogComponent,
         ProjectversionDeleteDialogComponent,
         ProjectversionCloneDialogComponent,
+        ProjectversionLockDialogComponent,
+        ProjectversionOverlayDialogComponent,
+        ProjectversionSnapshotDialogComponent,
         ProjectversionBuildListComponent,
         ProjectversionAPTSourcesComponent,
         ProjectversionPermissionsComponent,
@@ -182,9 +181,9 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       HookDialogComponent,
                       UserDialogComponent,
                       DependencyDialogComponent,
-                      LockDialogComponent,
-                      OverlayDialogComponent,
-                      SnapshotDialogComponent,
+                      ProjectversionLockDialogComponent,
+                      ProjectversionOverlayDialogComponent,
+                      ProjectversionSnapshotDialogComponent,
                       ProjectDeleteDialogComponent,
                       ProjectversionDeleteDialogComponent,
                       ProjectversionCloneDialogComponent
