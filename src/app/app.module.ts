@@ -37,7 +37,7 @@ import {RepositoryService} from './services/repository.service';
 import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
         ProjectversionLockDialogComponent, ProjectversionOverlayDialogComponent, ProjectversionSnapshotDialogComponent,
         ProjectversionCloneDialogComponent} from './components/project/project-info';
-import {ProjectPermissionsComponent} from './components/project/project-permissions';
+import {ProjectPermissionsComponent, ProjectPermissionDialogComponent} from './components/project/project-permissions';
 import {ProjectversionInfoComponent, DependencyDialogComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent, SourcerepoDialogComponent,
         CIBuildDialogComponent} from './components/projectversion/projectversion-repo-list';
@@ -103,6 +103,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         AlertComponent,
 
         ProjectInfoComponent,
+        ProjectPermissionDialogComponent,
         ProjectPermissionsComponent,
         ProjectversionDialogComponent,
         ProjectversionInfoComponent,
@@ -186,7 +187,8 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       ProjectversionSnapshotDialogComponent,
                       ProjectDeleteDialogComponent,
                       ProjectversionDeleteDialogComponent,
-                      ProjectversionCloneDialogComponent
+                      ProjectversionCloneDialogComponent,
+                      ProjectPermissionDialogComponent
                      ],
 })
 export class AppModule { }

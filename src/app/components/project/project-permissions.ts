@@ -5,9 +5,12 @@ import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {MatOptionSelectionChange} from '@angular/material';
 
 import {TableComponent} from '../../lib/table.component';
-import {ProjectService, ProjectVersionService, ProjectVersionDataSource, ProjectVersion, Project} from '../../services/project.service';
-import {MirrorService, Mirror, BaseMirrorValidator} from '../../services/mirror.service';
+import {MoliorResult} from '../../lib/table.datasource';
+import {ProjectService, ProjectVersionService, ProjectVersionDataSource, ProjectVersion,
+        Project, Permission} from '../../services/project.service';
+import {UserService, User} from '../../services/user.service';
 import {ValidationService} from '../../services/validation.service';
+
 
 @Component({
     selector: 'app-projectversion-permissions',
@@ -55,12 +58,69 @@ export class ProjectPermissionsComponent extends TableComponent {
         this.initFilter(this.inputName.nativeElement);
     }
 
-    create(): void {
+    add(): void {
+        const dialog = this.dialog.open(ProjectPermissionDialogComponent, {
+            data: {project: this.project},
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 
-    edit(element) {
+    edit(permission) {
+        const dialog = this.dialog.open(ProjectPermissionDialogComponent, {
+            data: {permission, project: this.project},
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 
     delete(id: number) {
+    }
+}
+
+@Component({
+    selector: 'app-project-permission-dialog',
+    templateUrl: 'project-permission-form.html',
+})
+export class ProjectPermissionDialogComponent {
+    project: Project;
+    permission: Permission;
+    roles = [];
+    usernames: MoliorResult<User>;
+    form = this.fb.group({
+        username: new FormControl('', [Validators.required,
+                                   Validators.minLength(2),
+            // ValidationService.usernameValidator
+                                  ]),
+        role: new FormControl('', [Validators.maxLength(255)]),
+    });
+
+    constructor(public dialog: MatDialogRef<ProjectPermissionDialogComponent>,
+                protected projectService: ProjectService,
+                protected userService: UserService,
+                private fb: FormBuilder,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: {permission: Permission, project: Project}) {
+        this.project = data.project;
+        this.permission = data.permission;
+        if (this.permission) {
+            this.form.patchValue({username: this.permission.username, this: data.permission.role});
+        }
+        this.userService.getProjectRoleCandidates(this.project.name).subscribe(
+            /* tslint:disable:no-string-literal */
+            res => this.usernames = new MoliorResult<User>(res['total_result_count'], res['results'])
+            /* tslint:enable:no-string-literal */
+        );
+    }
+
+    save(): void {
+        if (!this.permission) {
+            this.projectService.addPermission(this.project.name, this.form.value.username, this.form.value.role);
+        } else {
+            this.projectService.editPermission(this.project.name, this.form.value.username, this.form.value.role);
+        }
+        this.dialog.close();
     }
 }

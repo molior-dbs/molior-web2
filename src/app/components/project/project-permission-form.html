@@ -1,0 +1,33 @@
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon>
+<h1 mat-dialog-titlei *ngIf="!permission">Add Project Permission</h1>
+<h1 mat-dialog-titlei *ngIf="permission">Edit Project Permission</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form">
+        <p>User Name <app-validation-error [control]="form.get('username')"></app-validation-error></p>
+        <mat-form-field>
+            <input matInput formControlName="username" required cdkFocusInitial [matAutocomplete]="autoUsername">
+            <mat-autocomplete #autoUsername="matAutocomplete">
+                <ng-container *ngFor="let entry of usernames">
+                <mat-option *ngIf="entry" [value]="entry.username">
+                    {{entry.username}}
+                </mat-option>
+                </ng-container>
+            </mat-autocomplete>
+        </mat-form-field>
+        <p>Role<app-validation-error [control]="form.get('role')"></app-validation-error></p>
+        <mat-form-field>
+            <input matInput formControlName="role" required cdkFocusInitial [matAutocomplete]="autoRole">
+            <mat-autocomplete #autoRole="matAutocomplete">
+                <ng-container *ngFor="let entry of ['member', 'manager', 'owner']">
+                <mat-option *ngIf="entry" [value]="entry">
+                    {{entry}}
+                </mat-option>
+                </ng-container>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="dialog.close()">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="!form.valid">Ok</button>
+</div>

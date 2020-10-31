@@ -26,6 +26,12 @@ export interface ProjectVersion {
     ci_builds_enabled: boolean;
 }
 
+export interface Permission {
+    id: number;
+    username: string;
+    role: string;
+}
+
 export class ProjectDataSource extends TableDataSource<Project> {
     constructor(service: TableService<Project>) {
         super('projects', service);
@@ -58,17 +64,25 @@ export class ProjectService extends TableService<Project> {
 
     create(name: string, description: string) {
         console.log('creating project:', name);
-        return this.http.post<Project>(`${apiURL()}/api/projects`, {name, description}).subscribe();
+        return this.http.post(`${apiURL()}/api/projects`, {name, description}).subscribe();
     }
 
     edit(id: number, description: string) {
         console.log('editing project:', id);
-        return this.http.put<Project>(`${apiURL()}/api/project/${id}`, {description}).subscribe();
+        return this.http.put(`${apiURL()}/api/project/${id}`, {description}).subscribe();
     }
 
     delete(name: string) {
         console.log('deleting project:', name);
         return this.http.delete(`${apiURL()}/api2/project/${name}`);
+    }
+
+    addPermission(name: string, username: string, role: string) {
+        return this.http.post(`${apiURL()}/api2/project/${name}/permissions`, {username, role}).subscribe();
+    }
+
+    editPermission(name: string, username: string, role: string) {
+        return this.http.put(`${apiURL()}/api2/project/${name}/permissions`, {username, role}).subscribe();
     }
 }
 
