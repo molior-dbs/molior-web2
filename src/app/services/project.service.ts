@@ -78,11 +78,15 @@ export class ProjectService extends TableService<Project> {
     }
 
     addPermission(name: string, username: string, role: string) {
-        return this.http.post(`${apiURL()}/api2/project/${name}/permissions`, {username, role}).subscribe();
+        return this.http.post(`${apiURL()}/api2/project/${name}/permissions/${username}`, {role});
     }
 
     editPermission(name: string, username: string, role: string) {
-        return this.http.put(`${apiURL()}/api2/project/${name}/permissions`, {username, role}).subscribe();
+        return this.http.put(`${apiURL()}/api2/project/${name}/permissions/${username}`, {role});
+    }
+
+    deletePermission(name: string, username: string) {
+        return this.http.delete(`${apiURL()}/api2/project/${name}/permissions/${username}`);
     }
 }
 

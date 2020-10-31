@@ -76,7 +76,9 @@ export class ProjectPermissionsComponent extends TableComponent {
         dialog.afterClosed().subscribe(r => this.loadData());
     }
 
-    delete(id: number) {
+    delete(permission) {
+        this.projectService.deletePermission(this.project.name, permission.username).subscribe(
+            r => this.loadData());
     }
 }
 
@@ -117,10 +119,11 @@ export class ProjectPermissionDialogComponent {
 
     save(): void {
         if (!this.permission) {
-            this.projectService.addPermission(this.project.name, this.form.value.username, this.form.value.role);
+            this.projectService.addPermission(this.project.name, this.form.value.username, this.form.value.role).subscribe(
+                r => this.dialog.close());
         } else {
-            this.projectService.editPermission(this.project.name, this.form.value.username, this.form.value.role);
+            this.projectService.editPermission(this.project.name, this.form.value.username, this.form.value.role).subscribe(
+                r => this.dialog.close());
         }
-        this.dialog.close();
     }
 }
