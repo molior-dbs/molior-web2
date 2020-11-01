@@ -18,6 +18,10 @@ export class ProjectversionRepoComponent extends TableComponent {
     dataSource: RepositoryDataSource;
     displayedColumns: string[] = [
         'url',
+        'method',
+        'skipssl',
+        'hooktype',
+        'enabled',
         'actions'
     ];
 
@@ -75,6 +79,9 @@ export class ProjectversionRepoComponent extends TableComponent {
     }
 
     removeHook(id) {
+        // FIXME: confirm dialog
+        this.repositoryService.removeHook(this.projectversion, this.repository.id, id).subscribe(
+            r => this.loadData());
     }
 }
 
@@ -91,6 +98,14 @@ export class HookDialogComponent implements OnInit {
                                   Validators.minLength(2),
             // FIXME: ValidationService.URL
                                   ]),
+        method: new FormControl('POST', [Validators.required,
+                                  Validators.minLength(2),
+                                  ]),
+        hooktype: new FormControl('deb', [Validators.required,
+                                  Validators.minLength(2),
+                                  ]),
+        skipssl: new FormControl(false),
+        body: new FormControl('')
     });
 
     constructor(public dialog: MatDialogRef<HookDialogComponent>,
@@ -107,8 +122,13 @@ export class HookDialogComponent implements OnInit {
 
     save(): void {
         if (!this.hook) {
-            this.repositoryService.addHook(this.data.projectversion, this.data.repository,
-                                           this.form.value.url.trim()).subscribe();
+            this.repositoryService.addHook(this.data.projectversion, this.data.repository.id,
+                this.form.value.url.trim(),
+                this.form.value.skipssl,
+                this.form.value.method.trim(),
+                this.form.value.hooktype.trim(),
+                this.form.value.body.trim(),
+            ).subscribe();
         } else {
             // this.repositoryService.editHook(this.data.projectversion, this.data.repository,
                                             // this.form.value.url.trim()).subscribe();

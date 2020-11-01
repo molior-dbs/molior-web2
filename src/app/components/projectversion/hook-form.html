@@ -3,10 +3,38 @@
 <h1 *ngIf="hook" mat-dialog-title>Edit Post Build Hook</h1>
 <div mat-dialog-content>
     <form [formGroup]="form">
-        <p><strong>Hook URL</strong> <app-validation-error [control]="form.get('url')"></app-validation-error></p>
-        <mat-form-field *ngIf="!hook">
+        <h3>Hook URL <app-validation-error [control]="form.get('url')"></app-validation-error></h3>
+        <mat-form-field>
             <input matInput formControlName="url" required cdkFocusInitial>
         </mat-form-field>
+        <mat-checkbox style="display: inline-block; text-align: right; width: 100%;" formControlName="skipssl">Skip SSL Verification</mat-checkbox>
+
+        <h3>HTTP Method <app-validation-error [control]="form.get('method')"></app-validation-error></h3>
+        <mat-form-field ngClass="mat-select-fix" floatLabel="never" appearance="standard">
+            <mat-select formControlName="method" [(value)]="POST">
+                <mat-option value="POST"><strong>POST</strong></mat-option>
+                <mat-option value="GET"><strong>GET</strong></mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <h3>Hook Type <app-validation-error [control]="form.get('hooktype')"></app-validation-error></h3>
+        <mat-form-field ngClass="mat-select-fix" floatLabel="never" appearance="standard">
+            <mat-select formControlName="hooktype" [(value)]="deb">
+                <mat-option value="top"><strong>top</strong></mat-option>
+                <mat-option value="deb"><strong>deb</strong></mat-option>
+                <mat-option value="src"><strong>src</strong></mat-option>
+                <mat-option value="top+deb"><strong>top + deb</strong></mat-option>
+                <mat-option value="top+src"><strong>top + src</strong></mat-option>
+                <mat-option value="src+deb"><strong>deb + src</strong></mat-option>
+                <mat-option value="top+src+deb"><strong>top + deb + src</strong></mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <h3>Hook Body <app-validation-error [control]="form.get('body')"></app-validation-error></h3>
+          <mat-form-field>
+            <textarea style="height: 200px" matInput formControlName="body" placeholder=""></textarea>
+          </mat-form-field>
+
     </form>
 </div>
 <div mat-dialog-actions>

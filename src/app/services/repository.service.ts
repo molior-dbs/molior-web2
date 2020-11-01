@@ -82,9 +82,13 @@ export class RepositoryService extends TableService<Repository> {
         return this.http.get<Repository>(`${apiURL()}/api2/project/${name}/${version}/repository/${repoID}`);
     }
 
-    addHook(pv: any, repo: Repository, url: string) {
-        return this.http.post(`${apiURL()}/api2/project/${pv.project_name}/${pv.name}/repository/${repo.id}/hook`,
-            { url });
+    addHook(pv: any, repoid: number, url: string, skipssl: boolean, method: string, hooktype: string, body: string) {
+        return this.http.post(`${apiURL()}/api2/project/${pv.project_name}/${pv.name}/repository/${repoid}/hook`,
+            { url, skipssl, method, hooktype, body });
+    }
+
+    removeHook(pv: any, repoid: number, id: number) {
+        return this.http.delete(`${apiURL()}/api2/project/${pv.project_name}/${pv.name}/repository/${repoid}/hook/${id}`);
     }
 
     cibuild(projectversion, repoUrl: string, gitref: string) {

@@ -77,6 +77,7 @@ export class ProjectPermissionsComponent extends TableComponent {
     }
 
     delete(permission) {
+        // FIXME: confirm dialog
         this.projectService.deletePermission(this.project.name, permission.username).subscribe(
             r => this.loadData());
     }

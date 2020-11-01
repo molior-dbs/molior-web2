@@ -157,7 +157,7 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         if (ci) {
             params.unstable = true;
         }
-        return this.http.get<string>(`${apiURL()}/api/projectsources/${name}/${version}`, {params, responseType: 'text' as 'json'});
+        return this.http.get<string>(`${apiURL()}/api2/${name}/${version}/aptsources`, {params, responseType: 'text' as 'json'});
     }
 
     clone(p: ProjectVersion, name: string) {
