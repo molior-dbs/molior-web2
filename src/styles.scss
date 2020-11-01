@@ -27,6 +27,10 @@ a {
     font-weight: normal;
 }
 
+.h3, h3 {
+    margin-bottom: 6px;
+}
+
 .mat-list-base {
     padding-top: 1px !important;
 }
@@ -186,8 +190,14 @@ input.mat-input-element {
     color: unset !important;
 }
 
+// select
+
 .mat-select-value {
     color: unset !important;
+}
+
+.mat-select-fix > .mat-form-field-wrapper > .mat-form-field-underline {
+    bottom: 22px !important;
 }
 
 // icons in cells
