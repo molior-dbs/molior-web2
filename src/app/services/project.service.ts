@@ -152,10 +152,6 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         return this.http.delete(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependency/${dependency}`);
     }
 
-    removeDependant(p: ProjectVersion, dependant: string) {
-        return this.http.delete(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependant/${dependant}`);
-    }
-
     get_apt_sources(name: string, version: string, ci: boolean = false) {
         const params: any = {};
         if (ci) {
