@@ -1,0 +1,149 @@
+<mat-icon style="float: left; padding-top: 4px;">folder_special</mat-icon>
+<h1 mat-dialog-title>Create Debian Mirror (copy from {{mirror.name}}/{{mirror.version}})</h1>
+<div mat-dialog-content style="display: flex; height: 450px;">
+    <form [formGroup]="form" style="width: 100%">
+        <mat-horizontal-stepper formArrayName="formArray" linear #stepper>
+            <mat-step formGroupName="0" [stepControl]="formArray.get('0')">
+                <ng-template matStepLabel>Mirror Info</ng-template>
+
+                <p style="margin-bottom: 0px;">
+                <app-validation-error [control]="formArray.get('0').get('mirrorurl')"></app-validation-error>
+                <span style="width: 130px; display: inline-block;"><strong>Mirror URL</strong></span>
+                <mat-form-field style="width: 500px;">
+                    <input matInput formControlName="mirrorurl" [matAutocomplete]="autoURL" (input)="changeMirrorURL()">
+                    <mat-autocomplete #autoURL="matAutocomplete">
+                        <mat-option *ngFor="let url of mirrorurls" [value]="url">
+                            {{ url }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+                </p>
+
+                <p *ngIf="!mirror" style="margin-bottom: 0px;">
+                <app-validation-error [control]="formArray.get('0').get('mirrorname')"></app-validation-error>
+                <span style="width: 130px; display: inline-block;"><strong>Name</strong></span>
+                <mat-form-field style="width: 300px;">
+                    <input formControlName="mirrorname" matInput required (input)="changeName()">
+                </mat-form-field>
+                </p>
+
+                <p *ngIf="!mirror" style="margin-bottom: 0px;">
+                <app-validation-error [control]="formArray.get('0').get('mirrorversion')"></app-validation-error>
+                <span style="width: 130px; display: inline-block;"><strong>Version</strong></span>
+                <mat-form-field style="width: 300px;">
+                    <input formControlName="mirrorversion" matInput required>
+                </mat-form-field>
+                </p>
+
+                <p style="margin-bottom: 0px;">
+                <span style="width: 130px; display: inline-block; vertical-align: top;"><strong>Mirror Type</strong></span>
+                <mat-radio-group formControlName="mirrortype" style="display: inline-block; margin-top: -6px; margin-bottom: 0px;" aria-label="Select an option">
+                    <div style="margin-bottom: 0px;">
+                        <mat-radio-button value="1" (change)="chooseBaseMirror()"><strong>Debian Base Mirror</strong></mat-radio-button>
+                      <p>Official Debian repository containig a full debian distribution</p>
+                    </div>
+
+                    <div style="margin-bottom: 0px;">
+                    <mat-radio-button value="2" (change)="chooseAdditionalMirror()"><strong>APT Repository Mirror</strong></mat-radio-button>
+                      <p>Additional repository containing packages for a specific debian distribution</p>
+                      <div>
+                      <app-validation-error [control]="formArray.get('0').get('basemirror')"></app-validation-error>
+                      <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
+                        <input matInput formControlName="basemirror" placeholder="-- Select Base Mirror --" [matAutocomplete]="auto" (input)="changeBaseMirror()">
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeBaseMirror()">
+                            <mat-option *ngFor="let entry of basemirrors | keyvalue" [value]="entry.key">
+                                {{ entry.key }} ({{ entry.value }})
+                            </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      </div>
+                    </div>
+                </mat-radio-group>
+                </p>
+
+                <p>
+                <span style="width: 130px; display: inline-block;"><strong>External Repo</strong></span>
+                <mat-checkbox style="padding-left: 15px;" formControlName="external_repo"></mat-checkbox>
+                </p>
+            </mat-step>
+
+            <mat-step formGroupName="1" [stepControl]="formArray.get('1')">
+                <ng-template matStepLabel>Mirror Source</ng-template>
+
+                <mat-checkbox formControlName="mirrorsrc" style="padding-left: 135px;">Mirror source packages</mat-checkbox>
+                <mat-checkbox formControlName="mirrorinst">Mirror installer &amp; udebs</mat-checkbox>
+
+                <p style="margin-bottom: 0px;">
+                <app-validation-error [control]="formArray.get('1').get('mirrordist')"></app-validation-error>
+                <span style="width: 130px; display: inline-block;"><strong>Distribution</strong></span>
+                <mat-form-field style="width: 500px;">
+                    <input formControlName="mirrordist" matInput required>
+                </mat-form-field>
+                </p>
+
+                <p style="margin-bottom: 0px;">
+                <app-validation-error [control]="formArray.get('1').get('mirrorcomponents')"></app-validation-error>
+                <span style="width: 130px; display: inline-block;"><strong>Components</strong></span>
+                <mat-form-field style="width: 500px;">
+                    <input formControlName="mirrorcomponents" matInput required>
+                </mat-form-field>
+                </p>
+
+                <p>
+                <app-validation-error [control]="formArray.get('1').get('architectures')"></app-validation-error>
+                <span style="width: 130px; display: inline-block;"><strong>Architectures</strong></span>
+                <mat-checkbox style="padding-left: 15px;" (change)="updateArchs()" *ngFor="let arch of architectures; let i = index" formControlName="architecture{{ i }}">{{ arch }}</mat-checkbox>
+                </p>
+            </mat-step>
+
+            <mat-step formGroupName="2" [stepControl]="formArray.get('2')">
+                <ng-template matStepLabel>Mirror Keys</ng-template>
+                <mat-radio-group formControlName="mirrorkeytype" aria-label="Select an option">
+                    <div>
+                        <mat-radio-button value="1" (change)="chooseKeyFile()"><strong>Download key file</strong></mat-radio-button>
+                        <p style="margin-bottom: 0px; margin-top: 15px;">
+                        <app-validation-error [control]="formArray.get('2').get('mirrorkeyurl')"></app-validation-error>
+                        <span style="width: 100px; display: inline-block;">URL</span>
+                        <mat-form-field style="width: 400px;">
+                            <input matInput formControlName="mirrorkeyurl" required cdkFocusInitial (input)="changeKeyFile()">
+                        </mat-form-field>
+                        </p>
+                    </div>
+
+                    <div>
+                        <mat-radio-button value="2" (change)="chooseKeyServer()"><strong>Download key from server</strong></mat-radio-button>
+                        <p style="margin-bottom: 0px; margin-top: 15px;">
+                        <app-validation-error [control]="formArray.get('2').get('mirrorkeyids')"></app-validation-error>
+                        <span style="width: 100px; display: inline-block;">Key IDs</span>
+                        <mat-form-field style="width: 500px;">
+                            <input matInput formControlName="mirrorkeyids" required (input)="changeKeyServer()">
+                        </mat-form-field>
+                        </p>
+                        <p style="margin-bottom: 0px; padding-top: 0px;">
+                        <app-validation-error [control]="formArray.get('2').get('mirrorkeyserver')"></app-validation-error>
+                        <span style="width: 100px; display: inline-block;">Key Server</span>
+                        <mat-form-field style="width: 400px;">
+                            <input matInput formControlName="mirrorkeyserver" required (input)="changeKeyServer()">
+                        </mat-form-field>
+                        </p>
+                    </div>
+
+                    <div>
+                        <mat-radio-button value="3" (change)="chooseNoKey()"><strong>No key download</strong></mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </mat-step>
+
+        </mat-horizontal-stepper>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <app-alert></app-alert>
+    <button mat-button (click)="dialog.close()">Cancel</button>
+    <button mat-button (click)="stepper.previous()" *ngIf="stepper.selectedIndex > 0">Back</button>
+    <button mat-button (click)="stepper.next()"     *ngIf="stepper.selectedIndex < formArray.length - 1">Next</button>
+    <button mat-button (click)="save()"             *ngIf="stepper.selectedIndex == formArray.length - 1" [disabled]="!form.valid">OK</button>
+</div>
+
+
+
