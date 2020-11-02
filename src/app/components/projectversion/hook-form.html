@@ -11,7 +11,7 @@
 
         <h3>HTTP Method <app-validation-error [control]="form.get('method')"></app-validation-error></h3>
         <mat-form-field ngClass="mat-select-fix" floatLabel="never" appearance="standard">
-            <mat-select formControlName="method" [(value)]="POST">
+            <mat-select formControlName="method">
                 <mat-option value="POST"><strong>POST</strong></mat-option>
                 <mat-option value="GET"><strong>GET</strong></mat-option>
             </mat-select>
@@ -19,7 +19,7 @@
 
         <h3>Hook Type <app-validation-error [control]="form.get('hooktype')"></app-validation-error></h3>
         <mat-form-field ngClass="mat-select-fix" floatLabel="never" appearance="standard">
-            <mat-select formControlName="hooktype" [(value)]="deb">
+            <mat-select formControlName="hooktype">
                 <mat-option value="top"><strong>top</strong></mat-option>
                 <mat-option value="deb"><strong>deb</strong></mat-option>
                 <mat-option value="src"><strong>src</strong></mat-option>
