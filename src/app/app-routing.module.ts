@@ -10,6 +10,7 @@ import {ProjectversionRepoListComponent} from './components/projectversion/proje
 import {ProjectversionRepoComponent} from './components/projectversion/projectversion-repo-info';
 import {ProjectversionBuildListComponent} from './components/projectversion/projectversion-build-list';
 import {ProjectversionAPTSourcesComponent} from './components/projectversion/projectversion-aptsources';
+import {ProjectversionDependentsComponent} from './components/projectversion/projectversion-dependents';
 import {ProjectversionPermissionsComponent} from './components/projectversion/projectversion-permissions';
 import {MirrorListComponent} from './components/mirror/mirror-list';
 import {MirrorInfoComponent} from './components/mirror/mirror-info';
@@ -46,6 +47,7 @@ const routes: Routes = [
                         ]
                     },
                     { path: 'aptsources',    component: ProjectversionAPTSourcesComponent,  canActivate: [AuthGuard] },
+                    { path: 'dependents',    component: ProjectversionDependentsComponent,  canActivate: [AuthGuard] },
                     { path: 'permissions',   component: ProjectversionPermissionsComponent, canActivate: [AuthGuard] },
                 ]
             },

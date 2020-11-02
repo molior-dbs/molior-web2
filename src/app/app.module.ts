@@ -44,6 +44,7 @@ import {ProjectversionRepoListComponent, SourcerepoDialogComponent,
 import {ProjectversionRepoComponent, HookDialogComponent} from './components/projectversion/projectversion-repo-info';
 import {ProjectversionBuildListComponent} from './components/projectversion/projectversion-build-list';
 import {ProjectversionAPTSourcesComponent} from './components/projectversion/projectversion-aptsources';
+import {ProjectversionDependentsComponent} from './components/projectversion/projectversion-dependents';
 import {ProjectversionPermissionsComponent} from './components/projectversion/projectversion-permissions';
 
 import {BuildTableComponent} from './components/build/build-table';
@@ -119,6 +120,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectversionSnapshotDialogComponent,
         ProjectversionBuildListComponent,
         ProjectversionAPTSourcesComponent,
+        ProjectversionDependentsComponent,
         ProjectversionPermissionsComponent,
 
         SourcerepoDialogComponent,
