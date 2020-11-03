@@ -2,7 +2,7 @@
 <mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
     <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '48px', 'padding-left': '6px', 'text-align': 'center'}">Type</th>
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '48px', 'padding-left': '6px', 'text-align': 'center'}"></th>
         <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.name]" [ngStyle]="{width: '48px', 'padding-left': '6px', 'text-align': 'center'}">
             <mat-icon *ngIf="element.arch=='amd64'" svgIcon="amd64" [ngStyle]="{'margin-right': '0px'}"></mat-icon>
             <mat-icon *ngIf="element.arch=='arm64'" svgIcon="arm64" [ngStyle]="{'margin-right': '0px'}"></mat-icon>
