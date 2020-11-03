@@ -53,6 +53,7 @@ export class ProjectListComponent extends TableComponent {
 
     create(): void {
         const dialog = this.dialog.open(ProjectCreateDialogComponent, {
+            data: { project: null },
             disableClose: true,
             width: '40%',
         });
