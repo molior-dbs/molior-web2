@@ -1,6 +1,16 @@
 <h1><mat-icon>developer_board</mat-icon>Nodes</h1>
 <mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '48px', 'padding-left': '6px', 'text-align': 'center'}">Type</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.name]" [ngStyle]="{width: '48px', 'padding-left': '6px', 'text-align': 'center'}">
+            <mat-icon *ngIf="element.arch=='amd64'" svgIcon="amd64" [ngStyle]="{'margin-right': '0px'}"></mat-icon>
+            <mat-icon *ngIf="element.arch=='arm64'" svgIcon="arm64" [ngStyle]="{'margin-right': '0px'}"></mat-icon>
+            <mat-icon *ngIf="element.arch=='armhf'" svgIcon="arm" [ngStyle]="{'margin-right': '0px'}"></mat-icon>
+            <mat-icon *ngIf="element.arch=='i386'" svgIcon="x86" [ngStyle]="{'margin-right': '0px'}"></mat-icon>
+        </td>
+    </ng-container>
+
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '200px'}"><mat-form-field>
             <input matInput placeholder="Name" #input>
@@ -79,26 +89,6 @@
         <th mat-header-cell *matHeaderCellDef>Uptime</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.name]">
             {{ getUptime(element) }}
-        </td>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-        <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef>
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item>Create</button>
-            </mat-menu>
-        </th>
-        <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
-            <button mat-icon-button [matMenuTriggerFor]="menu" id="menu_{{element.id}}" aria-label="">
-                <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item><mat-icon>delete</mat-icon>Delete</button>
-                <button mat-menu-item><mat-icon>edit</mat-icon>Edit</button>
-            </mat-menu>
         </td>
     </ng-container>
 
