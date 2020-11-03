@@ -19,6 +19,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 export class RepositoryListComponent extends TableComponent {
     dataSource: RepositoryDataSource;
     displayedColumns: string[] = [
+        'state',
         'name',
         'url',
         'actions',
