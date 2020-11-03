@@ -123,12 +123,12 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
             let t = '';
             if (hrs > 0) {
                 const h = `${hrs}h`;
-                t += h;
+                t += h + ' ';
             }
 
             if (mins > 0) {
                 const m = `${mins}m`;
-                t += m;
+                t += m + ' ';
             }
             if (hrs > 0 || mins > 0) {
                 secs = secs.padStart(2, '0');
