@@ -93,10 +93,13 @@ export class MirrorListComponent extends TableComponent {
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
-    delete(mirror: Mirror) {
-        if (confirm('Delete mirror ?')) {
-            this.mirrorService.delete(mirror).subscribe(r => this.loadData());
-        }
+    delete(mirror: Mirror): void {
+        const dialog = this.dialog.open(MirrorDeleteDialogComponent, {
+            data: { mirror },
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 
     update(id: number) {
@@ -608,5 +611,27 @@ export class MirrorCopyDialogComponent {
                                     msg => this.dialog.close(),
                                     err => this.alertService.error(err.error)
                                  );
+    }
+}
+
+@Component({
+    selector: 'app-mirror-delete-dialog',
+    templateUrl: 'mirror-delete-form.html',
+})
+export class MirrorDeleteDialogComponent {
+    mirror: Mirror;
+    constructor(public dialog: MatDialogRef<MirrorDeleteDialogComponent>,
+                protected mirrorService: MirrorService,
+                protected router: Router,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { mirror: Mirror }
+    ) { this.mirror = data.mirror; }
+
+    save(): void {
+        this.mirrorService.delete(this.mirror).subscribe( r => {
+            this.dialog.close();
+            this.router.navigate(['/mirrors']);
+        },
+        err => this.alertService.error(err.error));
     }
 }

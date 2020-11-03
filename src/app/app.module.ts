@@ -52,7 +52,8 @@ import {BuildListComponent} from './components/build/build-list';
 import {BuildInfoComponent} from './components/build/build-info';
 import {BuildService} from './services/build.service';
 
-import {MirrorListComponent, MirrorDialogComponent, MirrorCopyDialogComponent} from './components/mirror/mirror-list';
+import {MirrorListComponent, MirrorDialogComponent, MirrorCopyDialogComponent,
+        MirrorDeleteDialogComponent} from './components/mirror/mirror-list';
 import {MirrorInfoComponent} from './components/mirror/mirror-info';
 import {MirrorService} from './services/mirror.service';
 
@@ -86,6 +87,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         MirrorInfoComponent,
         MirrorDialogComponent,
         MirrorCopyDialogComponent,
+        MirrorDeleteDialogComponent,
 
         RepositoryListComponent,
         RepositoryInfoComponent,
@@ -178,6 +180,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       ProjectversionDialogComponent,
                       MirrorDialogComponent,
                       MirrorCopyDialogComponent,
+                      MirrorDeleteDialogComponent,
                       RepositoryDialogComponent,
                       RepoMergeDialogComponent,
                       RepoDeleteDialogComponent,
