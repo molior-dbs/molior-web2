@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import {TableComponent} from '../../lib/table.component';
-import {NodeService, NodeDataSource, getLoadColor, getUptime, getMemory, getDisk} from '../../services/node.service';
+import {Node, NodeService, NodeDataSource, getLoadColor, getUptime, getMemory, getDisk} from '../../services/node.service';
 
 @Component({
   selector: 'app-nodes',
@@ -40,5 +40,19 @@ export class NodeListComponent extends TableComponent {
     AfterViewInit() {
         this.dataSource.setPaginator(this.paginator);
         this.initFilter(this.input.nativeElement);
+    }
+
+    memoryAlmostFull(node: Node): boolean {
+        if (node && node.ram_used / node.ram_total > 0.9) {
+            return true;
+        }
+        return false;
+    }
+
+    diskAlmostFull(node: Node): boolean {
+        if (node && node.disk_used / node.disk_total > 0.9) {
+            return true;
+        }
+        return false;
     }
 }
