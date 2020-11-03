@@ -76,6 +76,21 @@
         </td>
     </ng-container>
 
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef>
+        </th>
+        <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu" id="menu_{{element.id}}" aria-label="">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item [routerLink]="getDependentLink(element)">
+                    <mat-icon>list</mat-icon> Details
+                </button>
+            </mat-menu>
+        </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let element; columns: displayedColumns;" (contextmenu)="contextmenu($event, element)"></tr>
     <ng-container matColumnDef="footer">

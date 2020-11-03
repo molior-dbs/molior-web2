@@ -21,6 +21,7 @@ export class ProjectversionDependentsComponent extends TableComponent {
         'ci_builds_enabled',
         'use_cibuilds',
         'description',
+        'actions'
     ];
     @ViewChild('inputName', { static: false }) inputName: ElementRef;
 

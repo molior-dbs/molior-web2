@@ -19,7 +19,8 @@ export class MirrorInfoComponent extends TableComponent {
         'dependent',
         'architectures',
         'is_locked',
-        'description'
+        'description',
+        'actions'
     ];
     @ViewChild('inputName', { static: false }) inputName: ElementRef;
 

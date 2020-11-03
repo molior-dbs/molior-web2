@@ -24,7 +24,8 @@ export class RepositoryInfoComponent extends TableComponent {
         'architectures',
         'basemirror',
         'is_locked',
-        'description'
+        'description',
+        'actions'
     ];
     @ViewChild('inputName', { static: false }) inputName: ElementRef;
 
@@ -71,7 +72,7 @@ export class RepositoryInfoComponent extends TableComponent {
         }
     }
 
-    delete() {
+    deleteRepo() {
         const dialog = this.dialog.open(RepoDeleteDialogComponent, {
             data: { repo: this.repo },
             disableClose: true,
