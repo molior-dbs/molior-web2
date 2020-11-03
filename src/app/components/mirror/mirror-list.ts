@@ -79,7 +79,7 @@ export class MirrorListComponent extends TableComponent {
     }
 
     create() {
-        const dialogRef = this.dialog.open(MirrorDialogComponent, {disableClose: true, width: '900px'});
+        const dialogRef = this.dialog.open(MirrorDialogComponent, {data: {mirror: null}, disableClose: true, width: '900px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
