@@ -148,6 +148,7 @@ export class RepoMergeDialogComponent implements OnInit {
     constructor(public dialog: MatDialogRef<RepoMergeDialogComponent>,
                 protected repositoryService: RepositoryService,
                 private fb: FormBuilder,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
     ) {
         this.repo = data.repo;
@@ -176,7 +177,8 @@ export class RepoMergeDialogComponent implements OnInit {
             this.repositoryService.mergeDuplicate(originalID,
                                                   this.repo.id).subscribe();
             this.dialog.close();
-        });
+        },
+        err => this.alertService.error(err.error));
     }
 
     excludeDuplicate(original: string): boolean {
@@ -193,6 +195,7 @@ export class RepoDeleteDialogComponent {
     constructor(public dialog: MatDialogRef<RepoDeleteDialogComponent>,
                 protected repoService: RepositoryService,
                 protected router: Router,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
     ) { this.repo = data.repo; }
 
@@ -200,6 +203,7 @@ export class RepoDeleteDialogComponent {
         this.repoService.delete_repo(this.repo.id).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/repos']);
-        });
+        },
+        err => this.alertService.error(err.error));
     }
 }

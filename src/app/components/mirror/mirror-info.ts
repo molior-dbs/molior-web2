@@ -4,6 +4,8 @@ import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {MirrorService, Mirror} from '../../services/mirror.service';
 import {ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MirrorDeleteDialogComponent, MirrorCopyDialogComponent, MirrorDialogComponent} from './mirror-list';
 
 @Component({
     selector: 'app-mirror',
@@ -24,7 +26,8 @@ export class MirrorInfoComponent extends TableComponent {
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
                 protected projectversionService: ProjectVersionService,
-                protected mirrorService: MirrorService) {
+                protected mirrorService: MirrorService,
+                protected dialog: MatDialog) {
         super(route, router, [['filter_name', '']]);
         this.mirror = {id: -1,
             name: '',
@@ -80,5 +83,28 @@ export class MirrorInfoComponent extends TableComponent {
         } else {
             return ['/project', element.project_name, element.name];
         }
+    }
+
+    edit() {
+        const dialogRef = this.dialog.open(MirrorDialogComponent, { data: { mirror: this.mirror }, disableClose: true, width: '900px'});
+        dialogRef.afterClosed().subscribe(result => this.loadData());
+    }
+
+    copy() {
+        const dialogRef = this.dialog.open(MirrorCopyDialogComponent, { data: { mirror: this.mirror }, disableClose: true, width: '900px'});
+        dialogRef.afterClosed().subscribe(result => this.loadData());
+    }
+
+    delete(): void {
+        const dialog = this.dialog.open(MirrorDeleteDialogComponent, {
+            data: { mirror: this.mirror },
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
+    }
+
+    update() {
+        this.mirrorService.update(this.mirror.id).subscribe();
     }
 }

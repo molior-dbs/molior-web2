@@ -8,6 +8,8 @@ import {TableComponent} from '../../lib/table.component';
 import {ProjectService, ProjectVersionService, ProjectVersionDataSource, ProjectVersion, Project} from '../../services/project.service';
 import {MirrorService, Mirror, BaseMirrorValidator} from '../../services/mirror.service';
 import {ValidationService} from '../../services/validation.service';
+import {AlertService} from '../../services/alert.service';
+import {ProjectCreateDialogComponent, ProjectDeleteDialogComponent} from './project-list';
 
 @Component({
     selector: 'app-projectversions',
@@ -58,6 +60,25 @@ export class ProjectInfoComponent extends TableComponent {
         this.dataSource.setPaginator(this.paginator);
         this.initFilter(this.inputName.nativeElement);
     }
+
+    editProject(): void {
+        const dialog = this.dialog.open(ProjectCreateDialogComponent, {
+            data: { project: this.project },
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
+    }
+
+    deleteProject(): void {
+        const dialog = this.dialog.open(ProjectDeleteDialogComponent, {
+            data: { projectName: this.project.name },
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
+    }
+
 
     create(): void {
         const dialog = this.dialog.open(ProjectversionDialogComponent, {
@@ -149,6 +170,7 @@ export class ProjectversionDialogComponent {
                 protected mirrorService: MirrorService,
                 protected projectVersionService: ProjectVersionService,
                 protected router: Router,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectName: string, projectversion: ProjectVersion}
     ) {
         this.projectName = data.projectName;
@@ -192,8 +214,12 @@ export class ProjectversionDialogComponent {
                                             this.projectversion.name,
                                             this.form.value.description,
                                             this.form.value.dependencylevel,
-                                            this.form.value.cibuilds);
-            // FIXME: .sunscribe(... handle error)
+                                            this.form.value.cibuilds).subscribe(
+                r => {
+                    this.dialog.close();
+                    this.router.navigate(['/project', this.projectName, this.form.value.version]);
+                },
+                err => this.alertService.error(err.error));
         } else {
             this.projectVersionService.create(this.data.projectName,
                                               this.form.value.version,
@@ -201,10 +227,13 @@ export class ProjectversionDialogComponent {
                                               this.form.value.dependencylevel,
                                               this.form.value.basemirror,
                                               this.form.value.architectures,
-                                              this.form.value.cibuilds);
+                                              this.form.value.cibuilds).subscribe(
+                r => {
+                    this.dialog.close();
+                    this.router.navigate(['/project', this.projectName, this.form.value.version]);
+                },
+                err => this.alertService.error(err.error));
         }
-        this.router.navigate(['/project', this.projectName, this.form.value.version]);
-        this.dialog.close();
     }
 
     changeBaseMirror() {
@@ -238,6 +267,7 @@ export class ProjectversionDeleteDialogComponent {
     constructor(public dialog: MatDialogRef<ProjectversionDeleteDialogComponent>,
                 protected projectversionService: ProjectVersionService,
                 protected router: Router,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
     ) { this.projectversion = data.projectversion; }
 
@@ -245,7 +275,8 @@ export class ProjectversionDeleteDialogComponent {
         this.projectversionService.delete(this.projectversion).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name]);
-        });
+        },
+        err => this.alertService.error(err.error));
     }
 }
 
@@ -263,6 +294,7 @@ export class ProjectversionCloneDialogComponent {
                 private fb: FormBuilder,
                 protected projectversionService: ProjectVersionService,
                 protected router: Router,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
     ) { this.projectversion = data.projectversion; }
 
@@ -270,7 +302,8 @@ export class ProjectversionCloneDialogComponent {
         this.projectversionService.clone(this.projectversion, this.form.value.name).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
-        });
+        },
+        err => this.alertService.error(err.error));
     }
 }
 
@@ -282,11 +315,12 @@ export class ProjectversionLockDialogComponent {
     projectversion: ProjectVersion;
     constructor(public dialog: MatDialogRef<ProjectversionLockDialogComponent>,
                 protected projectversionService: ProjectVersionService,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
     ) { this.projectversion = data.projectversion; }
 
     save(): void {
-        this.projectversionService.lock(this.projectversion).subscribe(r => this.dialog.close());
+        this.projectversionService.lock(this.projectversion).subscribe(r => this.dialog.close(), err => this.alertService.error(err.error));
     }
 }
 
@@ -305,6 +339,7 @@ export class ProjectversionOverlayDialogComponent {
                 private fb: FormBuilder,
                 protected projectversionService: ProjectVersionService,
                 protected router: Router,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
     ) { this.projectversion = data.projectversion; }
 
@@ -312,7 +347,8 @@ export class ProjectversionOverlayDialogComponent {
         this.projectversionService.overlay(this.projectversion, this.form.value.name).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
-        });
+        },
+        err => this.alertService.error(err.error));
     }
 }
 
@@ -331,6 +367,7 @@ export class ProjectversionSnapshotDialogComponent {
                 private fb: FormBuilder,
                 protected projectversionService: ProjectVersionService,
                 protected router: Router,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
     ) { this.projectversion = data.projectversion; }
 
@@ -338,6 +375,7 @@ export class ProjectversionSnapshotDialogComponent {
         this.projectversionService.snapshot(this.projectversion, this.form.value.name).subscribe(r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
-        });
+        },
+        err => this.alertService.error(err.error));
     }
 }

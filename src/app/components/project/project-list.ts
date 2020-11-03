@@ -9,6 +9,7 @@ import {Inject} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {ValidationService} from '../../services/validation.service';
+import {AlertService} from '../../services/alert.service';
 
 
 @Component({
@@ -60,7 +61,7 @@ export class ProjectListComponent extends TableComponent {
 
     edit(project): void {
         const dialog = this.dialog.open(ProjectCreateDialogComponent, {
-            data: project,
+            data: { project },
             disableClose: true,
             width: '40%',
         });
@@ -82,6 +83,7 @@ export class ProjectListComponent extends TableComponent {
     templateUrl: 'project.form.html',
 })
 export class ProjectCreateDialogComponent {
+    project: Project;
     form = this.fb.group({
         name: new FormControl('', [Validators.required,
                                    Validators.minLength(2),
@@ -90,25 +92,32 @@ export class ProjectCreateDialogComponent {
         description: new FormControl('', [Validators.maxLength(255)]),
     });
 
-    constructor(public dialog: MatDialogRef<ProjectCreateDialogComponent>,
+    constructor(public dialog: MatDialogRef<ProjectDeleteDialogComponent>,
                 protected projectService: ProjectService,
                 private fb: FormBuilder,
                 protected router: Router,
-                @Inject(MAT_DIALOG_DATA) public project: Project) {
-        if (project) {
-            this.form.patchValue({name: this.project.name, description: this.project.description});
-        }
-    }
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { project: Project }) {
+                    if (data.project) {
+                        this.project = data.project;
+                        this.form.patchValue({name: this.project.name, description: this.project.description});
+                    }
+                }
 
     save(): void {
         if (!this.project) {
-            this.projectService.create(this.form.value.name, this.form.value.description);
+            this.projectService.create(this.form.value.name, this.form.value.description).subscribe(
+                r => {
+                    this.dialog.close();
+                    this.router.navigate(['/project', this.form.value.name]);
+                },
+                err => this.alertService.error(err.error));
         } else {
-            this.projectService.edit(this.project.id, this.form.value.description);
-        }
-        this.dialog.close();
-        if (!this.project) {
-            this.router.navigate(['/project', this.form.value.name]);
+            this.projectService.edit(this.project.id, this.form.value.description).subscribe(
+                r => {
+                    this.dialog.close();
+                },
+                err => this.alertService.error(err.error));
         }
     }
 }
@@ -122,11 +131,10 @@ export class ProjectDeleteDialogComponent {
     constructor(public dialog: MatDialogRef<ProjectDeleteDialogComponent>,
                 protected projectService: ProjectService,
                 protected router: Router,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectName: string }
     ) { this.projectName = data.projectName; }
     save(): void {
-        this.projectService.delete(this.projectName).subscribe(r => {
-            this.dialog.close();
-        });
+        this.projectService.delete(this.projectName).subscribe(r => this.dialog.close(), err => this.alertService.error(err.error));
     }
 }

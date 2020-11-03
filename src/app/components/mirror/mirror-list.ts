@@ -84,12 +84,12 @@ export class MirrorListComponent extends TableComponent {
     }
 
     edit(mirror) {
-        const dialogRef = this.dialog.open(MirrorDialogComponent, {data: mirror, disableClose: true, width: '900px'});
+        const dialogRef = this.dialog.open(MirrorDialogComponent, {data: {mirror}, disableClose: true, width: '900px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
     copy(mirror) {
-        const dialogRef = this.dialog.open(MirrorCopyDialogComponent, {data: mirror, disableClose: true, width: '900px'});
+        const dialogRef = this.dialog.open(MirrorCopyDialogComponent, {data: {mirror}, disableClose: true, width: '900px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
@@ -103,7 +103,7 @@ export class MirrorListComponent extends TableComponent {
     }
 
     update(id: number) {
-        this.mirrorService.update(id);
+        this.mirrorService.update(id).subscribe();
     }
 }
 
@@ -113,6 +113,7 @@ export class MirrorListComponent extends TableComponent {
   styleUrls: ['./mirror-form.scss']
 })
 export class MirrorDialogComponent {
+    mirror: Mirror;
     basemirrors: { [id: string]: string[]; };
     architectures = [ 'amd64', 'i386', 'arm64', 'armhf' ];
     distpreset: string;
@@ -152,7 +153,10 @@ export class MirrorDialogComponent {
                 protected mirrorService: MirrorService,
                 private fb: FormBuilder,
                 protected alertService: AlertService,
-                @Inject(MAT_DIALOG_DATA) public mirror: Mirror) {
+                @Inject(MAT_DIALOG_DATA) private data: { mirror: Mirror }) {
+        if (data.mirror) {
+            this.mirror = data.mirror;
+        }
         this.basemirrors = {};
         this.distpreset = '';
         this.mirrorService.getBaseMirrors().subscribe(res => {
@@ -379,6 +383,7 @@ export class MirrorDialogComponent {
   styleUrls: ['./mirror-copy-form.scss']
 })
 export class MirrorCopyDialogComponent {
+    mirror: Mirror;
     basemirrors: { [id: string]: string[]; };
     architectures = [ 'amd64', 'i386', 'arm64', 'armhf' ];
     distpreset: string;
@@ -418,7 +423,10 @@ export class MirrorCopyDialogComponent {
                 protected mirrorService: MirrorService,
                 private fb: FormBuilder,
                 protected alertService: AlertService,
-                @Inject(MAT_DIALOG_DATA) public mirror: Mirror) {
+                @Inject(MAT_DIALOG_DATA) private data: { mirror: Mirror }) {
+        if (data.mirror) {
+            this.mirror = data.mirror;
+        }
         this.basemirrors = {};
         this.distpreset = '';
         this.mirrorService.getBaseMirrors().subscribe(res => {

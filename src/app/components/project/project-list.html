@@ -28,8 +28,8 @@
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="edit(element)">                    <mat-icon>edit</mat-icon>Edit</button>
                 <button mat-menu-item [routerLink]="['../project/'+element.name]"><mat-icon>list</mat-icon>Details</button>
+                <button mat-menu-item (click)="edit(element)">                    <mat-icon>edit</mat-icon>Edit</button>
                 <button mat-menu-item (click)="delete(element.name)">             <mat-icon>delete</mat-icon>Delete</button>
             </mat-menu>
         </td>

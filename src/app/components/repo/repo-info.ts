@@ -7,6 +7,8 @@ import {HttpClient} from '@angular/common/http';
 
 import {ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
+import {RepoMergeDialogComponent, RepoDeleteDialogComponent} from './repo-list';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-repo',
@@ -30,7 +32,8 @@ export class RepositoryInfoComponent extends TableComponent {
                 protected router: Router,
                 protected projectversionService: ProjectVersionService,
                 protected repoService: RepositoryService,
-                protected route: ActivatedRoute) {
+                protected route: ActivatedRoute,
+                protected dialog: MatDialog) {
         super(route, router, [['filter_name', '']]);
         this.repo = {id: 0, name: '', url: '', state: ''};
         this.dataSource = new ProjectVersionDataSource(projectversionService);
@@ -66,5 +69,22 @@ export class RepositoryInfoComponent extends TableComponent {
         } else {
             return ['/project', element.project_name, element.name];
         }
+    }
+
+    delete() {
+        const dialog = this.dialog.open(RepoDeleteDialogComponent, {
+            data: { repo: this.repo },
+            disableClose: true,
+            width: '40%',
+        });
+    }
+
+    mergeDuplicate() {
+        const dialog = this.dialog.open(RepoMergeDialogComponent, {
+            data: { repo: this.repo },
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 }

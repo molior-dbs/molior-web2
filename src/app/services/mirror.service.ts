@@ -161,7 +161,7 @@ export class MirrorService extends TableService<Mirror> {
     }
 
     update(id: number) {
-        return this.http.post(`${apiURL()}/api/mirror/${id}/update`, null).subscribe();
+        return this.http.post(`${apiURL()}/api/mirror/${id}/update`, null);
     }
 }
 

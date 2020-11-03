@@ -1,5 +1,25 @@
-<h1><mat-icon>class</mat-icon>Project {{project.name}}</h1>
-<div *ngIf="project.description" [ngStyle]="{ 'padding': '10px' }">{{ project.description }}</div>
+<div>
+    <h1><mat-icon>class</mat-icon>Project {{project.name}}</h1>
+
+    <div class="mat-elevation-z8 info-table">
+        <div>
+            <table>
+                <tr *ngIf="project.description">
+                    <td>{{ project.description }}</td>
+                </tr>
+            </table>
+        </div>
+        <div style="flex-grow: 1; text-align: right;">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="editProject()"><mat-icon>edit</mat-icon>Edit</button>
+                <button mat-menu-item (click)="deleteProject()"><mat-icon>delete</mat-icon>Delete</button>
+            </mat-menu>
+        </div>
+    </div>
+</div>
 
 <nav mat-tab-nav-bar>
     <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
