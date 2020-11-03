@@ -62,7 +62,7 @@ export class UserService extends TableService<User> {
     }
 
     delete(id: number) {
-        return this.http.delete<User>(`${apiURL()}/api/user/${id}`).subscribe();
+        return this.http.delete<User>(`${apiURL()}/api/user/${id}`);
     }
 
     getProjectRoleCandidates(projectname: string) {

@@ -65,7 +65,7 @@ import {NodeListComponent} from './components/node/node-list';
 import {NodeInfoComponent} from './components/node/node-info';
 import {NodeService} from './services/node.service';
 
-import {UserListComponent, UserDialogComponent} from './components/user/user-list';
+import {UserListComponent, UserDialogComponent, UserDeleteDialogComponent} from './components/user/user-list';
 import {UserInfoComponent} from './components/user/user-info';
 import {UserService} from './services/user.service';
 
@@ -100,6 +100,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
 
         UserListComponent,
         UserDialogComponent,
+        UserDeleteDialogComponent,
         UserInfoComponent,
 
         AboutComponent,
@@ -188,6 +189,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       CIBuildDialogComponent,
                       HookDialogComponent,
                       UserDialogComponent,
+                      UserDeleteDialogComponent,
                       DependencyDialogComponent,
                       ProjectversionLockDialogComponent,
                       ProjectversionOverlayDialogComponent,

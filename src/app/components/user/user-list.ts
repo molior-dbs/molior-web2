@@ -65,20 +65,18 @@ export class UserListComponent extends TableComponent {
     }
 
     create(): void {
-        const dialogRef = this.dialog.open(UserDialogComponent, {disableClose: true, width: '40%'});
+        const dialogRef = this.dialog.open(UserDialogComponent, {data: { user: null }, disableClose: true, width: '40%'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
-    edit(user): void {
-        const dialogRef = this.dialog.open(UserDialogComponent, {data: user, disableClose: true, width: '40%'});
+    edit(user: User): void {
+        const dialogRef = this.dialog.open(UserDialogComponent, {data: { user }, disableClose: true, width: '40%'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
-    delete(element): void {
-        if (confirm(`Delete user ${element.username} ?`)) {
-            this.userService.delete(element.id);
-            this.loadData();
-        }
+    delete(user: User): void {
+        const dialogRef = this.dialog.open(UserDeleteDialogComponent, {data: { user }, disableClose: true, width: '40%'});
+        dialogRef.afterClosed().subscribe(r => this.loadData());
     }
 }
 
@@ -88,6 +86,7 @@ export class UserListComponent extends TableComponent {
     styleUrls: ['user-form.scss'],
 })
 export class UserDialogComponent {
+    user: User;
     form = this.fb.group({
         name: new FormControl('', [Validators.required,
                                    Validators.minLength(2),
@@ -103,12 +102,13 @@ export class UserDialogComponent {
                 protected userService: UserService,
                 protected alertService: AlertService,
                 private fb: FormBuilder,
-                @Inject(MAT_DIALOG_DATA) public user: User) {
-        if (user) {
-            this.form.patchValue({name: this.user.username, email: this.user.email, isAdmin: this.user.is_admin});
-            this.form.get('password').setValidators(null);
-        }
-    }
+                @Inject(MAT_DIALOG_DATA) private data: { user: User }) {
+                    if (data.user) {
+                        this.user = data.user;
+                        this.form.patchValue({name: this.user.username, email: this.user.email, isAdmin: this.user.is_admin});
+                        this.form.get('password').setValidators(null);
+                    }
+                }
 
     save(): void {
         if (!this.user) {
@@ -138,6 +138,31 @@ export class UserDialogComponent {
                 this.form.get('password').setValidators(null);
             }
         }
+    }
+}
+
+@Component({
+    selector: 'app-user-form',
+    templateUrl: 'user-delete-form.html',
+    styleUrls: ['user-delete-form.scss'],
+})
+export class UserDeleteDialogComponent {
+    user: User;
+    constructor(public dialog: MatDialogRef<UserDeleteDialogComponent>,
+                protected userService: UserService,
+                protected alertService: AlertService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { user: User }) {
+                    this.user = data.user;
+                }
+
+    save(): void {
+        this.userService.delete(this.user.id).subscribe(
+        r => {
+            this.dialog.close();
+            this.router.navigate(['/users']);
+        },
+        err => this.alertService.error(err.error));
     }
 }
 

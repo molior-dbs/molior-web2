@@ -42,9 +42,9 @@
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                    <button *ngIf="element.username !== 'admin'" mat-menu-item (click)="edit(element)">  <mat-icon>edit</mat-icon>   Edit</button>
-                    <button mat-menu-item [routerLink]="['./', element.id]">                             <mat-icon>list</mat-icon>   Details</button>
-                    <button *ngIf="element.username !== 'admin'" mat-menu-item (click)="delete(element)"><mat-icon>delete</mat-icon> Delete</button>
+                    <button mat-menu-item [routerLink]="['./', element.username]"><mat-icon>list</mat-icon>Details</button>
+                    <button *ngIf="element.username !== 'admin'" mat-menu-item (click)="edit(element)"><mat-icon>edit</mat-icon>Edit</button>
+                    <button *ngIf="element.username !== 'admin'" mat-menu-item (click)="delete(element)"><mat-icon>delete</mat-icon>Delete</button>
                 </mat-menu>
             </td>
         </ng-container>
