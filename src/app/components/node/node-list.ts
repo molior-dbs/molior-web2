@@ -10,8 +10,8 @@ import {Node, NodeService, NodeDataSource, getLoadColor, getUptime, getMemory, g
 })
 export class NodeListComponent extends TableComponent {
     dataSource: NodeDataSource;
-    displayedColumns: string[] = ['type', 'name', 'arch', 'state', 'load', 'cpu_cores', 'ram_mem', 'disk',
-                                  'machine_id', 'ip', 'client_ver', 'uptime_seconds', 'actions'];
+    displayedColumns: string[] = ['type', 'name', 'state', 'load', 'cpu_cores', 'ram_mem', 'disk',
+                                  'ip', 'client_ver', 'uptime_seconds', 'actions'];
     getLoadColor = getLoadColor;
     getUptime = getUptime;
     getMemory = getMemory;
