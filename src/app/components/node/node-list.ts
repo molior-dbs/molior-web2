@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import {TableComponent} from '../../lib/table.component';
 import {Node, NodeService, NodeDataSource, getLoadColor, getUptime, getMemory, getDisk} from '../../services/node.service';
+import {MoliorService, UpdateEvent} from '../../services/websocket';
 
 @Component({
   selector: 'app-nodes',
@@ -20,7 +21,8 @@ export class NodeListComponent extends TableComponent {
 
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
-                protected nodeService: NodeService) {
+                protected nodeService: NodeService,
+                protected moliorService: MoliorService) {
         super(route, router, [['filter', '']]);
         this.dataSource = new NodeDataSource(this.nodeService);
     }
@@ -38,6 +40,7 @@ export class NodeListComponent extends TableComponent {
     }
 
     AfterViewInit() {
+        this.moliorService.nodes.subscribe((evt: UpdateEvent) => { this.dataSource.update(evt, true); });
         this.dataSource.setPaginator(this.paginator);
         this.initFilter(this.input.nativeElement);
     }

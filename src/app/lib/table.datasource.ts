@@ -86,7 +86,7 @@ export class TableDataSource<T extends {}> implements DataSource<T>, Observer<Mo
         );
     }
 
-    update(event: UpdateEvent) {
+    update(event: UpdateEvent, updateList: boolean = false) {
         const idkey = 'id';
         const parentkey = 'parent_id';
         if (!event.data) {
@@ -122,18 +122,27 @@ export class TableDataSource<T extends {}> implements DataSource<T>, Observer<Mo
             this.next(this.currentResults);
         } else if (event.event === 'changed') {
             this.currentResults.forEach((item, i) => {
-                if (item[idkey] === event.data[idkey]) {
-                    for (const key in event.data) {
-                        if (key) {
-                            if (key !== idkey) {
-                                this.currentResults[i][key] = event.data[key];
+                let updates = [];
+                if (!updateList) {
+                    updates.push(event.data);
+                } else {
+                    updates = event.data as [];
+                }
+
+                updates.forEach((update) => {
+                    if (item[idkey] === update[idkey]) {
+                        for (const key in update as {}) {
+                            if (key) {
+                                if (key !== idkey) {
+                                    this.currentResults[i][key] = update[key];
+                                }
                             }
                         }
+                        this.dataHook(this.currentResults);
+                        this.next(this.currentResults);
+                        this.total.next(this.currentResults.length);
                     }
-                    this.dataHook(this.currentResults);
-                    this.next(this.currentResults);
-                    this.total.next(this.currentResults.length);
-                }
+                });
             });
         }
     }

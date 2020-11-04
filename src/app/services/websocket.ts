@@ -58,6 +58,7 @@ export class MoliorService {
     public builds: Subject<UpdateEvent>;
     public mirrors: Subject<UpdateEvent>;
     public buildlog: Subject<UpdateEvent>;
+    public nodes: Subject<UpdateEvent>;
     connected: boolean;
     outbox: string[];
     up: boolean;
@@ -69,6 +70,7 @@ export class MoliorService {
         this.builds = new Subject<UpdateEvent>();
         this.mirrors = new Subject<UpdateEvent>();
         this.buildlog = new Subject<UpdateEvent>();
+        this.nodes = new Subject<UpdateEvent>();
         this.up = false;
 
         this.wsconnect.subscribe(msg => {
@@ -132,6 +134,8 @@ export class MoliorService {
                     this.mirrors.next({event: msg.event, data: msg.data});
                 } else if (msg.subject === 'buildlog' ) {
                     this.buildlog.next({event: msg.event, data: msg.data});
+                } else if (msg.subject === 'node' ) {
+                    this.nodes.next({event: msg.event, data: msg.data});
                 } else {
                     console.log('ws', msg);
                 }
@@ -164,7 +168,8 @@ export class MoliorService {
             6: 'projectversion',
             7: 'build',
             8: 'buildlog',
-            9: 'mirror'
+            9: 'mirror',
+            10: 'node'
         };
         const event = {
             1: 'added',
