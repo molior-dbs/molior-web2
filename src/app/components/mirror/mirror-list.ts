@@ -209,11 +209,11 @@ export class MirrorDialogComponent {
         if (this.mirror) {
             if (this.mirror.mirrorkeyurl !== '') {
                 this.chooseKeyFile();
-            } else if (this.mirror.mirrorkeyids !== '') {
+            } else { // if (this.mirror.mirrorkeyids !== '') {
                 this.chooseKeyServer();
-            } else {
-                this.chooseNoKey();
-            }
+            } // else {
+            //  this.chooseNoKey();
+            // }
         }
     }
 
@@ -320,15 +320,15 @@ export class MirrorDialogComponent {
         form.get('mirrorkeyserver').updateValueAndValidity();
     }
 
-    chooseNoKey() {
-        const form = this.formArray.get([2]);
-        form.get('mirrorkeyurl').setValidators(null);
-        form.get('mirrorkeyurl').updateValueAndValidity();
-        form.get('mirrorkeyids').setValidators(null);
-        form.get('mirrorkeyids').updateValueAndValidity();
-        form.get('mirrorkeyserver').setValidators(null);
-        form.get('mirrorkeyserver').updateValueAndValidity();
-    }
+    // chooseNoKey() {
+    //     const form = this.formArray.get([2]);
+    //     form.get('mirrorkeyurl').setValidators(null);
+    //     form.get('mirrorkeyurl').updateValueAndValidity();
+    //     form.get('mirrorkeyids').setValidators(null);
+    //     form.get('mirrorkeyids').updateValueAndValidity();
+    //     form.get('mirrorkeyserver').setValidators(null);
+    //     form.get('mirrorkeyserver').updateValueAndValidity();
+    // }
 
     save(): void {
         this.updateArchs();
@@ -476,11 +476,11 @@ export class MirrorCopyDialogComponent {
     initKeyTab() {
         if (this.mirror.mirrorkeyurl !== '') {
             this.chooseKeyFile();
-        } else if (this.mirror.mirrorkeyids !== '') {
+        } else { // if (this.mirror.mirrorkeyids !== '') {
             this.chooseKeyServer();
-        } else {
-            this.chooseNoKey();
-        }
+        } // else {
+        //  this.chooseNoKey();
+        // }
     }
 
     get formArray() {
@@ -586,15 +586,15 @@ export class MirrorCopyDialogComponent {
         form.get('mirrorkeyserver').updateValueAndValidity();
     }
 
-    chooseNoKey() {
-        const form = this.formArray.get([2]);
-        form.get('mirrorkeyurl').setValidators(null);
-        form.get('mirrorkeyurl').updateValueAndValidity();
-        form.get('mirrorkeyids').setValidators(null);
-        form.get('mirrorkeyids').updateValueAndValidity();
-        form.get('mirrorkeyserver').setValidators(null);
-        form.get('mirrorkeyserver').updateValueAndValidity();
-    }
+    // chooseNoKey() {
+    //     const form = this.formArray.get([2]);
+    //     form.get('mirrorkeyurl').setValidators(null);
+    //     form.get('mirrorkeyurl').updateValueAndValidity();
+    //     form.get('mirrorkeyids').setValidators(null);
+    //     form.get('mirrorkeyids').updateValueAndValidity();
+    //     form.get('mirrorkeyserver').setValidators(null);
+    //     form.get('mirrorkeyserver').updateValueAndValidity();
+    // }
 
     save(): void {
         this.updateArchs();
