@@ -22,6 +22,7 @@ export interface Node {
   ip: string;
   client_ver: string;
   sourcename: string;
+  sourceversion: string;
 }
 
 export class NodeDataSource extends TableDataSource<Node> {
