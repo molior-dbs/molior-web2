@@ -21,6 +21,7 @@ export interface Node {
   machine_id: string;
   ip: string;
   client_ver: string;
+  sourcename: string;
 }
 
 export class NodeDataSource extends TableDataSource<Node> {
@@ -89,4 +90,18 @@ export function getMemory(node): string {
 export function getDisk(node): string {
     return String((node.disk_used / 1024.0 / 1024.0 / 1024.0).toFixed(2)) + ' / ' +
            String((node.disk_total / 1024.0 / 1024.0 / 1024.0).toFixed(2)); // GB
+}
+
+export function memoryAlmostFull(node: Node): boolean {
+    if (node && node.ram_used / node.ram_total > 0.9) {
+        return true;
+    }
+    return false;
+}
+
+export function diskAlmostFull(node: Node): boolean {
+    if (node && node.disk_used / node.disk_total > 0.9) {
+        return true;
+    }
+    return false;
 }

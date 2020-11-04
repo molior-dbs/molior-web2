@@ -66,6 +66,13 @@
         </td>
     </ng-container>
 
+    <ng-container matColumnDef="sourcename">
+        <th mat-header-cell *matHeaderCellDef>Source name</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.name]">
+            {{element.sourcename}}
+        </td>
+    </ng-container>
+
     <ng-container matColumnDef="client_ver">
         <th mat-header-cell *matHeaderCellDef>Client version</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.name]">
