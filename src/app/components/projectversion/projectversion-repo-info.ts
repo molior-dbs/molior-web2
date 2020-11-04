@@ -34,7 +34,7 @@ export class ProjectversionRepoComponent extends TableComponent {
         this.projectversion = {id: -1, name: '', is_locked: false,
                                project_name: '',
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
-                               dependency_policy: 'strict', ci_builds_enabled: false};
+                               dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: []};
         this.repository = {id: -1, name: '', state: '', url: ''};
         this.dataSource = new RepositoryDataSource(this.repositoryService);
     }

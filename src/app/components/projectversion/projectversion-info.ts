@@ -11,7 +11,8 @@ import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
 
 @Component({
     selector: 'app-projectversion-info',
-    templateUrl: './projectversion-info.html'
+    templateUrl: './projectversion-info.html',
+    styleUrls: ['./projectversion-info.scss']
 })
 export class ProjectversionInfoComponent extends TableComponent {
     projectversion: ProjectVersion;
@@ -39,7 +40,7 @@ export class ProjectversionInfoComponent extends TableComponent {
         this.projectversion = {id: -1, name: this.projectVersion, is_locked: false,
                                project_name: this.projectName,
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
-                               dependency_policy: 'strict', ci_builds_enabled: false};
+                               dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: []};
         this.dataSource = new ProjectVersionDataSource(projectversionService);
     }
 
@@ -139,6 +140,20 @@ export class ProjectversionInfoComponent extends TableComponent {
             width: '40%',
         });
         dialog.afterClosed().subscribe(result => this.loadData());
+    }
+
+    externalDependency(pv: any): string {
+        if (this.projectversion.dependency_ids.includes(pv.id)) {
+            return '';
+        }
+        return 'externaldep';
+    }
+
+    isExternalDependency(pv: any): boolean {
+        if (this.projectversion.dependency_ids.includes(pv.id)) {
+            return false;
+        }
+        return true;
     }
 
 }

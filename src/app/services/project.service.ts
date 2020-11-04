@@ -24,6 +24,8 @@ export interface ProjectVersion {
     description: string;
     dependency_policy: string;
     ci_builds_enabled: boolean;
+    dependency_ids: number[];
+    dependent_ids: number[];
 }
 
 export interface Permission {
