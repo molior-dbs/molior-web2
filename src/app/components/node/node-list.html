@@ -1,5 +1,6 @@
 <h1><mat-icon>developer_board</mat-icon>Nodes</h1>
 <mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
+<div id="table-wrapper" [ngStyle]="{display: 'flex', 'flex-direction': 'column', 'flex-grow': 1 }" (window:resize)="resize2parent()">
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
     <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '48px', 'padding-left': '6px', 'text-align': 'center'}"></th>
@@ -115,3 +116,4 @@
     </ng-container>
     <tr mat-footer-row *matFooterRowDef="['footer']" [ngStyle]="(dataSource.total$ | async) < 1 ? {} : {display: 'none'}"></tr>
 </table>
+</div>

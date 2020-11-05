@@ -8,7 +8,8 @@ import {MoliorService, UpdateEvent} from '../../services/websocket';
 
 @Component({
   selector: 'app-nodes',
-  templateUrl: './node-list.html'
+  templateUrl: './node-list.html',
+  styleUrls: ['./node-list.scss']
 })
 export class NodeListComponent extends TableComponent {
     updateSubscription;
