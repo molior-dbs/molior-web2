@@ -69,7 +69,7 @@
     <ng-container matColumnDef="sourcename">
         <th mat-header-cell *matHeaderCellDef>Source name</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.name]">
-            <strong>{{element.sourcename}} {{element.sourceversion}}</strong>
+            <strong>{{element.sourcename}} {{element.sourceversion}} <span *ngIf="element.sourcearch">[{{element.sourcearch}}]</span></strong>
         </td>
     </ng-container>
 

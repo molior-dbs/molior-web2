@@ -36,7 +36,8 @@ export class NodeInfoComponent implements OnInit {
             ip: '',
             client_ver: '',
             sourcename: '',
-            sourceversion: ''
+            sourceversion: '',
+            sourcearch: ''
         };
     }
 
