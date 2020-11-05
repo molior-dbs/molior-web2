@@ -52,7 +52,7 @@ export class NodeInfoComponent implements OnInit, OnDestroy {
             const idKey = 'id';
             if (event.event === 'changed') {
                 (event.data as []).forEach( item => {
-                    if (item[idKey] === this.node) {
+                    if (item[idKey] === this.node.id) {
                         for (const key in item as {}) {
                             if (key) {
                                 if (key !== idKey) {
