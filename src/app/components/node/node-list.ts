@@ -50,7 +50,7 @@ export class NodeListComponent extends TableComponent {
         this.initFilter(this.input.nativeElement);
     }
 
-    OnDestroy() { // override OnDestroy from TableComponent
+    OnDestroy() {
         if (this.updateSubscription) {
             this.updateSubscription.unsubscribe();
             this.updateSubscription = null;

@@ -41,28 +41,28 @@ export class NodeInfoComponent implements OnInit, OnDestroy {
             sourcearch: ''
         };
         this.subscriptionNode = null;
-    }
-
-    ngOnInit() {
         this.route.paramMap.subscribe((params: ParamMap) => {
             const machineID = params.get('machine_id');
             this.nodeService.get(machineID).subscribe((res: Node) => this.node = res);
-            this.subscriptionNode = this.moliorService.nodes.subscribe((event: UpdateEvent) => {
-                const idKey = 'id';
-                if (event.event === 'changed') {
-                    (event.data as []).forEach( item => {
-                        if (item[idKey] === machineID) {
-                            for (const key in item as {}) {
-                                if (key) {
-                                    if (key !== idKey) {
-                                        this.node[key] = item[key];
-                                    }
+        });
+    }
+
+    ngOnInit() {
+        this.subscriptionNode = this.moliorService.nodes.subscribe((event: UpdateEvent) => {
+            const idKey = 'id';
+            if (event.event === 'changed') {
+                (event.data as []).forEach( item => {
+                    if (item[idKey] === this.node) {
+                        for (const key in item as {}) {
+                            if (key) {
+                                if (key !== idKey) {
+                                    this.node[key] = item[key];
                                 }
                             }
                         }
-                    });
-                }
-            });
+                    }
+                });
+            }
         });
     }
 
