@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 
 import {NodeService, Node, getLoadColor, getUptime, getMemory, getDisk,
-        memoryAlmostFull, diskAlmostFull} from '../../services/node.service';
+    memoryAlmostFull, diskAlmostFull} from '../../services/node.service';
+import {MoliorService, UpdateEvent} from '../../services/websocket';
 
 @Component({
     selector: 'app-node',
@@ -18,7 +19,8 @@ export class NodeInfoComponent implements OnInit {
     diskAlmostFull = diskAlmostFull;
 
     constructor(protected route: ActivatedRoute,
-                protected nodeService: NodeService) {
+                protected nodeService: NodeService,
+                protected moliorService: MoliorService) {
         this.node = {id: 0,
             name: '',
             arch: '',
@@ -42,6 +44,22 @@ export class NodeInfoComponent implements OnInit {
         this.route.paramMap.subscribe((params: ParamMap) => {
             const name = params.get('name');
             this.nodeService.get(name).subscribe((res: Node) => this.node = res);
+            this.moliorService.nodes.subscribe((event: UpdateEvent) => {
+                const nameKey = 'name';
+                if (event.event === 'changed') {
+                    (event.data as []).forEach( item => {
+                        if (item[nameKey] === name) {
+                            for (const key in item as {}) {
+                                if (key) {
+                                    if (key !== nameKey) {
+                                        this.node[key] = item[key];
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            });
         });
     }
 }
