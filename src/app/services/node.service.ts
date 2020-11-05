@@ -7,7 +7,6 @@ import {apiURL} from '../lib/url';
 import {TableService, TableDataSource, MoliorResult} from '../lib/table.datasource';
 
 export interface Node {
-  id: number;
   name: string;
   arch: string;
   state: string;
@@ -18,7 +17,7 @@ export interface Node {
   ram_total: number;
   disk_used: number;
   disk_total: number;
-  machine_id: string;
+  id: string; // machine_id, id needed to update table datasource
   ip: string;
   client_ver: string;
   sourcename: string;
@@ -52,8 +51,8 @@ export class NodeService extends TableService<Node> {
         return p;
     }
 
-    get(name: string) {
-        return this.http.get<Node>(`${apiURL()}/api/node/${name}`);
+    get(machineID: string) {
+        return this.http.get<Node>(`${apiURL()}/api/node/${machineID}`);
     }
 }
 

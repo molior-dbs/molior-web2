@@ -21,7 +21,7 @@ export class NodeInfoComponent implements OnInit {
     constructor(protected route: ActivatedRoute,
                 protected nodeService: NodeService,
                 protected moliorService: MoliorService) {
-        this.node = {id: 0,
+        this.node = {
             name: '',
             arch: '',
             state: '',
@@ -32,7 +32,7 @@ export class NodeInfoComponent implements OnInit {
             ram_total: 0,
             disk_used: 0,
             disk_total: 0,
-            machine_id: '',
+            id: '',
             ip: '',
             client_ver: '',
             sourcename: '',
@@ -43,16 +43,16 @@ export class NodeInfoComponent implements OnInit {
 
     ngOnInit() {
         this.route.paramMap.subscribe((params: ParamMap) => {
-            const name = params.get('name');
-            this.nodeService.get(name).subscribe((res: Node) => this.node = res);
+            const machineID = params.get('machine_id');
+            this.nodeService.get(machineID).subscribe((res: Node) => this.node = res);
             this.moliorService.nodes.subscribe((event: UpdateEvent) => {
-                const nameKey = 'name';
+                const idKey = 'id';
                 if (event.event === 'changed') {
                     (event.data as []).forEach( item => {
-                        if (item[nameKey] === name) {
+                        if (item[idKey] === machineID) {
                             for (const key in item as {}) {
                                 if (key) {
-                                    if (key !== nameKey) {
+                                    if (key !== idKey) {
                                         this.node[key] = item[key];
                                     }
                                 }

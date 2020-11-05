@@ -58,7 +58,7 @@ const routes: Routes = [
     { path: 'repos',                         component: RepositoryListComponent, canActivate: [AuthGuard] },
     { path: 'repo/:id',                      component: RepositoryInfoComponent, canActivate: [AuthGuard] },
     { path: 'nodes',                         component: NodeListComponent,       canActivate: [AuthGuard] },
-    { path: 'nodes/:name',                   component: NodeInfoComponent,       canActivate: [AuthGuard] },
+    { path: 'nodes/:machine_id',             component: NodeInfoComponent,       canActivate: [AuthGuard] },
     { path: 'users',                         component: UserListComponent,       canActivate: [AuthGuard] },
     { path: 'users/:username',               component: UserInfoComponent,       canActivate: [AuthGuard] },
     { path: 'about',                         component: AboutComponent,          canActivate: [AuthGuard] },
