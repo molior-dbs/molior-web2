@@ -9,6 +9,7 @@ import {MatOptionSelectionChange} from '@angular/material';
 import {TableComponent} from '../../lib/table.component';
 import {ProjectVersion, ProjectVersionService} from '../../services/project.service';
 import {RepositoryService, RepositoryDataSource, Repository} from '../../services/repository.service';
+import {AlertService} from '../../services/alert.service';
 import {buildicon} from '../../services/build.service';
 
 
@@ -95,12 +96,13 @@ export class ProjectversionRepoListComponent extends TableComponent {
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
-    delete(id: number) {
-        if (confirm(`Delete repository from ${this.projectversion.project_name}/${this.projectversion.name} ?`)) {
-            this.repositoryService.delete(id, this.projectversion.id).subscribe( r => {
-                this.loadData();
-            });
-        }
+    delete(element) {
+        const dialogRef = this.dialog.open(SourcerepoDeleteDialogComponent, {
+            data: { projectversion: this.projectversion, repo: element },
+            disableClose: true,
+            width: '40%',
+        });
+        dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
     cibuild(element) {
@@ -134,6 +136,7 @@ export class SourcerepoDialogComponent implements OnInit {
     constructor(public dialog: MatDialogRef<SourcerepoDialogComponent>,
                 protected repositoryService: RepositoryService,
                 private fb: FormBuilder,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repo: any }
     ) {
         this.projectversion = data.projectversion;
@@ -204,12 +207,13 @@ export class SourcerepoDialogComponent implements OnInit {
     save(): void {
         this.updateArchs();
         if (!this.repo) {
-            this.repositoryService.add(this.data.projectversion, this.form.value.url.trim(), this.form.value.architectures).subscribe();
+            this.repositoryService.add(this.data.projectversion, this.form.value.url.trim(), this.form.value.architectures).subscribe(
+                r => this.dialog.close(), err => this.alertService.error(err.error));
         } else {
             this.repositoryService.edit(this.data.projectversion, this.repo.id,
-                                        this.form.value.url.trim(), this.form.value.architectures).subscribe();
+                                        this.form.value.url.trim(), this.form.value.architectures).subscribe(
+                r => this.dialog.close(), err => this.alertService.error(err.error));
         }
-        this.dialog.close();
     }
 }
 
@@ -228,6 +232,7 @@ export class CIBuildDialogComponent {
                 private fb: FormBuilder,
                 protected repositoryService: RepositoryService,
                 protected router: Router,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repo: Repository }
     ) {
         this.projectversion = data.projectversion;
@@ -239,6 +244,33 @@ export class CIBuildDialogComponent {
         const target = `${this.projectversion.project_name}/${this.projectversion.name}`;
         this.repositoryService.cibuild(target, this.repo.url, this.form.value.gitref.trim()).subscribe(r => {
             this.dialog.close();
-        });
+        },
+        err => this.alertService.error(err.error));
+    }
+}
+
+@Component({
+    selector: 'app-repo-dialog',
+    templateUrl: 'projectversion-repo-delete-form.html',
+})
+export class SourcerepoDeleteDialogComponent {
+    repo: Repository;
+    projectversion: ProjectVersion;
+    constructor(public dialog: MatDialogRef<SourcerepoDeleteDialogComponent>,
+                protected repoService: RepositoryService,
+                protected router: Router,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repo: Repository }
+    ) {
+        this.projectversion = data.projectversion;
+        this.repo = data.repo;
+    }
+
+    save(): void {
+        this.repoService.delete(this.repo.id, this.projectversion.id).subscribe( r => {
+            this.dialog.close();
+            this.router.navigate(['project/' + this.projectversion.project_name + '/' + this.projectversion.name + '/repos']);
+        },
+        err => this.alertService.error(err.error));
     }
 }

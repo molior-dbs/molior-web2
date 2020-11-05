@@ -6,6 +6,7 @@ import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {ProjectVersion, ProjectVersionService} from '../../services/project.service';
 import {RepositoryService, RepositoryDataSource, Repository} from '../../services/repository.service';
 import {TableComponent} from '../../lib/table.component';
+import {SourcerepoDialogComponent, CIBuildDialogComponent, SourcerepoDeleteDialogComponent} from './projectversion-repo-list';
 
 @Component({
     selector: 'app-projectversion-repo-info',
@@ -82,6 +83,35 @@ export class ProjectversionRepoComponent extends TableComponent {
         // FIXME: confirm dialog
         this.repositoryService.removeHook(this.projectversion, this.repository.id, id).subscribe(
             r => this.loadData());
+    }
+
+    reclone() {
+        this.repositoryService.reclone(this.repository.id).subscribe();
+    }
+
+    build() {
+        this.repositoryService.build(this.repository.id).subscribe();
+    }
+
+    edit() {
+        const dialogRef = this.dialog.open(SourcerepoDialogComponent, {data: {
+            projectversion: this.projectversion, repo: this.repository}, disableClose: true, width: '900px'});
+        dialogRef.afterClosed().subscribe(result => this.loadData());
+    }
+
+    delete() {
+        const dialogRef = this.dialog.open(SourcerepoDeleteDialogComponent, {
+            data: { projectversion: this.projectversion, repo: this.repository },
+            disableClose: true,
+            width: '40%',
+        });
+        dialogRef.afterClosed().subscribe(result => this.loadData());
+    }
+
+    cibuild() {
+        const dialogRef = this.dialog.open(CIBuildDialogComponent, {data: {
+            projectversion: this.projectversion, repo: this.repository}, disableClose: true, width: '900px'});
+        dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 }
 

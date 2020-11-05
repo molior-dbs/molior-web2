@@ -63,19 +63,15 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef>
             <button mat-icon-button aria-label="create" (click)="create()"><mat-icon>control_point</mat-icon></button>
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label=""><mat-icon>menu</mat-icon></button>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="create()"><mat-icon>control_point</mat-icon> Add Repository</button>
-                <!--<button mat-menu-item><mat-icon>playlist_add</mat-icon> Import Repositories</button>-->
-            </mat-menu>
         </th>
         <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
             <button mat-icon-button [matMenuTriggerFor]="menu" id="menu_{{element.id}}" aria-label="">
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
+                <button mat-menu-item [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]"><mat-icon>list</mat-icon>Details</button>
                 <button mat-menu-item (click)="edit(element)"><mat-icon>edit</mat-icon>Edit</button>
-                <button mat-menu-item (click)="delete(element.id)"><mat-icon>delete</mat-icon>Delete</button>
+                <button mat-menu-item (click)="delete(element)"><mat-icon>delete</mat-icon>Delete</button>
                 <button mat-menu-item (click)="build(element.id)"><mat-icon>sync_alt</mat-icon>Check for new builds</button>
                 <button mat-menu-item (click)="cibuild(element)"><mat-icon>trending_up</mat-icon>Create CI build</button>
                 <button mat-menu-item (click)="reclone(element.id)"><mat-icon>swap_vert</mat-icon>Re-clone</button>

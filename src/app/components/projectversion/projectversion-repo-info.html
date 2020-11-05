@@ -28,6 +28,11 @@
             <mat-icon>menu</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="edit()"><mat-icon>edit</mat-icon>Edit</button>
+            <button mat-menu-item (click)="delete()"><mat-icon>delete</mat-icon>Delete</button>
+            <button mat-menu-item (click)="build()"><mat-icon>sync_alt</mat-icon>Check for new builds</button>
+            <button mat-menu-item (click)="cibuild()"><mat-icon>trending_up</mat-icon>Create CI build</button>
+            <button mat-menu-item (click)="reclone()"><mat-icon>swap_vert</mat-icon>Re-clone</button>
         </mat-menu>
     </div>
 </div>

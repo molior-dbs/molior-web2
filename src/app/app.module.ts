@@ -39,7 +39,7 @@ import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDelet
         ProjectversionCloneDialogComponent} from './components/project/project-info';
 import {ProjectPermissionsComponent, ProjectPermissionDialogComponent} from './components/project/project-permissions';
 import {ProjectversionInfoComponent, DependencyDialogComponent} from './components/projectversion/projectversion-info';
-import {ProjectversionRepoListComponent, SourcerepoDialogComponent,
+import {ProjectversionRepoListComponent, SourcerepoDialogComponent, SourcerepoDeleteDialogComponent,
         CIBuildDialogComponent} from './components/projectversion/projectversion-repo-list';
 import {ProjectversionRepoComponent, HookDialogComponent} from './components/projectversion/projectversion-repo-info';
 import {ProjectversionBuildListComponent} from './components/projectversion/projectversion-build-list';
@@ -127,6 +127,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectversionPermissionsComponent,
 
         SourcerepoDialogComponent,
+        SourcerepoDeleteDialogComponent,
         CIBuildDialogComponent,
         HookDialogComponent,
     ],
@@ -186,6 +187,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       RepoMergeDialogComponent,
                       RepoDeleteDialogComponent,
                       SourcerepoDialogComponent,
+                      SourcerepoDeleteDialogComponent,
                       CIBuildDialogComponent,
                       HookDialogComponent,
                       UserDialogComponent,
