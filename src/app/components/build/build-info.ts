@@ -65,6 +65,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.up = true;
         this.cursor = null;
         this.follow = true;
+        this.subscriptionBuild = null;
+        this.subscriptionLog = null;
     }
 
     ngOnInit() {

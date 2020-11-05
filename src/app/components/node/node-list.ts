@@ -11,6 +11,7 @@ import {MoliorService, UpdateEvent} from '../../services/websocket';
   templateUrl: './node-list.html'
 })
 export class NodeListComponent extends TableComponent {
+    updateSubscription;
     dataSource: NodeDataSource;
     displayedColumns: string[] = ['type', 'name', 'state', 'load', 'cpu_cores', 'ram_mem', 'disk',
                                   'ip', 'sourcename', 'client_ver', 'uptime_seconds', 'actions'];
@@ -28,6 +29,7 @@ export class NodeListComponent extends TableComponent {
                 protected moliorService: MoliorService) {
         super(route, router, [['filter', '']]);
         this.dataSource = new NodeDataSource(this.nodeService);
+        this.updateSubscription = null;
     }
 
     loadData() {
@@ -43,8 +45,15 @@ export class NodeListComponent extends TableComponent {
     }
 
     AfterViewInit() {
-        this.moliorService.nodes.subscribe((evt: UpdateEvent) => { this.dataSource.update(evt, true); });
+        this.updateSubscription = this.moliorService.nodes.subscribe((evt: UpdateEvent) => { this.dataSource.update(evt, true); });
         this.dataSource.setPaginator(this.paginator);
         this.initFilter(this.input.nativeElement);
+    }
+
+    OnDestroy() { // override OnDestroy from TableComponent
+        if (this.updateSubscription) {
+            this.updateSubscription.unsubscribe();
+            this.updateSubscription = null;
+        }
     }
 }

@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild, OnInit, OnDestroy, Input} from '@angular/core';
+import {Component, ElementRef, ViewChild, OnInit, Input} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {TableComponent} from '../../lib/table.component';
@@ -12,7 +12,7 @@ import {MoliorService, UpdateEvent} from '../../services/websocket';
     templateUrl: './build-table.html',
     styleUrls: ['./build-table.scss']
 })
-export class BuildTableComponent extends TableComponent implements OnInit, OnDestroy {
+export class BuildTableComponent extends TableComponent implements OnInit {
     buildicon;
     dataSource: BuildDataSource;
     displayedColumns: string[];
@@ -93,9 +93,10 @@ export class BuildTableComponent extends TableComponent implements OnInit, OnDes
         this.updateSubscription = this.moliorService.builds.subscribe((evt: UpdateEvent) => { this.dataSource.update(evt); });
     }
 
-    ngDestroy() {
+    OnDestroy() {
         if (this.updateSubscription) {
             this.updateSubscription.unsubscribe();
+            this.updateSubscription = null;
         }
     }
 

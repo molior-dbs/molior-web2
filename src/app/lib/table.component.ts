@@ -118,6 +118,8 @@ export class TableComponent implements AfterViewInit, OnDestroy {
         if (this.pParams) {
             this.pParams.unsubscribe();
         }
+
+        this.OnDestroy();
     }
 
     updateElements() {
@@ -218,5 +220,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
     }
     AfterViewInit() {
         console.error('not implemented yet');
+    }
+    OnDestroy() {
     }
 }

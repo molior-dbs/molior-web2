@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 
 import {NodeService, Node, getLoadColor, getUptime, getMemory, getDisk,
@@ -9,8 +9,9 @@ import {MoliorService, UpdateEvent} from '../../services/websocket';
     selector: 'app-node',
     templateUrl: './node-info.html',
 })
-export class NodeInfoComponent implements OnInit {
+export class NodeInfoComponent implements OnInit, OnDestroy {
     node: Node;
+    subscriptionNode;
     getLoadColor = getLoadColor;
     getUptime = getUptime;
     getMemory = getMemory;
@@ -39,13 +40,14 @@ export class NodeInfoComponent implements OnInit {
             sourceversion: '',
             sourcearch: ''
         };
+        this.subscriptionNode = null;
     }
 
     ngOnInit() {
         this.route.paramMap.subscribe((params: ParamMap) => {
             const machineID = params.get('machine_id');
             this.nodeService.get(machineID).subscribe((res: Node) => this.node = res);
-            this.moliorService.nodes.subscribe((event: UpdateEvent) => {
+            this.subscriptionNode = this.moliorService.nodes.subscribe((event: UpdateEvent) => {
                 const idKey = 'id';
                 if (event.event === 'changed') {
                     (event.data as []).forEach( item => {
@@ -62,5 +64,12 @@ export class NodeInfoComponent implements OnInit {
                 }
             });
         });
+    }
+
+    ngOnDestroy() {
+        if (this.subscriptionNode) {
+            this.subscriptionNode.unsubscribe();
+            this.subscriptionNode = null;
+        }
     }
 }
