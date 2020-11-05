@@ -105,7 +105,6 @@ export class ProjectversionRepoComponent extends TableComponent {
             disableClose: true,
             width: '40%',
         });
-        dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
     cibuild() {
