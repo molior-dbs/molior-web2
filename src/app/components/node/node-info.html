@@ -32,12 +32,12 @@
             <td>{{node.cpu_cores}}</td>
         </tr>
         <tr>
-            <td><strong>RAM [GB]</strong></td>
-            <td>{{getMemory(node)}}<mat-icon *ngIf="memoryAlmostFull(node)" color="warn">warning</mat-icon></td>
+            <td><strong>RAM</strong></td>
+            <td *ngIf="getMemoryUsagePerc(node)"><meter min="0" low="70" optimum="30" high="90" max="100" value="{{getMemoryUsagePerc(node)}}" class="meter-stat" matTooltip="{{getMemory(node)}} GB"></meter></td>
         </tr>
         <tr>
-            <td><strong>Disk [GB]</strong></td>
-            <td>{{getDisk(node)}}<mat-icon *ngIf="diskAlmostFull(node)" color="warn">warning</mat-icon></td>
+            <td><strong>Disk</strong></td>
+            <td *ngIf="getDiskUsagePerc(node)"><meter min="0" low="70" optimum="30" high="90" max="100" value="{{getDiskUsagePerc(node)}}" class="meter-stat" matTooltip="{{getDisk(node)}} GB"></meter></td>
         </tr>
         <tr>
             <td><strong>IP</strong></td>

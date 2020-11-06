@@ -68,7 +68,7 @@ export function getLoadColor(load: number) {
     return color;
 }
 
-export function getUptime(node) {
+export function getUptime(node: Node): string {
     const d = Math.floor(node.uptime_seconds / 3600.0 / 24.0);
     const h = Math.floor((node.uptime_seconds % (3600.0 * 24.0 * d)) / 3600.0);
     const m = Math.floor((node.uptime_seconds % 3600.0) / 60.0);
@@ -83,12 +83,12 @@ export function getUptime(node) {
     return `${m}m`;
 }
 
-export function getMemory(node): string {
+export function getMemory(node: Node): string {
     return String((node.ram_used / 1024.0 / 1024.0 / 1024.0).toFixed(2)) + ' / ' +
            String((node.ram_total / 1024.0 / 1024.0 / 1024.0).toFixed(2)); // GB
 }
 
-export function getDisk(node): string {
+export function getDisk(node: Node): string {
     return String((node.disk_used / 1024.0 / 1024.0 / 1024.0).toFixed(2)) + ' / ' +
            String((node.disk_total / 1024.0 / 1024.0 / 1024.0).toFixed(2)); // GB
 }
@@ -100,9 +100,17 @@ export function memoryAlmostFull(node: Node): boolean {
     return false;
 }
 
+export function getMemoryUsagePerc(node: Node): number {
+    return node.ram_used / node.ram_total * 100.0;
+}
+
 export function diskAlmostFull(node: Node): boolean {
     if (node && node.disk_used / node.disk_total > 0.9) {
         return true;
     }
     return false;
+}
+
+export function getDiskUsagePerc(node: Node): number {
+    return node.disk_used / node.disk_total * 100.0;
 }

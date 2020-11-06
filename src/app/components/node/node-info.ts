@@ -2,12 +2,13 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 
 import {NodeService, Node, getLoadColor, getUptime, getMemory, getDisk,
-    memoryAlmostFull, diskAlmostFull} from '../../services/node.service';
+        getMemoryUsagePerc, getDiskUsagePerc} from '../../services/node.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
 
 @Component({
     selector: 'app-node',
     templateUrl: './node-info.html',
+    styleUrls: ['./node-info.scss']
 })
 export class NodeInfoComponent implements OnInit, OnDestroy {
     node: Node;
@@ -16,8 +17,8 @@ export class NodeInfoComponent implements OnInit, OnDestroy {
     getUptime = getUptime;
     getMemory = getMemory;
     getDisk = getDisk;
-    memoryAlmostFull = memoryAlmostFull;
-    diskAlmostFull = diskAlmostFull;
+    getMemoryUsagePerc = getMemoryUsagePerc;
+    getDiskUsagePerc = getDiskUsagePerc;
 
     constructor(protected route: ActivatedRoute,
                 protected nodeService: NodeService,
