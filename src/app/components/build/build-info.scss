@@ -20,7 +20,17 @@
 }
 
 ::ng-deep .errorline {
-  background: darkred;
+  border: 2px solid darkred;
+}
+
+::ng-deep .errorline > td {
+  padding-top: 2px;
+  padding-bottom: 1px;
+}
+
+.mat-button {
+  line-height: unset !important;
+  color: darkred;
 }
 
 // set app-build component

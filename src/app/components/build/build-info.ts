@@ -27,7 +27,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     cursor;
     buildicon;
     follow: boolean;
-    showerror: number;
+    currenterr: number;
+    totalerr: number;
     @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
     constructor(protected route: ActivatedRoute,
@@ -68,7 +69,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.follow = true;
         this.subscriptionBuild = null;
         this.subscriptionLog = null;
-        this.showerror = 0;
+        this.currenterr = 0;
+        this.totalerr = 0;
     }
 
     ngOnInit() {
@@ -95,7 +97,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
             const linenumber = Math.round(p.pageIndex * p.pageSize) + 1;
             const row = document.getElementById('row-' + linenumber) as HTMLElement;
             if (row) {
-                row.scrollIntoView();
+                this.scrollToLog(row);
             }
         });
     }
@@ -145,6 +147,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.subscriptionLog = this.moliorService.buildlog.subscribe(log => {
                 if (log.hasOwnProperty('event') && log.event === 'done') {
+                    console.log("all logs recieved");
                     this.up = false;
                     if (this.cursor) {
                         const parent = document.getElementById('buildlog') as HTMLTableElement;
@@ -154,6 +157,9 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                             endrow.scrollIntoView();
                         }
                     }
+                    const errors = document.getElementsByClassName('errorline');
+                    this.totalerr = errors.length;
+                    this.highlightLine();
                     this.updatePaginator();
                     return;
                 }
@@ -206,7 +212,6 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                 data: {build_id: this.build.id}
             });
 
-            setTimeout(() => this.highlightLine(), 1000);
         });
     }
 
@@ -220,7 +225,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         const linenumber = this.selectedLine;
         const line = document.querySelector('#line-' + linenumber) as HTMLElement;
         if (line ) {
-            line.scrollIntoView();
+            this.scrollToLog(line);
 
             const row = document.getElementById('row-' + linenumber) as HTMLElement;
             if (row) {
@@ -283,18 +288,30 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
     findError() {
         const errors = document.getElementsByClassName('errorline');
-        if (this.showerror > errors.length - 1) {
-            this.showerror = 0;
+        this.totalerr = errors.length;
+        if (this.currenterr > this.totalerr - 1) {
+            this.currenterr = 0;
         }
         let found = false;
         Array.prototype.forEach.call(errors, (error, i) => {
-            if (this.showerror === i) {
-                error.scrollIntoView();
+            if (this.currenterr === i) {
+                this.scrollToLog(error);
                 found = true;
             }
         });
         if (found) {
-            this.showerror++;
+            this.currenterr++;
         }
+    }
+
+    scrollToLog(element) {
+        const headerOffset = 42;
+        const scroll = document.getElementById('log-scroll') as HTMLElement;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition - scroll.getBoundingClientRect().top + scroll.scrollTop - headerOffset;
+        scroll.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
     }
 }

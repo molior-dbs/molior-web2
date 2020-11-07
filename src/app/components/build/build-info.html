@@ -20,28 +20,30 @@
         </table>
     </div>
     <div style="flex-grow: 1; text-align: right;">
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item disabled><mat-icon>delete</mat-icon> Delete</button>
-                <button mat-menu-item (click)="rebuild()"><mat-icon>replay</mat-icon> Retry Build</button>
-                <button mat-menu-item (click)="buildlatest()"><mat-icon>sync_alt</mat-icon>Check for new builds</button>
-            </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item disabled><mat-icon>delete</mat-icon> Delete</button>
+            <button mat-menu-item (click)="rebuild()"><mat-icon>replay</mat-icon> Retry Build</button>
+            <button mat-menu-item (click)="buildlatest()"><mat-icon>sync_alt</mat-icon>Check for new builds</button>
+        </mat-menu>
     </div>
 </div>
 
-<div>
-<h2>Build Log</h2>
-<mat-checkbox *ngIf="this.build.buildstate === 'building'" [checked]="follow">Follow</mat-checkbox>
-<button *ngIf="this.build.buildstate === 'build_failed'" (click)="findError()">Find Error</button>
-<mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
+<div style="display: flex">
+    <h2>Build Log</h2>
+    <div style="align-self: end; flex-grow: 1; text-align: right; align-content: end; display: flex; justify-content: end;">
+        <mat-checkbox *ngIf="this.build.buildstate === 'building'" [checked]="follow">Follow</mat-checkbox>
+        <button mat-button *ngIf="this.build.buildstate === 'build_failed'" (click)="findError()">Find Error ({{currenterr}}/{{totalerr}})</button>
+        <mat-paginator style="display: inline-block; width: 400px; max-width: 400px;" showFirstLastButtons hidePageSize></mat-paginator>
+    </div>
 </div>
 <div id="log-wrapper" class="mat-elevation-z8" (window:resize)="updatePaginator()">
-  <div id="log-scroll" class="log-scroll" (scroll)="updatePaginator()">
-    <table class="log-table" cdkFocusInitial>
-      <tbody id="buildlog">
-      </tbody>
-    </table>
-  </div>
+    <div id="log-scroll" class="log-scroll" (scroll)="updatePaginator()">
+        <table class="log-table" cdkFocusInitial>
+            <tbody id="buildlog">
+            </tbody>
+        </table>
+    </div>
 </div>
