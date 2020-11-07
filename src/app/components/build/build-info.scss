@@ -19,6 +19,10 @@
   height: 200px;
 }
 
+::ng-deep .errorline {
+  background: darkred;
+}
+
 // set app-build component
 :host {
   display: flex;

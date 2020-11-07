@@ -91,8 +91,8 @@ export class RepositoryService extends TableService<Repository> {
         return this.http.delete(`${apiURL()}/api2/project/${pv.project_name}/${pv.name}/repository/${repoid}/hook/${id}`);
     }
 
-    cibuild(projectversion, repoUrl: string, gitref: string) {
-        return this.http.post(`${apiURL()}/api/build`, {repository: repoUrl, git_ref: gitref, force_ci: true, targets: [projectversion]});
+    cibuild(projectversion, repoUrl: string, gitref: string, forceCI: boolean = true) {
+        return this.http.post(`${apiURL()}/api/build`, {repository: repoUrl, git_ref: gitref, forceCI, targets: [projectversion]});
     }
 
     mergeDuplicate(id: number, duplicate: number) {

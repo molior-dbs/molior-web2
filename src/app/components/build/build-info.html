@@ -33,7 +33,8 @@
 
 <div>
 <h2>Build Log</h2>
-<mat-checkbox [checked]="follow">Follow</mat-checkbox>
+<mat-checkbox *ngIf="this.build.buildstate === 'building'" [checked]="follow">Follow</mat-checkbox>
+<button *ngIf="this.build.buildstate === 'build_failed'" (click)="findError()">Find Error</button>
 <mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
 </div>
 <div id="log-wrapper" class="mat-elevation-z8" (window:resize)="updatePaginator()">

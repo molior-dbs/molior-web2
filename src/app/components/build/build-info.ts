@@ -27,6 +27,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     cursor;
     buildicon;
     follow: boolean;
+    showerror: number;
     @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
     constructor(protected route: ActivatedRoute,
@@ -67,6 +68,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.follow = true;
         this.subscriptionBuild = null;
         this.subscriptionLog = null;
+        this.showerror = 0;
     }
 
     ngOnInit() {
@@ -181,6 +183,10 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                     const logline = row.insertCell(1);
                     logline.innerHTML = this.ansiup.ansi_to_html(line);
                     logline.className = 'logline';
+                    const re = /error: /i;
+                    if (line.search(re) >= 0) {
+                        row.className = 'errorline';
+                    }
                     this.loglines += 1;
                     lastrow = row;
                 });
@@ -200,12 +206,15 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                 data: {build_id: this.build.id}
             });
 
-            setTimeout(() => this.highlightLine(), 2000);
+            setTimeout(() => this.highlightLine(), 1000);
         });
     }
 
     highlightLine() {
         if (!this.selectedLine) {
+            if (this.build.buildstate === 'build_failed') {
+                this.findError();
+            }
             return;
         }
         const linenumber = this.selectedLine;
@@ -272,4 +281,20 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.repositoryService.build(this.build.sourcerepository_id).subscribe();
     }
 
+    findError() {
+        const errors = document.getElementsByClassName('errorline');
+        if (this.showerror > errors.length - 1) {
+            this.showerror = 0;
+        }
+        let found = false;
+        Array.prototype.forEach.call(errors, (error, i) => {
+            if (this.showerror === i) {
+                error.scrollIntoView();
+                found = true;
+            }
+        });
+        if (found) {
+            this.showerror++;
+        }
+    }
 }
