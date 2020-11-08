@@ -199,11 +199,14 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         [/\berror\b[^:]/i, [
                             [/gpgv: keyblock resource/, /General error$/],
                             [/^(\x1b[^m]+m)*make/, /Error \d+$/],
+                            [/error\\.o$/],
                         ]],
                         [/^(\x1b[^m]+m)*E:/, [
                             [/dpkg-buildpackage died/]
                         ]],
-                        [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []]
+                        [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []],
+                        [/dh_install: missing files, aborting/, []],
+                        [/\/bin\/sh:.+not found/, []]
                     ];
                     console.log(line);
                     for (const pattern of patterns) {
