@@ -189,9 +189,43 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                     const logline = row.insertCell(1);
                     logline.innerHTML = this.ansiup.ansi_to_html(line);
                     logline.className = 'logline';
-                    const re = /error: /i;
-                    if (line.search(re) >= 0) {
-                        row.className = 'errorline';
+
+
+                    const patterns = [
+                        // this       but not all of that
+                        [/\b(\x1b[^m]+m)*error: /i, [
+                            [/dpkg-buildpackage: error: debian\/rules build subprocess returned exit status \d+$/],
+                            [/sbuild command failed/]
+                        ]],
+                        [/\berror\b[^:]/i, [
+                            [/gpgv: keyblock resource/, /General error$/],
+                            [/^make/, /Error \d+$/],
+                        ]],
+                        [/^(\x1b[^m]+m)*E:/, [
+                            [/dpkg-buildpackage died/]
+                        ]]
+                    ];
+                    for (const pattern of patterns) {
+                        if (line.search(pattern[0] as RegExp) >= 0) {
+                            const falsepositives = pattern[1] as [];
+                            let found = false;
+                            for (const fps of falsepositives) {
+                                found = true;
+                                for (const fp of fps as RegExp[]) {
+                                    if (line.search(fp) === -1) {
+                                        found = false;
+                                        break;
+                                    }
+                                }
+                                if (found) {
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                row.className = 'errorline';
+                                break;
+                            }
+                        }
                     }
                     this.loglines += 1;
                     lastrow = row;
