@@ -195,7 +195,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         [/\S*error: /i, [
                             [/dpkg-buildpackage: error: debian\/rules build subprocess returned exit status \d+$/],
                             [/sbuild command failed/],
-                            [/dpkg-buildpackage/, /subprocess returned exit status \d/]
+                            [/dpkg-buildpackage/, /exit status \d+/]
                         ]],
                         [/\berror\b[^:]/i, [
                             [/gpgv: keyblock resource/, /General error$/],
@@ -203,12 +203,14 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                             [/error\\.\S$/],
                         ]],
                         [/^(\x1b[^m]+m)*E:/, [
-                            [/dpkg-buildpackage died/]
+                            [/dpkg-buildpackage died/],
+                            [/Error building source package/],
                         ]],
                         [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []],
                         [/dh_install: missing files, aborting/, []],
                         [/\/bin\/sh:.+not found/, []],
-                        [/\.py:\d+:\d+: F401 /, []]
+                        [/\.py:\d+:\d+: [FW]\d+ /, []],
+                        [/dh_systemd_enable: Could not handle all of the requested services/, []],
                     ];
                     console.log(line);
                     for (const pattern of patterns) {
