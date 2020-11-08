@@ -207,7 +207,6 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                             [/Error building source package/],
                         ]],
                         [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []],
-                        [/recipe for target '[^']+' failed/, []],
                         [/dh_install: missing files, aborting/, []],
                         [/\/bin\/sh:.+not found/, []],
                         [/\.py:\d+:\d+: [FW]\d+ /, []],
