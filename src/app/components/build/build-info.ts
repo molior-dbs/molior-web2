@@ -192,21 +192,23 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     const patterns = [
                         // this       but not any of all of that
-                        [/\b(\x1b[^m]+m)*error: /i, [
+                        [/\S*error: /i, [
                             [/dpkg-buildpackage: error: debian\/rules build subprocess returned exit status \d+$/],
-                            [/sbuild command failed/]
+                            [/sbuild command failed/],
+                            [/dpkg-buildpackage/, /subprocess returned exit status \d/]
                         ]],
                         [/\berror\b[^:]/i, [
                             [/gpgv: keyblock resource/, /General error$/],
                             [/^(\x1b[^m]+m)*make/, /Error \d+$/],
-                            [/error\\.o$/],
+                            [/error\\.\S$/],
                         ]],
                         [/^(\x1b[^m]+m)*E:/, [
                             [/dpkg-buildpackage died/]
                         ]],
                         [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []],
                         [/dh_install: missing files, aborting/, []],
-                        [/\/bin\/sh:.+not found/, []]
+                        [/\/bin\/sh:.+not found/, []],
+                        [/\.py:\d+:\d+: F401 /, []]
                     ];
                     console.log(line);
                     for (const pattern of patterns) {
