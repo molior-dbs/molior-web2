@@ -200,13 +200,14 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         [/\berror\b[^:]/i, [
                             [/gpgv: keyblock resource/, /General error$/],
                             [/^(\x1b[^m]+m)*make/, /Error \d+$/],
-                            [/error\\.\S$/],
+                            [/error\.\S+$/],
                         ]],
                         [/^(\x1b[^m]+m)*E:/, [
                             [/dpkg-buildpackage died/],
                             [/Error building source package/],
                         ]],
                         [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []],
+                        [/recipe for target '[^']+' failed/, []],
                         [/dh_install: missing files, aborting/, []],
                         [/\/bin\/sh:.+not found/, []],
                         [/\.py:\d+:\d+: [FW]\d+ /, []],
