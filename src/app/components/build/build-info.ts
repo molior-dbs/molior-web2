@@ -198,12 +198,12 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         ]],
                         [/\berror\b[^:]/i, [
                             [/gpgv: keyblock resource/, /General error$/],
-                            [/^make/, /Error \d+$/],
+                            [/^(\x1b[^m]+m)*make/, /Error \d+$/],
                         ]],
                         [/^(\x1b[^m]+m)*E:/, [
                             [/dpkg-buildpackage died/]
                         ]],
-                        [/^make.+No rule to make target.*Stop/, []]
+                        [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []]
                     ];
                     console.log(line);
                     for (const pattern of patterns) {
