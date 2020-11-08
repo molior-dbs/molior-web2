@@ -190,9 +190,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                     logline.innerHTML = this.ansiup.ansi_to_html(line);
                     logline.className = 'logline';
 
-
                     const patterns = [
-                        // this       but not all of that
+                        // this       but not any of all of that
                         [/\b(\x1b[^m]+m)*error: /i, [
                             [/dpkg-buildpackage: error: debian\/rules build subprocess returned exit status \d+$/],
                             [/sbuild command failed/]
@@ -203,16 +202,20 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         ]],
                         [/^(\x1b[^m]+m)*E:/, [
                             [/dpkg-buildpackage died/]
-                        ]]
+                        ]],
+                        [/^make.+No rule to make target.*Stop/, []]
                     ];
+                    console.log(line);
                     for (const pattern of patterns) {
                         if (line.search(pattern[0] as RegExp) >= 0) {
+                            console.log(pattern[0]);
                             const falsepositives = pattern[1] as [];
                             let found = false;
                             for (const fps of falsepositives) {
                                 found = true;
                                 for (const fp of fps as RegExp[]) {
                                     if (line.search(fp) === -1) {
+                                        console.log(fp);
                                         found = false;
                                         break;
                                     }
