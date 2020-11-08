@@ -147,7 +147,6 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.subscriptionLog = this.moliorService.buildlog.subscribe(log => {
                 if (log.hasOwnProperty('event') && log.event === 'done') {
-                    console.log("all logs recieved");
                     this.up = false;
                     if (this.cursor) {
                         const parent = document.getElementById('buildlog') as HTMLTableElement;
@@ -213,17 +212,14 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         [/\.py:\d+:\d+: [FW]\d+ /, []],
                         [/dh_systemd_enable: Could not handle all of the requested services/, []],
                     ];
-                    console.log(line);
                     for (const pattern of patterns) {
                         if (line.search(pattern[0] as RegExp) >= 0) {
-                            console.log(pattern[0]);
                             const falsepositives = pattern[1] as [];
                             let found = false;
                             for (const fps of falsepositives) {
                                 found = true;
                                 for (const fp of fps as RegExp[]) {
                                     if (line.search(fp) === -1) {
-                                        console.log(fp);
                                         found = false;
                                         break;
                                     }
@@ -329,6 +325,16 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
     buildlatest() {
         this.repositoryService.build(this.build.sourcerepository_id).subscribe();
+    }
+
+    toggleFollow() {
+        this.follow = !this.follow;
+        if (this.follow) {
+            const endrow = document.getElementById('row-' + this.loglines) as HTMLElement;
+            if (endrow) {
+                endrow.scrollIntoView();
+            }
+        }
     }
 
     findError() {

@@ -34,7 +34,7 @@
 <div style="display: flex">
     <h2>Build Log</h2>
     <div style="align-self: end; flex-grow: 1; text-align: right; align-content: end; display: flex; justify-content: end;">
-        <mat-checkbox *ngIf="this.build.buildstate === 'building'" [checked]="follow">Follow</mat-checkbox>
+        <mat-checkbox *ngIf="this.build.buildstate === 'building'" [checked]="follow" (change)="toggleFollow()">follow</mat-checkbox>
         <button mat-button *ngIf="this.build.buildstate === 'build_failed' && totalerr > 0" (click)="findError()">Find Error ({{currenterr}}/{{totalerr}})</button>
         <mat-paginator style="display: inline-block; width: 400px; max-width: 400px;" showFirstLastButtons hidePageSize></mat-paginator>
     </div>
