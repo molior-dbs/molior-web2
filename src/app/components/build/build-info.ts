@@ -200,6 +200,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                             [/gpgv: keyblock resource/, /General error$/],
                             [/^(\x1b[^m]+m)*make/, /Error \d+$/],
                             [/error\.\S+$/],
+                            [/dpkg-buildpackage/, /exit status \d+/]
                         ]],
                         [/^(\x1b[^m]+m)*E:/, [
                             [/dpkg-buildpackage died/],
