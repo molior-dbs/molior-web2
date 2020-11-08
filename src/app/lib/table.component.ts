@@ -96,12 +96,11 @@ export class TableComponent implements AfterViewInit, OnDestroy {
             () => {
                 /* tslint:disable:no-string-literal */
                 if (this.paginator.pageIndex > 0) {
-                    this.params.DefaultParams['pagesize'] = '';
+                    this.params.DefaultParams['pagesize'] = this.paginator.pageSize;
                 } else {
-                    delete this.params.DefaultParams['pagesize'];
-                    delete this.params.CurrentParams['pagesize'];
+                    this.params.DefaultParams['pagesize'] = this.paginator.pageSize;
+                    this.params.CurrentParams['pagesize'] = this.paginator.pageSize;
                 }
-                delete this.params.ExtraParams['pagesize'];
                 /* tslint:enable:no-string-literal */
                 this.params.set('page',     this.paginator.pageIndex + 1);
                 this.params.set('pagesize', this.paginator.pageSize);
@@ -168,9 +167,8 @@ export class TableComponent implements AfterViewInit, OnDestroy {
                     this.paginator.pageIndex = 0;
                     this.params.set('page', 1);
                     /* tslint:disable:no-string-literal */
-                    delete this.params.DefaultParams['pagesize'];
-                    delete this.params.CurrentParams['pagesize'];
-                    delete this.params.ExtraParams['pagesize'];
+                    this.params.DefaultParams['pagesize'] = this.paginator.pageSize;
+                    this.params.CurrentParams['pagesize'] = this.paginator.pageSize;
                     /* tslint:enable:no-string-literal */
                     this.setParams();
                     this.loadPage();
