@@ -209,6 +209,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []],
                         [/dh_install: missing files, aborting/, []],
                         [/\/bin\/sh:.+not found/, []],
+                        [/: No such file or directory/, []],
+                        [/Target "[^"]" does not exist in the project/, []],
                         [/\.py:\d+:\d+: [FW]\d+ /, []],
                         [/dh_systemd_enable: Could not handle all of the requested services/, []],
                     ];
