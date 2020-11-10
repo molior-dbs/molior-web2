@@ -40,8 +40,8 @@
     </div>
 </div>
 <div id="log-wrapper" class="mat-elevation-z8" (window:resize)="updatePaginator()">
-    <div id="log-scroll" class="log-scroll" (scroll)="updatePaginator()">
-        <table class="log-table" cdkFocusInitial>
+    <div id="log-scroll" class="log-scroll" tabindex="0" (scroll)="updatePaginator()">
+        <table class="log-table">
             <tbody id="buildlog">
             </tbody>
         </table>

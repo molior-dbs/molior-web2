@@ -90,6 +90,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
             });
             this.fetchLogs(id);
         });
+        const scroll = document.getElementById('log-scroll') as HTMLTableElement;
+        scroll.focus();
     }
 
     ngAfterViewInit() {
