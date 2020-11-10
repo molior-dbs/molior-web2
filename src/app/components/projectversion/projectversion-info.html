@@ -106,13 +106,7 @@
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}">CI Builds</th>
         <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)" [ngStyle]="{'text-align': 'center'}">
             <mat-icon *ngIf="element.ci_builds_enabled">done</mat-icon>
-        </td>
-    </ng-container>
-
-    <ng-container matColumnDef="use_cibuilds">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}">Use CI Builds</th>
-        <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)" [ngStyle]="{'text-align': 'center'}">
-            <mat-icon *ngIf="element.use_cibuilds">done</mat-icon>
+            <mat-icon *ngIf="!element.ci_builds_enabled">remove</mat-icon>
         </td>
     </ng-container>
 
