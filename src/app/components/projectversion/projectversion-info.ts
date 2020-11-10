@@ -142,13 +142,6 @@ export class ProjectversionInfoComponent extends TableComponent {
         dialog.afterClosed().subscribe(result => this.loadData());
     }
 
-    externalDependency(pv: any): string {
-        if (this.projectversion.dependency_ids.includes(pv.id)) {
-            return '';
-        }
-        return 'externaldep';
-    }
-
     isExternalDependency(pv: any): boolean {
         if (this.projectversion.dependency_ids.includes(pv.id)) {
             return false;
