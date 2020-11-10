@@ -10,6 +10,7 @@ import {ProjectService, ProjectVersionService, ProjectVersionDataSource, Project
         Project, Permission} from '../../services/project.service';
 import {UserService, User} from '../../services/user.service';
 import {ValidationService} from '../../services/validation.service';
+import {AlertService} from '../../services/alert.service';
 
 
 @Component({
@@ -60,7 +61,7 @@ export class ProjectPermissionsComponent extends TableComponent {
 
     add(): void {
         const dialog = this.dialog.open(ProjectPermissionDialogComponent, {
-            data: {project: this.project},
+            data: {permission: null, project: this.project},
             disableClose: true,
             width: '40%',
         });
@@ -78,7 +79,7 @@ export class ProjectPermissionsComponent extends TableComponent {
 
     delete(permission) {
         // FIXME: confirm dialog
-        this.projectService.deletePermission(this.project.name, permission.username).subscribe(
+        this.projectService.deletePermission(this.project.name, permission.id).subscribe(
             r => this.loadData());
     }
 }
@@ -104,12 +105,13 @@ export class ProjectPermissionDialogComponent {
                 protected projectService: ProjectService,
                 protected userService: UserService,
                 private fb: FormBuilder,
+                private alertService: AlertService,
                 protected router: Router,
                 @Inject(MAT_DIALOG_DATA) private data: {permission: Permission, project: Project}) {
         this.project = data.project;
         this.permission = data.permission;
         if (this.permission) {
-            this.form.patchValue({username: this.permission.username, this: data.permission.role});
+            this.form.patchValue({username: this.permission.username, role: this.permission.role});
         }
         this.userService.getProjectRoleCandidates(this.project.name).subscribe(
             /* tslint:disable:no-string-literal */
@@ -119,12 +121,19 @@ export class ProjectPermissionDialogComponent {
     }
 
     save(): void {
-        if (!this.permission) {
-            this.projectService.addPermission(this.project.name, this.form.value.username, this.form.value.role).subscribe(
-                r => this.dialog.close());
-        } else {
-            this.projectService.editPermission(this.project.name, this.form.value.username, this.form.value.role).subscribe(
-                r => this.dialog.close());
-        }
+        this.userService.get(this.form.value.username).subscribe(
+            r => {
+                if (!this.permission) {
+                    this.projectService.addPermission(this.project.name, r.id, this.form.value.role).subscribe(
+                        r2 => this.dialog.close(),
+                        err2 => this.alertService.error(err2.error));
+                } else {
+                    this.projectService.editPermission(this.project.name, r.id, this.form.value.role).subscribe(
+                        r2 => this.dialog.close(),
+                        err2 => this.alertService.error(err2.error));
+                }
+            },
+            err => this.alertService.error(err.error)
+        );
     }
 }
