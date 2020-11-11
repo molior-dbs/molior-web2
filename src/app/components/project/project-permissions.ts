@@ -78,9 +78,12 @@ export class ProjectPermissionsComponent extends TableComponent {
     }
 
     delete(permission) {
-        // FIXME: confirm dialog
-        this.projectService.deletePermission(this.project.name, permission.id).subscribe(
-            r => this.loadData());
+        const dialog = this.dialog.open(ProjectPermissionDeleteDialogComponent, {
+            data: {permission, project: this.project},
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 }
 
@@ -106,7 +109,6 @@ export class ProjectPermissionDialogComponent {
                 protected userService: UserService,
                 private fb: FormBuilder,
                 private alertService: AlertService,
-                protected router: Router,
                 @Inject(MAT_DIALOG_DATA) private data: {permission: Permission, project: Project}) {
         this.project = data.project;
         this.permission = data.permission;
@@ -134,6 +136,30 @@ export class ProjectPermissionDialogComponent {
                 }
             },
             err => this.alertService.error(err.error)
+        );
+    }
+}
+
+@Component({
+    selector: 'app-project-permission-delete-dialog',
+    templateUrl: 'project-permission-delete-form.html',
+})
+export class ProjectPermissionDeleteDialogComponent {
+    project: Project;
+    permission: Permission;
+
+    constructor(public dialog: MatDialogRef<ProjectPermissionDeleteDialogComponent>,
+                protected projectService: ProjectService,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: {permission: Permission, project: Project}) {
+        this.project = data.project;
+        this.permission = data.permission;
+    }
+
+    save(): void {
+        this.projectService.deletePermission(this.project.name, this.permission.id).subscribe(
+           r => this.dialog.close(),
+           err => this.alertService.error(err.error)
         );
     }
 }
