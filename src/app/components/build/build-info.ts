@@ -215,6 +215,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         [/Target "[^"]" does not exist in the project/, []],
                         [/\.py:\d+:\d+: [FW]\d+ /, []],
                         [/dh_systemd_enable: Could not handle all of the requested services/, []],
+                        [/unsat-dependency: /, []],
                     ];
                     for (const pattern of patterns) {
                         if (line.search(pattern[0] as RegExp) >= 0) {
