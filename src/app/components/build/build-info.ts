@@ -207,6 +207,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         [/^(\x1b[^m]+m)*E:/, [
                             [/dpkg-buildpackage died/],
                             [/Error building source package/],
+                            [/Package build dependencies not satisfied; skipping/],
                         ]],
                         [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []],
                         [/dh_install: missing files, aborting/, []],
