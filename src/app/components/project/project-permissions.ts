@@ -6,7 +6,7 @@ import {MatOptionSelectionChange} from '@angular/material';
 
 import {TableComponent} from '../../lib/table.component';
 import {MoliorResult} from '../../lib/table.datasource';
-import {ProjectService, ProjectVersionService, ProjectVersionDataSource, ProjectVersion,
+import {ProjectService, ProjectDataSource,
         Project, Permission} from '../../services/project.service';
 import {UserService, User} from '../../services/user.service';
 import {ValidationService} from '../../services/validation.service';
@@ -14,12 +14,12 @@ import {AlertService} from '../../services/alert.service';
 
 
 @Component({
-    selector: 'app-projectversion-permissions',
+    selector: 'app-project-permissions',
     templateUrl: './project-permissions.html',
     styleUrls: ['./project-permissions.scss']
 })
 export class ProjectPermissionsComponent extends TableComponent {
-    dataSource: ProjectVersionDataSource;
+    dataSource: ProjectDataSource;
     project: Project;
     displayedColumns: string[] = [
         'username',
@@ -27,15 +27,15 @@ export class ProjectPermissionsComponent extends TableComponent {
         'actions'
     ];
     @ViewChild('inputName', { static: false }) inputName: ElementRef;
+    @ViewChild('inputRole', { static: false }) inputRole: ElementRef;
 
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
                 protected projectService: ProjectService,
-                protected projectversionService: ProjectVersionService,
                 protected dialog: MatDialog) {
-        super(route, router, [['filter_name', '']]);
+        super(route, router, [['filter_name', ''], ['filter_role', '']]);
         this.project = {id: -1, name: '', description: ''};
-        this.dataSource = new ProjectVersionDataSource(projectversionService);
+        this.dataSource = new ProjectDataSource(projectService);
     }
 
     loadData() {
@@ -48,15 +48,18 @@ export class ProjectPermissionsComponent extends TableComponent {
 
     initElements() {
         this.inputName.nativeElement.value = this.params.get('filter_name');
+        this.inputRole.nativeElement.value = this.params.get('filter_role');
     }
 
     setParams() {
         this.params.set('filter_name', this.inputName.nativeElement.value);
+        this.params.set('filter_role', this.inputRole.nativeElement.value);
     }
 
     AfterViewInit() {
         this.dataSource.setPaginator(this.paginator);
         this.initFilter(this.inputName.nativeElement);
+        this.initFilter(this.inputRole.nativeElement);
     }
 
     add(): void {

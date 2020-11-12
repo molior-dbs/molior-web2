@@ -51,6 +51,9 @@ export class ProjectService extends TableService<Project> {
         if (params.get('filter_name')) {
             p.q = params.get('filter_name');
         }
+        if (params.get('filter_role')) {
+            p.role = params.get('filter_role');
+        }
         if (params.get('page')) {
             p.page = params.get('page');
         }
