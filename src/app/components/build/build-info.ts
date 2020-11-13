@@ -196,13 +196,14 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         [/\S*error: /i, [
                             [/dpkg-buildpackage: error: debian\/rules build subprocess returned exit status \d+$/],
                             [/sbuild command failed/],
-                            [/dpkg-buildpackage/, /exit status \d+/]
+                            [/dpkg-buildpackage/, /exit status \d+/],
                         ]],
-                        [/\berror\b[^:]/i, [
+                        [/^[^/(]*[^;]\berror\b[^:]/i, [
                             [/gpgv: keyblock resource/, /General error$/],
                             [/^(\x1b[^m]+m)*make/, /Error \d+$/],
                             [/error\.\S+$/],
-                            [/dpkg-buildpackage/, /exit status \d+/]
+                            [/dpkg-buildpackage/, /exit status \d+/],
+                            [/: warning: unused parameter/],
                         ]],
                         [/^(\x1b[^m]+m)*E:/, [
                             [/dpkg-buildpackage died/],
