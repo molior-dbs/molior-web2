@@ -141,7 +141,12 @@ export class BuildService extends TableService<Build> {
 
     rebuild(id: number) {
         console.log(`rebuilding build ${id}`);
-        return this.http.delete(`${apiURL()}/api/builds/${id}`);
+        return this.http.put(`${apiURL()}/api/builds/${id}`, {});
+    }
+
+    delete(id: number) {
+        console.log(`deleting build ${id}`);
+        return this.http.delete(`${apiURL()}/api2/build/${id}`);
     }
 }
 

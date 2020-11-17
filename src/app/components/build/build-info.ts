@@ -330,6 +330,12 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
+    // delete() {
+         // this.buildService.delete(this.build.id).subscribe( res => {
+             // FIXME router
+         // });
+    // }
+
     buildlatest() {
         this.repositoryService.build(this.build.sourcerepository_id).subscribe();
     }

@@ -176,4 +176,9 @@ export class BuildTableComponent extends TableComponent implements OnInit {
     buildlatest(id) {
         this.repositoryService.build(id).subscribe();
     }
+
+    delete(id: number) {
+        // FIXME add dialog with alert
+        this.buildService.delete(id).subscribe();
+    }
 }
