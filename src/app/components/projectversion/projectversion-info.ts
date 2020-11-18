@@ -8,6 +8,7 @@ import {TableComponent} from '../../lib/table.component';
 import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
         ProjectversionCloneDialogComponent, ProjectversionOverlayDialogComponent,
         ProjectversionLockDialogComponent, ProjectversionSnapshotDialogComponent} from '../project/project-info';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
     selector: 'app-projectversion-info',
@@ -166,6 +167,7 @@ export class DependencyDialogComponent {
     constructor(public dialog: MatDialogRef<DependencyDialogComponent>,
                 private fb: FormBuilder,
                 protected projectversionService: ProjectVersionService,
+                private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
     ) {
         this.projectversion = data.projectversion;
@@ -185,6 +187,6 @@ export class DependencyDialogComponent {
         this.projectversionService.addDependency(
             this.projectversion,
             this.form.value.dependency,
-            this.form.value.use_cibuilds).subscribe(r => this.dialog.close());
+            this.form.value.use_cibuilds).subscribe(r => this.dialog.close(), err => this.alertService.error(err.error));
     }
 }

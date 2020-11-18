@@ -37,9 +37,9 @@
             <br>
             <mat-form-field floatLabel="never" appearance="standard" *ngIf="form.value.basemirror">
                 <mat-select formControlName="dependencylevel" [(value)]="defaultDependencyLevel">
-                    <mat-option value="strict"><strong>strict</strong>Use in {{form.value.basemirror}} based projects</mat-option>
-                    <mat-option value="distribution"><strong>dist</strong>Use in {{form.value.basemirror.split('/')[0]}} based projects</mat-option>
-                    <mat-option value="any"><strong>any</strong>Use with any base mirror based projects</mat-option>
+                    <mat-option value="strict"><strong>strict</strong>&nbsp;- Use in {{form.value.basemirror}} based projects</mat-option>
+                    <mat-option value="distribution"><strong>dist</strong>&nbsp;- Use in {{form.value.basemirror.split('/')[0]}} based projects</mat-option>
+                    <mat-option value="any"><strong>any</strong>&nbsp;- Use with any base mirror based projects</mat-option>
                 </mat-select>
             </mat-form-field>
             <span *ngIf="!form.value.basemirror">Please define a Base Mirror above</span>
