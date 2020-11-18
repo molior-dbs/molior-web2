@@ -43,7 +43,7 @@ export class RepositoryService extends TableService<Repository> {
     }
 
     find(url, excludeProjectversionID = -1) {
-        const p: any = {url, exclude_projectversion_id: excludeProjectversionID.toString()};
+        const p: any = {filter_url: url, exclude_projectversion_id: excludeProjectversionID.toString()};
         return this.http.get(`${apiURL()}/api2/repositories`, { params: p }).pipe(
             /* tslint:disable:no-string-literal */
             map(res => new MoliorResult<Repository>(res['total_result_count'], res['results']))

@@ -163,7 +163,6 @@ export class RepoMergeDialogComponent implements OnInit {
                     for (const entry of r2) {
                         this.repos.push(entry.url);
                     }
-                    console.log(this.repos);
                 });
             });
     }
