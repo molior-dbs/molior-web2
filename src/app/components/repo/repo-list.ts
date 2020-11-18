@@ -143,7 +143,7 @@ export class RepoMergeDialogComponent implements OnInit {
         // FIXME add repo url validator
         original_url: new FormControl('', [Validators.required])
     });
-    repos: string[];
+    repos: Repository[];
 
     constructor(public dialog: MatDialogRef<RepoMergeDialogComponent>,
                 protected repositoryService: RepositoryService,
@@ -160,8 +160,8 @@ export class RepoMergeDialogComponent implements OnInit {
             r => {
                 this.repositoryService.find(r).subscribe( r2 => {
                     this.repos = [];
-                    for (const entry of r2) {
-                        this.repos.push(entry.url);
+                    for (const rep of r2) {
+                        this.repos.push(rep);
                     }
                 });
             });
@@ -169,19 +169,19 @@ export class RepoMergeDialogComponent implements OnInit {
 
     save(): void {
         let originalID = -1;
-        this.repositoryService.find(this.form.value.original_url.trim()).subscribe( r => {
-            for (const entry of r) {
-                originalID = entry.id; // just one
+        for (const rep of this.repos) {
+            if (rep.url === this.form.value.original_url) {
+                originalID = rep.id;
+                break;
             }
-            this.repositoryService.mergeDuplicate(originalID,
-                                                  this.repo.id).subscribe();
-            this.dialog.close();
-        },
-        err => this.alertService.error(err.error));
+        }
+        this.repositoryService.mergeDuplicate(originalID, this.repo.id).subscribe(
+            r => this.dialog.close(),
+            err => this.alertService.error(err.error));
     }
 
-    excludeDuplicate(original: string): boolean {
-       return !original.includes(this.repo.url);
+    excludeDuplicate(originalURL: string): boolean {
+       return originalURL !== this.repo.url;
     }
 }
 

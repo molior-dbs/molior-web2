@@ -8,8 +8,8 @@
             <input matInput formControlName="original_url" required cdkFocusInitial [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete">
                 <ng-container *ngFor="let entry of repos">
-                <mat-option *ngIf="excludeDuplicate(entry)" [value]="entry">
-                    {{entry}}
+                <mat-option *ngIf="excludeDuplicate(entry.url)" [value]="entry.url">
+                    {{entry.url}}
                 </mat-option>
                 </ng-container>
             </mat-autocomplete>
