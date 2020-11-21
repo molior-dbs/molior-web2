@@ -32,11 +32,11 @@
 </div>
 
 <div style="display: flex">
-    <h2>Build Log</h2>
-    <div style="align-self: end; flex-grow: 1; text-align: right; align-content: end; display: flex; justify-content: end;">
-        <mat-checkbox *ngIf="this.build.buildstate === 'building'" [checked]="follow" (change)="toggleFollow()">follow</mat-checkbox>
-        <button mat-button *ngIf="this.build.buildstate === 'build_failed' && totalerr > 0" (click)="findError()">Find Error ({{currenterr}}/{{totalerr}})</button>
-        <mat-paginator style="display: inline-block; width: 400px; max-width: 400px;" showFirstLastButtons hidePageSize></mat-paginator>
+    <h2 style="flex-grow: 1">Build Log</h2>
+    <div style="display: flex;">
+        <mat-checkbox style="display: inline-block; align-self: flex-end; margin-bottom: 5px;" *ngIf="this.build.buildstate === 'building'" [checked]="follow" (change)="toggleFollow()">follow</mat-checkbox>
+        <button style="display: inline-block; align-self: flex-end; margin-bottom: 5px;" mat-button *ngIf="this.build.buildstate === 'build_failed' && totalerr > 0" (click)="findError()">Find Error ({{currenterr}}/{{totalerr}})</button>
+        <mat-paginator style="display: inline-block; align-self: flex-end; width: 400px; max-width: 400px;" showFirstLastButtons hidePageSize></mat-paginator>
     </div>
 </div>
 <div id="log-wrapper" class="mat-elevation-z8" (window:resize)="updatePaginator()">
