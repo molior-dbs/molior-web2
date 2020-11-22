@@ -29,6 +29,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     follow: boolean;
     currenterr: number;
     totalerr: number;
+    totalSearchresults: number;
+    currentSearchresult: number;
     @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
     constructor(protected route: ActivatedRoute,
@@ -71,6 +73,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subscriptionLog = null;
         this.currenterr = 0;
         this.totalerr = 0;
+        this.totalSearchresults = 0;
+        this.currentSearchresult = 0;
     }
 
     ngOnInit() {
@@ -191,6 +195,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                     logline.innerHTML = this.ansiup.ansi_to_html(line);
                     logline.className = 'logline';
 
+                    // head: cannot open '/etc/ssl/certs/java/cacerts' for reading: No such file or directory
                     const patterns = [
                         // this       but not any of all of that
                         [/\S*error: /i, [
@@ -213,7 +218,9 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []],
                         [/dh_install: missing files, aborting/, []],
                         [/\/bin\/sh:.+not found/, []],
-                        [/: No such file or directory/, []],
+                        [/: No such file or directory/, [
+                            [/head: cannot open/, /certs\/java\/cacerts/],
+                        ]],
                         [/Target "[^"]" does not exist in the project/, []],
                         [/\.py:\d+:\d+: [FW]\d+ /, []],
                         [/dh_systemd_enable: Could not handle all of the requested services/, []],
@@ -377,5 +384,100 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
             top: offsetPosition,
             behavior: 'smooth'
         });
+    }
+
+    removeSearchHighlight(node) {
+        const childs = node.childNodes;
+        for (let j = 0; j < childs.length; j++) {
+            const child = childs[j];
+            if (child.nodeType === 1) {
+                if (child.className === 'searchhighlight') {
+                    node.replaceChild(child.childNodes[0], child);
+                } else {
+                    this.removeSearchHighlight(child);
+                }
+            }
+        }
+    }
+
+    search(query: string) {
+        // clear previous search results, if any
+        let searchresults = document.getElementsByClassName('searchresult');
+        const staticSearchresults = [];
+        for (let i = 0; i < searchresults.length; i++) {
+            staticSearchresults.push(searchresults[i]);
+        }
+        for (let i = 0; i < staticSearchresults.length; i++) {
+            this.removeSearchHighlight(staticSearchresults[i]);
+            staticSearchresults[i].classList.remove('searchresult');
+        }
+        this.totalSearchresults = 0;
+        this.currentSearchresult = 0;
+
+        // search if 3 chars or more
+        if (query.length < 3) {
+            return;
+        }
+
+        // search
+        const querylength = query.length;
+        const regescape = '\\.()*+[]/$^';
+        for (let i = 0; i < regescape.length; i++) {
+            query = query.replace(RegExp(`\\${regescape[i]}`, 'g'), `\\${regescape[i]}`);
+        }
+        const r = RegExp(`(${query})(?![^<]*>)`, 'gi');
+        const buildlog = document.getElementById('buildlog') as HTMLElement;
+        const rows = buildlog.children;
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const log = row.children[1];
+            let first = true;
+            let match = r.exec(log.innerHTML);
+            while (match !== null) {
+                if (first) {
+                    first = false;
+                    log.classList.add('searchresult');
+                }
+                const pos = match.index; // r.lastIndex - querylength;
+                const pre = log.innerHTML.slice(0, pos);
+                const highligh = log.innerHTML.slice(pos, pos + querylength);
+                const post = log.innerHTML.slice(pos + querylength);
+                log.innerHTML = pre + '<span class="searchhighlight">' + highligh + '</span>' + post;
+                r.lastIndex += 30 + 7;
+                match = r.exec(log.innerHTML);
+            }
+        }
+        searchresults = document.getElementsByClassName('searchresult');
+        this.totalSearchresults = searchresults.length;
+        this.searchNext();
+    }
+
+    searchNext() {
+        const searchresults = document.getElementsByClassName('searchresult');
+        this.currentSearchresult++;
+        if (this.currentSearchresult === searchresults.length + 1) {
+            this.currentSearchresult = 1;
+        }
+        for (let i = 0; i < searchresults.length; i++) {
+            if (this.currentSearchresult === i + 1) {
+                this.scrollToLog(searchresults[i]);
+                break;
+            }
+        }
+    }
+
+    searchPrev() {
+        const searchresults = document.getElementsByClassName('searchresult');
+        if (this.currentSearchresult === 1) {
+            this.currentSearchresult = searchresults.length;
+        } else {
+            this.currentSearchresult--;
+        }
+        for (let i = 0; i < searchresults.length; i++) {
+            if (this.currentSearchresult === i + 1) {
+                this.scrollToLog(searchresults[i]);
+                break;
+            }
+        }
     }
 }
