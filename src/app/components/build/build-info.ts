@@ -421,7 +421,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // search
         const querylength = query.length;
-        const regescape = '\\.()*+[]/$^';
+        const regescape = '\\.()*+[]/$^|~';
         for (let i = 0; i < regescape.length; i++) {
             query = query.replace(RegExp(`\\${regescape[i]}`, 'g'), `\\${regescape[i]}`);
         }
