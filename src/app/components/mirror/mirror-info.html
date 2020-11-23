@@ -19,9 +19,21 @@
                 <td><strong>Architectures</strong></td>
                 <td>{{mirror.architectures.join(', ')}}</td>
             </tr>
-            <tr>
+            <tr *ngIf="mirror.basemirror_name">
                 <td><strong>Base Mirror</strong></td>
                 <td>{{mirror.basemirror_name}}</td>
+            </tr>
+            <tr *ngIf="mirror.mirrorkeyurl">
+                <td><strong>Key URL</strong></td>
+                <td ngClass="link">{{mirror.mirrorkeyurl}}</td>
+            </tr>
+            <tr *ngIf="mirror.mirrorkeyserver">
+                <td><strong>Key server</strong></td>
+                <td ngClass="link">{{mirror.mirrorkeyserver}}</td>
+            </tr>
+            <tr *ngIf="mirror.mirrorkeyids">
+                <td><strong>Key IDs</strong></td>
+                <td>{{mirror.mirrorkeyids}}</td>
             </tr>
             <tr>
                 <td><strong>State</strong></td>

@@ -60,7 +60,7 @@ export class MirrorService extends TableService<Mirror> {
     }
 
     get(name: string, version: string) {
-        return this.http.get<Mirror>(`${apiURL()}/api/mirror/${name}/${version}`);
+        return this.http.get<Mirror>(`${apiURL()}/api2/mirror/${name}/${version}`);
     }
 
     getMirrors(url: string = '') {
