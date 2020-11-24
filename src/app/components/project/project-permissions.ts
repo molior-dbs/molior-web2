@@ -117,12 +117,13 @@ export class ProjectPermissionDialogComponent {
         this.permission = data.permission;
         if (this.permission) {
             this.form.patchValue({username: this.permission.username, role: this.permission.role});
+        } else {
+            this.userService.getProjectRoleCandidates(this.project.name).subscribe(
+                /* tslint:disable:no-string-literal */
+                res => this.usernames = new MoliorResult<User>(res['total_result_count'], res['results'])
+                /* tslint:enable:no-string-literal */
+            );
         }
-        this.userService.getProjectRoleCandidates(this.project.name).subscribe(
-            /* tslint:disable:no-string-literal */
-            res => this.usernames = new MoliorResult<User>(res['total_result_count'], res['results'])
-            /* tslint:enable:no-string-literal */
-        );
     }
 
     save(): void {
