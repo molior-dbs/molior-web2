@@ -1,13 +1,15 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, ViewChild} from '@angular/core';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
 import {default as AnsiUp} from 'ansi_up';
 import {DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 import {MatPaginator} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 
 import {BuildService, Build, buildicon} from '../../services/build.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
 import {RepositoryService} from '../../services/repository.service';
+import {BuildDeleteDialogComponent} from './build-list';
 
 @Component({
     selector: 'app-build',
@@ -36,7 +38,9 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(protected route: ActivatedRoute,
                 protected buildService: BuildService,
                 protected repositoryService: RepositoryService,
-                protected moliorService: MoliorService) {
+                protected router: Router,
+                protected moliorService: MoliorService,
+                protected dialog: MatDialog) {
         this.buildicon = buildicon;
         this.build = {id: -1,
             can_rebuild: false,
@@ -337,11 +341,14 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    // delete() {
-         // this.buildService.delete(this.build.id).subscribe( res => {
-             // FIXME router
-         // });
-    // }
+    delete() {
+        const dialogRef = this.dialog.open(BuildDeleteDialogComponent, {
+            data: { build: this.build },
+            disableClose: true,
+            width: '40%',
+        });
+        dialogRef.afterClosed().subscribe(result => this.router.navigate(['builds']));
+    }
 
     buildlatest() {
         this.repositoryService.build(this.build.sourcerepository_id).subscribe();

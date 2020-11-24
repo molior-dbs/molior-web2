@@ -1,11 +1,13 @@
 import {Component, ElementRef, ViewChild, OnInit, Input} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
 
 import {TableComponent} from '../../lib/table.component';
-import {BuildService, BuildDataSource, buildicon} from '../../services/build.service';
+import {BuildService, BuildDataSource, buildicon, Build} from '../../services/build.service';
 import {RepositoryService} from '../../services/repository.service';
 import {ProjectVersion} from '../../services/project.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
+import {BuildDeleteDialogComponent} from './build-list';
 
 @Component({
     selector: 'app-build-table',
@@ -28,7 +30,8 @@ export class BuildTableComponent extends TableComponent implements OnInit {
                 protected router: Router,
                 protected buildService: BuildService,
                 protected moliorService: MoliorService,
-                protected repositoryService: RepositoryService) {
+                protected repositoryService: RepositoryService,
+                protected dialog: MatDialog) {
         super(route, router, [['search', ''],
                               ['maintainer', ''],
                               ['commit', ''],
@@ -177,8 +180,12 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         this.repositoryService.build(id).subscribe();
     }
 
-    delete(id: number) {
-        // FIXME add dialog with alert
-        this.buildService.delete(id).subscribe();
+    delete(build: Build) {
+        const dialogRef = this.dialog.open(BuildDeleteDialogComponent, {
+            data: { build },
+            disableClose: true,
+            width: '40%',
+        });
+        dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 }

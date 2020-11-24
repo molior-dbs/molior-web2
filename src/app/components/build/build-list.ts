@@ -1,4 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
+import {BuildService, BuildDataSource, buildicon, Build} from '../../services/build.service';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
     selector: 'app-build-list',
@@ -7,5 +11,27 @@ import {Component} from '@angular/core';
 })
 export class BuildListComponent {
     constructor() {
+    }
+}
+
+@Component({
+    selector: 'app-build-dialog',
+    templateUrl: 'build-delete-form.html',
+})
+export class BuildDeleteDialogComponent {
+    build: Build;
+    constructor(public dialog: MatDialogRef<BuildDeleteDialogComponent>,
+                protected buildService: BuildService,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { build: Build }
+    ) {
+        this.build = data.build;
+    }
+
+    save(): void {
+        this.buildService.delete(this.build.id).subscribe( r => {
+            this.dialog.close();
+        },
+        err => this.alertService.error(err.error));
     }
 }
