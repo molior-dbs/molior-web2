@@ -82,8 +82,13 @@ export class ProjectversionRepoListComponent extends TableComponent {
         });
     }
 
-    reclone(id: number) {
-        this.repositoryService.reclone(id).subscribe();
+    reclone(element) {
+        const dialogRef = this.dialog.open(SourcerepoRecloneDialogComponent, {
+            data: { repo: element },
+            disableClose: true,
+            width: '40%',
+        });
+        dialogRef.afterClosed().subscribe(result => this.loadData()); // FIXME needed?
     }
 
     build(id: number) {
@@ -270,6 +275,28 @@ export class SourcerepoDeleteDialogComponent {
         this.repoService.delete(this.repo.id, this.projectversion.id).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['project/' + this.projectversion.project_name + '/' + this.projectversion.name + '/repos']);
+        },
+        err => this.alertService.error(err.error));
+    }
+}
+
+@Component({
+    selector: 'app-repo-dialog',
+    templateUrl: 'projectversion-repo-reclone-form.html',
+})
+export class SourcerepoRecloneDialogComponent {
+    repo: Repository;
+    constructor(public dialog: MatDialogRef<SourcerepoRecloneDialogComponent>,
+                protected repoService: RepositoryService,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
+    ) {
+        this.repo = data.repo;
+    }
+
+    save(): void {
+        this.repoService.reclone(this.repo.id).subscribe( r => {
+            this.dialog.close();
         },
         err => this.alertService.error(err.error));
     }

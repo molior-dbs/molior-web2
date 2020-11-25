@@ -6,7 +6,8 @@ import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {ProjectVersion, ProjectVersionService} from '../../services/project.service';
 import {RepositoryService, RepositoryDataSource, Repository} from '../../services/repository.service';
 import {TableComponent} from '../../lib/table.component';
-import {SourcerepoDialogComponent, CIBuildDialogComponent, SourcerepoDeleteDialogComponent} from './projectversion-repo-list';
+import {SourcerepoDialogComponent, CIBuildDialogComponent, SourcerepoDeleteDialogComponent,
+        SourcerepoRecloneDialogComponent} from './projectversion-repo-list';
 
 @Component({
     selector: 'app-projectversion-repo-info',
@@ -86,7 +87,11 @@ export class ProjectversionRepoComponent extends TableComponent {
     }
 
     reclone() {
-        this.repositoryService.reclone(this.repository.id).subscribe();
+        const dialogRef = this.dialog.open(SourcerepoRecloneDialogComponent, {
+            data: { repo: this.repository },
+            disableClose: true,
+            width: '40%',
+        });
     }
 
     build() {
