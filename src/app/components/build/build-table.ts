@@ -47,6 +47,7 @@ export class BuildTableComponent extends TableComponent implements OnInit {
             'sourcename',
             'maintainer',
             'commit',
+            'starttime',
             'duration',
             'actions'
         ];
@@ -144,30 +145,36 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         return null;
     }
 
-    startTime(build) {
+    startTime(build, tz = false) {
         if (build.startstamp !== '') {
             const date = new Date(build.startstamp);
+            if (tz) {
+                return date.toString();
+            }
             const year = date.getFullYear();
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            const hrs = date.getHours();
-            const mins = date.getMinutes();
-            const secs = date.getSeconds();
-            return year + '.' + month + '.' + day + ' ' + hrs + ':' + mins + ':' + secs;
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hrs = String(date.getHours()).padStart(2, '0');
+            const mins = String(date.getMinutes()).padStart(2, '0');
+            const secs = String(date.getSeconds()).padStart(2, '0');
+            return year + '-' + month + '-' + day + ' ' + hrs + ':' + mins + ':' + secs;
         }
         return null;
     }
 
-    endTime(build) {
+    endTime(build, tz = false) {
         if (build.endstamp !== '') {
             const date = new Date(build.endstamp);
+            if (tz) {
+                return date.toString();
+            }
             const year = date.getFullYear();
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            const hrs = date.getHours();
-            const mins = date.getMinutes();
-            const secs = date.getSeconds();
-            return year + '.' + month + '.' + day + ' ' + hrs + ':' + mins + ':' + secs;
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hrs = String(date.getHours()).padStart(2, '0');
+            const mins = String(date.getMinutes()).padStart(2, '0');
+            const secs = String(date.getSeconds()).padStart(2, '0');
+            return year + '-' + month + '-' + day + ' ' + hrs + ':' + mins + ':' + secs;
         }
         return null;
     }
