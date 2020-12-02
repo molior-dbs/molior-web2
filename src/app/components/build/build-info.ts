@@ -9,7 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {BuildService, Build, buildicon} from '../../services/build.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
 import {RepositoryService} from '../../services/repository.service';
-import {BuildDeleteDialogComponent} from './build-list';
+import {BuildDeleteDialogComponent, BuildRebuildDialogComponent} from './build-list';
 
 @Component({
     selector: 'app-build',
@@ -336,9 +336,12 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     rebuild() {
-        this.buildService.rebuild(this.build.id).subscribe( res => {
-            this.fetchLogs(this.build.id);
+        const dialogRef = this.dialog.open(BuildRebuildDialogComponent, {
+            data: { build: this.build },
+            disableClose: true,
+            width: '40%',
         });
+        dialogRef.afterClosed().subscribe(result => this.fetchLogs(this.build.id));
     }
 
     delete() {

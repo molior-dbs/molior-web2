@@ -7,7 +7,7 @@ import {BuildService, BuildDataSource, buildicon, Build} from '../../services/bu
 import {RepositoryService} from '../../services/repository.service';
 import {ProjectVersion} from '../../services/project.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
-import {BuildDeleteDialogComponent} from './build-list';
+import {BuildDeleteDialogComponent, BuildRebuildDialogComponent} from './build-list';
 
 @Component({
     selector: 'app-build-table',
@@ -179,8 +179,12 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         return null;
     }
 
-    rebuild(id: number) {
-        this.buildService.rebuild(id).subscribe();
+    rebuild(build: Build) {
+        const dialogRef = this.dialog.open(BuildRebuildDialogComponent, {
+            data: { build },
+            disableClose: true,
+            width: '40%',
+        });
     }
 
     buildlatest(id) {

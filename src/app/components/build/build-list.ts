@@ -35,3 +35,25 @@ export class BuildDeleteDialogComponent {
         err => this.alertService.error(err.error));
     }
 }
+
+@Component({
+    selector: 'app-build-dialog',
+    templateUrl: 'build-rebuild-form.html',
+})
+export class BuildRebuildDialogComponent {
+    build: Build;
+    constructor(public dialog: MatDialogRef<BuildRebuildDialogComponent>,
+                protected buildService: BuildService,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { build: Build }
+    ) {
+        this.build = data.build;
+    }
+
+    save(): void {
+        this.buildService.rebuild(this.build.id).subscribe( r => {
+            this.dialog.close();
+        },
+        err => this.alertService.error(err.error));
+    }
+}
