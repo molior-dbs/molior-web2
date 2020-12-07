@@ -7,7 +7,7 @@ import {HttpClient} from '@angular/common/http';
 
 import {ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
-import {RepoMergeDialogComponent, RepoDeleteDialogComponent} from './repo-list';
+import {RepoMergeDialogComponent, RepoDeleteDialogComponent, RepositoryDialogComponent} from './repo-list';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -70,6 +70,11 @@ export class RepositoryInfoComponent extends TableComponent {
         } else {
             return ['/project', element.project_name, element.name];
         }
+    }
+
+    editRepo() {
+        const dialog = this.dialog.open(RepositoryDialogComponent, {data: {repo: this.repo}, disableClose: true, width: '900px'});
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 
     deleteRepo() {

@@ -72,10 +72,14 @@ export class RepositoryService extends TableService<Repository> {
         return this.http.delete(`${apiURL()}/api2/repository/${id}`);
     }
 
-    edit(projectversion, id: number, url: string, architectures: string[]) {
+    edit(projectversion, id: number, architectures: string[]) {
         return this.http.put(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/repository/${id}`,
-                             {url, architectures}
+                             {architectures}
                             );
+    }
+
+    editUrl(id: number, url: string) {
+        return this.http.put(`${apiURL()}/api2/repository/${id}`, {url});
     }
 
     get_projectversion_repo(name: string, version: string, repoID: number) {

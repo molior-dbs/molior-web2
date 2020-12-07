@@ -129,7 +129,7 @@ export class SourcerepoDialogComponent implements OnInit {
     form = this.fb.group({
         url: new FormControl('', [Validators.required,
                                   Validators.minLength(2),
-            // FIXME: ValidationService.URL
+                                  ValidationService.gitValidator
                                   ]),
         architectures: new FormControl([], [ValidationService.minLengthArray(1)]),
         architecture0: new FormControl(false),
@@ -216,7 +216,7 @@ export class SourcerepoDialogComponent implements OnInit {
                 r => this.dialog.close(), err => this.alertService.error(err.error));
         } else {
             this.repositoryService.edit(this.data.projectversion, this.repo.id,
-                                        this.form.value.url.trim(), this.form.value.architectures).subscribe(
+                                        this.form.value.architectures).subscribe(
                 r => this.dialog.close(), err => this.alertService.error(err.error));
         }
     }

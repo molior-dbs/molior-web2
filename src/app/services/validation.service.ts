@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {FormGroup, FormControl, AbstractControl} from '@angular/forms';
 
 export const urlregex = '^(?:(?:http|https|ftp)://)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$';
+export const gitregex = '^(?:(?:http|https|ssh)://)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$';
 
 export class ValidationService {
 
@@ -15,6 +16,7 @@ export class ValidationService {
             invalidValue: 'Invalid value',
             invalidURL: 'Invalid URL',
             invalidEmail: 'Invalid Email',
+            invalidGITURL: 'Invalid GIT URL',
         };
 
         return config[validatorName];
@@ -43,6 +45,14 @@ export class ValidationService {
             return null;
         } else {
             return { invalidURL: true };
+        }
+    }
+
+    static gitValidator(control) {
+        if (control.value.match(gitregex)) {
+            return null;
+        } else {
+            return { invalidGITURL: true };
         }
     }
 

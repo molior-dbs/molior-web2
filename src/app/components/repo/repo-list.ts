@@ -56,26 +56,18 @@ export class RepositoryListComponent extends TableComponent {
         this.initFilter(this.inputURL.nativeElement);
     }
 
-    create() {
-        const dialogRef = this.dialog.open(RepositoryDialogComponent, {disableClose: true, width: '900px'});
+    edit(repo: Repository) {
+        const dialogRef = this.dialog.open(RepositoryDialogComponent, {data: {repo}, disableClose: true, width: '40%'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
-    edit(repo) {
-        // const dialogRef = this.dialog.open(RepositoryDialogComponent, {data: repo, disableClose: true, width: '900px'});
-        // dialogRef.afterClosed().subscribe(result => this.loadData());
-    }
-
     delete(repo: Repository) {
-        const dialog = this.dialog.open(RepoDeleteDialogComponent, {
+        const dialogRef = this.dialog.open(RepoDeleteDialogComponent, {
             data: { repo },
             disableClose: true,
             width: '40%',
         });
-    }
-
-    update(id: number) {
-        // this.repoService.update(id);
+        dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
     mergeDuplicate(repo: Repository) {
@@ -95,41 +87,25 @@ export class RepositoryListComponent extends TableComponent {
   styleUrls: ['./repo-form.scss']
 })
 export class RepositoryDialogComponent {
+    public repo: Repository;
     form = this.fb.group({
-         formArray: this.fb.array([
-             this.fb.group({
-                 repourl:     new FormControl('', [Validators.required, ValidationService.httpValidator]),
-                 reponame:    new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.nameValidator]),
-                 repoversion: new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.versionValidator]),
-             }),
-             this.fb.group({
-                 reposrc: false,
-                 repoinst: false,
-                 repodist: new FormControl('', [Validators.required]),
-             })
-         ])
+        url: new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.gitValidator]),
     });
-
 
     constructor(public dialog: MatDialogRef<RepositoryDialogComponent>,
                 protected repoService: RepositoryService,
                 private fb: FormBuilder,
                 protected alertService: AlertService,
-                @Inject(MAT_DIALOG_DATA) public repo: Repository) {
-        if (this.repo) {
-            this.formArray.get([0]).patchValue({reponame: this.repo.name,
-                                                repourl: this.repo.url
-                                              });
-        }
+                @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }) {
+        this.repo = data.repo;
+        this.form.patchValue({
+            url: this.repo.url
+        });
     }
-
-    get formArray() {
-        // Typecast, because: reasons
-        // https://github.com/angular/angular-cli/issues/6099
-        return this.form.get('formArray') as FormArray;
-    }
-
     save(): void {
+        this.repoService.editUrl(this.repo.id,
+                                 this.form.value.url.trim()).subscribe(
+            r => this.dialog.close(), err => this.alertService.error(err.error));
     }
 }
 
@@ -140,8 +116,7 @@ export class RepositoryDialogComponent {
 export class RepoMergeDialogComponent implements OnInit {
     public repo: Repository;
     form = this.fb.group({
-        // FIXME add repo url validator
-        original_url: new FormControl('', [Validators.required])
+        original_url: new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.gitValidator])
     });
     repos: Repository[];
 
