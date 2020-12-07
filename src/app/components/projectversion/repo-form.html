@@ -4,7 +4,8 @@
 <div mat-dialog-content>
     <form [formGroup]="form">
         <p><strong>git Repository URL</strong> <app-validation-error [control]="form.get('url')"></app-validation-error></p>
-        <mat-form-field>
+        <p *ngIf="repo">{{repo.url}}</p>
+        <mat-form-field *ngIf="!repo">
             <input matInput formControlName="url" required cdkFocusInitial [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let url of giturls$ | async" [value]="url">
