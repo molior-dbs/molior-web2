@@ -43,7 +43,7 @@
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
     <ng-container matColumnDef="url">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center', width: '100px'}">URL</th>
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}">URL</th>
         <td mat-cell *matCellDef="let element">
             <span class="link"> {{ element.url }}</span>
         </td>
@@ -86,6 +86,7 @@
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="editHook(element)"><mat-icon>edit</mat-icon>Edit</button>
                 <button mat-menu-item (click)="removeHook(element.id)"><mat-icon>delete</mat-icon> Delete</button>
             </mat-menu>
         </td>

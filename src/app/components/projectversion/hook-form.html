@@ -3,6 +3,7 @@
 <h1 *ngIf="hook" mat-dialog-title>Edit Post Build Hook</h1>
 <div mat-dialog-content>
     <form [formGroup]="form">
+        <mat-checkbox *ngIf="hook" style="display: inline-block; text-align: right; width: 100%;" formControlName="enabled">Hook Enabled</mat-checkbox>
         <h3>Hook URL <app-validation-error [control]="form.get('url')"></app-validation-error></h3>
         <mat-form-field>
             <input matInput formControlName="url" required cdkFocusInitial>
@@ -38,6 +39,7 @@
     </form>
 </div>
 <div mat-dialog-actions>
+    <app-alert></app-alert>
     <button mat-button (click)="dialog.close()">Cancel</button>
     <button mat-button (click)="save()" [disabled]="!form.valid">Ok</button>
 </div>

@@ -42,7 +42,7 @@ import {ProjectPermissionsComponent, ProjectPermissionDialogComponent,
 import {ProjectversionInfoComponent, DependencyDialogComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent, SourcerepoDialogComponent, SourcerepoDeleteDialogComponent, SourcerepoRecloneDialogComponent,
         CIBuildDialogComponent} from './components/projectversion/projectversion-repo-list';
-import {ProjectversionRepoComponent, HookDialogComponent} from './components/projectversion/projectversion-repo-info';
+import {ProjectversionRepoComponent, HookDialogComponent, HookDeleteDialogComponent} from './components/projectversion/projectversion-repo-info';
 import {ProjectversionBuildListComponent} from './components/projectversion/projectversion-build-list';
 import {ProjectversionAPTSourcesComponent} from './components/projectversion/projectversion-aptsources';
 import {ProjectversionDependentsComponent} from './components/projectversion/projectversion-dependents';
@@ -135,6 +135,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         SourcerepoRecloneDialogComponent,
         CIBuildDialogComponent,
         HookDialogComponent,
+        HookDeleteDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -196,6 +197,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       SourcerepoRecloneDialogComponent,
                       CIBuildDialogComponent,
                       HookDialogComponent,
+                      HookDeleteDialogComponent,
                       UserDialogComponent,
                       UserDeleteDialogComponent,
                       DependencyDialogComponent,

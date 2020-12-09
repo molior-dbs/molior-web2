@@ -88,7 +88,12 @@ export class RepositoryService extends TableService<Repository> {
 
     addHook(pv: any, repoid: number, url: string, skipssl: boolean, method: string, hooktype: string, body: string) {
         return this.http.post(`${apiURL()}/api2/project/${pv.project_name}/${pv.name}/repository/${repoid}/hook`,
-            { url, skipssl, method, hooktype, body });
+            { url, skipssl: skipssl ? 'true' : 'false', method, hooktype, body });
+    }
+
+    editHook(pv: any, repoid: number, id: number, url: string, skipssl: boolean, method: string, hooktype: string, body: string, enabled: boolean) {
+        return this.http.put(`${apiURL()}/api2/project/${pv.project_name}/${pv.name}/repository/${repoid}/hook/${id}`,
+            { url, skipssl: skipssl ? 'true' : 'false' , method, hooktype, body, enabled: enabled ? 'true' : 'false' });
     }
 
     removeHook(pv: any, repoid: number, id: number) {
