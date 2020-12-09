@@ -5,9 +5,7 @@
     <form [formGroup]="form">
 
         <p>User Name <app-validation-error [control]="form.get('username')"></app-validation-error></p>
-        <mat-form-field *ngIf="permission">
-            <input matInput formControlName="username" required cdkFocusInitial [readonly]="permission">
-        </mat-form-field>
+        <strong *ngIf="permission">{{permission.username}}</strong>
         <mat-form-field *ngIf="!permission">
             <input matInput formControlName="username" required cdkFocusInitial [matAutocomplete]="autoUsername">
             <mat-autocomplete #autoUsername="matAutocomplete">
