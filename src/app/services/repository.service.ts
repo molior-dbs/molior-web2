@@ -5,6 +5,13 @@ import {map} from 'rxjs/operators';
 
 import {apiURL} from '../lib/url';
 import {TableService, TableDataSource, MoliorResult} from '../lib/table.datasource';
+import {ProjectVersion} from '../services/project.service';
+
+
+export interface RepoDependents {
+    total_result_count: number;
+    results: ProjectVersion[];
+}
 
 export interface Repository {
     id: number;
@@ -106,5 +113,9 @@ export class RepositoryService extends TableService<Repository> {
 
     mergeDuplicate(id: number, duplicate: number) {
         return this.http.put(`${apiURL()}/api2/repository/${id}/merge`, {duplicate});
+    }
+
+    getRepoDependents(id: number) {
+        return this.http.get<RepoDependents>(`/api2/repository/${id}/dependents`);
     }
 }

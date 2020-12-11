@@ -4,6 +4,16 @@
         Create a CI build for <span class="link">{{repo.url}}</span>.<br/>
         Resulting Debian packages will be published to the unstable distrubution.
 
+        <p><strong>Projectversion</strong> <app-validation-error [control]="form.get('pv')"></app-validation-error></p>
+        <mat-form-field>
+            <input matInput formControlName="pv" required cdkFocusInitial [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let pv of projectversions$ | async" [value]="pv">
+                    {{pv}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
         <p><strong>Git Reference</strong><app-validation-error [control]="form.get('gitref')"></app-validation-error></p>
         <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
             <input matInput formControlName="gitref">

@@ -242,7 +242,6 @@ export class CIBuildDialogComponent {
     ) {
         this.projectversion = data.projectversion;
         this.repo = data.repo;
-        console.log(this.repo);
     }
 
     save(): void {

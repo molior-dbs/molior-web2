@@ -7,8 +7,9 @@ import {HttpClient} from '@angular/common/http';
 
 import {ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
-import {RepoMergeDialogComponent, RepoDeleteDialogComponent, RepositoryDialogComponent} from './repo-list';
+import {RepoMergeDialogComponent, RepoDeleteDialogComponent, RepositoryDialogComponent, RepoCIBuildDialogComponent} from './repo-list';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {SourcerepoRecloneDialogComponent} from '../projectversion/projectversion-repo-list';
 
 @Component({
     selector: 'app-repo',
@@ -92,5 +93,20 @@ export class RepositoryInfoComponent extends TableComponent {
             width: '40%',
         });
         dialog.afterClosed().subscribe(r => this.loadData());
+    }
+
+    build() {
+        this.repoService.build(this.repo.id).subscribe();
+    }
+
+    cibuild() {
+        const dialog = this.dialog.open(RepoCIBuildDialogComponent, {data: {repo: this.repo}, disableClose: true, width: '900px'});
+        dialog.afterClosed().subscribe(result => this.loadData());
+    }
+
+    reclone() {
+        const dialog = this.dialog.open(SourcerepoRecloneDialogComponent, {
+            data: {repo: this.repo}, disableClose: true, width: '40%'});
+        dialog.afterClosed().subscribe(result => this.loadData()); // FIXME needed?
     }
 }

@@ -10,6 +10,8 @@ import {RepositoryService, RepositoryDataSource, Repository} from '../../service
 import {MoliorService, UpdateEvent} from '../../services/websocket';
 import {AlertService} from '../../services/alert.service';
 import {BehaviorSubject, Observable} from 'rxjs';
+import {ProjectVersion, ProjectVersionService} from '../../services/project.service';
+import {SourcerepoRecloneDialogComponent} from '../projectversion/projectversion-repo-list';
 
 @Component({
   selector: 'app-repos',
@@ -57,17 +59,17 @@ export class RepositoryListComponent extends TableComponent {
     }
 
     edit(repo: Repository) {
-        const dialogRef = this.dialog.open(RepositoryDialogComponent, {data: {repo}, disableClose: true, width: '40%'});
-        dialogRef.afterClosed().subscribe(result => this.loadData());
+        const dialog = this.dialog.open(RepositoryDialogComponent, {data: {repo}, disableClose: true, width: '40%'});
+        dialog.afterClosed().subscribe(result => this.loadData());
     }
 
     delete(repo: Repository) {
-        const dialogRef = this.dialog.open(RepoDeleteDialogComponent, {
+        const dialog = this.dialog.open(RepoDeleteDialogComponent, {
             data: { repo },
             disableClose: true,
             width: '40%',
         });
-        dialogRef.afterClosed().subscribe(result => this.loadData());
+        dialog.afterClosed().subscribe(result => this.loadData());
     }
 
     mergeDuplicate(repo: Repository) {
@@ -79,6 +81,20 @@ export class RepositoryListComponent extends TableComponent {
         dialog.afterClosed().subscribe(r => this.loadData());
     }
 
+    build(id: number) {
+        this.repoService.build(id).subscribe();
+    }
+
+    cibuild(repo: Repository) {
+        const dialogRef = this.dialog.open(RepoCIBuildDialogComponent, {data: {repo}, disableClose: true, width: '900px'});
+        dialogRef.afterClosed().subscribe(result => this.loadData());
+    }
+
+    reclone(repo: Repository) {
+        const dialog = this.dialog.open(SourcerepoRecloneDialogComponent, {
+            data: {repo}, disableClose: true, width: '40%'});
+        dialog.afterClosed().subscribe(result => this.loadData()); // FIXME needed?
+    }
 }
 
 @Component({
@@ -179,5 +195,53 @@ export class RepoDeleteDialogComponent {
             this.router.navigate(['/repos']);
         },
         err => this.alertService.error(err.error));
+    }
+}
+
+@Component({
+    selector: 'app-repo-dialog',
+    templateUrl: 'repo-cibuild-form.html',
+})
+export class RepoCIBuildDialogComponent {
+    private projectversions = new BehaviorSubject<string[]>([]);
+    projectversions$ = this.projectversions.asObservable();
+    public repo: Repository;
+    form = this.fb.group({
+        gitref: new FormControl('', [Validators.required]),
+        pv: new FormControl('', [Validators.required,
+                                 Validators.minLength(2)
+                                 ])
+    });
+
+    constructor(public dialog: MatDialogRef<RepoCIBuildDialogComponent>,
+                private fb: FormBuilder,
+                protected repositoryService: RepositoryService,
+                protected projectversionService: ProjectVersionService,
+                protected router: Router,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
+    ) {
+        this.repo = data.repo;
+        this.form.controls.pv.valueChanges.subscribe(
+            pv => {
+                    this.repositoryService.getRepoDependents(this.repo.id).subscribe( r => {
+                        const projectversions = [];
+                        if (r.total_result_count > 0) {
+                            for (const res of r.results) {
+                                projectversions.push(res.project_name + '/' + res.name);
+                            }
+                            this.projectversions.next(projectversions);
+                        }
+                    }
+                );
+            }
+        );
+    }
+
+    save(): void {
+        this.repositoryService.cibuild(this.form.value.pv, this.repo.url, this.form.value.gitref.trim()).subscribe(r => {
+            this.dialog.close();
+        },
+            err => this.alertService.error(err.error));
     }
 }
