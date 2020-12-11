@@ -264,7 +264,11 @@ export class ProjectversionDialogComponent {
 })
 export class ProjectversionDeleteDialogComponent {
     projectversion: ProjectVersion;
+    form = this.fb.group({
+        forceremoval: new FormControl(false)
+    });
     constructor(public dialog: MatDialogRef<ProjectversionDeleteDialogComponent>,
+                private fb: FormBuilder,
                 protected projectversionService: ProjectVersionService,
                 protected router: Router,
                 private alertService: AlertService,
@@ -272,7 +276,7 @@ export class ProjectversionDeleteDialogComponent {
     ) { this.projectversion = data.projectversion; }
 
     save(): void {
-        this.projectversionService.delete(this.projectversion).subscribe( r => {
+        this.projectversionService.delete(this.projectversion, this.form.value.forceremoval).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name]);
         },
