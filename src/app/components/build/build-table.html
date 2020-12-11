@@ -82,7 +82,7 @@
     </ng-container>
 
     <ng-container matColumnDef="starttime">
-        <th mat-header-cell *matHeaderCellDef>Start date</th>
+        <th mat-header-cell *matHeaderCellDef>Start</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]" [ngStyle]="{'text-align': 'left'}">
             <span>{{startTime(element) || '' }}</span>
         </td>
