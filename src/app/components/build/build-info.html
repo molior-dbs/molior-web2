@@ -35,7 +35,7 @@
     <h2 style="flex-grow: 1">Build Log</h2>
     <div style="display: flex;">
         <div style="display: inline-block; align-self: flex-end; width: 340px;">
-        <input matInput placeholder="Search" #inputSearch style="margin-bottom: 2px; border: lightgray 1px solid; width: 120px;" (input)="search($event.target.value)">
+        <input matInput placeholder="Search..." #inputSearch style="margin-bottom: 2px; border: lightgray 1px solid; width: 120px;" (input)="search($event.target.value)">
         <span *ngIf="totalSearchresults" style="margin-bottom: 5px;"><button mat-button (click)="searchPrev()">prev</button>{{currentSearchresult}}/{{totalSearchresults}}<button mat-button (click)="searchNext()">next</button></span>
         </div>
 
