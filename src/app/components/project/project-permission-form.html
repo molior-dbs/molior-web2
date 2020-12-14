@@ -19,14 +19,13 @@
 
         <p>Role<app-validation-error [control]="form.get('role')"></app-validation-error></p>
         <mat-form-field>
-            <input matInput formControlName="role" required cdkFocusInitial [matAutocomplete]="autoRole">
-            <mat-autocomplete #autoRole="matAutocomplete">
+            <mat-select formControlName="role" required cdkFocusInitial>
                 <ng-container *ngFor="let entry of ['member', 'manager', 'owner']">
-                <mat-option *ngIf="entry" [value]="entry">
-                    {{entry}}
-                </mat-option>
+                    <mat-option *ngIf="entry" [value]="entry">
+                        {{entry}}
+                    </mat-option>
                 </ng-container>
-            </mat-autocomplete>
+            </mat-select>
         </mat-form-field>
 
     </form>
