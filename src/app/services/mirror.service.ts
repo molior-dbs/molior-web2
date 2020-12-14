@@ -122,8 +122,7 @@ export class MirrorService extends TableService<Mirror> {
                                       });
     }
 
-    edit(id: number,
-         mirrorname: string,
+    edit(mirrorname: string,
          mirrorversion: string,
          mirrortype: string,
          basemirror: string,

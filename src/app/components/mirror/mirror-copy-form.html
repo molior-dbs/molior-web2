@@ -19,7 +19,7 @@
                 </mat-form-field>
                 </p>
 
-                <p *ngIf="!mirror" style="margin-bottom: 0px;">
+                <p style="margin-bottom: 0px;">
                 <app-validation-error [control]="formArray.get('0').get('mirrorname')"></app-validation-error>
                 <span style="width: 130px; display: inline-block;"><strong>Name</strong></span>
                 <mat-form-field style="width: 300px;">
@@ -27,7 +27,7 @@
                 </mat-form-field>
                 </p>
 
-                <p *ngIf="!mirror" style="margin-bottom: 0px;">
+                <p style="margin-bottom: 0px;">
                 <app-validation-error [control]="formArray.get('0').get('mirrorversion')"></app-validation-error>
                 <span style="width: 130px; display: inline-block;"><strong>Version</strong></span>
                 <mat-form-field style="width: 300px;">

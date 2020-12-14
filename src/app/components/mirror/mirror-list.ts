@@ -355,11 +355,12 @@ export class MirrorDialogComponent {
                                         err => this.alertService.error(err.error)
                                      );
         } else {
-            this.mirrorService.edit(this.mirror.id, this.mirror.name, this.mirror.version,
+            this.mirrorService.edit(this.mirror.name,
+                                    this.mirror.version,
                                     data[0].mirrortype,
                                     data[0].basemirror,
-                                    data[0].mirrorurl,
                                     data[0].external_repo,
+                                    data[0].mirrorurl,
                                     data[1].mirrordist,
                                     data[1].mirrorcomponents,
                                     data[1].architectures,
@@ -443,9 +444,7 @@ export class MirrorCopyDialogComponent {
                 }
             }
         });
-        this.formArray.get([0]).patchValue({mirrorname: this.mirror.name,
-                                            mirrorversion: this.mirror.version,
-                                            mirrorurl: this.mirror.url,
+        this.formArray.get([0]).patchValue({mirrorurl: this.mirror.url,
                                             mirrortype: this.mirror.is_basemirror ? '1' : '2',
                                             basemirror: this.mirror.basemirror_name,
                                           });
