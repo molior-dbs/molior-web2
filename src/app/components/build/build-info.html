@@ -17,6 +17,24 @@
                     <mat-icon class="mat-icon notranslate material-icons buildstate buildstate-{{build.buildstate}}" matTooltip="{{build.buildstate}}" [matTooltipPosition]="'left'" [ngStyle]="{'font-size': '19px', height: 'unset', width: 'unset'}">{{buildicon(build.buildstate)}}</mat-icon>
                     <span [ngClass]="'progress'" *ngIf="build.progress && ( build.buildstate == 'building' || build.buildstate == 'publishing' )">{{build.progress | number:'1.0-0'}}%</span>
                 </td>
+            </tr>
+            <tr *ngIf="build.project && build.project.version">
+                <td><strong>Project</strong></td>
+                <td><a class="link" [routerLink]="['../../project', build.project.name, build.project.version.name]">{{build.project.name}}/{{build.project.version.name}}</a></td>
+            </tr>
+            <tr *ngIf="build.buildvariant && build.buildvariant.base_mirror && build.buildvariant.base_mirror.name && build.buildvariant.base_mirror.version">
+                <td><strong>Base Mirror</strong></td>
+                <td><a class="link" [routerLink]="['../../mirror', build.buildvariant.base_mirror.name, build.buildvariant.base_mirror.version]">{{build.buildvariant.base_mirror.name}}/{{ build.buildvariant.base_mirror.version}}</a></td>
+            </tr>
+            <tr *ngIf="build.buildvariant && build.buildvariant.architecture && build.buildvariant.architecture.name">
+                <td><strong>Architecture</strong></td>
+                <td>
+                    <mat-icon *ngIf="build.buildvariant.architecture.name=='amd64'" svgIcon="amd64" matTooltip="amd64"></mat-icon>
+                    <mat-icon *ngIf="build.buildvariant.architecture.name=='arm64'" svgIcon="arm64" matTooltip="arm64"></mat-icon>
+                    <mat-icon *ngIf="build.buildvariant.architecture.name=='armhf'" svgIcon="arm" matTooltip="armhf"></mat-icon>
+                    <mat-icon *ngIf="build.buildvariant.architecture.name=='i386'" svgIcon="x86" matTooltip="i386"></mat-icon>
+                </td>
+            </tr>
         </table>
     </div>
     <div style="flex-grow: 1; text-align: right;">
