@@ -53,7 +53,6 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         ];
         if (!this.projectversion) {
             this.displayedColumns.splice(2, 0, 'project');
-            this.displayedColumns.splice(3, 0, 'basemirror');
             /* tslint:disable:no-string-literal */
             this.params.DefaultParams['project'] = '';
             this.params.CurrentParams = {...this.params.DefaultParams};
