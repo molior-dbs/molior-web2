@@ -202,14 +202,13 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                     // head: cannot open '/etc/ssl/certs/java/cacerts' for reading: No such file or directory
                     const patterns = [
                         // this       but not any of all of that
-                        [/\S*error: /i, [
+                        [/\S*(error|ERROR|Error): /i, [
                             [/dpkg-buildpackage: error: debian\/rules build subprocess returned exit status \d+$/],
                             [/sbuild command failed/],
                             [/dpkg-buildpackage/, /exit status \d+/],
                         ]],
                         [/^[^/(]*[^;]\berror\b[^:]/i, [
                             [/gpgv: keyblock resource/, /General error$/],
-                            [/^(\x1b[^m]+m)*make/, /Error \d+$/],
                             [/error\.\S+$/],
                             [/dpkg-buildpackage/, /exit status \d+/],
                             [/: warning: unused parameter/],
@@ -224,11 +223,14 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         [/\/bin\/sh:.+not found/, []],
                         [/: No such file or directory/, [
                             [/head: cannot open/, /certs\/java\/cacerts/],
+                            [/aclocal: warning: couldn't open directory 'm4'/],
                         ]],
                         [/Target "[^"]" does not exist in the project/, []],
                         [/\.py:\d+:\d+: [FW]\d+ /, []],
                         [/dh_systemd_enable: Could not handle all of the requested services/, []],
                         [/unsat-dependency: /, []],
+                        [/: Permission denied/, []],
+                        [/: error :/, []],
                     ];
                     for (const pattern of patterns) {
                         if (line.search(pattern[0] as RegExp) >= 0) {
