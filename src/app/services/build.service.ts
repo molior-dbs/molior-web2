@@ -16,6 +16,7 @@ export interface Build {
     endstamp: string;
     version: string;
     sourcename: string;
+    architecture: string;
     maintainer: string;
     maintainer_email: string;
     git_ref: string;
