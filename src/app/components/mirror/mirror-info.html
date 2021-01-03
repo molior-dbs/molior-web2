@@ -1,43 +1,42 @@
-<h1><mat-icon>folder_special</mat-icon>Mirror <span class="title">{{mirror.name}}/{{mirror.version}}</span></h1>
+<h1><mat-icon>folder_special</mat-icon>Mirror <span class="title">{{mirror.name}}/{{mirror.version}}</span>
+    <mat-icon *ngIf="mirror.is_basemirror" svgIcon="debian" [ngStyle]="{'margin-right': '0px'}"></mat-icon>
+</h1>
 
 <div class="mat-elevation-z8 info-table">
     <div>
         <table>
             <tr>
                 <td><strong>URL</strong></td>
-                <td><span ngClass="link">{{mirror.url}}</span> <mat-icon *ngIf="mirror.is_basemirror" svgIcon="debian" [ngStyle]="{'margin-right': '0px'}"></mat-icon></td>
+                <td colspan="3"><span ngClass="link">{{mirror.url}}</span></td>
+
             </tr>
             <tr>
                 <td><strong>Distribution</strong></td>
                 <td>{{mirror.distribution}}</td>
+
+                <td *ngIf="mirror.mirrorkeyserver"><strong>Key server</strong></td>
+                <td ngClass="link" *ngIf="mirror.mirrorkeyserver">{{mirror.mirrorkeyserver}}</td>
+
+                <td *ngIf="mirror.mirrorkeyurl"><strong>Key URL</strong></td>
+                <td ngClass="link">{{mirror.mirrorkeyurl}}</td>
             </tr>
             <tr>
                 <td><strong>Components</strong></td>
                 <td>{{mirror.components.split(',').join(', ')}}</td>
+
+                <td><strong *ngIf="mirror.mirrorkeyids">Key IDs</strong></td>
+                <td><span *ngIf="mirror.mirrorkeyids">{{mirror.mirrorkeyids}}</span></td>
             </tr>
             <tr>
                 <td><strong>Architectures</strong></td>
                 <td>{{mirror.architectures.join(', ')}}</td>
+
+                <td><strong>State</strong></td>
+                <td>{{mirror.state}}</td>
             </tr>
             <tr *ngIf="mirror.basemirror_name">
                 <td><strong>Base Mirror</strong></td>
                 <td>{{mirror.basemirror_name}}</td>
-            </tr>
-            <tr *ngIf="mirror.mirrorkeyurl">
-                <td><strong>Key URL</strong></td>
-                <td ngClass="link">{{mirror.mirrorkeyurl}}</td>
-            </tr>
-            <tr *ngIf="mirror.mirrorkeyserver">
-                <td><strong>Key server</strong></td>
-                <td ngClass="link">{{mirror.mirrorkeyserver}}</td>
-            </tr>
-            <tr *ngIf="mirror.mirrorkeyids">
-                <td><strong>Key IDs</strong></td>
-                <td>{{mirror.mirrorkeyids}}</td>
-            </tr>
-            <tr>
-                <td><strong>State</strong></td>
-                <td>{{mirror.state}}</td>
             </tr>
         </table>
     </div>
