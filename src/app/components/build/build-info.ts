@@ -86,6 +86,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
             endstamp: '',
             version: '',
             sourcename: '',
+            architecture: '',
             maintainer: '',
             maintainer_email: '',
             git_ref: '',
