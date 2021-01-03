@@ -11,6 +11,42 @@ import {MoliorService, UpdateEvent} from '../../services/websocket';
 import {RepositoryService} from '../../services/repository.service';
 import {BuildDeleteDialogComponent, BuildRebuildDialogComponent} from './build-list';
 
+
+const ErrorPatterns = [
+    // this                       but not any of all of that
+    [/\S*(error|ERROR|Error): /i, [
+        [/dpkg-buildpackage: error: debian\/rules build subprocess returned exit status \d+$/],
+        [/sbuild command failed/],
+        [/dpkg-buildpackage/, /exit status \d+/],
+    ]],
+    [/^[^/(]*[^;]\berror\b[^:]/i, [
+        [/gpgv: keyblock resource/, /General error$/],
+        [/error\.\S+$/],
+        [/dpkg-buildpackage/, /exit status \d+/],
+        [/: warning: unused parameter/],
+    ]],
+    [/^(\x1b[^m]+m)*E:/, [
+        [/dpkg-buildpackage died/],
+        [/Error building source package/],
+        [/Package build dependencies not satisfied; skipping/],
+    ]],
+    [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []],
+    [/dh_install: missing files, aborting/, []],
+    [/\/bin\/sh:.+not found/, []],
+    [/: No such file or directory/, [
+        [/head: cannot open/, /certs\/java\/cacerts/],
+        [/aclocal: warning: couldn't open directory 'm4'/],
+    ]],
+    [/Target "[^"]" does not exist in the project/, []],
+    [/\.py:\d+:\d+: [FW]\d+ /, []],
+    [/dh_systemd_enable: Could not handle all of the requested services/, []],
+    [/unsat-dependency: /, []],
+    [/: Permission denied/, []],
+    [/: error :/, []],
+    [/: error CS\d+:/, []],
+];
+
+
 @Component({
     selector: 'app-build',
     templateUrl: 'build-info.html',
@@ -201,40 +237,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     // Error Finder
                     if (this.build.buildstate !== 'successful') {
-                        const patterns = [
-                            // this                       but not any of all of that
-                            [/\S*(error|ERROR|Error): /i, [
-                                [/dpkg-buildpackage: error: debian\/rules build subprocess returned exit status \d+$/],
-                                [/sbuild command failed/],
-                                [/dpkg-buildpackage/, /exit status \d+/],
-                            ]],
-                            [/^[^/(]*[^;]\berror\b[^:]/i, [
-                                [/gpgv: keyblock resource/, /General error$/],
-                                [/error\.\S+$/],
-                                [/dpkg-buildpackage/, /exit status \d+/],
-                                [/: warning: unused parameter/],
-                            ]],
-                            [/^(\x1b[^m]+m)*E:/, [
-                                [/dpkg-buildpackage died/],
-                                [/Error building source package/],
-                                [/Package build dependencies not satisfied; skipping/],
-                            ]],
-                            [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []],
-                            [/dh_install: missing files, aborting/, []],
-                            [/\/bin\/sh:.+not found/, []],
-                            [/: No such file or directory/, [
-                                [/head: cannot open/, /certs\/java\/cacerts/],
-                                [/aclocal: warning: couldn't open directory 'm4'/],
-                            ]],
-                            [/Target "[^"]" does not exist in the project/, []],
-                            [/\.py:\d+:\d+: [FW]\d+ /, []],
-                            [/dh_systemd_enable: Could not handle all of the requested services/, []],
-                            [/unsat-dependency: /, []],
-                            [/: Permission denied/, []],
-                            [/: error :/, []],
-                            [/: error CS\d+:/, []],
-                        ];
-                        for (const pattern of patterns) {
+                        for (const pattern of ErrorPatterns) {
                             if (line.search(pattern[0] as RegExp) >= 0) {
                                 const falsepositives = pattern[1] as [];
                                 let found = false;

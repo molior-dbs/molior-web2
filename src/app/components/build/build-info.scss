@@ -28,13 +28,19 @@
     background: rebeccapurple;
 }
 
-::ng-deep .errorline {
-  border: 2px solid darkred;
+::ng-deep .errorline > td:first-of-type {
+  color: red;
+  font-weight: bold;
 }
 
-::ng-deep .errorline > td {
-  padding-top: 2px;
-  padding-bottom: 1px;
+::ng-deep .errorline > td:nth-of-type(2) {
+  background: linear-gradient(
+    to bottom,
+    #00000000 0%,
+    #00000000 96%,
+    #FF0000   97%
+    #FF0000   100%
+  );
 }
 
 .mat-button {
