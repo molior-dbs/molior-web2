@@ -14,7 +14,7 @@ import {BuildDeleteDialogComponent, BuildRebuildDialogComponent} from './build-l
 
 const ErrorPatterns = [
     // this                       but not any of all of that
-    [/\S*(error|ERROR|Error): /i, [
+    [/\S*(error|ERROR|Error)(:| in) /i, [
         [/dpkg-buildpackage: error: debian\/rules build subprocess returned exit status \d+$/],
         [/sbuild command failed/],
         [/dpkg-buildpackage/, /exit status \d+/],
