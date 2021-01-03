@@ -231,6 +231,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                         [/unsat-dependency: /, []],
                         [/: Permission denied/, []],
                         [/: error :/, []],
+                        [/: error CS\d+:/, []],
                     ];
                     for (const pattern of patterns) {
                         if (line.search(pattern[0] as RegExp) >= 0) {
