@@ -111,6 +111,9 @@ export class BuildService extends TableService<Build> {
         if (params.get('search')) {
             p.search = params.get('search');
         }
+        if (params.get('search_project')) {
+            p.search_project = params.get('search_project');
+        }
         if (params.get('maintainer')) {
             p.maintainer = params.get('maintainer');
         }

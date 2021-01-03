@@ -54,7 +54,7 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         if (!this.projectversion) {
             this.displayedColumns.splice(2, 0, 'project');
             /* tslint:disable:no-string-literal */
-            this.params.DefaultParams['project'] = '';
+            this.params.DefaultParams['search_project'] = '';
             this.params.CurrentParams = {...this.params.DefaultParams};
             /* tslint:enable:no-string-literal */
         }
@@ -72,7 +72,7 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         this.inputSearch.nativeElement.value = this.params.get('search');
         this.inputMaintainer.nativeElement.value = this.params.get('maintainer');
         if (!this.projectversion) {
-            this.inputProject.nativeElement.value = this.params.get('project');
+            this.inputProject.nativeElement.value = this.params.get('search_project');
         }
         this.inputCommit.nativeElement.value = this.params.get('commit');
     }
@@ -81,7 +81,7 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         this.params.set('search', this.inputSearch.nativeElement.value);
         this.params.set('maintainer', this.inputMaintainer.nativeElement.value);
         if (!this.projectversion) {
-            this.params.set('project', this.inputProject.nativeElement.value);
+            this.params.set('search_project', this.inputProject.nativeElement.value);
         }
         this.params.set('commit', this.inputCommit.nativeElement.value);
     }
