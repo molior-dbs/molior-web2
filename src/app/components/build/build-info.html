@@ -48,7 +48,7 @@
     <div style="display: flex;">
         <div style="display: inline-block; align-self: flex-end; width: 340px;">
             <input matInput placeholder="Search..." #inputSearch [ngStyle]="{'margin-bottom': '2px', border: 'lightgrey 1px solid', 'width': '120px'}" (input)="search($event.target.value)">
-        <span *ngIf="totalSearchresults" style="margin-bottom: 5px; display: inline-block"><button mat-button (click)="searchPrev()">prev</button>{{currentSearchresult}}/{{totalSearchresults}}<button mat-button (click)="searchNext()">next</button></span>
+        <span *ngIf="totalSearchresults" style="margin-bottom: 5px; display: inline-block"><button class="link" mat-button (click)="searchPrev()">prev</button>{{currentSearchresult}}/{{totalSearchresults}}<button class="link" mat-button (click)="searchNext()">next</button></span>
         </div>
 
         <mat-checkbox style="display: inline-block; align-self: flex-end; margin-bottom: 5px;" *ngIf="this.build.buildstate === 'building'" [checked]="follow" (change)="toggleFollow()">follow</mat-checkbox>
