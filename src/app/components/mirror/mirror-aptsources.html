@@ -1,4 +1,6 @@
-<h1><mat-icon>class</mat-icon>Mirror <a clasr="title" [routerLink]="['/mirrors']">{{mirror.name}}</a><span class="title">/{{mirror.version}}</span></h1>
+<h1><mat-icon>folder_special</mat-icon>Mirror <a [routerLink]="['/mirrors']">{{mirror.name}}</a><span class="title">/{{mirror.version}}</span>
+    <mat-icon *ngIf="mirror.is_basemirror" svgIcon="debian" [ngStyle]="{'margin-right': '0px'}"></mat-icon>
+</h1>
 <div *ngIf="mirror.description" [ngStyle]="{ 'padding': '10px' }">{{ mirror.description }}</div>
 
 <nav mat-tab-nav-bar>

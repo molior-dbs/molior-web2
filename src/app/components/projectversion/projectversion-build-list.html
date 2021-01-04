@@ -1,6 +1,6 @@
 <div *ngIf="projectversion" style="display: flex; flex-direction: column; flex-grow: 1">
     <h1>
-        <mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a>
+        <mat-icon>class</mat-icon>Project <a [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a>
         <span class="title">/{{projectversion.name}}</span>
     </h1>
     <div *ngIf="projectversion.description" [ngStyle]="{ 'padding': '10px' }">{{ projectversion.description }}</div>
