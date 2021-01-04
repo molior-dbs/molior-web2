@@ -45,8 +45,6 @@ export class AppComponent implements OnInit {
         this.matIconRegistry.addSvgIcon('git', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/git.svg'));
         this.matIconRegistry.addSvgIcon('amd64', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/amd64.svg'));
         this.matIconRegistry.addSvgIcon('arm64', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/arm64.svg'));
-        this.matIconRegistry.addSvgIcon('x86', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/x86.svg'));
-        this.matIconRegistry.addSvgIcon('arm', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/arm.svg'));
         this.connectionColor = new BehaviorSubject<string>('red');
         this.connectionColor$ = this.connectionColor.asObservable();
         this.connectionColor.next('red');
