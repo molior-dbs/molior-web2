@@ -11,6 +11,7 @@ export interface Mirror {
     id: number;
     name: string;
     version: string;
+    description: string;
     url: string;
     basemirror_id: number;
     basemirror_url: string;
