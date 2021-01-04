@@ -33,6 +33,7 @@ export class MirrorInfoComponent extends TableComponent {
         this.mirror = {id: -1,
             name: '',
             version: '',
+            description: '',
             url: '',
             basemirror_id: 0,
             basemirror_name: '',

@@ -17,7 +17,7 @@ export class MirrorAPTSourcesComponent {
                 protected router: Router,
                 protected mirrorService: MirrorService
                 ) {
-        this.mirror = { id: -1, name: '', version: '', url: '', basemirror_id: -1,
+        this.mirror = { id: -1, name: '', version: '', url: '', basemirror_id: -1, description: '',
                         basemirror_url: '', basemirror_name: '', distribution: '',
                         components: '', is_basemirror: false, architectures: [],
                         is_locked: false, with_sources: false, with_installer: false,
