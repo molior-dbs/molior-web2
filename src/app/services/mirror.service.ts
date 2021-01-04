@@ -63,6 +63,10 @@ export class MirrorService extends TableService<Mirror> {
         return this.http.get<Mirror>(`${apiURL()}/api2/mirror/${name}/${version}`);
     }
 
+    get_apt_sources(name: string, version: string) {
+        return this.http.get<string>(`${apiURL()}/api2/mirror/${name}/${version}/aptsources`, {responseType: 'text' as 'json'});
+    }
+
     getMirrors(url: string = '') {
         const p: any = {};
         if (url) {

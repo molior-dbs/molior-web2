@@ -14,6 +14,7 @@ import {ProjectversionDependentsComponent} from './components/projectversion/pro
 import {ProjectversionPermissionsComponent} from './components/projectversion/projectversion-permissions';
 import {MirrorListComponent} from './components/mirror/mirror-list';
 import {MirrorInfoComponent} from './components/mirror/mirror-info';
+import {MirrorAPTSourcesComponent} from './components/mirror/mirror-aptsources';
 import {RepositoryListComponent} from './components/repo/repo-list';
 import {RepositoryInfoComponent} from './components/repo/repo-info';
 import {NodeListComponent} from './components/node/node-list';
@@ -55,6 +56,7 @@ const routes: Routes = [
     },
     { path: 'mirrors',                       component: MirrorListComponent,     canActivate: [AuthGuard] },
     { path: 'mirror/:name/:version',         component: MirrorInfoComponent,     canActivate: [AuthGuard] },
+    { path: 'mirror/:name/:version/aptsources', component: MirrorAPTSourcesComponent, canActivate: [AuthGuard] },
     { path: 'repos',                         component: RepositoryListComponent, canActivate: [AuthGuard] },
     { path: 'repo/:id',                      component: RepositoryInfoComponent, canActivate: [AuthGuard] },
     { path: 'nodes',                         component: NodeListComponent,       canActivate: [AuthGuard] },

@@ -42,7 +42,8 @@ import {ProjectPermissionsComponent, ProjectPermissionDialogComponent,
 import {ProjectversionInfoComponent, DependencyDialogComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent, SourcerepoDialogComponent, SourcerepoDeleteDialogComponent, SourcerepoRecloneDialogComponent,
         CIBuildDialogComponent} from './components/projectversion/projectversion-repo-list';
-import {ProjectversionRepoComponent, HookDialogComponent, HookDeleteDialogComponent} from './components/projectversion/projectversion-repo-info';
+import {ProjectversionRepoComponent, HookDialogComponent,
+        HookDeleteDialogComponent} from './components/projectversion/projectversion-repo-info';
 import {ProjectversionBuildListComponent} from './components/projectversion/projectversion-build-list';
 import {ProjectversionAPTSourcesComponent} from './components/projectversion/projectversion-aptsources';
 import {ProjectversionDependentsComponent} from './components/projectversion/projectversion-dependents';
@@ -55,6 +56,7 @@ import {BuildService} from './services/build.service';
 
 import {MirrorListComponent, MirrorDialogComponent, MirrorCopyDialogComponent,
         MirrorDeleteDialogComponent} from './components/mirror/mirror-list';
+import {MirrorAPTSourcesComponent} from './components/mirror/mirror-aptsources';
 import {MirrorInfoComponent} from './components/mirror/mirror-info';
 import {MirrorService} from './services/mirror.service';
 
@@ -91,6 +93,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         MirrorDialogComponent,
         MirrorCopyDialogComponent,
         MirrorDeleteDialogComponent,
+        MirrorAPTSourcesComponent,
 
         RepositoryListComponent,
         RepositoryInfoComponent,
