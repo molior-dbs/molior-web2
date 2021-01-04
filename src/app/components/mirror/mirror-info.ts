@@ -49,7 +49,8 @@ export class MirrorInfoComponent extends TableComponent {
             apt_url: '',
             mirrorkeyurl: '',
             mirrorkeyids: '',
-            mirrorkeyserver: ''
+            mirrorkeyserver: '',
+            dependency_policy: 'strict'
         };
         this.dataSource = new ProjectVersionDataSource(projectversionService);
     }

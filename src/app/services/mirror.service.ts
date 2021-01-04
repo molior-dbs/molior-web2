@@ -28,6 +28,7 @@ export interface Mirror {
     mirrorkeyurl: string;
     mirrorkeyids: string;
     mirrorkeyserver: string;
+    dependency_policy: string;
 }
 
 export class MirrorDataSource extends TableDataSource<Mirror> {
@@ -97,6 +98,7 @@ export class MirrorService extends TableService<Mirror> {
            basemirror: string,
            external: boolean,
            mirrorurl: string,
+           dependencylevel: string,
            mirrordist: string,
            mirrorcomponents: string,
            architectures: string[],
@@ -114,6 +116,7 @@ export class MirrorService extends TableService<Mirror> {
                                        basemirror,
                                        external,
                                        mirrorurl: mirrorurl.trim(),
+                                       dependencylevel,
                                        mirrordist: mirrordist.trim(),
                                        mirrorcomponents: mirrorcomponents.trim(),
                                        architectures,
@@ -132,6 +135,7 @@ export class MirrorService extends TableService<Mirror> {
          basemirror: string,
          external: boolean,
          mirrorurl: string,
+         dependencylevel: string,
          mirrordist: string,
          mirrorcomponents: string,
          architectures: string[],
@@ -147,6 +151,7 @@ export class MirrorService extends TableService<Mirror> {
                                        basemirror,
                                        external,
                                        mirrorurl: mirrorurl.trim(),
+                                       dependencylevel,
                                        mirrordist: mirrordist.trim(),
                                        mirrorcomponents: mirrorcomponents.trim(),
                                        architectures,

@@ -22,7 +22,7 @@ export class MirrorAPTSourcesComponent {
                         components: '', is_basemirror: false, architectures: [],
                         is_locked: false, with_sources: false, with_installer: false,
                         project_id: -1, state: '', apt_url: '', mirrorkeyurl: '',
-                        mirrorkeyids: '', mirrorkeyserver: '' };
+                        mirrorkeyids: '', mirrorkeyserver: '', dependency_policy: 'strict' };
         this.aptSources = '';
         this.route.paramMap.subscribe((params: ParamMap) => {
             const mirrorName = params.get('name');

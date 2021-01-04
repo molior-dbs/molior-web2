@@ -116,6 +116,7 @@ export class MirrorDialogComponent {
     mirror: Mirror;
     basemirrors: { [id: string]: string[]; };
     architectures = [ 'amd64', 'i386', 'arm64', 'armhf' ];
+    defaultDependencyLevel: 'strict';
     distpreset: string;
     mirrorurls = [];
     form = this.fb.group({
@@ -127,6 +128,7 @@ export class MirrorDialogComponent {
                  mirrortype:    ['1'],
                  basemirror:    new FormControl(''),
                  external_repo: false,
+                 dependencylevel: new FormControl('strict', [Validators.required]),
              }),
              this.fb.group({
                  mirrorsrc: false,
@@ -179,6 +181,7 @@ export class MirrorDialogComponent {
                                                 mirrorurl: this.mirror.url,
                                                 mirrortype: this.mirror.is_basemirror ? '1' : '2',
                                                 basemirror: this.mirror.basemirror_name,
+                                                dependencylevel: this.mirror.dependency_policy,
                                               });
             this.formArray.get([1]).patchValue({mirrorsrc: this.mirror.with_sources,
                                                 mirrorinst: this.mirror.with_installer,
@@ -341,6 +344,7 @@ export class MirrorDialogComponent {
                                       data[0].basemirror,
                                       data[0].external_repo,
                                       data[0].mirrorurl,
+                                      data[0].dependencylevel,
                                       data[1].mirrordist,
                                       data[1].mirrorcomponents,
                                       data[1].architectures,
@@ -361,6 +365,7 @@ export class MirrorDialogComponent {
                                     data[0].basemirror,
                                     data[0].external_repo,
                                     data[0].mirrorurl,
+                                    data[0].dependencylevel,
                                     data[1].mirrordist,
                                     data[1].mirrorcomponents,
                                     data[1].architectures,
@@ -398,6 +403,7 @@ export class MirrorCopyDialogComponent {
                  mirrortype:    ['1'],
                  basemirror:    new FormControl(''),
                  external_repo: false,
+                 dependencylevel: new FormControl('strict'),
              }),
              this.fb.group({
                  mirrorsrc: false,
@@ -447,6 +453,7 @@ export class MirrorCopyDialogComponent {
         this.formArray.get([0]).patchValue({mirrorurl: this.mirror.url,
                                             mirrortype: this.mirror.is_basemirror ? '1' : '2',
                                             basemirror: this.mirror.basemirror_name,
+                                            dependencylevel: this.mirror.dependency_policy,
                                           });
         this.formArray.get([1]).patchValue({mirrorsrc: this.mirror.with_sources,
                                             mirrorinst: this.mirror.with_installer,
@@ -605,6 +612,7 @@ export class MirrorCopyDialogComponent {
                                   data[0].basemirror,
                                   data[0].external_repo,
                                   data[0].mirrorurl,
+                                  data[0].dependencylevel,
                                   data[1].mirrordist,
                                   data[1].mirrorcomponents,
                                   data[1].architectures,

@@ -66,6 +66,19 @@
                 <span style="width: 130px; display: inline-block;"><strong>External Repo</strong></span>
                 <mat-checkbox style="padding-left: 15px;" formControlName="external_repo"></mat-checkbox>
                 </p>
+
+                <div *ngIf="formArray.get('0').value.mirrortype==='2'">
+                    <p><strong>Dependency Policy</strong><app-validation-error [control]="formArray.get('0').get('dependencylevel')"></app-validation-error></p>
+                    <div>
+                        <mat-form-field floatLabel="never" appearance="standard">
+                            <mat-select formControlName="dependencylevel" [(value)]="defaultDependencyLevel">
+                                <mat-option value="strict"><strong>strict</strong>&nbsp;- Use in {{formArray.get('0').value.mirrorname}}/{{formArray.get('0').value.mirrorversion}} based projects</mat-option>
+                                <mat-option value="distribution"><strong>dist</strong>&nbsp;- Use in {{formArray.get('0').value.mirrorname}} based projects</mat-option>
+                                <mat-option value="any"><strong>any</strong>&nbsp;- Use with any base mirror based projects</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
             </mat-step>
 
             <mat-step formGroupName="1" [stepControl]="formArray.get('1')">
