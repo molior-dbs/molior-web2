@@ -7,7 +7,10 @@
                 <td><strong>Source Name</strong></td>
                 <td>{{build.sourcename}}</td>
 
-                <td><strong *ngIf="build.project.version">Project</strong></td>
+                <td *ngIf="build.project.version">
+                    <strong *ngIf="!build.project.is_mirror">Project</strong>
+                    <strong *ngIf="build.project.is_mirror">Mirror</strong>
+                </td>
                 <td><a *ngIf="build.project.version" class="link" [routerLink]="['../../project', build.project.name, build.project.version.name]">{{build.project.name}}/{{build.project.version.name}}</a></td>
             </tr>
             <tr *ngIf="build.version">

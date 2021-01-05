@@ -92,7 +92,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
             git_ref: '',
             branch: '',
             sourcerepository_id: 0,
-            project: { id: 0, name: '', version: { id: 0, name: '', is_locked: false }},
+            project: { id: 0, name: '', is_mirror: false, version: { id: 0, name: '', is_locked: false }},
             buildvariant: { name: '', architecture: { id: 0, name: '' }, base_mirror: { id: 0, name: '', version: '' }},
             progress: null
         };

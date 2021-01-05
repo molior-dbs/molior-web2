@@ -22,7 +22,7 @@ export interface Build {
     git_ref: string;
     branch: string;
     sourcerepository_id: number;
-    project: {id: number; name: string;
+    project: {id: number; name: string, is_mirror: boolean;
               version: {id: number; name: string; is_locked: boolean}};
     buildvariant: {name: string;
                    architecture: {id: number; name: string};
