@@ -125,27 +125,27 @@ export class MirrorDialogComponent {
                  mirrorurl:     new FormControl('', [Validators.required, ValidationService.httpValidator]),
                  mirrorname:    new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.nameValidator]),
                  mirrorversion: new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.versionValidator]),
-                 mirrortype:    ['1'],
+                 mirrortype:    new FormControl(['1']),
                  basemirror:    new FormControl(''),
-                 external_repo: false,
+                 external_repo: new FormControl(false),
                  dependencylevel: new FormControl('strict', [Validators.required]),
              }),
              this.fb.group({
-                 mirrorsrc: false,
-                 mirrorinst: false,
+                 mirrorsrc: new FormControl(false),
+                 mirrorinst: new FormControl(false),
                  mirrordist: new FormControl('', [Validators.required]),
                  mirrorcomponents: new FormControl('main', [Validators.required]),
                  architectures: new FormControl(this.architectures, [Validators.required]),
-                 architecture0: true,
-                 architecture1: true,
-                 architecture2: true,
-                 architecture3: true,
+                 architecture0: new FormControl(true),
+                 architecture1: new FormControl(true),
+                 architecture2: new FormControl(true),
+                 architecture3: new FormControl(true),
              }),
              this.fb.group({
-                 mirrorkeytype: ['1'],
+                 mirrorkeytype: new FormControl(['1']),
                  mirrorkeyurl: new FormControl('', [Validators.required]),
-                 mirrorkeyids: '',
-                 mirrorkeyserver: 'hkp://keyserver.ubuntu.com:80'
+                 mirrorkeyids: new FormControl(''),
+                 mirrorkeyserver: new FormControl('hkp://keyserver.ubuntu.com:80')
              })
          ])
     });
@@ -180,6 +180,7 @@ export class MirrorDialogComponent {
                                                 mirrorversion: this.mirror.version,
                                                 mirrorurl: this.mirror.url,
                                                 mirrortype: this.mirror.is_basemirror ? '1' : '2',
+                                                external_repo: this.mirror.external_repo,
                                                 basemirror: this.mirror.basemirror_name,
                                                 dependencylevel: this.mirror.dependency_policy,
                                               });
@@ -400,27 +401,27 @@ export class MirrorCopyDialogComponent {
                  mirrorurl:     new FormControl('', [Validators.required, ValidationService.httpValidator]),
                  mirrorname:    new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.nameValidator]),
                  mirrorversion: new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.versionValidator]),
-                 mirrortype:    ['1'],
+                 mirrortype:    new FormControl(['1']),
                  basemirror:    new FormControl(''),
-                 external_repo: false,
+                 external_repo: new FormControl(false),
                  dependencylevel: new FormControl('strict'),
              }),
              this.fb.group({
-                 mirrorsrc: false,
-                 mirrorinst: false,
+                 mirrorsrc: new FormControl(false),
+                 mirrorinst: new FormControl(false),
                  mirrordist: new FormControl('', [Validators.required]),
                  mirrorcomponents: new FormControl('main', [Validators.required]),
                  architectures: new FormControl(this.architectures, [Validators.required]),
-                 architecture0: true,
-                 architecture1: true,
-                 architecture2: true,
-                 architecture3: true,
+                 architecture0: new FormControl(true),
+                 architecture1: new FormControl(true),
+                 architecture2: new FormControl(true),
+                 architecture3: new FormControl(true),
              }),
              this.fb.group({
-                 mirrorkeytype: ['1'],
+                 mirrorkeytype: new FormControl(['1']),
                  mirrorkeyurl: new FormControl('', [Validators.required]),
-                 mirrorkeyids: '',
-                 mirrorkeyserver: 'hkp://keyserver.ubuntu.com:80'
+                 mirrorkeyids: new FormControl(''),
+                 mirrorkeyserver: new FormControl('hkp://keyserver.ubuntu.com:80')
              })
          ])
     });
@@ -455,6 +456,7 @@ export class MirrorCopyDialogComponent {
                                             mirrorversion: this.mirror.version + '-copy',
                                             mirrortype: this.mirror.is_basemirror ? '1' : '2',
                                             basemirror: this.mirror.basemirror_name,
+                                            external_repo: this.mirror.external_repo,
                                             dependencylevel: this.mirror.dependency_policy,
                                           });
         this.formArray.get([1]).patchValue({mirrorsrc: this.mirror.with_sources,

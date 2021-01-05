@@ -29,6 +29,7 @@ export interface Mirror {
     mirrorkeyurl: string;
     mirrorkeyids: string;
     mirrorkeyserver: string;
+    external_repo: boolean;
     dependency_policy: string;
 }
 

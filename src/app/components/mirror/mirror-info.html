@@ -50,6 +50,17 @@
                 <td><strong>Base Mirror</strong></td>
                 <td>{{mirror.basemirror_name}}</td>
             </tr>
+            <tr *ngIf="!mirror.is_basemirror">
+                <td><strong>Dependency policy</strong></td>
+                <td>{{mirror.dependency_policy}}</td>
+            </tr>
+            <tr>
+                <td><strong>External repo</strong></td>
+                <td>
+                    <mat-icon *ngIf="mirror.external_repo">done</mat-icon>
+                    <mat-icon *ngIf="!mirror.external_repo">remove</mat-icon>
+                </td>
+            </tr>
         </table>
     </div>
     <div style="flex-grow: 1; text-align: right;">
