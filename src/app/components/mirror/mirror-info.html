@@ -1,4 +1,4 @@
-<h1><mat-icon>folder_special</mat-icon>Mirror <span class="title">{{mirror.name}}/{{mirror.version}}</span>
+<h1><mat-icon>folder_special</mat-icon>Mirror <a class="title" [routerLink]="['/mirrors']">{{mirror.name}}</a><span class="title">/{{mirror.version}}</span>
     <mat-icon *ngIf="mirror.is_basemirror" svgIcon="debian" [ngStyle]="{'margin-right': '0px'}"></mat-icon>
 </h1>
 <div *ngIf="mirror.description" [ngStyle]="{ 'padding': '10px' }">{{ mirror.description }}</div>
@@ -15,7 +15,7 @@
         <table>
             <tr>
                 <td><strong>URL</strong></td>
-                <td colspan="3"><span ngClass="link">{{mirror.url}}</span></td>
+                <td colspan="3"><a class="link" href="{{mirror.url}}" target="_blank">{{mirror.url}}</a></td>
 
             </tr>
             <tr>
@@ -24,11 +24,11 @@
             </tr>
             <tr>
                 <td *ngIf="mirror.mirrorkeyserver"><strong>Key server</strong></td>
-                <td ngClass="link" *ngIf="mirror.mirrorkeyserver">{{mirror.mirrorkeyserver}}</td>
+                <td><a class="link" href="{{mirror.mirrorkeyserver}}" target="_blank" *ngIf="mirror.mirrorkeyserver">{{mirror.mirrorkeyserver}}</a></td>
             </tr>
             <tr>
                 <td *ngIf="mirror.mirrorkeyurl"><strong>Key URL</strong></td>
-                <td ngClass="link">{{mirror.mirrorkeyurl}}</td>
+                <td><a class="link" href="{{mirror.mirrorkeyurl}}" target="_blank">{{mirror.mirrorkeyurl}}</a></td>
             </tr>
             <tr>
                 <td><strong>Components</strong></td>
