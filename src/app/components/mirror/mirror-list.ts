@@ -451,6 +451,8 @@ export class MirrorCopyDialogComponent {
             }
         });
         this.formArray.get([0]).patchValue({mirrorurl: this.mirror.url,
+                                            mirrorname: this.mirror.name,
+                                            mirrorversion: this.mirror.version + '-copy',
                                             mirrortype: this.mirror.is_basemirror ? '1' : '2',
                                             basemirror: this.mirror.basemirror_name,
                                             dependencylevel: this.mirror.dependency_policy,
