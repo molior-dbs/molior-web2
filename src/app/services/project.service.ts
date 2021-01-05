@@ -64,7 +64,7 @@ export class ProjectService extends TableService<Project> {
     }
 
     get(name: string) {
-        return this.http.get<Project>(`${apiURL()}/api2/project/${name}`);
+        return this.http.get<Project>(`${apiURL()}/api2/projectbase/${name}`);
     }
 
     create(name: string, description: string) {
@@ -74,24 +74,23 @@ export class ProjectService extends TableService<Project> {
 
     edit(id: number, description: string) {
         console.log('editing project:', id);
-        return this.http.put(`${apiURL()}/api/project/${id}`, {description});
+        return this.http.put(`${apiURL()}/api/projectbase/${id}`, {description});
     }
 
     delete(name: string) {
-        console.log('deleting project:', name);
-        return this.http.delete(`${apiURL()}/api2/project/${name}`);
+        return this.http.delete(`${apiURL()}/api2/projectbase/${name}`);
     }
 
-    addPermission(name: string, userid: number, role: string) {
-        return this.http.post(`${apiURL()}/api2/project/${name}/permissions/${userid}`, {role});
+    addPermission(name: string, username: string, role: string) {
+        return this.http.post(`${apiURL()}/api2/projectbase/${name}/permissions`, {username, role});
     }
 
-    editPermission(name: string, userid: number, role: string) {
-        return this.http.put(`${apiURL()}/api2/project/${name}/permissions/${userid}`, {role});
+    editPermission(name: string, username: string, role: string) {
+        return this.http.put(`${apiURL()}/api2/projectbase/${name}/permissions`, {username, role});
     }
 
-    deletePermission(name: string, userid: number) {
-        return this.http.delete(`${apiURL()}/api2/project/${name}/permissions/${userid}`);
+    deletePermission(name: string, username: string) {
+        return this.http.request('delete', `${apiURL()}/api2/projectbase/${name}/permissions`, {body: {username}});
     }
 }
 

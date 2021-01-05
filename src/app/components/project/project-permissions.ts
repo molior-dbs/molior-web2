@@ -42,7 +42,7 @@ export class ProjectPermissionsComponent extends TableComponent {
         this.route.parent.paramMap.subscribe((params: ParamMap) => {
             const name = params.get('name');
             this.projectService.get(name).subscribe((res: Project) => this.project = res);
-            this.dataSource.load(`/api2/project/${name}/permissions`, this.params);
+            this.dataSource.load(`/api2/projectbase/${name}/permissions`, this.params);
         });
     }
 
@@ -130,11 +130,11 @@ export class ProjectPermissionDialogComponent {
         this.userService.get(this.form.value.username).subscribe(
             r => {
                 if (!this.permission) {
-                    this.projectService.addPermission(this.project.name, r.id, this.form.value.role).subscribe(
+                    this.projectService.addPermission(this.project.name, r.username, this.form.value.role).subscribe(
                         r2 => this.dialog.close(),
                         err2 => this.alertService.error(err2.error));
                 } else {
-                    this.projectService.editPermission(this.project.name, r.id, this.form.value.role).subscribe(
+                    this.projectService.editPermission(this.project.name, r.username, this.form.value.role).subscribe(
                         r2 => this.dialog.close(),
                         err2 => this.alertService.error(err2.error));
                 }
@@ -161,7 +161,7 @@ export class ProjectPermissionDeleteDialogComponent {
     }
 
     save(): void {
-        this.projectService.deletePermission(this.project.name, this.permission.id).subscribe(
+        this.projectService.deletePermission(this.project.name, this.permission.username).subscribe(
            r => this.dialog.close(),
            err => this.alertService.error(err.error)
         );

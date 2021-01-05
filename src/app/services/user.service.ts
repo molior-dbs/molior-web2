@@ -66,6 +66,6 @@ export class UserService extends TableService<User> {
     }
 
     getProjectRoleCandidates(projectname: string) {
-        return this.http.get<User[]>(`${apiURL()}/api2/project/${projectname}/permissions`, {params: {candidates: 'true'}});
+        return this.http.get<User[]>(`${apiURL()}/api2/projectbase/${projectname}/permissions`, {params: {candidates: 'true'}});
     }
 }

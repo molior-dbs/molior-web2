@@ -44,7 +44,7 @@ export class ProjectInfoComponent extends TableComponent {
         this.route.parent.paramMap.subscribe((params: ParamMap) => {
             const name = params.get('name');
             this.projectService.get(name).subscribe((res: Project) => this.project = res);
-            this.dataSource.load(`/api2/project/${name}/versions`, this.params);
+            this.dataSource.load(`/api2/projectbase/${name}/versions`, this.params);
         });
     }
 
