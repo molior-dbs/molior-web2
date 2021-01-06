@@ -127,7 +127,7 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     create(project: string, version: string, description: string, dependencylevel: string, basemirror: string, architectures: string[],
            cibuilds: boolean) {
         console.log(`creating projectversion: ${project}/${version} on ${basemirror} for ${architectures}`);
-        return this.http.post<ProjectVersion>(`${apiURL()}/api2/project/${project}/versions`,
+        return this.http.post<ProjectVersion>(`${apiURL()}/api2/projectbase/${project}/versions`,
             { name: version, description, dependency_policy: dependencylevel, basemirror, architectures, cibuilds });
     }
 
