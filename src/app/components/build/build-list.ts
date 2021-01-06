@@ -19,20 +19,26 @@ export class BuildListComponent {
     templateUrl: 'build-delete-form.html',
 })
 export class BuildDeleteDialogComponent {
+    clicked: boolean;
     build: Build;
     constructor(public dialog: MatDialogRef<BuildDeleteDialogComponent>,
                 protected buildService: BuildService,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { build: Build }
     ) {
+        this.clicked = false;
         this.build = data.build;
     }
 
     save(): void {
+        this.clicked = true;
         this.buildService.delete(this.build.id).subscribe( r => {
             this.dialog.close();
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }
 
@@ -41,19 +47,25 @@ export class BuildDeleteDialogComponent {
     templateUrl: 'build-rebuild-form.html',
 })
 export class BuildRebuildDialogComponent {
+    clicked: boolean;
     build: Build;
     constructor(public dialog: MatDialogRef<BuildRebuildDialogComponent>,
                 protected buildService: BuildService,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { build: Build }
     ) {
+        this.clicked = false;
         this.build = data.build;
     }
 
     save(): void {
+        this.clicked = true;
         this.buildService.rebuild(this.build.id).subscribe( r => {
             this.dialog.close();
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }

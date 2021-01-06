@@ -113,6 +113,7 @@ export class MirrorListComponent extends TableComponent {
   styleUrls: ['./mirror-form.scss']
 })
 export class MirrorDialogComponent {
+    clicked: boolean;
     mirror: Mirror;
     basemirrors: { [id: string]: string[]; };
     architectures = [ 'amd64', 'i386', 'arm64', 'armhf' ];
@@ -156,6 +157,7 @@ export class MirrorDialogComponent {
                 private fb: FormBuilder,
                 protected alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { mirror: Mirror }) {
+        this.clicked = false;
         if (data.mirror) {
             this.mirror = data.mirror;
         }
@@ -335,6 +337,7 @@ export class MirrorDialogComponent {
     // }
 
     save(): void {
+        this.clicked = true;
         this.updateArchs();
         const data = this.formArray.value;
         // FIXME: only send neede key info
@@ -357,7 +360,10 @@ export class MirrorDialogComponent {
                                       data[2].mirrorkeyserver
                                      ).subscribe(
                                         msg => this.dialog.close(),
-                                        err => this.alertService.error(err.error)
+                                        err => {
+                                            this.alertService.error(err.error);
+                                            this.clicked = false;
+                                        }
                                      );
         } else {
             this.mirrorService.edit(this.mirror.name,
@@ -378,7 +384,10 @@ export class MirrorDialogComponent {
                                     data[2].mirrorkeyserver
                                    ).subscribe(
                                       msg => this.dialog.close(),
-                                      err => this.alertService.error(err.error)
+                                      err => {
+                                          this.alertService.error(err.error);
+                                          this.clicked = false;
+                                      }
                                    );
         }
     }
@@ -390,6 +399,7 @@ export class MirrorDialogComponent {
   styleUrls: ['./mirror-copy-form.scss']
 })
 export class MirrorCopyDialogComponent {
+    clicked: boolean;
     mirror: Mirror;
     basemirrors: { [id: string]: string[]; };
     architectures = [ 'amd64', 'i386', 'arm64', 'armhf' ];
@@ -432,6 +442,7 @@ export class MirrorCopyDialogComponent {
                 private fb: FormBuilder,
                 protected alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { mirror: Mirror }) {
+        this.clicked = false;
         if (data.mirror) {
             this.mirror = data.mirror;
         }
@@ -607,6 +618,7 @@ export class MirrorCopyDialogComponent {
     // }
 
     save(): void {
+        this.clicked = true;
         this.updateArchs();
         const data = this.formArray.value;
         // FIXME: only send neede key info
@@ -628,7 +640,10 @@ export class MirrorCopyDialogComponent {
                                   data[2].mirrorkeyserver
                                  ).subscribe(
                                     msg => this.dialog.close(),
-                                    err => this.alertService.error(err.error)
+                                    err => {
+                                        this.alertService.error(err.error);
+                                        this.clicked = false;
+                                    }
                                  );
     }
 }
@@ -638,19 +653,27 @@ export class MirrorCopyDialogComponent {
     templateUrl: 'mirror-delete-form.html',
 })
 export class MirrorDeleteDialogComponent {
+    clicked: boolean;
     mirror: Mirror;
     constructor(public dialog: MatDialogRef<MirrorDeleteDialogComponent>,
                 protected mirrorService: MirrorService,
                 protected router: Router,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { mirror: Mirror }
-    ) { this.mirror = data.mirror; }
+    ) {
+        this.mirror = data.mirror;
+        this.clicked = false;
+    }
 
     save(): void {
+        this.clicked = true;
         this.mirrorService.delete(this.mirror).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/mirrors']);
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }

@@ -122,6 +122,7 @@ export class ProjectversionRepoListComponent extends TableComponent {
     templateUrl: 'repo-form.html',
 })
 export class SourcerepoDialogComponent implements OnInit {
+    clicked: boolean;
     public projectversion: ProjectVersion;
     public repo: any;
     private giturls = new BehaviorSubject<string[]>([]);
@@ -144,6 +145,7 @@ export class SourcerepoDialogComponent implements OnInit {
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repo: any }
     ) {
+        this.clicked = false;
         this.projectversion = data.projectversion;
         this.repo = data.repo;
     }
@@ -210,14 +212,23 @@ export class SourcerepoDialogComponent implements OnInit {
     }
 
     save(): void {
+        this.clicked = true;
         this.updateArchs();
         if (!this.repo) {
             this.repositoryService.add(this.data.projectversion, this.form.value.url.trim(), this.form.value.architectures).subscribe(
-                r => this.dialog.close(), err => this.alertService.error(err.error));
+                r => this.dialog.close(),
+                err => {
+                    this.alertService.error(err.error);
+                    this.clicked = false;
+                });
         } else {
             this.repositoryService.edit(this.data.projectversion, this.repo.id,
                                         this.form.value.architectures).subscribe(
-                r => this.dialog.close(), err => this.alertService.error(err.error));
+                r => this.dialog.close(),
+                err => {
+                    this.alertService.error(err.error);
+                    this.clicked = false;
+                });
         }
     }
 }
@@ -227,6 +238,7 @@ export class SourcerepoDialogComponent implements OnInit {
     templateUrl: 'projectversion-cibuild-form.html',
 })
 export class CIBuildDialogComponent {
+    clicked: boolean;
     public projectversion: ProjectVersion;
     public repo: Repository;
     form = this.fb.group({
@@ -240,16 +252,21 @@ export class CIBuildDialogComponent {
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repo: Repository }
     ) {
+        this.clicked = false;
         this.projectversion = data.projectversion;
         this.repo = data.repo;
     }
 
     save(): void {
+        this.clicked = true;
         const target = `${this.projectversion.project_name}/${this.projectversion.name}`;
         this.repositoryService.cibuild(target, this.repo.url, this.form.value.gitref.trim()).subscribe(r => {
             this.dialog.close();
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }
 
@@ -258,6 +275,7 @@ export class CIBuildDialogComponent {
     templateUrl: 'projectversion-repo-delete-form.html',
 })
 export class SourcerepoDeleteDialogComponent {
+    clicked: boolean;
     repo: Repository;
     projectversion: ProjectVersion;
     constructor(public dialog: MatDialogRef<SourcerepoDeleteDialogComponent>,
@@ -266,16 +284,21 @@ export class SourcerepoDeleteDialogComponent {
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repo: Repository }
     ) {
+        this.clicked = false;
         this.projectversion = data.projectversion;
         this.repo = data.repo;
     }
 
     save(): void {
+        this.clicked = true;
         this.repoService.delete(this.repo.id, this.projectversion.id).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['project/' + this.projectversion.project_name + '/' + this.projectversion.name + '/repos']);
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }
 
@@ -284,19 +307,25 @@ export class SourcerepoDeleteDialogComponent {
     templateUrl: 'projectversion-repo-reclone-form.html',
 })
 export class SourcerepoRecloneDialogComponent {
+    clicked: boolean;
     repo: Repository;
     constructor(public dialog: MatDialogRef<SourcerepoRecloneDialogComponent>,
                 protected repoService: RepositoryService,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
     ) {
+        this.clicked = false;
         this.repo = data.repo;
     }
 
     save(): void {
+        this.clicked = true;
         this.repoService.reclone(this.repo.id).subscribe( r => {
             this.dialog.close();
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }

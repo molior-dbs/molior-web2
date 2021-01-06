@@ -140,6 +140,7 @@ export class ProjectversionRepoComponent extends TableComponent {
     templateUrl: 'hook-form.html',
 })
 export class HookDialogComponent {
+    clicked: boolean;
     public hook: any;
     // private giturls = new BehaviorSubject<string[]>([]);
     // giturls$ = this.giturls.asObservable();
@@ -165,6 +166,7 @@ export class HookDialogComponent {
                 private fb: FormBuilder,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repository: Repository, hook: any }
     ) {
+        this.clicked = false;
         this.hook = data.hook;
         if (this.hook) {
             this.form.patchValue({url: this.hook.url});
@@ -177,6 +179,7 @@ export class HookDialogComponent {
     }
 
     save(): void {
+        this.clicked = true;
         if (!this.hook) {
             this.repositoryService.addHook(this.data.projectversion, this.data.repository.id,
                 this.form.value.url.trim(),
@@ -184,7 +187,11 @@ export class HookDialogComponent {
                 this.form.value.method.trim(),
                 this.form.value.hooktype.trim(),
                 this.form.value.body.trim()
-            ).subscribe(r => this.dialog.close(), err => this.alertService.error(err.error));
+            ).subscribe(r => this.dialog.close(),
+                        err => {
+                            this.alertService.error(err.error);
+                            this.clicked = false;
+                        });
         } else {
             this.repositoryService.editHook(this.data.projectversion, this.data.repository.id, this.hook.id,
                 this.form.value.url.trim(),
@@ -193,7 +200,11 @@ export class HookDialogComponent {
                 this.form.value.hooktype.trim(),
                 this.form.value.body.trim(),
                 this.form.value.enabled
-            ).subscribe(r => this.dialog.close(), err => this.alertService.error(err.error));
+            ).subscribe(r => this.dialog.close(),
+                        err => {
+                            this.alertService.error(err.error);
+                            this.clicked = false;
+                        });
         }
     }
 }
@@ -203,16 +214,23 @@ export class HookDialogComponent {
     templateUrl: 'hook-delete-form.html',
 })
 export class HookDeleteDialogComponent {
+    clicked: boolean;
     constructor(public dialog: MatDialogRef<HookDeleteDialogComponent>,
                 protected repositoryService: RepositoryService,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repository: Repository, id: number }
     ) {
+        this.clicked = false;
     }
 
     save(): void {
+        this.clicked = true;
         this.repositoryService.removeHook(this.data.projectversion, this.data.repository.id, this.data.id).subscribe(
-            r => this.dialog.close(), err => this.alertService.error(err.error)
+            r => this.dialog.close(),
+            err => {
+                this.alertService.error(err.error);
+                this.clicked = false;
+            }
         );
     }
 }

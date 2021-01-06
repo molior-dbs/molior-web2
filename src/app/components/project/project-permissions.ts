@@ -95,6 +95,7 @@ export class ProjectPermissionsComponent extends TableComponent {
     templateUrl: 'project-permission-form.html',
 })
 export class ProjectPermissionDialogComponent {
+    clicked: boolean;
     project: Project;
     permission: Permission;
     roles = [];
@@ -113,6 +114,7 @@ export class ProjectPermissionDialogComponent {
                 private fb: FormBuilder,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: {permission: Permission, project: Project}) {
+        this.clicked = false;
         this.project = data.project;
         this.permission = data.permission;
         if (this.permission) {
@@ -127,19 +129,29 @@ export class ProjectPermissionDialogComponent {
     }
 
     save(): void {
+        this.clicked = true;
         this.userService.get(this.form.value.username).subscribe(
             r => {
                 if (!this.permission) {
                     this.projectService.addPermission(this.project.name, r.username, this.form.value.role).subscribe(
                         r2 => this.dialog.close(),
-                        err2 => this.alertService.error(err2.error));
+                        err2 => {
+                            this.alertService.error(err2.error);
+                            this.clicked = false;
+                        });
                 } else {
                     this.projectService.editPermission(this.project.name, r.username, this.form.value.role).subscribe(
                         r2 => this.dialog.close(),
-                        err2 => this.alertService.error(err2.error));
+                        err2 => {
+                            this.alertService.error(err2.error);
+                            this.clicked = false;
+                        });
                 }
             },
-            err => this.alertService.error(err.error)
+            err => {
+                this.alertService.error(err.error);
+                this.clicked = false;
+            }
         );
     }
 }
@@ -149,6 +161,7 @@ export class ProjectPermissionDialogComponent {
     templateUrl: 'project-permission-delete-form.html',
 })
 export class ProjectPermissionDeleteDialogComponent {
+    clicked: boolean;
     project: Project;
     permission: Permission;
 
@@ -156,14 +169,19 @@ export class ProjectPermissionDeleteDialogComponent {
                 protected projectService: ProjectService,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: {permission: Permission, project: Project}) {
+        this.clicked = false;
         this.project = data.project;
         this.permission = data.permission;
     }
 
     save(): void {
+        this.clicked = true;
         this.projectService.deletePermission(this.project.name, this.permission.username).subscribe(
            r => this.dialog.close(),
-           err => this.alertService.error(err.error)
+           err => {
+               this.alertService.error(err.error);
+               this.clicked = false;
+           }
         );
     }
 }

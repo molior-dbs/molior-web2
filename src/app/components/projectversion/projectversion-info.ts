@@ -157,6 +157,7 @@ export class ProjectversionInfoComponent extends TableComponent {
     templateUrl: 'projectversion-dependency-form.html',
 })
 export class DependencyDialogComponent {
+    clicked: boolean;
     projectversion: ProjectVersion;
     dependencies: ProjectVersion[];
     form = this.fb.group({
@@ -170,6 +171,7 @@ export class DependencyDialogComponent {
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
     ) {
+        this.clicked = false;
         this.projectversion = data.projectversion;
         projectversionService.getDependencies(data.projectversion).subscribe(res => {
             this.dependencies = [];
@@ -184,9 +186,16 @@ export class DependencyDialogComponent {
     }
 
     save(): void {
+        this.clicked = true;
         this.projectversionService.addDependency(
             this.projectversion,
             this.form.value.dependency,
-            this.form.value.use_cibuilds).subscribe(r => this.dialog.close(), err => this.alertService.error(err.error));
+            this.form.value.use_cibuilds).subscribe(
+                r => this.dialog.close(),
+                err => {
+                    this.alertService.error(err.error);
+                    this.clicked = false;
+                }
+            );
     }
 }

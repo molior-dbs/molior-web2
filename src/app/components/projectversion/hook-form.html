@@ -40,6 +40,6 @@
 </div>
 <div mat-dialog-actions>
     <app-alert></app-alert>
-    <button mat-button (click)="dialog.close()">Cancel</button>
-    <button mat-button (click)="save()" [disabled]="!form.valid">Ok</button>
+    <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
 </div>

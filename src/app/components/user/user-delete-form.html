@@ -5,7 +5,7 @@
 </div>
 <div mat-dialog-actions>
     <app-alert></app-alert>
-    <button mat-button (click)="dialog.close()">Cancel</button>
-    <button mat-button (click)="save()">Ok</button>
+    <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="clicked">Ok</button>
 </div>
 

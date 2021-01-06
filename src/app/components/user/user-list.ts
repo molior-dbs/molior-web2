@@ -86,6 +86,7 @@ export class UserListComponent extends TableComponent {
     styleUrls: ['user-form.scss'],
 })
 export class UserDialogComponent {
+    clicked: boolean;
     user: User;
     form = this.fb.group({
         name: new FormControl('', [Validators.required,
@@ -103,6 +104,7 @@ export class UserDialogComponent {
                 protected alertService: AlertService,
                 private fb: FormBuilder,
                 @Inject(MAT_DIALOG_DATA) private data: { user: User }) {
+                    this.clicked = false;
                     if (data.user) {
                         this.user = data.user;
                         this.form.patchValue({name: this.user.username, email: this.user.email, isAdmin: this.user.is_admin});
@@ -111,13 +113,17 @@ export class UserDialogComponent {
                 }
 
     save(): void {
+        this.clicked = true;
         if (!this.user) {
             this.userService.create(this.form.value.name,
                                     this.form.value.email,
                                     this.form.value.isAdmin,
                                     this.form.value.password).subscribe(
                                         msg => this.dialog.close(),
-                                        err => this.alertService.error(err.error)
+                                        err => {
+                                            this.alertService.error(err.error);
+                                            this.clicked = false;
+                                        }
                                     );
         } else {
             this.userService.edit(this.user.id,
@@ -125,7 +131,10 @@ export class UserDialogComponent {
                                   this.form.value.isAdmin,
                                   this.form.value.password).subscribe(
                                         msg => this.dialog.close(),
-                                        err => this.alertService.error(err.error)
+                                        err => {
+                                            this.alertService.error(err.error);
+                                            this.clicked = false;
+                                        }
                                   );
         }
     }
@@ -147,22 +156,27 @@ export class UserDialogComponent {
     styleUrls: ['user-delete-form.scss'],
 })
 export class UserDeleteDialogComponent {
+    clicked: boolean;
     user: User;
     constructor(public dialog: MatDialogRef<UserDeleteDialogComponent>,
                 protected userService: UserService,
                 protected alertService: AlertService,
                 protected router: Router,
                 @Inject(MAT_DIALOG_DATA) private data: { user: User }) {
+                    this.clicked = false;
                     this.user = data.user;
                 }
 
     save(): void {
+        this.clicked = true;
         this.userService.delete(this.user.id).subscribe(
         r => {
             this.dialog.close();
             this.router.navigate(['/users']);
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }
-

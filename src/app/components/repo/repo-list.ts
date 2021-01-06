@@ -103,6 +103,7 @@ export class RepositoryListComponent extends TableComponent {
   styleUrls: ['./repo-form.scss']
 })
 export class RepositoryDialogComponent {
+    clicked: boolean;
     public repo: Repository;
     form = this.fb.group({
         url: new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.gitValidator]),
@@ -113,15 +114,21 @@ export class RepositoryDialogComponent {
                 private fb: FormBuilder,
                 protected alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }) {
+        this.clicked = false;
         this.repo = data.repo;
         this.form.patchValue({
             url: this.repo.url
         });
     }
     save(): void {
+        this.clicked = true;
         this.repoService.editUrl(this.repo.id,
                                  this.form.value.url.trim()).subscribe(
-            r => this.dialog.close(), err => this.alertService.error(err.error));
+            r => this.dialog.close(),
+            err => {
+                this.alertService.error(err.error);
+                this.clicked = false;
+            });
     }
 }
 
@@ -130,6 +137,7 @@ export class RepositoryDialogComponent {
     templateUrl: 'repo-merge-form.html',
 })
 export class RepoMergeDialogComponent implements OnInit {
+    clicked: boolean;
     public repo: Repository;
     form = this.fb.group({
         original_url: new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.gitValidator])
@@ -142,6 +150,7 @@ export class RepoMergeDialogComponent implements OnInit {
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
     ) {
+        this.clicked = false;
         this.repo = data.repo;
         this.repos = [];
     }
@@ -159,6 +168,7 @@ export class RepoMergeDialogComponent implements OnInit {
     }
 
     save(): void {
+        this.clicked = true;
         let originalID = -1;
         for (const rep of this.repos) {
             if (rep.url === this.form.value.original_url) {
@@ -168,7 +178,10 @@ export class RepoMergeDialogComponent implements OnInit {
         }
         this.repositoryService.mergeDuplicate(originalID, this.repo.id).subscribe(
             r => this.dialog.close(),
-            err => this.alertService.error(err.error));
+            err => {
+                this.alertService.error(err.error);
+                this.clicked = false;
+            });
     }
 
     excludeDuplicate(originalURL: string): boolean {
@@ -181,20 +194,28 @@ export class RepoMergeDialogComponent implements OnInit {
     templateUrl: 'repo-delete-form.html',
 })
 export class RepoDeleteDialogComponent {
+    clicked: boolean;
     repo: Repository;
     constructor(public dialog: MatDialogRef<RepoDeleteDialogComponent>,
                 protected repoService: RepositoryService,
                 protected router: Router,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
-    ) { this.repo = data.repo; }
+    ) {
+        this.repo = data.repo;
+        this.clicked = false;
+    }
 
     save(): void {
+        this.clicked = true;
         this.repoService.delete_repo(this.repo.id).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/repos']);
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }
 
@@ -203,6 +224,7 @@ export class RepoDeleteDialogComponent {
     templateUrl: 'repo-cibuild-form.html',
 })
 export class RepoCIBuildDialogComponent {
+    clicked: boolean;
     private projectversions = new BehaviorSubject<string[]>([]);
     projectversions$ = this.projectversions.asObservable();
     public repo: Repository;
@@ -221,6 +243,7 @@ export class RepoCIBuildDialogComponent {
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
     ) {
+        this.clicked = false;
         this.repo = data.repo;
         this.form.controls.pv.valueChanges.subscribe(
             pv => {
@@ -239,9 +262,14 @@ export class RepoCIBuildDialogComponent {
     }
 
     save(): void {
+        this.clicked = true;
         this.repositoryService.cibuild(this.form.value.pv, this.repo.url, this.form.value.gitref.trim()).subscribe(r => {
             this.dialog.close();
         },
-            err => this.alertService.error(err.error));
+            err => {
+                this.alertService.error(err.error);
+                this.clicked = false;
+            }
+        );
     }
 }

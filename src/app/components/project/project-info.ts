@@ -145,6 +145,7 @@ export class ProjectInfoComponent extends TableComponent {
     templateUrl: '../projectversion/projectversion-form.html',
 })
 export class ProjectversionDialogComponent {
+    clicked: boolean;
     projectName: string;
     projectversion: ProjectVersion;
     basemirrors: { [id: string]: string[]; };
@@ -173,6 +174,7 @@ export class ProjectversionDialogComponent {
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectName: string, projectversion: ProjectVersion}
     ) {
+        this.clicked = false;
         this.projectName = data.projectName;
         this.projectversion = data.projectversion;
         if (this.projectversion) {
@@ -208,6 +210,7 @@ export class ProjectversionDialogComponent {
     }
 
     save(): void {
+        this.clicked = true;
         this.updateArchs();
         if (this.editMode()) {
             this.projectVersionService.edit(this.data.projectName,
@@ -219,7 +222,10 @@ export class ProjectversionDialogComponent {
                     this.dialog.close();
                     this.router.navigate(['/project', this.projectName, this.form.value.version]);
                 },
-                err => this.alertService.error(err.error));
+                err => {
+                    this.alertService.error(err.error);
+                    this.clicked = false;
+                });
         } else {
             this.projectVersionService.create(this.data.projectName,
                                               this.form.value.version,
@@ -232,7 +238,10 @@ export class ProjectversionDialogComponent {
                     this.dialog.close();
                     this.router.navigate(['/project', this.projectName, this.form.value.version]);
                 },
-                err => this.alertService.error(err.error));
+                err => {
+                    this.alertService.error(err.error);
+                    this.clicked = false;
+                });
         }
     }
 
@@ -263,6 +272,7 @@ export class ProjectversionDialogComponent {
     templateUrl: '../projectversion/projectversion-delete-form.html',
 })
 export class ProjectversionDeleteDialogComponent {
+    clicked: boolean;
     projectversion: ProjectVersion;
     form = this.fb.group({
         forceremoval: new FormControl(false)
@@ -273,14 +283,21 @@ export class ProjectversionDeleteDialogComponent {
                 protected router: Router,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) { this.projectversion = data.projectversion; }
+    ) {
+        this.clicked = false;
+        this.projectversion = data.projectversion;
+    }
 
     save(): void {
+        this.clicked = true;
         this.projectversionService.delete(this.projectversion, this.form.value.forceremoval).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name]);
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }
 
@@ -289,6 +306,7 @@ export class ProjectversionDeleteDialogComponent {
     templateUrl: '../projectversion/projectversion-clone-form.html',
 })
 export class ProjectversionCloneDialogComponent {
+    clicked: boolean;
     projectversion: ProjectVersion;
     form = this.fb.group({
         name: new FormControl('', [Validators.required]),  // FIXME: name validator
@@ -300,14 +318,21 @@ export class ProjectversionCloneDialogComponent {
                 protected router: Router,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) { this.projectversion = data.projectversion; }
+    ) {
+        this.projectversion = data.projectversion;
+        this.clicked = false;
+    }
 
     save(): void {
+        this.clicked = true;
         this.projectversionService.clone(this.projectversion, this.form.value.name).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }
 
@@ -316,15 +341,24 @@ export class ProjectversionCloneDialogComponent {
     templateUrl: '../projectversion/projectversion-lock-form.html',
 })
 export class ProjectversionLockDialogComponent {
+    clicked: boolean;
     projectversion: ProjectVersion;
     constructor(public dialog: MatDialogRef<ProjectversionLockDialogComponent>,
                 protected projectversionService: ProjectVersionService,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) { this.projectversion = data.projectversion; }
+    ) {
+        this.projectversion = data.projectversion;
+        this.clicked = false;
+    }
 
     save(): void {
-        this.projectversionService.lock(this.projectversion).subscribe(r => this.dialog.close(), err => this.alertService.error(err.error));
+        this.clicked = true;
+        this.projectversionService.lock(this.projectversion).subscribe(r => this.dialog.close(),
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }
 
@@ -334,6 +368,7 @@ export class ProjectversionLockDialogComponent {
     templateUrl: '../projectversion/projectversion-overlay-form.html',
 })
 export class ProjectversionOverlayDialogComponent {
+    clicked: boolean;
     projectversion: ProjectVersion;
     form = this.fb.group({
         name: new FormControl('', [Validators.required]),  // FIXME: name validator
@@ -345,14 +380,21 @@ export class ProjectversionOverlayDialogComponent {
                 protected router: Router,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) { this.projectversion = data.projectversion; }
+    ) {
+        this.projectversion = data.projectversion;
+        this.clicked = false;
+    }
 
     save(): void {
+        this.clicked = true;
         this.projectversionService.overlay(this.projectversion, this.form.value.name).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }
 
@@ -362,6 +404,7 @@ export class ProjectversionOverlayDialogComponent {
     templateUrl: '../projectversion/projectversion-snapshot-form.html',
 })
 export class ProjectversionSnapshotDialogComponent {
+    clicked: boolean;
     projectversion: ProjectVersion;
     form = this.fb.group({
         name: new FormControl('', [Validators.required]),  // FIXME: name validator
@@ -373,13 +416,20 @@ export class ProjectversionSnapshotDialogComponent {
                 protected router: Router,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) { this.projectversion = data.projectversion; }
+    ) {
+        this.projectversion = data.projectversion;
+        this.clicked = false;
+    }
 
     save(): void {
+        this.clicked = true;
         this.projectversionService.snapshot(this.projectversion, this.form.value.name).subscribe(r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
         },
-        err => this.alertService.error(err.error));
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }

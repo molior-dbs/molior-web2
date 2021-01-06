@@ -84,6 +84,7 @@ export class ProjectListComponent extends TableComponent {
     templateUrl: 'project.form.html',
 })
 export class ProjectCreateDialogComponent {
+    clicked: boolean;
     project: Project;
     form = this.fb.group({
         name: new FormControl('', [Validators.required,
@@ -99,6 +100,7 @@ export class ProjectCreateDialogComponent {
                 protected router: Router,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { project: Project }) {
+                    this.clicked = false;
                     if (data.project) {
                         this.project = data.project;
                         this.form.patchValue({name: this.project.name, description: this.project.description});
@@ -106,19 +108,26 @@ export class ProjectCreateDialogComponent {
                 }
 
     save(): void {
+        this.clicked = true;
         if (!this.project) {
             this.projectService.create(this.form.value.name, this.form.value.description).subscribe(
                 r => {
                     this.dialog.close();
                     this.router.navigate(['/project', this.form.value.name]);
                 },
-                err => this.alertService.error(err.error));
+                err => {
+                    this.alertService.error(err.error);
+                    this.clicked = false;
+                });
         } else {
             this.projectService.edit(this.project.id, this.form.value.description).subscribe(
                 r => {
                     this.dialog.close();
                 },
-                err => this.alertService.error(err.error));
+                err => {
+                    this.alertService.error(err.error);
+                    this.clicked = false;
+                });
         }
     }
 }
@@ -128,14 +137,24 @@ export class ProjectCreateDialogComponent {
     templateUrl: 'project-delete-form.html',
 })
 export class ProjectDeleteDialogComponent {
+    clicked: boolean;
     projectName: string;
     constructor(public dialog: MatDialogRef<ProjectDeleteDialogComponent>,
                 protected projectService: ProjectService,
                 protected router: Router,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectName: string }
-    ) { this.projectName = data.projectName; }
+    ) {
+        this.projectName = data.projectName;
+        this.clicked = false;
+    }
     save(): void {
-        this.projectService.delete(this.projectName).subscribe(r => this.dialog.close(), err => this.alertService.error(err.error));
+        this.clicked = true;
+        this.projectService.delete(this.projectName).subscribe(
+            r => this.dialog.close(),
+            err => {
+                this.alertService.error(err.error);
+                this.clicked = false;
+            });
     }
 }

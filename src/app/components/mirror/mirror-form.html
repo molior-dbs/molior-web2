@@ -153,10 +153,10 @@
 </div>
 <div mat-dialog-actions>
     <app-alert></app-alert>
-    <button mat-button (click)="dialog.close()">Cancel</button>
-    <button mat-button (click)="stepper.previous()" *ngIf="stepper.selectedIndex > 0">Back</button>
-    <button mat-button (click)="stepper.next()"     *ngIf="stepper.selectedIndex < formArray.length - 1">Next</button>
-    <button mat-button (click)="save()"             *ngIf="stepper.selectedIndex == formArray.length - 1" [disabled]="!form.valid">OK</button>
+    <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+    <button mat-button (click)="stepper.previous()" *ngIf="stepper.selectedIndex > 0" [disabled]="clicked">Back</button>
+    <button mat-button (click)="stepper.next()"     *ngIf="stepper.selectedIndex < formArray.length - 1" [disabled]="clicked">Next</button>
+    <button mat-button (click)="save()"             *ngIf="stepper.selectedIndex == formArray.length - 1" [disabled]="!form.valid || clicked">OK</button>
 </div>
 
 
