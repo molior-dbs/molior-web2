@@ -145,35 +145,22 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         return null;
     }
 
-    startTime(build, tz = false) {
+    startTime(build) {
         if (build.startstamp !== '') {
             const date = new Date(build.startstamp);
-            if (tz) {
-                return date.toString();
-            }
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
             const hrs = String(date.getHours()).padStart(2, '0');
             const mins = String(date.getMinutes()).padStart(2, '0');
             const secs = String(date.getSeconds()).padStart(2, '0');
-            return year + '-' + month + '-' + day + ' ' + hrs + ':' + mins + ':' + secs;
-        }
-        return null;
-    }
-
-    endTime(build, tz = false) {
-        if (build.endstamp !== '') {
-            const date = new Date(build.endstamp);
-            if (tz) {
-                return date.toString();
+            const dateToday = new Date();
+            const yToday = dateToday.getFullYear();
+            const mToday = String(dateToday.getMonth() + 1).padStart(2, '0');
+            const dToday = String(dateToday.getDate()).padStart(2, '0');
+            if (year === yToday && month === mToday && day === dToday) {
+                return hrs + ':' + mins + ':' + secs;
             }
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            const hrs = String(date.getHours()).padStart(2, '0');
-            const mins = String(date.getMinutes()).padStart(2, '0');
-            const secs = String(date.getSeconds()).padStart(2, '0');
             return year + '-' + month + '-' + day + ' ' + hrs + ':' + mins + ':' + secs;
         }
         return null;
