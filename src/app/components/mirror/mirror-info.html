@@ -36,7 +36,7 @@
             </tr>
             <tr>
                 <td><strong *ngIf="mirror.mirrorkeyids">Key IDs</strong></td>
-                <td><span *ngIf="mirror.mirrorkeyids">{{mirror.mirrorkeyids}}</span></td>
+                <td><span *ngIf="mirror.mirrorkeyids">{{mirror.mirrorkeyids.split(',').join(' ')}}</span></td>
             </tr>
             <tr>
                 <td><strong>Architectures</strong></td>

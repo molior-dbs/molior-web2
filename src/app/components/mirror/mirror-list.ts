@@ -197,7 +197,7 @@ export class MirrorDialogComponent {
                                               });
             this.formArray.get([2]).patchValue({
                                                 mirrorkeyurl: this.mirror.mirrorkeyurl,
-                                                mirrorkeyids: this.mirror.mirrorkeyids,
+                                                mirrorkeyids: this.mirror.mirrorkeyids.split(',').join(' '),
                                                 mirrorkeyserver: this.mirror.mirrorkeyserver
                                               });
             if (this.mirror.mirrorkeyurl !== '') {
@@ -481,7 +481,7 @@ export class MirrorCopyDialogComponent {
                                           });
         this.formArray.get([2]).patchValue({
                                             mirrorkeyurl: this.mirror.mirrorkeyurl,
-                                            mirrorkeyids: this.mirror.mirrorkeyids,
+                                            mirrorkeyids: this.mirror.mirrorkeyids.split(',').join(' '),
                                             mirrorkeyserver: this.mirror.mirrorkeyserver
                                           });
         if (this.mirror.mirrorkeyurl !== '') {
