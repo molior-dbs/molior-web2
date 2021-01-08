@@ -30,7 +30,27 @@ Molior performs the following tasks:
         </md-button>
     </li>
 </ul>
-
-<h1>SSH Public Key</h1>
 <br>
-<div class="sshkey">{{status.sshkey}}</div>
+
+<h1>Dpcomentation</h1>
+<ul>
+    <li><a class="link" href="/api/doc" target="_blank" rel="noreferrer noopener">API Documentation</a></li>
+</ul>
+<br>
+
+<div style="display: flex;">
+    <div style="padding-right: 50px;">
+        <h1>APT Repo Public Key</h1>
+        <br>
+        <a href="{{status.gpgurl}}" class="link">{{status.gpgurl}}</a>
+        <br>
+        <br>
+        <div class="key" [innerHTML]="repoasc">{{repoasc}}</div>
+    </div>
+
+    <div>
+        <h1>SSH Public Key</h1>
+        <br>
+        <div class="key">{{status.sshkey}}</div>
+        <br>
+    </div>
