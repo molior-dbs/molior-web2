@@ -195,7 +195,6 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         this.http.get<Repository>(`${apiURL()}/api2/repository/${repoId}`).subscribe(
               res => {
                 const repo = res;
-                console.log(repo);
                 const dialogRef = this.dialog.open(TriggerBuildDialogComponent, {data: {
                     projectversion: this.projectversion, repoId, giturl: repo.url}, disableClose: true, width: '900px'});
                 dialogRef.afterClosed().subscribe(result => this.loadData());

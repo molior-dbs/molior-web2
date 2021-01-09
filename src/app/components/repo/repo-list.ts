@@ -231,7 +231,8 @@ export class TriggerBuildDialogComponent {
     public giturl: string;
     form = this.fb.group({
         gitref: new FormControl('', [Validators.required]),
-        pvs: new FormControl([])  // FIXME: validate values are in array
+        pvs: new FormControl([]),  // FIXME: validate values are in array
+        forceCI: new FormControl(false)
     });
 
     constructor(public dialog: MatDialogRef<TriggerBuildDialogComponent>,
@@ -259,7 +260,8 @@ export class TriggerBuildDialogComponent {
 
     save(): void {
         this.clicked = true;
-        this.repositoryService.trigger(this.form.value.pvs, this.giturl, this.form.value.gitref.trim()).subscribe(r => {
+        this.repositoryService.trigger(this.giturl, this.form.value.gitref.trim(), this.form.value.pvs,
+                                       this.form.value.forceCI).subscribe(r => {
             this.dialog.close();
         },
             err => {
