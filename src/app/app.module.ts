@@ -40,8 +40,9 @@ import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDelet
 import {ProjectPermissionsComponent, ProjectPermissionDialogComponent,
         ProjectPermissionDeleteDialogComponent} from './components/project/project-permissions';
 import {ProjectversionInfoComponent, DependencyDialogComponent} from './components/projectversion/projectversion-info';
-import {ProjectversionRepoListComponent, SourcerepoDialogComponent, SourcerepoDeleteDialogComponent, SourcerepoRecloneDialogComponent,
-        CIBuildDialogComponent} from './components/projectversion/projectversion-repo-list';
+import {ProjectversionRepoListComponent, SourcerepoDialogComponent, SourcerepoDeleteDialogComponent,
+       } from './components/projectversion/projectversion-repo-list';
+import {TriggerBuildDialogComponent, SourcerepoRecloneDialogComponent} from './components/repo/repo-list';
 import {ProjectversionRepoComponent, HookDialogComponent,
         HookDeleteDialogComponent} from './components/projectversion/projectversion-repo-info';
 import {ProjectversionBuildListComponent} from './components/projectversion/projectversion-build-list';
@@ -61,7 +62,7 @@ import {MirrorInfoComponent} from './components/mirror/mirror-info';
 import {MirrorService} from './services/mirror.service';
 
 import {RepositoryListComponent, RepositoryDialogComponent,
-        RepoMergeDialogComponent, RepoDeleteDialogComponent, RepoCIBuildDialogComponent} from './components/repo/repo-list';
+        RepoMergeDialogComponent, RepoDeleteDialogComponent} from './components/repo/repo-list';
 import {RepositoryInfoComponent} from './components/repo/repo-info';
 
 import {NodeListComponent} from './components/node/node-list';
@@ -100,7 +101,6 @@ import {WebsocketService, MoliorService} from './services/websocket';
         RepositoryDialogComponent,
         RepoMergeDialogComponent,
         RepoDeleteDialogComponent,
-        RepoCIBuildDialogComponent,
 
         NodeListComponent,
         NodeInfoComponent,
@@ -137,7 +137,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         SourcerepoDialogComponent,
         SourcerepoDeleteDialogComponent,
         SourcerepoRecloneDialogComponent,
-        CIBuildDialogComponent,
+        TriggerBuildDialogComponent,
         HookDialogComponent,
         HookDeleteDialogComponent,
     ],
@@ -196,11 +196,10 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       RepositoryDialogComponent,
                       RepoMergeDialogComponent,
                       RepoDeleteDialogComponent,
-                      RepoCIBuildDialogComponent,
                       SourcerepoDialogComponent,
                       SourcerepoDeleteDialogComponent,
                       SourcerepoRecloneDialogComponent,
-                      CIBuildDialogComponent,
+                      TriggerBuildDialogComponent,
                       HookDialogComponent,
                       HookDeleteDialogComponent,
                       UserDialogComponent,

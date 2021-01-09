@@ -11,7 +11,6 @@ import {MoliorService, UpdateEvent} from '../../services/websocket';
 import {AlertService} from '../../services/alert.service';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {ProjectVersion, ProjectVersionService} from '../../services/project.service';
-import {SourcerepoRecloneDialogComponent} from '../projectversion/projectversion-repo-list';
 
 @Component({
   selector: 'app-repos',
@@ -85,8 +84,8 @@ export class RepositoryListComponent extends TableComponent {
         this.repoService.build(id).subscribe();
     }
 
-    cibuild(repo: Repository) {
-        const dialogRef = this.dialog.open(RepoCIBuildDialogComponent, {data: {repo}, disableClose: true, width: '900px'});
+    trigger(repo: Repository) {
+        const dialogRef = this.dialog.open(TriggerBuildDialogComponent, {data: {repo}, disableClose: true, width: '900px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
@@ -133,7 +132,7 @@ export class RepositoryDialogComponent {
 }
 
 @Component({
-    selector: 'app-repo-dialog',
+    selector: 'app-repo-merge-dialog',
     templateUrl: 'repo-merge-form.html',
 })
 export class RepoMergeDialogComponent implements OnInit {
@@ -190,7 +189,7 @@ export class RepoMergeDialogComponent implements OnInit {
 }
 
 @Component({
-    selector: 'app-repo-dialog',
+    selector: 'app-repo-delete-dialog',
     templateUrl: 'repo-delete-form.html',
 })
 export class RepoDeleteDialogComponent {
@@ -220,22 +219,20 @@ export class RepoDeleteDialogComponent {
 }
 
 @Component({
-    selector: 'app-repo-dialog',
-    templateUrl: 'repo-cibuild-form.html',
+    selector: 'app-repo-triggerbuild-dialog',
+    templateUrl: 'repo-triggerbuild-form.html',
 })
-export class RepoCIBuildDialogComponent {
+export class TriggerBuildDialogComponent {
     clicked: boolean;
     private projectversions = new BehaviorSubject<string[]>([]);
     projectversions$ = this.projectversions.asObservable();
     public repo: Repository;
     form = this.fb.group({
         gitref: new FormControl('', [Validators.required]),
-        pv: new FormControl('', [Validators.required,
-                                 Validators.minLength(2)
-                                 ])
+        pv: new FormControl('', [Validators.minLength(2) ])  // FIXME: validate valud is in array
     });
 
-    constructor(public dialog: MatDialogRef<RepoCIBuildDialogComponent>,
+    constructor(public dialog: MatDialogRef<TriggerBuildDialogComponent>,
                 private fb: FormBuilder,
                 protected repositoryService: RepositoryService,
                 protected projectversionService: ProjectVersionService,
@@ -245,25 +242,21 @@ export class RepoCIBuildDialogComponent {
     ) {
         this.clicked = false;
         this.repo = data.repo;
-        this.form.controls.pv.valueChanges.subscribe(
-            pv => {
-                    this.repositoryService.getRepoDependents(this.repo.id).subscribe( r => {
-                        const projectversions = [];
-                        if (r.total_result_count > 0) {
-                            for (const res of r.results) {
-                                projectversions.push(res.project_name + '/' + res.name);
-                            }
-                            this.projectversions.next(projectversions);
-                        }
-                    }
-                );
+        this.repositoryService.getRepoDependents(this.repo.id, true).subscribe( r => {
+            const projectversions = [];
+            if (r.total_result_count > 0) {
+                for (const res of r.results) {
+                    projectversions.push(res.project_name + '/' + res.name);
+                }
+                this.projectversions.next(projectversions);
             }
-        );
+        }
+    );
     }
 
     save(): void {
         this.clicked = true;
-        this.repositoryService.cibuild(this.form.value.pv, this.repo.url, this.form.value.gitref.trim()).subscribe(r => {
+        this.repositoryService.trigger(this.form.value.pv, this.repo.url, this.form.value.gitref.trim()).subscribe(r => {
             this.dialog.close();
         },
             err => {
@@ -271,5 +264,33 @@ export class RepoCIBuildDialogComponent {
                 this.clicked = false;
             }
         );
+    }
+}
+
+@Component({
+    selector: 'app-reclone-dialog',
+    templateUrl: 'repo-reclone-form.html',
+})
+export class SourcerepoRecloneDialogComponent {
+    clicked: boolean;
+    repo: Repository;
+    constructor(public dialog: MatDialogRef<SourcerepoRecloneDialogComponent>,
+                protected repoService: RepositoryService,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
+    ) {
+        this.clicked = false;
+        this.repo = data.repo;
+    }
+
+    save(): void {
+        this.clicked = true;
+        this.repoService.reclone(this.repo.id).subscribe( r => {
+            this.dialog.close();
+        },
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }

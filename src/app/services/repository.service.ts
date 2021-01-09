@@ -98,7 +98,8 @@ export class RepositoryService extends TableService<Repository> {
             { url, skipssl: skipssl ? 'true' : 'false', method, hooktype, body });
     }
 
-    editHook(pv: any, repoid: number, id: number, url: string, skipssl: boolean, method: string, hooktype: string, body: string, enabled: boolean) {
+    editHook(pv: any, repoid: number, id: number, url: string, skipssl: boolean, method: string,
+             hooktype: string, body: string, enabled: boolean) {
         return this.http.put(`${apiURL()}/api2/project/${pv.project_name}/${pv.name}/repository/${repoid}/hook/${id}`,
             { url, skipssl: skipssl ? 'true' : 'false' , method, hooktype, body, enabled: enabled ? 'true' : 'false' });
     }
@@ -107,7 +108,7 @@ export class RepositoryService extends TableService<Repository> {
         return this.http.delete(`${apiURL()}/api2/project/${pv.project_name}/${pv.name}/repository/${repoid}/hook/${id}`);
     }
 
-    cibuild(projectversion, repoUrl: string, gitref: string, forceCI: boolean = true) {
+    trigger(projectversion, repoUrl: string, gitref: string, forceCI: boolean = true) {
         return this.http.post(`${apiURL()}/api/build`, {repository: repoUrl, git_ref: gitref, forceCI, targets: [projectversion]});
     }
 
@@ -115,7 +116,11 @@ export class RepositoryService extends TableService<Repository> {
         return this.http.put(`${apiURL()}/api2/repository/${id}/merge`, {duplicate});
     }
 
-    getRepoDependents(id: number) {
-        return this.http.get<RepoDependents>(`/api2/repository/${id}/dependents`);
+    getRepoDependents(id: number, unlocked: boolean = false) {
+        const params: any = {};
+        if (unlocked) {
+            params.unlocked = 'true';
+        }
+        return this.http.get<RepoDependents>(`/api2/repository/${id}/dependents`, {params});
     }
 }

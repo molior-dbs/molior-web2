@@ -1,10 +1,9 @@
-<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Create CI Build</h1>
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Trigger Build</h1>
 <div mat-dialog-content>
     <form [formGroup]="form" [ngStyle]="{height: '360px'}">
-        Create a CI build for <span class="link">{{repo.url}}</span>.<br/>
-        Resulting Debian packages will be published to the unstable distrubution.
+        Trigger a build for <span class="link">{{repo.url}}</span>.<br/>
 
-        <p><strong>Git Reference</strong><app-validation-error [control]="form.get('gitref')"></app-validation-error></p>
+        <p><strong>Git Reference (tag, branch, commit)</strong><app-validation-error [control]="form.get('gitref')"></app-validation-error></p>
         <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
             <input matInput formControlName="gitref">
         </mat-form-field>
@@ -15,6 +14,3 @@
     <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
     <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
 </div>
-
-
-

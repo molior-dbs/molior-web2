@@ -7,9 +7,9 @@ import {HttpClient} from '@angular/common/http';
 
 import {ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
-import {RepoMergeDialogComponent, RepoDeleteDialogComponent, RepositoryDialogComponent, RepoCIBuildDialogComponent} from './repo-list';
+import {RepoMergeDialogComponent, RepoDeleteDialogComponent, RepositoryDialogComponent,
+        TriggerBuildDialogComponent, SourcerepoRecloneDialogComponent} from './repo-list';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {SourcerepoRecloneDialogComponent} from '../projectversion/projectversion-repo-list';
 
 @Component({
     selector: 'app-repo',
@@ -99,8 +99,8 @@ export class RepositoryInfoComponent extends TableComponent {
         this.repoService.build(this.repo.id).subscribe();
     }
 
-    cibuild() {
-        const dialog = this.dialog.open(RepoCIBuildDialogComponent, {data: {repo: this.repo}, disableClose: true, width: '900px'});
+    trigger() {
+        const dialog = this.dialog.open(TriggerBuildDialogComponent, {data: {repo: this.repo}, disableClose: true, width: '900px'});
         dialog.afterClosed().subscribe(result => this.loadData());
     }
 

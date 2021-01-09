@@ -11,6 +11,7 @@ import {ProjectVersion, ProjectVersionService} from '../../services/project.serv
 import {RepositoryService, RepositoryDataSource, Repository} from '../../services/repository.service';
 import {AlertService} from '../../services/alert.service';
 import {buildicon} from '../../services/build.service';
+import {TriggerBuildDialogComponent, SourcerepoRecloneDialogComponent} from '../repo/repo-list';
 
 
 @Component({
@@ -110,8 +111,8 @@ export class ProjectversionRepoListComponent extends TableComponent {
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
-    cibuild(element) {
-        const dialogRef = this.dialog.open(CIBuildDialogComponent, {data: {
+    trigger(element) {
+        const dialogRef = this.dialog.open(TriggerBuildDialogComponent, {data: {
             projectversion: this.projectversion, repo: element}, disableClose: true, width: '900px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
@@ -234,43 +235,6 @@ export class SourcerepoDialogComponent implements OnInit {
 }
 
 @Component({
-    selector: 'app-cibuild-dialog',
-    templateUrl: 'projectversion-cibuild-form.html',
-})
-export class CIBuildDialogComponent {
-    clicked: boolean;
-    public projectversion: ProjectVersion;
-    public repo: Repository;
-    form = this.fb.group({
-        gitref: new FormControl('', [Validators.required]),
-    });
-
-    constructor(public dialog: MatDialogRef<CIBuildDialogComponent>,
-                private fb: FormBuilder,
-                protected repositoryService: RepositoryService,
-                protected router: Router,
-                private alertService: AlertService,
-                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, repo: Repository }
-    ) {
-        this.clicked = false;
-        this.projectversion = data.projectversion;
-        this.repo = data.repo;
-    }
-
-    save(): void {
-        this.clicked = true;
-        const target = `${this.projectversion.project_name}/${this.projectversion.name}`;
-        this.repositoryService.cibuild(target, this.repo.url, this.form.value.gitref.trim()).subscribe(r => {
-            this.dialog.close();
-        },
-        err => {
-            this.alertService.error(err.error);
-            this.clicked = false;
-        });
-    }
-}
-
-@Component({
     selector: 'app-repo-dialog',
     templateUrl: 'projectversion-repo-delete-form.html',
 })
@@ -302,30 +266,3 @@ export class SourcerepoDeleteDialogComponent {
     }
 }
 
-@Component({
-    selector: 'app-repo-dialog',
-    templateUrl: 'projectversion-repo-reclone-form.html',
-})
-export class SourcerepoRecloneDialogComponent {
-    clicked: boolean;
-    repo: Repository;
-    constructor(public dialog: MatDialogRef<SourcerepoRecloneDialogComponent>,
-                protected repoService: RepositoryService,
-                private alertService: AlertService,
-                @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
-    ) {
-        this.clicked = false;
-        this.repo = data.repo;
-    }
-
-    save(): void {
-        this.clicked = true;
-        this.repoService.reclone(this.repo.id).subscribe( r => {
-            this.dialog.close();
-        },
-        err => {
-            this.alertService.error(err.error);
-            this.clicked = false;
-        });
-    }
-}

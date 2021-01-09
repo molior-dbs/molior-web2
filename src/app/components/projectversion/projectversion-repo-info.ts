@@ -6,10 +6,10 @@ import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {ProjectVersion, ProjectVersionService} from '../../services/project.service';
 import {RepositoryService, RepositoryDataSource, Repository} from '../../services/repository.service';
 import {TableComponent} from '../../lib/table.component';
-import {SourcerepoDialogComponent, CIBuildDialogComponent, SourcerepoDeleteDialogComponent,
-        SourcerepoRecloneDialogComponent} from './projectversion-repo-list';
+import {SourcerepoDialogComponent, SourcerepoDeleteDialogComponent} from './projectversion-repo-list';
 import {AlertService} from '../../services/alert.service';
 import {ValidationService} from '../../services/validation.service';
+import {TriggerBuildDialogComponent, SourcerepoRecloneDialogComponent} from '../repo/repo-list';
 
 @Component({
     selector: 'app-projectversion-repo-info',
@@ -128,8 +128,8 @@ export class ProjectversionRepoComponent extends TableComponent {
         });
     }
 
-    cibuild() {
-        const dialogRef = this.dialog.open(CIBuildDialogComponent, {data: {
+    trigger() {
+        const dialogRef = this.dialog.open(TriggerBuildDialogComponent, {data: {
             projectversion: this.projectversion, repo: this.repository}, disableClose: true, width: '900px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
