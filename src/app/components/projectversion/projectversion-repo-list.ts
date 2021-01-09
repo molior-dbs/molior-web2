@@ -111,9 +111,9 @@ export class ProjectversionRepoListComponent extends TableComponent {
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
-    trigger(element) {
+    trigger(repoId: number, giturl: string) {
         const dialogRef = this.dialog.open(TriggerBuildDialogComponent, {data: {
-            projectversion: this.projectversion, repo: element}, disableClose: true, width: '900px'});
+            projectversion: this.projectversion, repoId, giturl}, disableClose: true, width: '900px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 }

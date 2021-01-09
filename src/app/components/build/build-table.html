@@ -107,6 +107,7 @@
                 <button mat-menu-item (click)="delete(element)" ><mat-icon>delete</mat-icon>Delete</button>
                 <button mat-menu-item (click)="rebuild(element)"><mat-icon>replay</mat-icon>Retry Build</button>
                 <button mat-menu-item (click)="buildlatest(element.sourcerepository_id)"><mat-icon>sync_alt</mat-icon>Check for new builds</button>
+                <button mat-menu-item (click)="trigger(element.sourcerepository_id)"><mat-icon>trending_up</mat-icon>Triger build</button>
             </mat-menu>
         </td>
     </ng-container>

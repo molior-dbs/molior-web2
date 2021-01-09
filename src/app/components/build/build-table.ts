@@ -1,13 +1,16 @@
 import {Component, ElementRef, ViewChild, OnInit, Input} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
+import {HttpClient} from '@angular/common/http';
 
 import {TableComponent} from '../../lib/table.component';
 import {BuildService, BuildDataSource, buildicon, Build} from '../../services/build.service';
-import {RepositoryService} from '../../services/repository.service';
+import {Repository, RepositoryService} from '../../services/repository.service';
 import {ProjectVersion} from '../../services/project.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
 import {BuildDeleteDialogComponent, BuildRebuildDialogComponent} from './build-list';
+import {TriggerBuildDialogComponent} from '../repo/repo-list';
+import {apiURL} from '../../lib/url';
 
 @Component({
     selector: 'app-build-table',
@@ -31,7 +34,8 @@ export class BuildTableComponent extends TableComponent implements OnInit {
                 protected buildService: BuildService,
                 protected moliorService: MoliorService,
                 protected repositoryService: RepositoryService,
-                protected dialog: MatDialog) {
+                protected dialog: MatDialog,
+                protected http: HttpClient) {
         super(route, router, [['search', ''],
                               ['maintainer', ''],
                               ['commit', ''],
@@ -185,5 +189,16 @@ export class BuildTableComponent extends TableComponent implements OnInit {
             width: '40%',
         });
         dialogRef.afterClosed().subscribe(result => this.loadData());
+    }
+
+    trigger(repoId: number) {
+        this.http.get<Repository>(`${apiURL()}/api2/repository/${repoId}`).subscribe(
+              res => {
+                const repo = res;
+                console.log(repo);
+                const dialogRef = this.dialog.open(TriggerBuildDialogComponent, {data: {
+                    projectversion: this.projectversion, repoId, giturl: repo.url}, disableClose: true, width: '900px'});
+                dialogRef.afterClosed().subscribe(result => this.loadData());
+            });
     }
 }

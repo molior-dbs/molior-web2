@@ -46,14 +46,14 @@ export class ProjectversionRepoComponent extends TableComponent {
     loadData() {
         this.route.parent.paramMap.subscribe((params: ParamMap) => {
             const projectVersion = params.get('version');
-            const repoID = +params.get('id');
+            const repoId = +params.get('id');
             this.route.parent.parent.paramMap.subscribe((params2: ParamMap) => {
                 const projectName = params2.get('name');
                 this.projectversionService.get(projectName, projectVersion).subscribe((res: ProjectVersion) => {
                     this.projectversion = res;
-                    this.repositoryService.get_projectversion_repo(projectName, projectVersion, repoID).subscribe((res2: Repository) => {
+                    this.repositoryService.get_projectversion_repo(projectName, projectVersion, repoId).subscribe((res2: Repository) => {
                             this.repository = res2;
-                            this.dataSource.load(`/api2/project/${projectName}/${projectVersion}/repository/${repoID}/hooks`, this.params);
+                            this.dataSource.load(`/api2/project/${projectName}/${projectVersion}/repository/${repoId}/hooks`, this.params);
                         });
                     });
             });
@@ -128,9 +128,9 @@ export class ProjectversionRepoComponent extends TableComponent {
         });
     }
 
-    trigger() {
+    trigger(repoId: number, giturl: string) {
         const dialogRef = this.dialog.open(TriggerBuildDialogComponent, {data: {
-            projectversion: this.projectversion, repo: this.repository}, disableClose: true, width: '900px'});
+            projectversion: this.projectversion, repoId, giturl}, disableClose: true, width: '900px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 }

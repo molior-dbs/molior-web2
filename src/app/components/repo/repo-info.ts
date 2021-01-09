@@ -18,7 +18,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialo
 })
 export class RepositoryInfoComponent extends TableComponent {
     repo: Repository;
-    repoID: number;
+    repoId: number;
     dataSource: ProjectVersionDataSource;
     displayedColumns: string[] = [
         'dependent',
@@ -48,11 +48,11 @@ export class RepositoryInfoComponent extends TableComponent {
 
     loadData() {
         this.route.paramMap.subscribe((params: ParamMap) => {
-            this.repoID = Number(params.get('id'));
-            this.http.get<Repository>(`${apiURL()}/api2/repository/${this.repoID}`).subscribe(
+            this.repoId = Number(params.get('id'));
+            this.http.get<Repository>(`${apiURL()}/api2/repository/${this.repoId}`).subscribe(
                 res => {
                     this.repo = res;
-                    this.dataSource.load(`/api2/repository/${this.repoID}/dependents`, this.params);
+                    this.dataSource.load(`/api2/repository/${this.repoId}/dependents`, this.params);
             });
         });
     }
@@ -99,9 +99,10 @@ export class RepositoryInfoComponent extends TableComponent {
         this.repoService.build(this.repo.id).subscribe();
     }
 
-    trigger() {
-        const dialog = this.dialog.open(TriggerBuildDialogComponent, {data: {repo: this.repo}, disableClose: true, width: '900px'});
-        dialog.afterClosed().subscribe(result => this.loadData());
+    trigger(repoId: number, giturl: string) {
+        const dialogRef = this.dialog.open(TriggerBuildDialogComponent, {data: {
+            repoId, giturl}, disableClose: true, width: '900px'});
+        dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
     reclone() {

@@ -84,8 +84,9 @@ export class RepositoryListComponent extends TableComponent {
         this.repoService.build(id).subscribe();
     }
 
-    trigger(repo: Repository) {
-        const dialogRef = this.dialog.open(TriggerBuildDialogComponent, {data: {repo}, disableClose: true, width: '900px'});
+    trigger(repoId: number, giturl: string) {
+        const dialogRef = this.dialog.open(TriggerBuildDialogComponent, {data: {
+            repoId, giturl}, disableClose: true, width: '900px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
@@ -226,10 +227,11 @@ export class TriggerBuildDialogComponent {
     clicked: boolean;
     private projectversions = new BehaviorSubject<string[]>([]);
     projectversions$ = this.projectversions.asObservable();
-    public repo: Repository;
+    public repoId: number;
+    public giturl: string;
     form = this.fb.group({
         gitref: new FormControl('', [Validators.required]),
-        pv: new FormControl('', [Validators.minLength(2) ])  // FIXME: validate valud is in array
+        pvs: new FormControl([])  // FIXME: validate values are in array
     });
 
     constructor(public dialog: MatDialogRef<TriggerBuildDialogComponent>,
@@ -238,11 +240,12 @@ export class TriggerBuildDialogComponent {
                 protected projectversionService: ProjectVersionService,
                 protected router: Router,
                 private alertService: AlertService,
-                @Inject(MAT_DIALOG_DATA) private data: { repo: Repository }
+                @Inject(MAT_DIALOG_DATA) private data: { repoId: number, giturl: string }
     ) {
         this.clicked = false;
-        this.repo = data.repo;
-        this.repositoryService.getRepoDependents(this.repo.id, true).subscribe( r => {
+        this.repoId = data.repoId;
+        this.giturl = data.giturl;
+        this.repositoryService.getRepoDependents(this.repoId, true).subscribe( r => {
             const projectversions = [];
             if (r.total_result_count > 0) {
                 for (const res of r.results) {
@@ -256,7 +259,7 @@ export class TriggerBuildDialogComponent {
 
     save(): void {
         this.clicked = true;
-        this.repositoryService.trigger(this.form.value.pv, this.repo.url, this.form.value.gitref.trim()).subscribe(r => {
+        this.repositoryService.trigger(this.form.value.pvs, this.giturl, this.form.value.gitref.trim()).subscribe(r => {
             this.dialog.close();
         },
             err => {

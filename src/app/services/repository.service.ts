@@ -89,8 +89,8 @@ export class RepositoryService extends TableService<Repository> {
         return this.http.put(`${apiURL()}/api2/repository/${id}`, {url});
     }
 
-    get_projectversion_repo(name: string, version: string, repoID: number) {
-        return this.http.get<Repository>(`${apiURL()}/api2/project/${name}/${version}/repository/${repoID}`);
+    get_projectversion_repo(name: string, version: string, repoId: number) {
+        return this.http.get<Repository>(`${apiURL()}/api2/project/${name}/${version}/repository/${repoId}`);
     }
 
     addHook(pv: any, repoid: number, url: string, skipssl: boolean, method: string, hooktype: string, body: string) {
