@@ -41,23 +41,34 @@
                 <mat-radio-group formControlName="mirrortype" style="display: inline-block; margin-top: -6px; margin-bottom: 0px;" aria-label="Select an option">
                     <div style="margin-bottom: 0px;">
                         <mat-radio-button value="1" (change)="chooseBaseMirror()"><strong>Debian Base Mirror</strong></mat-radio-button>
-                      <p>Official Debian repository containig a full debian distribution</p>
+                        <p>Official Debian repository containig a full debian distribution</p>
                     </div>
 
                     <div style="margin-bottom: 0px;">
-                    <mat-radio-button value="2" (change)="chooseAdditionalMirror()"><strong>APT Repository Mirror</strong></mat-radio-button>
-                      <p>Additional repository containing packages for a specific debian distribution</p>
-                      <div>
-                      <app-validation-error [control]="formArray.get('0').get('basemirror')"></app-validation-error>
-                      <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
-                        <input matInput formControlName="basemirror" placeholder="-- Select Base Mirror --" [matAutocomplete]="auto" (input)="changeBaseMirror()">
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeBaseMirror()">
-                            <mat-option *ngFor="let entry of basemirrors | keyvalue" [value]="entry.key">
-                                {{ entry.key }} ({{ entry.value }})
-                            </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
-                      </div>
+                        <mat-radio-button value="2" (change)="chooseAdditionalMirror()"><strong>APT Repository Mirror</strong></mat-radio-button>
+                        <p>Additional repository containing packages for a specific debian distribution</p>
+                        <div>
+                            <app-validation-error [control]="formArray.get('0').get('basemirror')"></app-validation-error>
+                            <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
+                                <input matInput formControlName="basemirror" placeholder="-- Select Base Mirror --" [matAutocomplete]="auto" (input)="changeBaseMirror()">
+                                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeBaseMirror()">
+                                    <mat-option *ngFor="let entry of basemirrors | keyvalue" [value]="entry.key">
+                                        {{ entry.key }} ({{ entry.value }})
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+
+                        <p>Dependency Policy</p>
+                        <div style="padding-left: 45px; width: 400px">
+                            <mat-form-field floatLabel="never" appearance="standard">
+                                <mat-select formControlName="dependencylevel" [(value)]="defaultDependencyLevel">
+                                    <mat-option value="strict"><strong>strict</strong>&nbsp;- Use in {{formArray.get('0').value.mirrorname}}/{{formArray.get('0').value.mirrorversion}} based projects</mat-option>
+                                    <mat-option value="distribution"><strong>dist</strong>&nbsp;- Use in {{formArray.get('0').value.mirrorname}} based projects</mat-option>
+                                    <mat-option value="any"><strong>any</strong>&nbsp;- Use with any base mirror based projects</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
                 </mat-radio-group>
                 </p>
@@ -66,19 +77,6 @@
                 <span style="width: 130px; display: inline-block;"><strong>External Repo</strong></span>
                 <mat-checkbox style="padding-left: 15px;" formControlName="external_repo"></mat-checkbox>
                 </p>
-
-                <div *ngIf="formArray.get('0').value.mirrortype==='2'">
-                    <p><strong>Dependency Policy</strong><app-validation-error [control]="formArray.get('0').get('dependencylevel')"></app-validation-error></p>
-                    <div>
-                        <mat-form-field floatLabel="never" appearance="standard">
-                            <mat-select formControlName="dependencylevel" [(value)]="defaultDependencyLevel">
-                                <mat-option value="strict"><strong>strict</strong>&nbsp;- Use in {{formArray.get('0').value.mirrorname}}/{{formArray.get('0').value.mirrorversion}} based projects</mat-option>
-                                <mat-option value="distribution"><strong>dist</strong>&nbsp;- Use in {{formArray.get('0').value.mirrorname}} based projects</mat-option>
-                                <mat-option value="any"><strong>any</strong>&nbsp;- Use with any base mirror based projects</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
             </mat-step>
 
             <mat-step formGroupName="1" [stepControl]="formArray.get('1')">
@@ -141,13 +139,8 @@
                         </mat-form-field>
                         </p>
                     </div>
-
-                    <!--<div>-->
-                        <!--<mat-radio-button value="3" (change)="chooseNoKey()"><strong>No key download</strong></mat-radio-button>-->
-                    <!--</div>-->
                 </mat-radio-group>
             </mat-step>
-
         </mat-horizontal-stepper>
     </form>
 </div>
