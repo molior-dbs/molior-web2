@@ -168,7 +168,12 @@ export class BuildTableComponent extends TableComponent implements OnInit {
             if (ts.getFullYear() === current.getFullYear() &&
                 ts.getMonth() === current.getMonth() &&
                 ts.getDate() === current.getDate() - 1) {
-                return 'yesterday ' + hrs + ':' + mins;
+                return hrs + ':' + mins + ' yesterday';
+            }
+            if (ts.getFullYear() === current.getFullYear() &&
+                ts.getMonth() === current.getMonth() &&
+                ts.getDate() > current.getDate() - 15) {
+                return hrs + ':' + mins + ', ' + (current.getDate() - ts.getDate()) + ' days ago';
             }
             if (ts.getFullYear() === current.getFullYear()) {
                 return month + '-' + day + ' ' + hrs + ':' + mins;
