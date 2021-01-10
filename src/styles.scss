@@ -427,6 +427,7 @@ app-validation-error {
 .log-table {
     color: lime;
     font-family: "Courier New";
+    font-size: 10pt;
     white-space: pre-wrap;
     border-collapse: collapse;
     table-layout: fixed;
@@ -447,9 +448,10 @@ app-validation-error {
 }
 
 .lognr {
-    color: green;
+    color: #02c602;
     padding: 0 5px 0 0;
     width: 2.5em;
+    height: 16px;
     text-align: right;
     vertical-align: top;
     user-select: none;

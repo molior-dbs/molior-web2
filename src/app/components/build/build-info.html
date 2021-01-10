@@ -19,7 +19,7 @@
                 <td>{{build.version}}</td>
 
                 <td><strong *ngIf="build.buildvariant">Base Mirror</strong></td>
-                <td><a *ngIf="build.buildvariant.base_mirror.name" class="link" [routerLink]="['../../mirror', build.buildvariant.base_mirror.name, build.buildvariant.base_mirror.version]">{{build.buildvariant.base_mirror.name}}/{{build.buildvariant.base_mirror.version}}</a></td>
+                <td><a *ngIf="build.buildvariant && build.buildvariant.base_mirror.name" class="link" [routerLink]="['../../mirror', build.buildvariant.base_mirror.name, build.buildvariant.base_mirror.version]">{{build.buildvariant.base_mirror.name}}/{{build.buildvariant.base_mirror.version}}</a></td>
             </tr>
             <tr>
                 <td><strong>State</strong></td>
@@ -50,6 +50,10 @@
 <div style="display: flex">
     <h2 style="flex-grow: 1">Build Log</h2>
     <div style="display: flex;">
+        <div style="display: inline-block; align-self: flex-end;">
+        <button *ngIf="buildstart_line >= 0" class="link" mat-button [routerLink]="['/build', build.id]" fragment="line-{{buildstart_line}}" style="margin-bottom: 5px;">buildstart</button>
+        <button *ngIf="lintian_line >= 0" class="link" mat-button [routerLink]="['/build', build.id]" fragment="line-{{lintian_line}}" style="margin-bottom: 5px;">lintian</button>
+        </div>
         <div style="display: inline-block; align-self: flex-end; width: 340px;">
             <input matInput placeholder="Search..." #inputSearch [ngStyle]="{'margin-bottom': '2px', border: 'lightgrey 1px solid', 'width': '120px'}" (input)="search($event.target.value)">
         <span *ngIf="totalSearchresults" style="margin-bottom: 5px; display: inline-block"><button class="link" mat-button (click)="searchPrev()">prev</button>{{currentSearchresult}}/{{totalSearchresults}}<button class="link" mat-button (click)="searchNext()">next</button></span>

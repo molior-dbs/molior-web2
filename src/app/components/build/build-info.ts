@@ -69,6 +69,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     totalerr: number;
     totalSearchresults: number;
     currentSearchresult: number;
+    buildstart_line: number;
+    lintian_line: number;
     @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
     constructor(protected route: ActivatedRoute,
@@ -116,6 +118,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.totalerr = 0;
         this.totalSearchresults = 0;
         this.currentSearchresult = 0;
+        this.buildstart_line = -1;
+        this.lintian_line = -1;
     }
 
     ngOnInit() {
@@ -236,6 +240,13 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                     logline.innerHTML = this.ansiup.ansi_to_html(line);
                     logline.className = 'logline';
 
+                    if (line === 'dpkg-buildpackage') {
+                        this.buildstart_line = nr;
+                    }
+                    if (line.search(/[IE]: Lintian run /) >= 0) {
+                        this.lintian_line = nr;
+                    }
+
                     // Error Finder
                     if (this.build.buildstate !== 'successful') {
                         for (const pattern of ErrorPatterns) {
@@ -298,8 +309,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
             const row = document.getElementById('row-' + linenumber) as HTMLElement;
             if (row) {
-                console.log(row.getBoundingClientRect());
-                row.style.background = 'cadetblue';
+                row.style.background = '#4967a2';
                 if (this.LastSelectedLine && linenumber !== this.LastSelectedLine) {
                     const lastrow = document.getElementById('row-' + this.LastSelectedLine) as HTMLElement;
                     if (lastrow) {

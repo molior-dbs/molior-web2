@@ -25,7 +25,7 @@
 }
 
 ::ng-deep .searchhighlight {
-    background: rebeccapurple;
+    background: #4967a2;
 }
 
 ::ng-deep .errorline > td:first-of-type {
@@ -34,13 +34,8 @@
 }
 
 ::ng-deep .errorline > td:nth-of-type(2) {
-  background: linear-gradient(
-    to bottom,
-    #00000000 0%,
-    #00000000 96%,
-    #FF0000   97%
-    #FF0000   100%
-  );
+  border-bottom: red dashed 2px;
+  margin-bottom: -1px;
 }
 
 .mat-button {
