@@ -11,14 +11,15 @@
                     <strong *ngIf="!build.project.is_mirror">Project</strong>
                     <strong *ngIf="build.project.is_mirror">Mirror</strong>
                 </td>
-                <td><a *ngIf="build.project.version" class="link" [routerLink]="['../../project', build.project.name, build.project.version.name]">{{build.project.name}}/{{build.project.version.name}}</a></td>
+                <td *ngIf="!build.project.is_mirror"><a *ngIf="build.project.version" class="link" [routerLink]="['../../project', build.project.name, build.project.version.name]">{{build.project.name}}/{{build.project.version.name}}</a></td>
+                <td *ngIf="build.project.is_mirror"><a *ngIf="build.project.version" class="link" [routerLink]="['../../mirror', build.project.name, build.project.version.name]">{{build.project.name}}/{{build.project.version.name}}</a></td>
             </tr>
             <tr *ngIf="build.version">
                 <td><strong>Version</strong></td>
                 <td>{{build.version}}</td>
 
                 <td><strong *ngIf="build.buildvariant">Base Mirror</strong></td>
-                <td><a *ngIf="build.buildvariant" class="link" [routerLink]="['../../mirror', build.buildvariant.base_mirror.name, build.buildvariant.base_mirror.version]">{{build.buildvariant.base_mirror.name}}/{{build.buildvariant.base_mirror.version}}</a></td>
+                <td><a *ngIf="build.buildvariant.base_mirror.name" class="link" [routerLink]="['../../mirror', build.buildvariant.base_mirror.name, build.buildvariant.base_mirror.version]">{{build.buildvariant.base_mirror.name}}/{{build.buildvariant.base_mirror.version}}</a></td>
             </tr>
             <tr>
                 <td><strong>State</strong></td>
