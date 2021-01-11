@@ -85,7 +85,7 @@
 
     <ng-container matColumnDef="starttime">
         <th mat-header-cell *matHeaderCellDef>Start</th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]" [ngStyle]="{'text-align': 'left'}">
+        <td mat-cell *matCellDef="let element" [routerLink]="['/build', element.id]" [ngStyle]="{'text-align': 'left'}" matTooltip="{{startTime(element, true)}}" [matTooltipPosition]="'left'" >
             <span>{{startTime(element) || '' }}</span>
         </td>
     </ng-container>

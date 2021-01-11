@@ -149,8 +149,11 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         return null;
     }
 
-    startTime(build) {
+    startTime(build, showFull = false) {
         if (build.startstamp !== '') {
+            if (showFull) {
+                return new Date(build.startstamp).toString();
+            }
             const ts = new Date(build.startstamp);
             const year = ts.getFullYear();
             const month = String(ts.getMonth() + 1).padStart(2, '0');
