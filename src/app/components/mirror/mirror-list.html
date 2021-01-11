@@ -33,7 +33,7 @@
     <ng-container matColumnDef="components">
         <th mat-header-cell *matHeaderCellDef>Components</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['../mirror', element.name, element.version]">
-            {{element.components.split(',').join(', ')}}
+            {{element.components.split(',').join(' ')}}
         </td>
     </ng-container>
 
