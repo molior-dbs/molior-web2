@@ -5,8 +5,7 @@ import {FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import {ProjectVersion, ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
-import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
-        ProjectversionCloneDialogComponent, ProjectversionOverlayDialogComponent,
+import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent, ProjectversionOverlayDialogComponent,
         ProjectversionLockDialogComponent, ProjectversionSnapshotDialogComponent} from '../project/project-info';
 import {AlertService} from '../../services/alert.service';
 
@@ -109,11 +108,11 @@ export class ProjectversionInfoComponent extends TableComponent {
         dialog.afterClosed().subscribe(result => this.loadData());
     }
 
-    clone() {
-        const dialog = this.dialog.open(ProjectversionCloneDialogComponent, {
-            data: { projectversion: this.projectversion },
+    copy() {
+        const dialog = this.dialog.open(ProjectversionDialogComponent, {
+            data: { projectName: this.projectName, projectversion: this.projectversion, copy: true },
             disableClose: true,
-            width: '40%',
+            width: '60%',
         });
     }
 

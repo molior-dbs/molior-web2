@@ -1,10 +1,11 @@
 <mat-icon style="float: left; padding-top: 4px;">class</mat-icon>
-<h1 mat-dialog-title *ngIf="!editMode()">Create Project Version</h1>
-<h1 mat-dialog-title *ngIf="editMode()">Edit Project Version {{form.value.version}}</h1>
+<h1 mat-dialog-title *ngIf="mode === 'create'">Create Project Version</h1>
+<h1 mat-dialog-title *ngIf="mode === 'edit'">Edit Project Version {{form.value.version}}</h1>
+<h1 mat-dialog-title *ngIf="mode === 'copy'">Copy Project Version {{form.value.version}}</h1>
 <div mat-dialog-content>
     <form [formGroup]="form" [ngStyle]="{height: '360px'}">
 
-        <div *ngIf="!editMode()">
+        <div *ngIf="mode === 'create' || mode === 'copy'">
             <p><strong>Project Version</strong><app-validation-error [control]="form.get('version')"></app-validation-error></p>
             <mat-form-field>
                 <input matInput formControlName="version" required cdkFocusInitial>
@@ -16,8 +17,9 @@
             <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
 
-        <div *ngIf="!editMode()">
+        <div *ngIf="mode === 'create' || mode === 'copy'">
             <p><strong>Base Mirror</strong><app-validation-error [control]="form.get('basemirror')"></app-validation-error></p>
+            <span *ngIf="mode === 'copy'">Note: only dependencies with matching policy will be copied</span>
             <mat-form-field floatLabel="never">
                 <input matInput formControlName="basemirror" placeholder="-- Select Base Mirror --" [matAutocomplete]="autoBasemirror" (input)="changeBaseMirror()">
                 <mat-autocomplete #autoBasemirror="matAutocomplete" (optionSelected)="changeBaseMirror()">

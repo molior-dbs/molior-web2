@@ -105,11 +105,11 @@ export class ProjectInfoComponent extends TableComponent {
         dialog.afterClosed().subscribe(r => this.loadData());
     }
 
-    clone(projectversion: ProjectVersion): void {
-        const dialog = this.dialog.open(ProjectversionCloneDialogComponent, {
-            data: { projectversion },
+    copy(projectversion: ProjectVersion): void {
+        const dialog = this.dialog.open(ProjectversionDialogComponent, {
+            data: { projectName: this.project.name, projectversion, copy: true },
             disableClose: true,
-            width: '40%',
+            width: '60%',
         });
         dialog.afterClosed().subscribe(r => this.loadData());
     }
@@ -151,6 +151,7 @@ export class ProjectversionDialogComponent {
     basemirrors: { [id: string]: string[]; };
     mirrorArchs: string[];
     defaultDependencyLevel: 'strict';
+    mode: string;
     form = this.fb.group({
         version: new FormControl('', [Validators.required,
                                       Validators.minLength(2),
@@ -172,18 +173,24 @@ export class ProjectversionDialogComponent {
                 protected projectVersionService: ProjectVersionService,
                 protected router: Router,
                 private alertService: AlertService,
-                @Inject(MAT_DIALOG_DATA) private data: { projectName: string, projectversion: ProjectVersion}
+                @Inject(MAT_DIALOG_DATA) private data: { projectName: string, projectversion: ProjectVersion, copy: boolean}
     ) {
         this.clicked = false;
         this.projectName = data.projectName;
         this.projectversion = data.projectversion;
+        this.mode = 'create';
         if (this.projectversion) {
-          this.form.patchValue({version: this.projectversion.name});
-          this.form.patchValue({basemirror: this.projectversion.basemirror});
-          this.form.patchValue({architectures: this.projectversion.architectures});
-          this.form.patchValue({description: this.projectversion.description});
-          this.form.patchValue({dependencylevel: this.projectversion.dependency_policy});
-          this.form.patchValue({cibuilds: this.projectversion.ci_builds_enabled});
+            if (data.copy) {
+                this.mode = 'copy';
+            } else {
+                this.mode = 'edit';
+            }
+            this.form.patchValue({version: this.projectversion.name});
+            this.form.patchValue({basemirror: this.projectversion.basemirror});
+            this.form.patchValue({architectures: this.projectversion.architectures});
+            this.form.patchValue({description: this.projectversion.description});
+            this.form.patchValue({dependencylevel: this.projectversion.dependency_policy});
+            this.form.patchValue({cibuilds: this.projectversion.ci_builds_enabled});
         }
         this.mirrorArchs = [];
         this.basemirrors = {};
@@ -192,7 +199,7 @@ export class ProjectversionDialogComponent {
             for (const entry of res) {
                 this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
             }
-            if (this.editMode()) {
+            if (this.mode === 'edit') {
                 this.mirrorArchs = this.basemirrors[this.form.value.basemirror];
                 this.form.get('basemirror').updateValueAndValidity();
                 this.updateArchs();
@@ -212,11 +219,27 @@ export class ProjectversionDialogComponent {
     save(): void {
         this.clicked = true;
         this.updateArchs();
-        if (this.editMode()) {
+        if (this.mode === 'edit') {
             this.projectVersionService.edit(this.data.projectName,
                                             this.projectversion.name,
                                             this.form.value.description,
                                             this.form.value.dependencylevel,
+                                            this.form.value.cibuilds).subscribe(
+                r => {
+                    this.dialog.close();
+                    this.router.navigate(['/project', this.projectName, this.form.value.version]);
+                },
+                err => {
+                    this.alertService.error(err.error);
+                    this.clicked = false;
+                });
+        } else if (this.mode === 'copy') {
+            this.projectVersionService.copy(this.projectversion,
+                                            this.form.value.version,
+                                            this.form.value.description,
+                                            this.form.value.dependencylevel,
+                                            this.form.value.basemirror,
+                                            this.form.value.architectures,
                                             this.form.value.cibuilds).subscribe(
                 r => {
                     this.dialog.close();
@@ -258,13 +281,6 @@ export class ProjectversionDialogComponent {
             }
         });
     }
-
-    editMode(): boolean {
-        if (this.projectversion && this.projectversion.name) {
-           return true;
-        }
-        return false;
-    }
 }
 
 @Component({
@@ -293,41 +309,6 @@ export class ProjectversionDeleteDialogComponent {
         this.projectversionService.delete(this.projectversion, this.form.value.forceremoval).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['/project', this.projectversion.project_name]);
-        },
-        err => {
-            this.alertService.error(err.error);
-            this.clicked = false;
-        });
-    }
-}
-
-@Component({
-    selector: 'app-projectversion-clone-dialog',
-    templateUrl: '../projectversion/projectversion-clone-form.html',
-})
-export class ProjectversionCloneDialogComponent {
-    clicked: boolean;
-    projectversion: ProjectVersion;
-    form = this.fb.group({
-        name: new FormControl('', [Validators.required]),  // FIXME: name validator
-    });
-
-    constructor(public dialog: MatDialogRef<ProjectversionCloneDialogComponent>,
-                private fb: FormBuilder,
-                protected projectversionService: ProjectVersionService,
-                protected router: Router,
-                private alertService: AlertService,
-                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
-    ) {
-        this.projectversion = data.projectversion;
-        this.clicked = false;
-    }
-
-    save(): void {
-        this.clicked = true;
-        this.projectversionService.clone(this.projectversion, this.form.value.name).subscribe( r => {
-            this.dialog.close();
-            this.router.navigate(['/project', this.projectversion.project_name, this.form.value.name]);
         },
         err => {
             this.alertService.error(err.error);

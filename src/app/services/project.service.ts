@@ -164,8 +164,10 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         return this.http.get<string>(`${apiURL()}/api2/project/${name}/${version}/aptsources`, {params, responseType: 'text' as 'json'});
     }
 
-    clone(p: ProjectVersion, name: string) {
-        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/clone`, { name });
+    copy(p: ProjectVersion, version: string, description: string, dependencylevel: string, basemirror: string, architectures: string[],
+         cibuilds: boolean) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/copy`,
+            { name: version, description, dependency_policy: dependencylevel, basemirror, architectures, cibuilds });
     }
 
     lock(p: ProjectVersion) {
