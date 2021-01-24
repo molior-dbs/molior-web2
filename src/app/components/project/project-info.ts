@@ -179,30 +179,31 @@ export class ProjectversionDialogComponent {
         this.projectName = data.projectName;
         this.projectversion = data.projectversion;
         this.mode = 'create';
+        this.mirrorArchs = [];
         if (this.projectversion) {
             if (data.copy) {
                 this.mode = 'copy';
             } else {
                 this.mode = 'edit';
             }
-            this.form.patchValue({version: this.projectversion.name});
-            this.form.patchValue({basemirror: this.projectversion.basemirror});
-            this.form.patchValue({architectures: this.projectversion.architectures});
-            this.form.patchValue({description: this.projectversion.description});
-            this.form.patchValue({dependencylevel: this.projectversion.dependency_policy});
-            this.form.patchValue({cibuilds: this.projectversion.ci_builds_enabled});
+            this.form.patchValue({version: this.projectversion.name,
+                                  basemirror: this.projectversion.basemirror,
+                                  description: this.projectversion.description,
+                                  dependencylevel: this.projectversion.dependency_policy,
+                                  cibuilds: this.projectversion.ci_builds_enabled,
+                                  architectures: this.projectversion.architectures,
+                                 });
         }
-        this.mirrorArchs = [];
         this.basemirrors = {};
         mirrorService.getBaseMirrors().subscribe(res => {
             this.basemirrors = {};
             for (const entry of res) {
                 this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
             }
-            if (this.mode === 'edit') {
+            if (this.mode === 'edit' || this.mode === 'copy') {
                 this.mirrorArchs = this.basemirrors[this.form.value.basemirror];
-                this.form.get('basemirror').updateValueAndValidity();
                 this.updateArchs();
+                this.form.get('basemirror').updateValueAndValidity();
             }
         });
     }
