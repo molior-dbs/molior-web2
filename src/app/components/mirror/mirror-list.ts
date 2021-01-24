@@ -126,7 +126,7 @@ export class MirrorDialogComponent {
                  mirrorurl:     new FormControl('', [Validators.required, ValidationService.httpValidator]),
                  mirrorname:    new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.nameValidator]),
                  mirrorversion: new FormControl('', [Validators.required, Validators.minLength(2), ValidationService.versionValidator]),
-                 mirrortype:    new FormControl(['1']),
+                 mirrortype:    new FormControl('1'),
                  basemirror:    new FormControl(''),
                  external_repo: new FormControl(false),
                  dependencylevel: new FormControl('strict', [Validators.required]),
