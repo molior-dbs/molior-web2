@@ -36,6 +36,7 @@ const ErrorPatterns = [
     [/: No such file or directory/, [
         [/head: cannot open/, /certs\/java\/cacerts/],
         [/aclocal: warning: couldn't open directory 'm4'/],
+        [/Is \/dev\/pts mounted\?/],
     ]],
     [/Target "[^"]" does not exist in the project/, []],
     [/\.py:\d+:\d+: [FW]\d+ /, []],
