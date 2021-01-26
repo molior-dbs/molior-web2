@@ -110,6 +110,13 @@
         </td>
     </ng-container>
 
+    <ng-container matColumnDef="dependency_policy">
+        <th mat-header-cell *matHeaderCellDef>Dependency policy</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)">
+            {{ element.dependency_policy }}
+        </td>
+    </ng-container>
+
     <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef>Description</th>
         <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)">

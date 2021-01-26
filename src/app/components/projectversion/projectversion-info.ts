@@ -25,6 +25,7 @@ export class ProjectversionInfoComponent extends TableComponent {
         'basemirror',
         'is_locked',
         'ci_builds_enabled',
+        'dependency_policy',
         'description',
         'actions'
     ];
