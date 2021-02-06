@@ -29,6 +29,7 @@ const ErrorPatterns = [
         [/dpkg-buildpackage died/],
         [/Error building source package/],
         [/Package build dependencies not satisfied; skipping/],
+        [/Is \/dev\/pts mounted\?/],
     ]],
     [/^(\x1b[^m]+m)*make.+No rule to make target.*Stop/, []],
     [/dh_install: missing files, aborting/, []],
@@ -36,7 +37,6 @@ const ErrorPatterns = [
     [/: No such file or directory/, [
         [/head: cannot open/, /certs\/java\/cacerts/],
         [/aclocal: warning: couldn't open directory 'm4'/],
-        [/Is \/dev\/pts mounted\?/],
     ]],
     [/Target "[^"]" does not exist in the project/, []],
     [/\.py:\d+:\d+: [FW]\d+ /, []],
