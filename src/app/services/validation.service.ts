@@ -1,8 +1,11 @@
 import {Component, Input} from '@angular/core';
 import {FormGroup, FormControl, AbstractControl} from '@angular/forms';
 
-export const urlregex = '^(?:(?:http|https|ftp)://)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$';
-export const gitregex = '^(?:(?:http|https|ssh)://)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$';
+export const urlregex = /^(?:https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\._-]+))+$/;
+export const gitregex = [
+    /^(?:https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\._-]+))+$/,
+    /^(?:git@)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?):[\w\._-]+(\/[\w\._-]+)+$/,
+];
 
 export class ValidationService {
 
@@ -49,11 +52,12 @@ export class ValidationService {
     }
 
     static gitValidator(control) {
-        if (control.value.match(gitregex)) {
-            return null;
-        } else {
-            return { invalidGITURL: true };
+        for (const regex of gitregex) {
+            if (control.value.match(regex) !== null) {
+                return null; // valid
+            }
         }
+        return { invalidGITURL: true };
     }
 
     static emailValidator(control) {
