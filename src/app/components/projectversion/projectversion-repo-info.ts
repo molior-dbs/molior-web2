@@ -6,7 +6,7 @@ import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {ProjectVersion, ProjectVersionService} from '../../services/project.service';
 import {RepositoryService, RepositoryDataSource, Repository} from '../../services/repository.service';
 import {TableComponent} from '../../lib/table.component';
-import {SourcerepoDialogComponent, SourcerepoDeleteDialogComponent} from './projectversion-repo-list';
+import {SourcerepoDialogComponent, SourcerepoRemoveDialogComponent} from './projectversion-repo-list';
 import {AlertService} from '../../services/alert.service';
 import {ValidationService} from '../../services/validation.service';
 import {TriggerBuildDialogComponent, SourcerepoRecloneDialogComponent} from '../repo/repo-list';
@@ -121,7 +121,7 @@ export class ProjectversionRepoComponent extends TableComponent {
     }
 
     delete() {
-        const dialogRef = this.dialog.open(SourcerepoDeleteDialogComponent, {
+        const dialogRef = this.dialog.open(SourcerepoRemoveDialogComponent, {
             data: { projectversion: this.projectversion, repo: this.repository },
             disableClose: true,
             width: '40%',

@@ -71,8 +71,8 @@ export class RepositoryService extends TableService<Repository> {
         return this.http.post(`${apiURL()}/api/repositories/${id}/build`, null);
     }
 
-    delete(id: number, ProjectversionID: number) {
-        return this.http.delete(`${apiURL()}/api/projectversions/${ProjectversionID}/repositories/${id}`);
+    remove(projectversion, id: number) {
+        return this.http.delete(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/repository/${id}`);
     }
 
     delete_repo(id: number) {

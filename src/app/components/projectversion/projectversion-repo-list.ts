@@ -102,8 +102,8 @@ export class ProjectversionRepoListComponent extends TableComponent {
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
-    delete(element) {
-        const dialogRef = this.dialog.open(SourcerepoDeleteDialogComponent, {
+    remove(element) {
+        const dialogRef = this.dialog.open(SourcerepoRemoveDialogComponent, {
             data: { projectversion: this.projectversion, repo: element },
             disableClose: true,
             width: '40%',
@@ -236,13 +236,13 @@ export class SourcerepoDialogComponent implements OnInit {
 
 @Component({
     selector: 'app-repo-dialog',
-    templateUrl: 'projectversion-repo-delete-form.html',
+    templateUrl: 'projectversion-repo-remove-form.html',
 })
-export class SourcerepoDeleteDialogComponent {
+export class SourcerepoRemoveDialogComponent {
     clicked: boolean;
     repo: Repository;
     projectversion: ProjectVersion;
-    constructor(public dialog: MatDialogRef<SourcerepoDeleteDialogComponent>,
+    constructor(public dialog: MatDialogRef<SourcerepoRemoveDialogComponent>,
                 protected repoService: RepositoryService,
                 protected router: Router,
                 private alertService: AlertService,
@@ -255,7 +255,7 @@ export class SourcerepoDeleteDialogComponent {
 
     save(): void {
         this.clicked = true;
-        this.repoService.delete(this.repo.id, this.projectversion.id).subscribe( r => {
+        this.repoService.remove(this.projectversion, this.repo.id).subscribe( r => {
             this.dialog.close();
             this.router.navigate(['project/' + this.projectversion.project_name + '/' + this.projectversion.name + '/repos']);
         },

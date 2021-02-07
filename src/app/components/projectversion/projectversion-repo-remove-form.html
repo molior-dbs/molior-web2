@@ -1,12 +1,9 @@
-<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Delete Source Repository</h1>
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Remove Source Repository</h1>
 <div mat-dialog-content>
-    The source repository will be deleted. This operation cannot be undone.
+    Remove the source repository from the projectversion.
 </div>
 <div mat-dialog-actions>
     <app-alert></app-alert>
     <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
     <button mat-button (click)="save()" [disabled]="clicked">Ok</button>
 </div>
-
-
-

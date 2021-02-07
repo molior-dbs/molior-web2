@@ -71,7 +71,7 @@
             <mat-menu #menu="matMenu">
                 <button mat-menu-item [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]"><mat-icon>list</mat-icon>Details</button>
                 <button mat-menu-item (click)="edit(element)"><mat-icon>edit</mat-icon>Edit</button>
-                <button mat-menu-item (click)="delete(element)"><mat-icon>delete</mat-icon>Delete</button>
+                <button mat-menu-item (click)="remove(element)"><mat-icon>delete</mat-icon>Remove</button>
                 <button mat-menu-item (click)="build(element.id)"><mat-icon>sync_alt</mat-icon>Check for new builds</button>
                 <button mat-menu-item (click)="trigger(element.id, element.url)"><mat-icon>trending_up</mat-icon>Trigger build</button>
                 <button mat-menu-item (click)="reclone(element)"><mat-icon>swap_vert</mat-icon>Re-clone</button>
