@@ -1,14 +1,15 @@
 <h1><mat-icon>question_answer</mat-icon>About</h1>
 <h2>Molior - Debian Build System</h2>
 
-<p style="width: 700px">Molior is based on <a class="link" href="https://www.aptly.info/" target="_blank" rel="noreferrer noopener">aptly</a> for managing Debian package repositories and <a class="link" href="https://wiki.debian.org/sbuild" target="_blank" rel="noreferrer noopener">sbuild</a> for building Debian packages on multiple distributions and architectures.</p>
+<p style="width: 700px">Molior is based on <a class="link" href="https://www.aptly.info/" target="_blank" rel="noreferrer noopener">aptly</a> for managing Debian package repositories and <a class="link" href="https://wiki.debian.org/sbuild" target="_blank" rel="noreferrer noopener">sbuild</a> for building Debian packages on multiple distributions and architectures. </p>
 
 <p style="width: 700px">Molior allows the following via WebUI, REST API or commandline tools:</p>
 <ul>
-    <li>Manage Debian repository mirrors</li>
-    <li>Manage Debian repositories grouped in projects and versions</li>
+    <li>Manage Debian repository <a class="link" [routerLink]="['../mirrors']">mirrors</a></li>
+    <li>Manage Debian repositories grouped in <a class="link" [routerLink]="['../projects']">projects and versions</a></li>
     <li>Manage project dependencies between base mirrors and other projects</li>
-    <li>Build debianized git repositories for multiple projects and architectures (i386, amd64, armhf, arm64)</li>
+    <li>Provide <a class="link" [routerLink]="['../nodes']">build nodes</a> (amd64, arm64) on VMs or bare metal for running sbuild</li>
+    <li><a class="link" [routerLink]="['../builds']">Build</a> debianized <a class="link" [routerLink]="['../repos']">git repositories</a> for multiple projects and architectures (i386, amd64, armhf, arm64)</li>
     <li>Create project deployments (ISO Installers, VM images, containers, ...)</li>
 </ul>
 
