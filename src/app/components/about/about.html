@@ -1,37 +1,33 @@
 <h1><mat-icon>question_answer</mat-icon>About</h1>
-<p class="paragraph">
-The purpose of molior is to build Debian packages out of git repositories based on a mirror of a specific Debian version and therefore creating reproducible builds. Build environments are structured into projects and versions, which may include mirrors and versions of other projects.
-</p>
+<h2>Molior - Debian Build System</h2>
 
-Molior performs the following tasks:
-<ul>
-    <li>create mirrors of Debian repositories</li>
-    <li>create projects based on a Debian mirror, include dependencies to other projects or mirrors</li>
-    <li>build packages into project repositories (i386, amd64, armhf, arm64)</li>
-    <li>create deployments of projects (ISO Installer, VirtualBox, images, ...)</li>
-</ul>
-<br>
+<p style="width: 700px">Molior is based on <a class="link" href="https://www.aptly.info/" target="_blank" rel="noreferrer noopener">aptly</a> for managing Debian package repositories and <a class="link" href="https://wiki.debian.org/sbuild" target="_blank" rel="noreferrer noopener">sbuild</a> for building Debian packages on multiple distributions and architectures.</p>
 
-<h1>Documentation</h1>
+<p style="width: 700px">Molior allows the following via WebUI, REST API or commandline tools:</p>
 <ul>
-    <li><a class="link" href="/api/doc" target="_blank" rel="noreferrer noopener">API Documentation</a></li>
+    <li>Manage Debian repository mirrors</li>
+    <li>Manage Debian repositories grouped in projects and versions</li>
+    <li>Manage project dependencies between base mirrors and other projects</li>
+    <li>Build debianized git repositories for multiple projects and architectures (i386, amd64, armhf, arm64)</li>
+    <li>Create project deployments (ISO Installers, VM images, containers, ...)</li>
 </ul>
-<br>
+
+<h2>Documentation</h2>
+<ul>
+    <li><a class="link" href="https://github.com/molior-dbs/molior" target="_blank" rel="noreferrer noopener">Source code hosted on GitHub</a></li>
+    <li><a class="link" href="/api/doc" target="_blank" rel="noreferrer noopener">REST API Documentation (swagger)</a></li>
+</ul>
 
 <div style="display: flex;">
-    <div style="padding-right: 50px;">
-        <h1>APT Repo Public Key</h1>
-        <br>
-        <a href="{{status.gpgurl}}" class="link">{{status.gpgurl}}</a>
-        <br>
-        <br>
+    <div style="padding-right: 50px; width: 340px;">
+        <h2>APT Repo Public Key</h2>
+        <p>Molior apt repositories can be veryfied with the following <a href="{{status.gpgurl}}" class="link">GPG public key</a>:</p>
         <div class="key" [innerHTML]="repoasc">{{repoasc}}</div>
     </div>
 
-    <div>
-        <h1>SSH Public Key</h1>
-        <br>
+    <div style="width: 340px">
+        <h2>SSH Public Key</h2>
+        <p>Molior needs read permissions on git repositories for the following SSH public key:</p>
         <div class="key">{{status.sshkey}}</div>
-        <br>
     </div>
 </div>

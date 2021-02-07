@@ -3,6 +3,23 @@
     word-break:break-all;
     white-space: pre-wrap;
     font-size: xx-small;
-    width: 350px;
+    width: 370px;
     user-select: all;
+    margin-top: 10px;
+    height: 100px;
+    overflow-y: auto;
+}
+
+p {
+    line-height: 1.25;
+    margin-bottom: 0px;
+}
+
+ul {
+  margin-bottom: 0px;
+  margin-top: 10px;
+}
+
+li {
+  margin-bottom: 5px;
 }
