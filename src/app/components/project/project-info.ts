@@ -76,7 +76,10 @@ export class ProjectInfoComponent extends TableComponent {
             disableClose: true,
             width: '40%',
         });
-        dialog.afterClosed().subscribe(r => this.loadData());
+        dialog.afterClosed().subscribe(r => {
+            this.loadData();
+            this.router.navigate(['/projects']);
+        });
     }
 
 
