@@ -319,10 +319,10 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
                 this.LastSelectedLine = linenumber;
             } else {
-                console.log('row not found');
+                console.log('highlightLine: row not found');
             }
         } else {
-            console.log('element not found');
+            console.log('highlightLine: element not found');
         }
     }
 

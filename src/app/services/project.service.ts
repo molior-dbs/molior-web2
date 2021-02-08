@@ -68,12 +68,10 @@ export class ProjectService extends TableService<Project> {
     }
 
     create(name: string, description: string) {
-        console.log('creating project:', name);
         return this.http.post(`${apiURL()}/api/projects`, {name, description});
     }
 
     edit(id: number, description: string) {
-        console.log('editing project:', id);
         return this.http.put(`${apiURL()}/api/projectbase/${id}`, {description});
     }
 
@@ -126,13 +124,11 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
 
     create(project: string, version: string, description: string, dependencylevel: string, basemirror: string, architectures: string[],
            cibuilds: boolean) {
-        console.log(`creating projectversion: ${project}/${version} on ${basemirror} for ${architectures}`);
         return this.http.post<ProjectVersion>(`${apiURL()}/api2/projectbase/${project}/versions`,
             { name: version, description, dependency_policy: dependencylevel, basemirror, architectures, cibuilds });
     }
 
     edit(project: string, version: string, description: string, dependencylevel: string, cibuilds: boolean) {
-        console.log(`editing projectversion: ${project}/${version}`);
         return this.http.put<ProjectVersion>(`${apiURL()}/api2/project/${project}/${version}`,
             { description, dependency_policy: dependencylevel, cibuilds });
     }

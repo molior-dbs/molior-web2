@@ -47,7 +47,6 @@ export class BuildDataSource extends TableDataSource<Build> {
     }
 
     updateRuntimes(builds) {
-        // console.log('updating runtimes');
         let found = false;
         builds.forEach(build => {
             if (build.buildstate !== 'new' &&
@@ -144,12 +143,10 @@ export class BuildService extends TableService<Build> {
     }
 
     rebuild(id: number) {
-        console.log(`rebuilding build ${id}`);
         return this.http.put(`${apiURL()}/api/builds/${id}`, {});
     }
 
     delete(id: number) {
-        console.log(`deleting build ${id}`);
         return this.http.delete(`${apiURL()}/api2/build/${id}`);
     }
 }
