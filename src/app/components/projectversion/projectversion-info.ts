@@ -80,9 +80,12 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     removeDependency(name: string, version: string) {
-        this.projectversionService.removeDependency(this.projectversion, `${name}/${version}`).subscribe(r =>
-            this.loadData()
-        );
+        const dialog = this.dialog.open(DependencyDeleteDialogComponent, {
+            data: { projectversion: this.projectversion, dependency: `${name}/${version}` },
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
     }
 
     getDependencyLink(element) {
@@ -197,5 +200,37 @@ export class DependencyDialogComponent {
                     this.clicked = false;
                 }
             );
+    }
+}
+
+@Component({
+    selector: 'app-dependency-delete-dialog',
+    templateUrl: 'projectversion-dependency-delete-form.html',
+})
+export class DependencyDeleteDialogComponent {
+    clicked: boolean;
+    projectversion: ProjectVersion;
+    dependency: string;
+
+    constructor(public dialog: MatDialogRef<DependencyDialogComponent>,
+                private fb: FormBuilder,
+                protected projectversionService: ProjectVersionService,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, dependency: string }
+    ) {
+        this.clicked = false;
+        this.projectversion = data.projectversion;
+        this.dependency = data.dependency;
+    }
+
+    save(): void {
+        this.clicked = true;
+        this.projectversionService.removeDependency(this.projectversion, this.dependency).subscribe(
+            r => this.dialog.close(),
+            err => {
+                this.alertService.error(err.error);
+                this.clicked = false;
+            }
+        );
     }
 }
