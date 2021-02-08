@@ -136,7 +136,7 @@
                 <button mat-menu-item [routerLink]="getDependencyLink(element)">
                     <mat-icon>list</mat-icon>Details
                 </button>
-                <button mat-menu-item [disabled]="isExternalDependency(element)" (click)="removeDependency(element.project_name, element.name)"><mat-icon>delete</mat-icon> Delete</button>
+                <button mat-menu-item [disabled]="isExternalDependency(element)" (click)="removeDependency(element.project_name, element.name)"><mat-icon>delete</mat-icon> Remove</button>
             </mat-menu>
         </td>
     </ng-container>
