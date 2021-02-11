@@ -403,6 +403,7 @@ export class MirrorCopyDialogComponent {
     mirror: Mirror;
     basemirrors: { [id: string]: string[]; };
     architectures = [ 'amd64', 'i386', 'arm64', 'armhf' ];
+    defaultDependencyLevel: 'strict';
     distpreset: string;
     mirrorurls = [];
     form = this.fb.group({
