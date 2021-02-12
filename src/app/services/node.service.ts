@@ -70,14 +70,12 @@ export function getLoadColor(load: number) {
 
 export function getUptime(node: Node): string {
     const d = Math.floor(node.uptime_seconds / 3600.0 / 24.0);
-    console.log(d);
     let h = -1.0;
     if (d > 0) {
         h = Math.floor((node.uptime_seconds % (d * 24.0 * 3600.0)) / 3600.0);
     } else {
         h = Math.floor(node.uptime_seconds / 3600.0);
     }
-    console.log(h);
     const m = Math.floor((node.uptime_seconds % 3600.0) / 60.0);
     if (d > 0) {
         const hrs = `${h}`.padStart(2, '0');
