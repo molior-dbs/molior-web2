@@ -28,32 +28,31 @@
     <div *ngIf="authenticated()" class="app-nav">
         <mat-sidenav mode="side" opened>
             <mat-nav-list>
-                <!-- FIXME: https://stackoverflow.com/questions/48466718/make-router-link-active-on-two-different-routes -->
-                <a mat-list-item routerLinkActive="active-link" routerLink="/builds">
+                <a mat-list-item [ngClass]="activeMenu('build')" routerLink="/builds">
                     <mat-icon>library_books</mat-icon>
                     <span>Builds</span>
                 </a>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/projects">
+                <a mat-list-item [ngClass]="activeMenu('project')" routerLink="/projects">
                     <mat-icon>class</mat-icon>
                     <span>Projects</span>
                 </a>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/mirrors">
+                <a mat-list-item [ngClass]="activeMenu('mirror')" routerLink="/mirrors">
                     <mat-icon>folder_special</mat-icon>
                     <span>Mirrors</span>
                 </a>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/repos">
+                <a mat-list-item [ngClass]="activeMenu('repo')" routerLink="/repos">
                     <mat-icon svgIcon="git"></mat-icon>
                     <span>Repos</span>
                 </a>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/nodes">
+                <a mat-list-item [ngClass]="activeMenu('node')" routerLink="/nodes">
                     <mat-icon>developer_board</mat-icon>
                     <span>Nodes</span>
                 </a>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/users">
+                <a mat-list-item [ngClass]="activeMenu('user')" routerLink="/users">
                     <mat-icon>people</mat-icon>
                     <span>Users</span>
                 </a>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/about">
+                <a mat-list-item [ngClass]="activeMenu('about')" routerLink="/about">
                     <mat-icon>question_answer</mat-icon>
                     <span>About</span>
                 </a>

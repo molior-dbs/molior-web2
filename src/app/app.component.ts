@@ -95,5 +95,12 @@ export class AppComponent implements OnInit {
             this.router.navigate(['/']);
         }
     }
+
+    activeMenu(menu) {
+        if (this.router.url.startsWith(`/${menu}`)) {
+            return 'active-link';
+        }
+        return '';
+    }
 }
 
