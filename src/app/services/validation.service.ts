@@ -4,7 +4,7 @@ import {FormGroup, FormControl, AbstractControl} from '@angular/forms';
 export const urlregex = /^(?:https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\._-]+))+$/;
 export const gitregex = [
     /^(https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\._-]+))+$/,
-    /^(ssh:\/\/)?(git@)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?):[\w\._-]+(\/[\w\._-]+)+$/,
+    /^(ssh:\/\/)?(\w+@)?(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)[:/][\w\._-]+(\/[\w\._-]+)+$/,
 ];
 
 export class ValidationService {
