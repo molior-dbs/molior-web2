@@ -59,15 +59,17 @@
                             </mat-form-field>
                         </div>
 
-                        <p>Dependency Policy</p>
-                        <div style="padding-left: 45px; width: 400px">
-                            <mat-form-field floatLabel="never" appearance="standard">
-                                <mat-select formControlName="dependencylevel" [(value)]="defaultDependencyLevel">
-                                    <mat-option value="strict"><strong>strict</strong>&nbsp;- Use in {{formArray.get('0').value.mirrorname}}/{{formArray.get('0').value.mirrorversion}} based projects</mat-option>
-                                    <mat-option value="distribution"><strong>dist</strong>&nbsp;- Use in {{formArray.get('0').value.mirrorname}} based projects</mat-option>
-                                    <mat-option value="any"><strong>any</strong>&nbsp;- Use with any base mirror based projects</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                        <div *ngIf="formArray.get('0').value.mirrortype==='2'">
+                            <p>Dependency Policy</p>
+                            <div style="padding-left: 45px; width: 400px">
+                                <mat-form-field floatLabel="never" appearance="standard">
+                                    <mat-select formControlName="dependencylevel" [(value)]="defaultDependencyLevel">
+                                        <mat-option value="strict"><strong>strict</strong>&nbsp;- Use in {{formArray.get('0').value.basemirror}} based projects</mat-option>
+                                        <mat-option value="distribution"><strong>dist</strong>&nbsp;- Use in {{formArray.get('0').value.basemirror.split('/')[0]}} based projects</mat-option>
+                                        <mat-option value="any"><strong>any</strong>&nbsp;- Use with any base mirror based projects</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
                         </div>
                     </div>
                 </mat-radio-group>

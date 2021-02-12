@@ -292,6 +292,7 @@ export class MirrorDialogComponent {
         if (this.distpreset !== '' && this.formArray.value[1].mirrordist.trim() === '') {
             this.formArray.get([1]).patchValue({mirrordist: this.distpreset});
         }
+        form.patchValue({dependencylevel: this.defaultDependencyLevel});
     }
 
     chooseAdditionalMirror() {
@@ -574,6 +575,7 @@ export class MirrorCopyDialogComponent {
         if (this.distpreset !== '' && this.formArray.value[1].mirrordist.trim() === '') {
             this.formArray.get([1]).patchValue({mirrordist: this.distpreset});
         }
+        form.patchValue({dependencylevel: this.defaultDependencyLevel});
     }
 
     chooseAdditionalMirror() {
