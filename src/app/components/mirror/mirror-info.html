@@ -14,45 +14,22 @@
     <div>
         <table>
             <tr>
-                <td><strong>URL</strong></td>
-                <td colspan="3"><a class="link" href="{{mirror.url}}" target="_blank">{{mirror.url}}</a></td>
-
-            </tr>
-            <tr>
-                <td><strong>Distribution</strong></td>
-                <td>{{mirror.distribution}}</td>
-            </tr>
-            <tr>
-                <td *ngIf="mirror.mirrorkeyserver"><strong>Key server</strong></td>
-                <td><a class="link" href="{{mirror.mirrorkeyserver}}" target="_blank" *ngIf="mirror.mirrorkeyserver">{{mirror.mirrorkeyserver}}</a></td>
-            </tr>
-            <tr>
-                <td *ngIf="mirror.mirrorkeyurl"><strong>Key URL</strong></td>
-                <td><a class="link" href="{{mirror.mirrorkeyurl}}" target="_blank">{{mirror.mirrorkeyurl}}</a></td>
-            </tr>
-            <tr>
-                <td><strong>Components</strong></td>
-                <td>{{mirror.components.split(',').join(' ')}}</td>
-            </tr>
-            <tr>
-                <td><strong *ngIf="mirror.mirrorkeyids">Key IDs</strong></td>
-                <td><span *ngIf="mirror.mirrorkeyids">{{mirror.mirrorkeyids.split(',').join(' ')}}</span></td>
+                <td><strong>APT Repository</strong></td>
+                <td><a class="link" href="{{mirror.apt_url}}" target="_blank">{{mirror.apt_url}}</a></td>
+                <td><strong>Mirror URL</strong></td>
+                <td><a class="link" href="{{mirror.url}}" target="_blank">{{mirror.url}}</a></td>
             </tr>
             <tr>
                 <td><strong>Architectures</strong></td>
                 <td>{{mirror.architectures.join(', ')}}</td>
+                <td><strong>Components</strong></td>
+                <td>{{mirror.components.split(',').join(' ')}}</td>
             </tr>
             <tr>
                 <td><strong>State</strong></td>
                 <td>{{mirror.state}}</td>
-            </tr>
-            <tr *ngIf="mirror.basemirror_name">
-                <td><strong>Base Mirror</strong></td>
-                <td>{{mirror.basemirror_name}}</td>
-            </tr>
-            <tr *ngIf="!mirror.is_basemirror">
-                <td><strong>Dependency policy</strong></td>
-                <td>{{mirror.dependency_policy}}</td>
+                <td><strong>Distribution</strong></td>
+                <td>{{mirror.distribution}}</td>
             </tr>
             <tr>
                 <td><strong>External repo</strong></td>
@@ -60,6 +37,23 @@
                     <mat-icon *ngIf="mirror.external_repo">done</mat-icon>
                     <mat-icon *ngIf="!mirror.external_repo">remove</mat-icon>
                 </td>
+                <td *ngIf="mirror.mirrorkeyserver"><strong>Key server</strong></td>
+                <td *ngIf="mirror.mirrorkeyserver"><a class="link" href="{{mirror.mirrorkeyserver}}" target="_blank">{{mirror.mirrorkeyserver}}</a></td>
+            </tr>
+            <tr>
+                <td *ngIf="mirror.mirrorkeyurl"><strong>Key URL</strong></td>
+                <td *ngIf="mirror.mirrorkeyurl"><a class="link" href="{{mirror.mirrorkeyurl}}" target="_blank">{{mirror.mirrorkeyurl}}</a></td>
+            </tr>
+            <tr>
+            <tr>
+                <td><strong *ngIf="mirror.basemirror_name">Base Mirror</strong></td>
+                <td><span *ngIf="mirror.basemirror_name">{{mirror.basemirror_name}}</span></td>
+                <td *ngIf="mirror.mirrorkeyids"><strong *ngIf="mirror.mirrorkeyids">Key IDs</strong></td>
+                <td *ngIf="mirror.mirrorkeyids"><span *ngIf="mirror.mirrorkeyids">{{mirror.mirrorkeyids.split(',').join(' ')}}</span></td>
+            </tr>
+            <tr *ngIf="!mirror.is_basemirror">
+                <td><strong>Dependency policy</strong></td>
+                <td>{{mirror.dependency_policy}}</td>
             </tr>
         </table>
     </div>
