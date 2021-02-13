@@ -39,12 +39,9 @@
                 </td>
                 <td *ngIf="mirror.mirrorkeyserver"><strong>Key server</strong></td>
                 <td *ngIf="mirror.mirrorkeyserver"><a class="link" href="{{mirror.mirrorkeyserver}}" target="_blank">{{mirror.mirrorkeyserver}}</a></td>
-            </tr>
-            <tr>
                 <td *ngIf="mirror.mirrorkeyurl"><strong>Key URL</strong></td>
                 <td *ngIf="mirror.mirrorkeyurl"><a class="link" href="{{mirror.mirrorkeyurl}}" target="_blank">{{mirror.mirrorkeyurl}}</a></td>
             </tr>
-            <tr>
             <tr>
                 <td><strong *ngIf="mirror.basemirror_name">Base Mirror</strong></td>
                 <td><span *ngIf="mirror.basemirror_name">{{mirror.basemirror_name}}</span></td>
