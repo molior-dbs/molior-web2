@@ -44,7 +44,7 @@
             </tr>
             <tr>
                 <td><strong *ngIf="mirror.basemirror_name">Base Mirror</strong></td>
-                <td><span *ngIf="mirror.basemirror_name">{{mirror.basemirror_name}}</span></td>
+                <td><span *ngIf="mirror.basemirror_name" [ngClass]="'link'" [routerLink]="['/mirror'].concat(mirror.basemirror_name.split('/'))">{{mirror.basemirror_name}}</span></td>
                 <td *ngIf="mirror.mirrorkeyids"><strong *ngIf="mirror.mirrorkeyids">Key IDs</strong></td>
                 <td *ngIf="mirror.mirrorkeyids"><span *ngIf="mirror.mirrorkeyids">{{mirror.mirrorkeyids.split(',').join(' ')}}</span></td>
             </tr>
