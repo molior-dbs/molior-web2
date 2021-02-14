@@ -1,7 +1,7 @@
 <mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Rebuild Build</h1>
 <div mat-dialog-content>
     <span>
-        Retry building <strong>{{build.sourcename }}</strong> <span *ngIf="build.buildvariant"> {{build.buildvariant}}</span>?
+        Retry building <strong>{{build.sourcename }}</strong> <span *ngIf="build.buildvariant.name"> {{build.buildvariant.name}}</span>?
     </span>
 </div>
 <div mat-dialog-actions>
