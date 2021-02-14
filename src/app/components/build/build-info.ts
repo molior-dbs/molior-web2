@@ -371,7 +371,6 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
             disableClose: true,
             width: '40%',
         });
-        dialogRef.afterClosed().subscribe(result => this.router.navigate(['builds']));
     }
 
     buildlatest() {

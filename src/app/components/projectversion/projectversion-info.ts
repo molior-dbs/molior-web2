@@ -109,7 +109,6 @@ export class ProjectversionInfoComponent extends TableComponent {
             disableClose: true,
             width: '40%',
         });
-        dialog.afterClosed().subscribe(result => this.loadData());
     }
 
     copy() {

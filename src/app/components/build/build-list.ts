@@ -1,5 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {Router} from '@angular/router';
 
 import {BuildService, BuildDataSource, buildicon, Build} from '../../services/build.service';
 import {AlertService} from '../../services/alert.service';
@@ -24,6 +25,7 @@ export class BuildDeleteDialogComponent {
     constructor(public dialog: MatDialogRef<BuildDeleteDialogComponent>,
                 protected buildService: BuildService,
                 private alertService: AlertService,
+                protected router: Router,
                 @Inject(MAT_DIALOG_DATA) private data: { build: Build }
     ) {
         this.clicked = false;
@@ -34,6 +36,7 @@ export class BuildDeleteDialogComponent {
         this.clicked = true;
         this.buildService.delete(this.build.id).subscribe( r => {
             this.dialog.close();
+            this.router.navigate(['/builds']);
         },
         err => {
             this.alertService.error(err.error);
