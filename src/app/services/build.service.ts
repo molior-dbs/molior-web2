@@ -133,7 +133,7 @@ export class BuildService extends TableService<Build> {
     }
 
     get(id: number) {
-        return this.http.get<Build>(`${apiURL()}/api/builds/${id}`);
+        return this.http.get<Build>(`${apiURL()}/api2/build/${id}`);
     }
 
     getlog(id: number) {
@@ -143,7 +143,7 @@ export class BuildService extends TableService<Build> {
     }
 
     rebuild(id: number) {
-        return this.http.put(`${apiURL()}/api/builds/${id}`, {});
+        return this.http.put(`${apiURL()}/api2/build/${id}`, {});
     }
 
     delete(id: number) {
