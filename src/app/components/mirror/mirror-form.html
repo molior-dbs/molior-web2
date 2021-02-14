@@ -85,7 +85,7 @@
                 <ng-template matStepLabel>Mirror Source</ng-template>
 
                 <mat-checkbox formControlName="mirrorsrc" style="padding-left: 135px;">Mirror source packages</mat-checkbox>
-                <mat-checkbox formControlName="mirrorinst">Mirror installer &amp; udebs</mat-checkbox>
+                <mat-checkbox *ngIf="formArray.get('0').value.mirrortype==='1'" formControlName="mirrorinst">Mirror installer &amp; udebs</mat-checkbox>
 
                 <p style="margin-bottom: 0px;">
                 <app-validation-error [control]="formArray.get('1').get('mirrordist')"></app-validation-error>
