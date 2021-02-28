@@ -1,0 +1,143 @@
+<h1><mat-icon>folder_special</mat-icon>Mirror <a class="title" [routerLink]="['/mirrors']">{{mirror.name}}</a><span class="title">/{{mirror.version}}</span>
+    <mat-icon *ngIf="mirror.is_basemirror" svgIcon="debian" [ngStyle]="{'margin-right': '0px'}"></mat-icon>
+</h1>
+<div *ngIf="mirror.description" [ngStyle]="{ 'padding': '10px' }">{{ mirror.description }}</div>
+
+<nav mat-tab-nav-bar>
+    <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
+       [routerLink]="['/mirror', mirror.name, mirror.version]">Info</a>
+    <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
+       [routerLink]="['/mirror', mirror.name, mirror.version, 'aptsources']">APT Sources</a>
+</nav>
+
+<div class="mat-elevation-z8 info-table">
+    <div>
+        <table>
+            <tr>
+                <td><strong>APT Repository</strong></td>
+                <td><a class="link" href="{{mirror.apt_url}}" target="_blank">{{mirror.apt_url}}</a></td>
+                <td><strong>Mirror URL</strong></td>
+                <td><a class="link" href="{{mirror.url}}" target="_blank">{{mirror.url}}</a></td>
+            </tr>
+            <tr>
+                <td><strong>Architectures</strong></td>
+                <td>{{mirror.architectures.join(', ')}}</td>
+                <td><strong>Components</strong></td>
+                <td>{{mirror.components.split(',').join(' ')}}</td>
+            </tr>
+            <tr>
+                <td><strong>State</strong></td>
+                <td>{{mirror.state}}</td>
+                <td><strong>Distribution</strong></td>
+                <td>{{mirror.distribution}}</td>
+            </tr>
+            <tr>
+                <td><strong>External repo</strong></td>
+                <td>
+                    <mat-icon *ngIf="mirror.external_repo">done</mat-icon>
+                    <mat-icon *ngIf="!mirror.external_repo">remove</mat-icon>
+                </td>
+                <td *ngIf="mirror.mirrorkeyserver"><strong>Key server</strong></td>
+                <td *ngIf="mirror.mirrorkeyserver"><a class="link" href="{{mirror.mirrorkeyserver}}" target="_blank">{{mirror.mirrorkeyserver}}</a></td>
+                <td *ngIf="mirror.mirrorkeyurl"><strong>Key URL</strong></td>
+                <td *ngIf="mirror.mirrorkeyurl"><a class="link" href="{{mirror.mirrorkeyurl}}" target="_blank">{{mirror.mirrorkeyurl}}</a></td>
+            </tr>
+            <tr>
+                <td><strong *ngIf="mirror.basemirror_name">Base Mirror</strong></td>
+                <td><span *ngIf="mirror.basemirror_name" [ngClass]="'link'" [routerLink]="['/mirror'].concat(mirror.basemirror_name.split('/'))">{{mirror.basemirror_name}}</span></td>
+                <td *ngIf="mirror.mirrorkeyids"><strong *ngIf="mirror.mirrorkeyids">Key IDs</strong></td>
+                <td *ngIf="mirror.mirrorkeyids"><span *ngIf="mirror.mirrorkeyids">{{mirror.mirrorkeyids.split(',').join(' ')}}</span></td>
+            </tr>
+            <tr *ngIf="!mirror.is_basemirror">
+                <td><strong>Dependency policy</strong></td>
+                <td>{{mirror.dependency_policy}}</td>
+            </tr>
+        </table>
+    </div>
+    <div style="flex-grow: 1; text-align: right;">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="edit()">  <mat-icon>edit</mat-icon>Edit</button>
+            <button mat-menu-item (click)="copy()">  <mat-icon>content_copy</mat-icon>Copy</button>
+            <button mat-menu-item (click)="update()"><mat-icon>update</mat-icon>Update</button>
+            <button mat-menu-item (click)="delete()"><mat-icon>delete</mat-icon>Delete</button>
+        </mat-menu>
+    </div>
+</div>
+
+<br/>
+<h2>Mirror Dependents</h2>
+<mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
+<div id="table-wrapper" [ngStyle]="{display: 'flex', 'flex-direction': 'column', 'flex-grow': 1 }" (window:resize)="resize2parent()">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" (wheel)="scroll($event)">
+
+        <ng-container matColumnDef="dependent">
+            <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '200px'}"><mat-form-field>
+                    <input matInput placeholder="Dependent" #inputName>
+                </mat-form-field></th>
+                <td mat-cell *matCellDef="let element" [routerLink]="getDependentLink(element)">
+                    <strong>
+                        <mat-icon *ngIf="element.is_mirror">folder_special</mat-icon>
+                        <mat-icon *ngIf="!element.is_mirror">class</mat-icon>
+                        {{element.project_name}}/{{element.name}}
+                    </strong>
+                </td>
+        </ng-container>
+
+        <ng-container matColumnDef="architectures">
+            <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '100px', 'padding-left': '10px'}">Architectures</th>
+            <td mat-cell *matCellDef="let element" [routerLink]="getDependentLink(element)" [ngStyle]="{'padding-left': '10px'}">
+                {{ element.architectures.join(', ') }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="is_locked">
+            <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '80px', 'padding-left': '10px'}">Locked</th>
+            <td mat-cell *matCellDef="let element" [routerLink]="getDependentLink(element)" [ngStyle]="{'padding-left': '10px'}">
+                <mat-icon *ngIf="element.is_locked">lock</mat-icon>
+                <mat-icon *ngIf="!element.is_locked">remove</mat-icon>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef [ngStyle]="{'padding-left': '10px'}">Description</th>
+            <td mat-cell *matCellDef="let element" [routerLink]="getDependentLink(element)" [ngStyle]="{'padding-left': '10px'}">
+                {{element.description}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef>
+            </th>
+            <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
+                <button mat-icon-button [matMenuTriggerFor]="menu" id="menu_{{element.id}}" aria-label="">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item [routerLink]="getDependentLink(element)">
+                        <mat-icon>list</mat-icon> Details
+                    </button>
+                </mat-menu>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumns;" (contextmenu)="contextmenu($event, element)"></tr>
+        <ng-container matColumnDef="footer">
+            <td mat-footer-cell *matFooterCellDef colspan="100%">
+                <div *ngIf="(dataSource.total$ | async) == -1">
+                    Loading...
+                </div>
+                <div *ngIf="(dataSource.total$ | async) == 0">
+                    No entries found
+                </div>
+                <div *ngIf="(dataSource.total$ | async) === -404" [ngStyle]="{color: 'red'}">
+                    Unable to load data ({{dataSource.error$ | async }})
+                </div>
+            </td>
+        </ng-container>
+        <tr mat-footer-row *matFooterRowDef="['footer']" [ngStyle]="(dataSource.total$ | async) < 1 ? {} : {display: 'none'}"></tr>
+    </table>
+</div>

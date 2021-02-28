@@ -1,7 +1,7 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {Observable, Observer, BehaviorSubject, throwError} from 'rxjs';
 import {MatPaginator} from '@angular/material';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {map, catchError} from 'rxjs/operators';
 
 import {apiURL} from '../lib/url';
@@ -86,7 +86,7 @@ export class TableDataSource<T extends {}> implements DataSource<T>, Observer<Mo
         );
     }
 
-    update(event: UpdateEvent) {
+    update(event: UpdateEvent, updateList: boolean = false) {
         const idkey = 'id';
         const parentkey = 'parent_id';
         if (!event.data) {
@@ -98,6 +98,9 @@ export class TableDataSource<T extends {}> implements DataSource<T>, Observer<Mo
             return;
         }
         if (event.event === 'added') {
+            if (this.paginator.pageIndex !== 0) {
+                return;
+            }
             let insertat = null;
             if (event.data.hasOwnProperty(parentkey) && event.data[parentkey] !== null) {
                 this.currentResults.forEach((item, i) => {
@@ -115,20 +118,31 @@ export class TableDataSource<T extends {}> implements DataSource<T>, Observer<Mo
                 this.currentResults.pop();
             }
             this.currentResults.splice(insertat, 0, event.data as T);
+            this.dataHook(this.currentResults);
             this.next(this.currentResults);
         } else if (event.event === 'changed') {
             this.currentResults.forEach((item, i) => {
-                if (item[idkey] === event.data[idkey]) {
-                    for (const key in event.data) {
-                        if (key) {
-                            if (key !== idkey) {
-                                this.currentResults[i][key] = event.data[key];
+                let updates = [];
+                if (!updateList) {
+                    updates.push(event.data);
+                } else {
+                    updates = event.data as [];
+                }
+
+                updates.forEach((update) => {
+                    if (item[idkey] === update[idkey]) {
+                        for (const key in update as {}) {
+                            if (key) {
+                                if (key !== idkey) {
+                                    this.currentResults[i][key] = update[key];
+                                }
                             }
                         }
+                        this.dataHook(this.currentResults);
+                        this.next(this.currentResults);
+                        this.total.next(this.currentResults.length);
                     }
-                    this.next(this.currentResults);
-                    this.total.next(this.currentResults.length);
-                }
+                });
             });
         }
     }

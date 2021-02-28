@@ -9,7 +9,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {AuthService} from './services/auth.service';
 import {UserService} from './services/user.service';
 import {MoliorService} from './services/websocket';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {apiURL} from './lib/url';
 
 interface Status {
@@ -42,6 +42,9 @@ export class AppComponent implements OnInit {
         protected http: HttpClient
     ) {
         this.matIconRegistry.addSvgIcon('debian', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/debian.svg'));
+        this.matIconRegistry.addSvgIcon('git', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/git.svg'));
+        this.matIconRegistry.addSvgIcon('amd64', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/amd64.svg'));
+        this.matIconRegistry.addSvgIcon('arm64', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/arm64.svg'));
         this.connectionColor = new BehaviorSubject<string>('red');
         this.connectionColor$ = this.connectionColor.asObservable();
         this.connectionColor.next('red');
@@ -77,6 +80,27 @@ export class AppComponent implements OnInit {
 
     authenticated() {
         return this.authService.currentUserValue != null;
+    }
+
+    getLoggedUserName(): string {
+        if (this.authService.currentUserValue) {
+            return this.authService.currentUserValue.username;
+        }
+        return '';
+    }
+
+    goToHomePage() {
+        // redirect to home if already logged in
+        if (this.authService.currentUserValue) {
+            this.router.navigate(['/']);
+        }
+    }
+
+    activeMenu(menu) {
+        if (this.router.url.startsWith(`/${menu}`)) {
+            return 'active-link';
+        }
+        return '';
     }
 }
 

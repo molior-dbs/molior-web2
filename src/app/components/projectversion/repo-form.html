@@ -1,6 +1,6 @@
 <mat-icon style="float: left; padding-top: 4px;">class</mat-icon>
-<h1 *ngIf="!repo" mat-dialog-title>Add git Repository</h1>
-<h1 *ngIf="repo" mat-dialog-title>Edit git Repository</h1>
+<h1 *ngIf="!repo" mat-dialog-title>Add git repository</h1>
+<h1 *ngIf="repo" mat-dialog-title>Edit git repository</h1>
 <div mat-dialog-content>
     <form [formGroup]="form">
         <p><strong>git Repository URL</strong> <app-validation-error [control]="form.get('url')"></app-validation-error></p>
@@ -23,6 +23,7 @@
 
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="dialog.close()">Cancel</button>
-    <button mat-button (click)="save()" [disabled]="!form.valid">Ok</button>
+    <app-alert></app-alert>
+    <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
 </div>

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -20,6 +20,18 @@ export interface ProjectVersion {
     apt_url: string;
     architectures: string[];
     basemirror: string;
+    is_mirror: boolean;
+    description: string;
+    dependency_policy: string;
+    ci_builds_enabled: boolean;
+    dependency_ids: number[];
+    dependent_ids: number[];
+}
+
+export interface Permission {
+    id: number;
+    username: string;
+    role: string;
 }
 
 export class ProjectDataSource extends TableDataSource<Project> {
@@ -35,24 +47,48 @@ export class ProjectService extends TableService<Project> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('q', params.get('filter_name'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('filter_name')) {
+            p.q = params.get('filter_name');
+        }
+        if (params.get('filter_role')) {
+            p.role = params.get('filter_role');
+        }
+        if (params.get('page')) {
+            p.page = params.get('page');
+        }
+        if (params.get('pagesize')) {
+            p.page_size = params.get('pagesize');
+        }
+        return p;
     }
 
     get(name: string) {
-        return this.http.get<Project>(`${apiURL()}/api2/project/${name}`);
+        return this.http.get<Project>(`${apiURL()}/api2/projectbase/${name}`);
     }
 
     create(name: string, description: string) {
-        console.log('creating project:', name);
-        return this.http.post<Project>(`${apiURL()}/api/projects`, {name, description}).subscribe();
+        return this.http.post(`${apiURL()}/api/projects`, {name, description});
     }
 
     edit(id: number, description: string) {
-        console.log('editing project:', id);
-        return this.http.put<Project>(`${apiURL()}/api/project/${id}`, {description}).subscribe();
+        return this.http.put(`${apiURL()}/api/projectbase/${id}`, {description});
+    }
+
+    delete(name: string) {
+        return this.http.delete(`${apiURL()}/api2/projectbase/${name}`);
+    }
+
+    addPermission(name: string, username: string, role: string) {
+        return this.http.post(`${apiURL()}/api2/projectbase/${name}/permissions`, {username, role});
+    }
+
+    editPermission(name: string, username: string, role: string) {
+        return this.http.put(`${apiURL()}/api2/projectbase/${name}/permissions`, {username, role});
+    }
+
+    deletePermission(name: string, username: string) {
+        return this.http.request('delete', `${apiURL()}/api2/projectbase/${name}/permissions`, {body: {username}});
     }
 }
 
@@ -69,43 +105,80 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('q', params.get('filter_name'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('filter_name')) {
+            p.q = params.get('filter_name');
+        }
+        if (params.get('page')) {
+            p.page = params.get('page');
+        }
+        if (params.get('pagesize')) {
+            p.page_size = params.get('pagesize');
+        }
+        return p;
     }
 
     get(name: string, version: string) {
         return this.http.get<ProjectVersion>(`${apiURL()}/api2/project/${name}/${version}`);
     }
 
-    create(project: string, version: string, description: string, basemirror: string, architectures: string[]) {
-        console.log(`creating projectversion: ${project}/${version} on ${basemirror} for ${architectures}`);
-        return this.http.post<Project>(`${apiURL()}/api2/project/${project}/versions`,
-            { name: version, description, basemirror, architectures }).subscribe();
+    create(project: string, version: string, description: string, dependencylevel: string, basemirror: string, architectures: string[],
+           cibuilds: boolean) {
+        return this.http.post<ProjectVersion>(`${apiURL()}/api2/projectbase/${project}/versions`,
+            { name: version, description, dependency_policy: dependencylevel, basemirror, architectures, cibuilds });
     }
 
-    getDependencies(projectversion: ProjectVersion) {
-        const p = new HttpParams().set('candidates', 'true');
-        return this.http.get(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/dependencies`,
-                             { params: p }).pipe(
+    edit(project: string, version: string, description: string, dependencylevel: string, cibuilds: boolean) {
+        return this.http.put<ProjectVersion>(`${apiURL()}/api2/project/${project}/${version}`,
+            { description, dependency_policy: dependencylevel, cibuilds });
+    }
+
+    getDependencies(p: ProjectVersion) {
+        const params: any = {candidates: true};
+        return this.http.get(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependencies`,
+                             {params}).pipe(
             /* tslint:disable:no-string-literal */
             map(res => new MoliorResult<ProjectVersion>(res['total_result_count'], res['results']))
             /* tslint:enable:no-string-literal */
         );
     }
 
-    addDependency(projectversion: ProjectVersion, dependency: string) {
-        return this.http.post(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/dependencies`,
-            { dependency }).subscribe();
+    addDependency(p: ProjectVersion, dependency: string, useCIBuilds: boolean) {
+        return this.http.post(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependencies`, { dependency,
+                                                                                                     use_cibuilds: useCIBuilds });
     }
 
-    removeDependency(projectversion: ProjectVersion, dependency: string) {
-        return this.http.delete(
-            `${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/dependency/${dependency}`
-        ).subscribe();
+    removeDependency(p: ProjectVersion, dependency: string) {
+        return this.http.delete(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependency/${dependency}`);
     }
 
+    get_apt_sources(name: string, version: string, ci: boolean = false) {
+        const params: any = {};
+        if (ci) {
+            params.unstable = true;
+        }
+        return this.http.get<string>(`${apiURL()}/api2/project/${name}/${version}/aptsources`, {params, responseType: 'text' as 'json'});
+    }
+
+    copy(p: ProjectVersion, version: string, description: string, dependencylevel: string, basemirror: string, architectures: string[],
+         cibuilds: boolean) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/copy`,
+            { name: version, description, dependency_policy: dependencylevel, basemirror, architectures, cibuilds });
+    }
+
+    lock(p: ProjectVersion) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/lock`, {});
+    }
+
+    overlay(p: ProjectVersion, name: string) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/overlay`, { name });
+    }
+
+    snapshot(p: ProjectVersion, name: string) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/snapshot`, { name });
+    }
+
+    delete(p: ProjectVersion, forceremoval: boolean) {
+        return this.http.delete<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}?forceremoval=${forceremoval}`);
+    }
 }
-
-

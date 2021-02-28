@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -16,12 +16,13 @@ export interface Build {
     endstamp: string;
     version: string;
     sourcename: string;
+    architecture: string;
     maintainer: string;
     maintainer_email: string;
     git_ref: string;
     branch: string;
     sourcerepository_id: number;
-    project: {id: number; name: string;
+    project: {id: number; name: string, is_mirror: boolean;
               version: {id: number; name: string; is_locked: boolean}};
     buildvariant: {name: string;
                    architecture: {id: number; name: string};
@@ -46,7 +47,6 @@ export class BuildDataSource extends TableDataSource<Build> {
     }
 
     updateRuntimes(builds) {
-        // console.log('updating runtimes');
         let found = false;
         builds.forEach(build => {
             if (build.buildstate !== 'new' &&
@@ -107,15 +107,33 @@ export class BuildService extends TableService<Build> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('version', params.get('filter_name'))
-                .set('maintainer', params.get('filter_maintainer'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('search')) {
+            p.search = params.get('search');
+        }
+        if (params.get('search_project')) {
+            p.search_project = params.get('search_project');
+        }
+        if (params.get('maintainer')) {
+            p.maintainer = params.get('maintainer');
+        }
+        if (params.get('project')) {
+            p.project = params.get('project');
+        }
+        if (params.get('commit')) {
+            p.commit = params.get('commit');
+        }
+        if (params.get('page')) {
+            p.page = params.get('page').toString();
+        }
+        if (params.get('pagesize')) {
+            p.page_size = params.get('pagesize').toString();
+        }
+        return p;
     }
 
     get(id: number) {
-        return this.http.get<Build>(`${apiURL()}/api/builds/${id}`);
+        return this.http.get<Build>(`${apiURL()}/api2/build/${id}`);
     }
 
     getlog(id: number) {
@@ -125,8 +143,11 @@ export class BuildService extends TableService<Build> {
     }
 
     rebuild(id: number) {
-        console.log(`rebuilding build ${id}`);
-        return this.http.delete(`${apiURL()}/api/builds/${id}`).subscribe();
+        return this.http.put(`${apiURL()}/api2/build/${id}`, {});
+    }
+
+    delete(id: number) {
+        return this.http.delete(`${apiURL()}/api2/build/${id}`);
     }
 }
 

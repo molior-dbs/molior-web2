@@ -1,40 +1,126 @@
-<a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span>
+<h1><mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span></h1>
+<div *ngIf="projectversion.description" [ngStyle]="{ 'padding': '10px' }">{{ projectversion.description }}</div>
 
 <nav mat-tab-nav-bar>
     <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
        [routerLink]="['/project', projectversion.project_name, projectversion.name, 'info']">Info</a>
     <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
-       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'builds']">Builds</a>
     <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
-       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'admin']">Admin</a>
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repos']">Source Repositories</a>
+    <a mat-tab-link routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'aptsources']">APT Sources</a>
+    <a mat-tab-link routerLinkActive #rla5="routerLinkActive" [active]="rla5.isActive"
+       [routerLink]="['/project', projectversion.project_name, projectversion.name, 'dependents']">Dependents</a>
 </nav>
 
-<table class="mat-elevation-z8 info-table">
-    <tr>
-        <td><strong>APT Repository</strong></td>
-        <td><a href="{{ projectversion.apt_url }}" target="_blank">{{ projectversion.apt_url }}</a></td>
-    </tr>
-    <tr>
-        <td><strong>Base Mirror</strong></td>
-        <td><a [routerLink]="['/mirror/' + projectversion.basemirror ]">{{ projectversion.basemirror }}</a></td>
-    </tr>
-    <tr>
-        <td><strong>Architectures</strong></td>
-        <td>{{ projectversion.architectures }}</td>
-    </tr>
-</table>
+<div class="mat-elevation-z8 info-table">
+    <div>
+        <table style="border-collapse: collapse">
+            <tr>
+                <td><strong>APT Repository</strong></td>
+                <td><a class="link" href="{{ projectversion.apt_url }}" target="_blank">{{ projectversion.apt_url }}</a></td>
+
+                <td><strong>State</strong></td>
+                <td>
+                    <mat-icon *ngIf="projectversion.is_locked">lock</mat-icon>
+                    <mat-icon *ngIf="!projectversion.is_locked">lock_open</mat-icon>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Base Mirror</strong></td>
+                <td><a class="link" [routerLink]="['/mirror/' + projectversion.basemirror ]">{{ projectversion.basemirror }}</a></td>
+
+                <td><strong>Dependency policy</strong></td>
+                <td>{{ projectversion.dependency_policy }}</td>
+            </tr>
+            <tr>
+                <td><strong>Architectures</strong></td>
+                <td>{{ projectversion.architectures.join(', ') }}</td>
+
+                <td><strong>CI Builds</strong></td>
+                <td>
+                    <mat-icon *ngIf="projectversion.ci_builds_enabled">done</mat-icon>
+                    <mat-icon *ngIf="!projectversion.ci_builds_enabled">remove</mat-icon>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="flex-grow: 1; text-align: right;">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="edit()">   <mat-icon>edit</mat-icon>Edit</button>
+                <button mat-menu-item (click)="copy()">   <mat-icon>content_copy</mat-icon>Copy</button>
+                <button mat-menu-item (click)="overlay()"><mat-icon>horizontal_split</mat-icon>Create Overlay</button>
+                <button mat-menu-item (click)="snapshot()"><mat-icon>trending_up</mat-icon>Create Release Snapshot</button>
+                <button *ngIf="!projectversion.is_locked" mat-menu-item (click)="lock()"><mat-icon>lock</mat-icon>Lock</button>
+                <button mat-menu-item (click)="delete()"><mat-icon>delete</mat-icon>Delete</button>
+            </mat-menu>
+    </div>
+</div>
 
 <br/>
-<h1>Repository Dependencies</h1>
-<mat-paginator [pageSizeOptions]="[10, 50, 100, 1000]" showFirstLastButtons></mat-paginator>
+<h2>Project Dependencies</h2>
+<mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
     <ng-container matColumnDef="dependency">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '200px'}"><mat-form-field>
-            <input matInput placeholder="Dependency" #inputName>
-        </mat-form-field></th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['/project', element.project_name, element.name]">
-            <strong> {{element.project_name}}/{{element.name}} </strong>
+        <th mat-header-cell *matHeaderCellDef><mat-form-field>
+                <input matInput placeholder="Dependency" #inputName>
+            </mat-form-field></th>
+            <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)">
+                <strong style="display: flex; align-items: center;">
+                    <mat-icon *ngIf="element.is_mirror">folder_special</mat-icon>
+                    <mat-icon *ngIf="!element.is_mirror">class</mat-icon>
+                    {{element.project_name}}/{{element.name}}
+                </strong>
+            </td>
+    </ng-container>
+
+    <ng-container matColumnDef="architectures">
+        <th mat-header-cell *matHeaderCellDef>Architectures</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)">
+            {{ element.architectures.join(', ') }}
+        </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="basemirror">
+        <th mat-header-cell *matHeaderCellDef>Base Mirror</th>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{cursor: 'pointer'}" [routerLink]="['/mirror'].concat(element.basemirror.split('/'))">
+            {{element.basemirror}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="is_locked">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}">Locked</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)" [ngStyle]="{'text-align': 'center'}">
+            <mat-icon *ngIf="element.is_locked">lock</mat-icon>
+            <mat-icon *ngIf="!element.is_locked">remove</mat-icon>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ci_builds_enabled">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}">CI Builds</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)" [ngStyle]="{'text-align': 'center'}">
+            <mat-icon *ngIf="element.ci_builds_enabled">done</mat-icon>
+            <mat-icon *ngIf="!element.ci_builds_enabled">remove</mat-icon>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dependency_policy">
+        <th mat-header-cell *matHeaderCellDef>Dependency policy</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)">
+            {{ element.dependency_policy }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="getDependencyLink(element)">
+            {{element.description}}
         </td>
     </ng-container>
 
@@ -43,20 +129,20 @@
             <button mat-icon-button aria-label="add" (click)="add()"><mat-icon>control_point</mat-icon></button>
         </th>
         <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+            <button mat-icon-button [matMenuTriggerFor]="menu" id="menu_{{element.id}}" aria-label="">
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item [routerLink]="['/project', element.project_name, element.name]">
+                <button mat-menu-item [routerLink]="getDependencyLink(element)">
                     <mat-icon>list</mat-icon>Details
                 </button>
-                <button mat-menu-item (click)="removeDependency(element.project_name, element.name)"><mat-icon>delete</mat-icon> Delete</button>
+                <button mat-menu-item [disabled]="isExternalDependency(element)" (click)="removeDependency(element.project_name, element.name)"><mat-icon>delete</mat-icon>Remove</button>
             </mat-menu>
         </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;" (contextmenu)="contextmenu($event, i)"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" (contextmenu)="contextmenu($event, element)"></tr>
     <ng-container matColumnDef="footer">
         <td mat-footer-cell *matFooterCellDef colspan="100%">
             <div *ngIf="(dataSource.total$ | async) == -1">

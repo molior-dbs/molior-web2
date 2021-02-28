@@ -11,27 +11,41 @@ html, body {
 
 a {
     cursor: pointer !important;
+    text-decoration: unset;
 }
 
 .h1, h1 {
-    font-size: 2.0rem;
+    font-size: 24px;
     margin-top: 0px;
     margin-bottom: 0px;
     font-weight: 500;
-    line-height: 32px;
 }
 
 .h2, h2 {
-    margin-top: 10px;
-    margin-bottom: 0px;
-    font-weight: normal;
+    margin-top: 20px;
+    margin-bottom: 4px;
+    font-weight: 500;
+    font-size: 15pt;
+}
+
+.h3, h3 {
+    margin-bottom: 6px;
+}
+
+.mat-list-base {
+    padding-top: 1px !important;
+}
+
+.mat-list-base .mat-list-item {
+    font-size: 14px;
+    font-weight: unset !important;
+    height: 42px !important;
 }
 
 // colors
 $primary-color: #571845;
 
-// data table
-table { width: 100%; }
+.mat-table { width: 100%; }
 
 .mat-form-field-wrapper {
     padding-bottom: 0em;
@@ -49,10 +63,28 @@ table { width: 100%; }
 .mat-table thead, [mat-header-row], mat-header-row {
     background: $primary-color;
     text-color: white;
+    font-size: 12px;
+}
+
+tr.mat-header-row {
+    height: 42px !important;
+}
+
+td.mat-cell {
+    font-size: 12px;
+}
+
+td.mat-cell:first-of-type {
+    padding-left: 5px !important;
+}
+
+th.mat-header-cell:first-of-type {
+    padding-left: 5px !important;
 }
 
 th.mat-header-cell {
     color: white;
+    font-size: unset;
 }
 
 .mat-row:hover {
@@ -61,6 +93,10 @@ th.mat-header-cell {
 
 .mat-row:nth-child(odd) {
   background: #F5F5F5;
+}
+
+tr.mat-footer-row, tr.mat-row {
+    height: 42px !important;
 }
 
 // make form field smaller
@@ -81,21 +117,21 @@ th.mat-header-cell {
     display: none;
 }
 
-// increase font size
 .mat-header-cell {
-    font-size: medium;
-    font-weight: 500;
+    font-weight: bold;
 }
 
 input.mat-input-element {
     color: black;
     padding-left: 2px;
+    font-weight: normal;
+    caret-color: unset;
 }
 
 .mat-form-field-appearance-legacy .mat-form-field-label {
     top: 0.5em !important;
     color: rgba(0,0,0,.74) !important;
-    font-weight: 500 !important;
+    font-weight: bold;
     padding-left: 4px !important;
 }
 
@@ -156,8 +192,14 @@ input.mat-input-element {
     color: unset !important;
 }
 
+// select
+
 .mat-select-value {
     color: unset !important;
+}
+
+.mat-select-fix > .mat-form-field-wrapper > .mat-form-field-underline {
+    bottom: 22px !important;
 }
 
 // icons in cells
@@ -170,7 +212,7 @@ input.mat-input-element {
     background: $primary-color;
 }
 .mat-toolbar-single-row {
-    height: unset !important;
+    height: 42px !important;
 }
 
 // sidenav
@@ -200,7 +242,7 @@ button:focus {
 
 // icons
 .mat-icon {
-    margin-right: 10px;
+    margin-right: 6px;
     // color: rgba(0,0,0,.54);
 }
 //.mat-icon:hover {
@@ -239,16 +281,23 @@ a {
 
 // titles
 .title {
-    font-size: 2.0rem;
+    font-size: 24px;
     margin-bottom: .5rem;
     font-weight: 500;
-    line-height: 32px;
     color: unset !important;
     text-decoration: unset;
 }
 
 .hintlink {
     color: $primary-color;
+    text-decoration: unset;
+}
+
+// links
+
+.link {
+    color: darkblue !important;
+    cursor: pointer;
 }
 
 // dialogs
@@ -302,15 +351,18 @@ a {
 // info
 .info-table {
     width: unset;
-    margin-top: 20px;
-    padding: 10px 30px 20px 0;
+    margin-top: 10px;
+    padding: 5px 5px 10px 10px;
     background: #5718450f;
+    display: flex;
 }
 
 .info-table > tr > td {
     padding-left: 20px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+}
+
+.info-table > div > table > tr > td, .info-table > table > tr > td {
+    padding: 0px 20px 10px 0px;
 }
 
 // step
@@ -349,6 +401,11 @@ app-validation-error {
   margin: 15px 0;
 }
 
+// select
+.mat-option {
+  line-height: 28px !important;
+  height: 28px !important;
+}
 .mat-radio-button {
   margin: 5px;
   display: block !important;
@@ -372,6 +429,7 @@ app-validation-error {
 .log-table {
     color: lime;
     font-family: "Courier New";
+    font-size: 10pt;
     white-space: pre-wrap;
     border-collapse: collapse;
     table-layout: fixed;
@@ -392,9 +450,10 @@ app-validation-error {
 }
 
 .lognr {
-    color: green;
+    color: #02c602;
     padding: 0 5px 0 0;
     width: 2.5em;
+    height: 16px;
     text-align: right;
     vertical-align: top;
     user-select: none;
@@ -403,6 +462,7 @@ app-validation-error {
 .logline {
   word-wrap: break-word;
   padding: 0 0 0 5px;
+  max-width: 1680px;
 }
 
 .blinking-cursor {
@@ -424,9 +484,8 @@ app-validation-error {
 .progress {
     font-family: monospace;
     float: right;
-    font-size: 11px;
-    padding-top: 7px;
-    padding-right: 12px;
+    font-size: 12px;
+    margin-right: 10px;
 }
 
 // buildstate

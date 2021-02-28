@@ -1,21 +1,30 @@
-<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Create Project Version</h1>
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Add Project Version Dependency</h1>
 <div mat-dialog-content>
     <form [formGroup]="form" [ngStyle]="{height: '360px'}">
 
         <p><strong>Dependency</strong><app-validation-error [control]="form.get('dependency')"></app-validation-error></p>
         <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
-            <input matInput formControlName="dependency" placeholder="-- Select Dependency --" [matAutocomplete]="auto" (input)="changeDependency()">
+            <input matInput formControlName="dependency" placeholder="-- Select Dependency --" [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let entry of dependencies | keyvalue" [value]="entry.value">
-                    {{ entry.value }}
+                <mat-option *ngFor="let entry of dependencies" [value]="getDependencyName(entry)">
+                    <mat-icon *ngIf="entry.is_mirror">folder_special</mat-icon>
+                    <mat-icon *ngIf="!entry.is_mirror">class</mat-icon>
+                    <strong>{{entry.project_name}}/{{entry.name}}</strong>
+                    <span *ngIf="entry.dependency_policy != 'strict'" style="float: right;"> {{entry.basemirror}}</span>
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
+        <br/>
+
+        <p><strong>Use CI Builds</strong></p>
+        <mat-checkbox formControlName="use_cibuilds" matTooltip="Use unstable for CI Builds"></mat-checkbox>
+
     </form>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="dialog.close()">Cancel</button>
-    <button mat-button (click)="save()" [disabled]="!form.valid">Ok</button>
+    <app-alert></app-alert>
+    <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
 </div>
 
 

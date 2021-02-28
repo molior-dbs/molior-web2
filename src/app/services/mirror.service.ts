@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {AbstractControl} from '@angular/forms';
 
 import {apiURL} from '../lib/url';
 import {TableService, TableDataSource, MoliorResult} from '../lib/table.datasource';
@@ -10,6 +11,7 @@ export interface Mirror {
     id: number;
     name: string;
     version: string;
+    description: string;
     url: string;
     basemirror_id: number;
     basemirror_url: string;
@@ -27,6 +29,8 @@ export interface Mirror {
     mirrorkeyurl: string;
     mirrorkeyids: string;
     mirrorkeyserver: string;
+    external_repo: boolean;
+    dependency_policy: string;
 }
 
 export class MirrorDataSource extends TableDataSource<Mirror> {
@@ -42,18 +46,47 @@ export class MirrorService extends TableService<Mirror> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('q', params.get('filter_name'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('filter_name')) {
+            p.q = params.get('filter_name');
+        }
+        if (params.get('filter_basemirror')) {
+            p.q_basemirror = params.get('filter_basemirror');
+        }
+        if (params.get('page')) {
+            p.page = params.get('page');
+        }
+        if (params.get('pagesize')) {
+            p.page_size = params.get('pagesize');
+        }
+        return p;
     }
 
     get(name: string, version: string) {
-        return this.http.get<Mirror>(`${apiURL()}/api/mirror/${name}/${version}`);
+        return this.http.get<Mirror>(`${apiURL()}/api2/mirror/${name}/${version}`);
     }
 
-    getBaseMirrors() {
-        const p = new HttpParams().set('basemirror', 'true');
+    get_apt_sources(name: string, version: string) {
+        return this.http.get<string>(`${apiURL()}/api2/mirror/${name}/${version}/aptsources`, {responseType: 'text' as 'json'});
+    }
+
+    getMirrors(url: string = '') {
+        const p: any = {};
+        if (url) {
+            p.url = url;
+        }
+        return this.http.get(`${apiURL()}/api/mirrors`, { params: p }).pipe(
+            /* tslint:disable:no-string-literal */
+            map(res => new MoliorResult<Mirror>(res['total_result_count'], res['results']))
+            /* tslint:enable:no-string-literal */
+            );
+    }
+
+    getBaseMirrors(search: string = '') {
+        const p: any = {basemirror: 'true'};
+        if (search) {
+            p.q = search;
+        }
         return this.http.get(`${apiURL()}/api/mirrors`, { params: p }).pipe(
             /* tslint:disable:no-string-literal */
             map(res => new MoliorResult<Mirror>(res['total_result_count'], res['results']))
@@ -65,7 +98,9 @@ export class MirrorService extends TableService<Mirror> {
            mirrorversion: string,
            mirrortype: string,
            basemirror: string,
+           external: boolean,
            mirrorurl: string,
+           dependencylevel: string,
            mirrordist: string,
            mirrorcomponents: string,
            architectures: string[],
@@ -81,7 +116,9 @@ export class MirrorService extends TableService<Mirror> {
                                        mirrorversion: mirrorversion.trim(),
                                        mirrortype,
                                        basemirror,
+                                       external,
                                        mirrorurl: mirrorurl.trim(),
+                                       dependencylevel,
                                        mirrordist: mirrordist.trim(),
                                        mirrorcomponents: mirrorcomponents.trim(),
                                        architectures,
@@ -94,12 +131,13 @@ export class MirrorService extends TableService<Mirror> {
                                       });
     }
 
-    edit(id: number,
-         mirrorname: string,
+    edit(mirrorname: string,
          mirrorversion: string,
          mirrortype: string,
          basemirror: string,
+         external: boolean,
          mirrorurl: string,
+         dependencylevel: string,
          mirrordist: string,
          mirrorcomponents: string,
          architectures: string[],
@@ -113,7 +151,9 @@ export class MirrorService extends TableService<Mirror> {
         return this.http.put(`${apiURL()}/api2/mirror/${mirrorname.trim()}/${mirrorversion.trim()}`,
                                       {mirrortype,
                                        basemirror,
+                                       external,
                                        mirrorurl: mirrorurl.trim(),
+                                       dependencylevel,
                                        mirrordist: mirrordist.trim(),
                                        mirrorcomponents: mirrorcomponents.trim(),
                                        architectures,
@@ -126,11 +166,19 @@ export class MirrorService extends TableService<Mirror> {
                                       });
     }
 
-    delete(id: number) {
-        return this.http.delete(`${apiURL()}/api/mirror/${id}`).subscribe();
+    delete(mirror: Mirror) {
+        return this.http.delete(`${apiURL()}/api2/mirror/${mirror.name}/${mirror.version}`);
     }
 
     update(id: number) {
-        return this.http.post(`${apiURL()}/api/mirror/${id}/update`, null).subscribe();
+        return this.http.post(`${apiURL()}/api/mirror/${id}/update`, null);
     }
 }
+
+export function BaseMirrorValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    if (control.value !== undefined && this.basemirrorArchs && !this.basemirrorArchs.hasOwnProperty(control.value)) {
+        return { invalidValue: true };
+    }
+    return null;
+}
+

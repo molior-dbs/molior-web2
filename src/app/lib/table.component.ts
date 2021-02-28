@@ -1,4 +1,4 @@
-import {AfterViewInit, OnInit, ViewChild, ViewChildren, OnDestroy, QueryList} from '@angular/core';
+import {AfterViewInit, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MatPaginator, MatMenuTrigger} from '@angular/material';
 import {Router} from '@angular/router';
@@ -63,36 +63,28 @@ export class TableParams {
         }
         return urlparams;
     }
-
 }
 
-export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TableComponent implements AfterViewInit, OnDestroy {
     params: TableParams;
     @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
     sParams: Subscription;
     pParams: Subscription;
     firstload: boolean;
-    contextmenuIndex: number;
-    @ViewChildren(MatMenuTrigger) menubuttons: QueryList<MatMenuTrigger>;
+    rowHeight = 42;
 
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
                 URLParams: [string, any][]) {
         URLParams.push(['page', 1]);
-        URLParams.push(['pagesize', 10]);
         this.params = new TableParams(URLParams);
         this.firstload = true;
-        this.contextmenuIndex = 1;
-    }
-
-    ngOnInit() {
     }
 
     ngAfterViewInit() {
-
         this.sParams = this.route.queryParams.subscribe(params => {
             this.params.load(params);
-            this.resize2parent();
+            this.calculateSize();
 
             if (this.firstload) {
                 this.firstload = false;
@@ -102,6 +94,14 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.pParams = this.paginator.page.subscribe(
             () => {
+                /* tslint:disable:no-string-literal */
+                if (this.paginator.pageIndex > 0) {
+                    this.params.DefaultParams['pagesize'] = this.paginator.pageSize;
+                } else {
+                    this.params.DefaultParams['pagesize'] = this.paginator.pageSize;
+                    this.params.CurrentParams['pagesize'] = this.paginator.pageSize;
+                }
+                /* tslint:enable:no-string-literal */
                 this.params.set('page',     this.paginator.pageIndex + 1);
                 this.params.set('pagesize', this.paginator.pageSize);
                 this.loadPage();
@@ -117,6 +117,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.pParams) {
             this.pParams.unsubscribe();
         }
+
+        this.OnDestroy();
     }
 
     updateElements() {
@@ -135,17 +137,24 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadData();
     }
 
-    resize2parent() {
+    calculateSize() {
         const parent = document.getElementById('table-wrapper') as HTMLElement;
         if (parent) {
             (parent.firstChild as HTMLTableElement).style.display = 'none';
-            const rows = Math.floor((parent.getBoundingClientRect().height - 56) / 48);
+            const rows = Math.floor((parent.getBoundingClientRect().height - this.rowHeight - (this.rowHeight / 2)) / this.rowHeight);
             (parent.firstChild as HTMLTableElement).style.display = 'table';
             if (+this.params.get('pagesize') !== rows) {
                 this.params.set('pagesize', rows);
-                this.updateElements();
-                this.loadPage();
+                return true;
             }
+        }
+        return false;
+    }
+
+    resize2parent() {
+        if (this.calculateSize()) {
+            this.updateElements();
+            this.loadPage();
         }
     }
 
@@ -157,6 +166,10 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
                 tap(() => {
                     this.paginator.pageIndex = 0;
                     this.params.set('page', 1);
+                    /* tslint:disable:no-string-literal */
+                    this.params.DefaultParams['pagesize'] = this.paginator.pageSize;
+                    this.params.CurrentParams['pagesize'] = this.paginator.pageSize;
+                    /* tslint:enable:no-string-literal */
                     this.setParams();
                     this.loadPage();
                 }),
@@ -167,14 +180,28 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
     setmenupos(event) {
         const menu = document.getElementsByClassName('cdk-overlay-connected-position-bounding-box')[0] as HTMLDivElement;
         menu.style.right = window.innerWidth - event.pageX - (menu.firstChild as HTMLDivElement).clientWidth + 'px';
-        menu.style.top = event.pageY + 'px';
     }
 
-    contextmenu(event, id) {
-        this.menubuttons.toArray()[id + this.contextmenuIndex].openMenu();
-        setTimeout(this.setmenupos, 0, event);
+    contextmenu(event, element) {
+        document.getElementById(`menu_${element.id}`).click();
+        setTimeout(this.setmenupos, 10, event);
         return false;
     }
+
+    // mouse scroll
+    scroll(event) {
+        if (event.ctrlKey) {
+            return;
+        }
+        if (event.deltaY > 0 && (this.paginator.pageIndex + 1) * this.paginator.pageSize < this.paginator.length) {
+            this.paginator.pageIndex = this.paginator.pageIndex + 1;
+            this.paginator.page.next();
+        } else if (event.deltaY < 0 && this.paginator.pageIndex > 0) {
+            this.paginator.pageIndex = this.paginator.pageIndex - 1;
+            this.paginator.page.next();
+        }
+    }
+
 
     // virtual
     loadData() {
@@ -191,5 +218,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     AfterViewInit() {
         console.error('not implemented yet');
+    }
+    OnDestroy() {
     }
 }

@@ -1,0 +1,53 @@
+
+#log-wrapper {
+  position:relative;
+  background: black;
+  margin: 0px;
+  display: flex;
+  flex-grow: 1;
+}
+#log-scroll {
+  // height: 500px;
+  overflow: auto;
+  display: flex;
+  flex-grow: 1;
+}
+#log-wrapper table {
+  width: 100%;
+  display: block;
+  flex-shrink: 1;
+  height: 200px;
+}
+
+::placeholder{
+  color: black;
+  opacity: 0.7;
+}
+
+::ng-deep .searchhighlight {
+    background: #4967a2;
+}
+
+::ng-deep .errorline > td:first-of-type {
+  color: red;
+  font-weight: bold;
+}
+
+::ng-deep .errorline > td:nth-of-type(2) {
+  border-bottom: red dashed 2px;
+  margin-bottom: -1px;
+}
+
+.mat-button {
+  line-height: unset !important;
+  color: darkred;
+}
+
+// set app-build component
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+

@@ -1,36 +1,34 @@
-        <h1>About</h1>
-        <p class="paragraph">
-            The purpose of molior is to build Debian packages out of git repositories based on a mirror of a specific Debian version and therefore creating reproducible builds. Build environments are structured into projects and versions, which may include mirrors and versions of other projects.
-        </p>
+<h1><mat-icon>question_answer</mat-icon>About</h1>
+<h2>Molior - Debian Build System</h2>
 
-        Molior performs the following tasks:
-        <ul>
-            <li>create mirrors of Debian repositories</li>
-            <li>create projects based on a Debian mirror, include dependencies to other projects or mirrors</li>
-            <li>build packages into project repositories (i386, amd64, armhf, arm64)</li>
-            <li>create deployments of projects (ISO Installer, VirtualBox, images, ...)</li>
-        </ul>
-        <ul layout="row" flex layout-wrap layout-align="center center" class="small-container buckets">
-            <li flex="20">
-                <md-button layout="column" href="/userdoc/source" target="_blank">
-                    <ng-md-icon icon="subject" size="30"></ng-md-icon>
-                    <span flex>User Docs</span>
-                </md-button>
-            </li>
-            <li flex="20">
-                <md-button layout="column" href="/api/doc" target="_blank">
-                    <ng-md-icon icon="subject" size="30"></ng-md-icon>
-                    <span flex>Backend Docs</span>
-                </md-button>
-            </li>
-            <li flex="20">
-                <md-button layout="column" href="/release-notes">
-                    <ng-md-icon icon="access_time" size="30"></ng-md-icon>
-                    <span flex>Release Notes</span>
-                </md-button>
-            </li>
-        </ul>
+<p style="width: 700px">Molior is based on <a class="link" href="https://www.aptly.info/" target="_blank" rel="noreferrer noopener">aptly</a> for managing Debian package repositories and <a class="link" href="https://wiki.debian.org/sbuild" target="_blank" rel="noreferrer noopener">sbuild</a> for building Debian packages for multiple distributions and architectures. </p>
 
-<h1>SSH Public Key</h1>
-<br>
-<div class="sshkey">{{status.sshkey}}</div>
+<p style="width: 700px">Molior allows the following via WebUI, REST API or commandline tools:</p>
+<ul>
+    <li>Manage Debian repository <a class="link" [routerLink]="['../mirrors']">mirrors</a></li>
+    <li>Manage Debian repositories grouped in <a class="link" [routerLink]="['../projects']">projects and versions</a></li>
+    <li>Manage project dependencies between base mirrors and other projects</li>
+    <li>Provide <a class="link" [routerLink]="['../nodes']">build nodes</a> (amd64, arm64) on VMs or bare metal for running sbuild</li>
+    <li><a class="link" [routerLink]="['../builds']">Build</a> debianized <a class="link" [routerLink]="['../repos']">git repositories</a> for multiple projects and architectures (i386, amd64, armhf, arm64)</li>
+    <li>Create project deployments (ISO Installers, VM images, containers, ...)</li>
+</ul>
+
+<h2>Documentation</h2>
+<ul>
+    <li><a class="link" href="https://github.com/molior-dbs/molior" target="_blank" rel="noreferrer noopener">Source code hosted on GitHub</a></li>
+    <li><a class="link" href="/api/doc" target="_blank" rel="noreferrer noopener">REST API Documentation (swagger)</a></li>
+</ul>
+
+<div style="display: flex;">
+    <div style="padding-right: 50px; width: 340px;">
+        <h2>APT Repo Public Key</h2>
+        <p>Molior apt repositories can be veryfied with the following <a href="{{status.gpgurl}}" class="link">GPG public key</a>:</p>
+        <div class="key" [innerHTML]="repoasc">{{repoasc}}</div>
+    </div>
+
+    <div style="width: 340px">
+        <h2>SSH Public Key</h2>
+        <p>Molior needs read permissions on git repositories for the following SSH public key:</p>
+        <div class="key">{{status.sshkey}}</div>
+    </div>
+</div>

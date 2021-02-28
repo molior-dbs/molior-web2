@@ -1,0 +1,34 @@
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Trigger Build</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form" [ngStyle]="{height: '360px'}">
+        Trigger a build for <span class="link">{{giturl}}</span><br/>
+
+        <p><strong>Git Reference</strong><app-validation-error [control]="form.get('gitref')"></app-validation-error></p>
+        Specify git tag, branch or commit hash to build:<br/>
+        <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
+            <input matInput formControlName="gitref" cdkFocusInitial>
+        </mat-form-field>
+
+        <p><strong>Projectversions</strong> <app-validation-error [control]="form.get('pvs')"></app-validation-error></p>
+        Select project versions to build for (leave empty for using debian/molior.yml):<br/>
+        <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
+            <mat-select formControlName="pvs" multiple>
+                <mat-option *ngFor="let pv of projectversions$ | async" [value]="pv">
+                        {{pv}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <p><strong>Options</strong></p>
+        Force CI build even on version tags:<br/>
+        <mat-checkbox formControlName="forceCI" style="width: 400px; padding-left: 45px; padding-top: 10px;">Force CI build</mat-checkbox>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <app-alert></app-alert>
+    <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
+</div>
+
+
+

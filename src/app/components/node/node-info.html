@@ -1,0 +1,59 @@
+<h1><mat-icon>developer_board</mat-icon>Node <span class="title">{{node.name}}</span></h1>
+
+<div class="mat-elevation-z8 info-table">
+    <table>
+        <tr>
+            <td><strong>Node</strong></td>
+            <td>{{node.name}}</td>
+        </tr>
+        <tr>
+            <td><strong>Architecture</strong></td>
+            <td>
+                <mat-icon *ngIf="node.arch=='amd64'" svgIcon="amd64" matTooltip="amd64"></mat-icon>
+                <mat-icon *ngIf="node.arch=='arm64'" svgIcon="arm64" matTooltip="arm64"></mat-icon>
+                <mat-icon *ngIf="node.arch=='armhf'" svgIcon="arm" matTooltip="armhf"></mat-icon>
+                <mat-icon *ngIf="node.arch=='i386'" svgIcon="x86" matTooltip="i386"></mat-icon>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>State</strong></td>
+            <td>{{node.state}}</td>
+        </tr>
+        <tr>
+            <td><strong>Load</strong></td>
+            <td>
+                <mat-icon [ngStyle]="{'color': getLoadColor(node.load[0]) }" matTooltip="1min: {{ node.load[0] }}">stop</mat-icon>
+                <mat-icon [ngStyle]="{'color': getLoadColor(node.load[1]) }" matTooltip="5min: {{ node.load[1] }}">stop</mat-icon>
+                <mat-icon [ngStyle]="{'color': getLoadColor(node.load[2]) }" matTooltip="15min: {{ node.load[2] }}">stop</mat-icon>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>CPU cores</strong></td>
+            <td>{{node.cpu_cores}}</td>
+        </tr>
+        <tr>
+            <td><strong>RAM</strong></td>
+            <td *ngIf="getMemoryUsagePerc(node)"><meter min="0" low="70" optimum="30" high="90" max="100" value="{{getMemoryUsagePerc(node)}}" class="meter-stat" matTooltip="{{getMemory(node)}} GB"></meter></td>
+        </tr>
+        <tr>
+            <td><strong>Disk</strong></td>
+            <td *ngIf="getDiskUsagePerc(node)"><meter min="0" low="70" optimum="30" high="90" max="100" value="{{getDiskUsagePerc(node)}}" class="meter-stat" matTooltip="{{getDisk(node)}} GB"></meter></td>
+        </tr>
+        <tr>
+            <td><strong>IP</strong></td>
+            <td>{{node.ip}}</td>
+        </tr>
+        <tr>
+            <td><strong>Source name</strong></td>
+            <td>{{node.sourcename}} {{node.sourceversion}}</td>
+        </tr>
+        <tr>
+            <td><strong>Client version</strong></td>
+            <td>{{node.client_ver}}</td>
+        </tr>
+        <tr>
+            <td><strong>Uptime</strong></td>
+            <td>{{getUptime(node)}}</td>
+        </tr>
+    </table>
+</div>

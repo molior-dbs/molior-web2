@@ -1,38 +1,59 @@
-<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Create Project Version</h1>
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon>
+<h1 mat-dialog-title *ngIf="mode === 'create'">Create Project Version</h1>
+<h1 mat-dialog-title *ngIf="mode === 'edit'">Edit Project Version {{form.value.version}}</h1>
+<h1 mat-dialog-title *ngIf="mode === 'copy'">Copy Project Version {{form.value.version}}</h1>
 <div mat-dialog-content>
     <form [formGroup]="form" [ngStyle]="{height: '360px'}">
 
-        <p><strong>Project Version</strong><app-validation-error [control]="form.get('version')"></app-validation-error></p>
-        <mat-form-field>
-            <input matInput formControlName="version" required cdkFocusInitial>
-        </mat-form-field>
+        <div *ngIf="mode === 'create' || mode === 'copy'">
+            <p><strong>Project Version</strong><app-validation-error [control]="form.get('version')"></app-validation-error></p>
+            <mat-form-field>
+                <input matInput formControlName="version" required cdkFocusInitial>
+            </mat-form-field>
+        </div>
 
         <p>Description <app-validation-error [control]="form.get('description')"></app-validation-error></p>
         <mat-form-field>
             <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
 
-        <p><strong>Base Mirror</strong><app-validation-error [control]="form.get('basemirror')"></app-validation-error></p>
-        <mat-form-field floatLabel="never">
-            <!-- mat-select disableRipple required (change)="filterForeCasts($event.target.value)" -->
-            <mat-select placeholder="-- Select Base Mirror --" formControlName="basemirror" (selectionChange)="getArchitectures($event)">
-                <mat-option *ngFor="let entry of basemirrors | keyvalue" value={{entry.key}}>
-                    {{ entry.key }} ({{ entry.value }})
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+        <div *ngIf="mode === 'create' || mode === 'copy'">
+            <p><strong>Base Mirror</strong><app-validation-error [control]="form.get('basemirror')"></app-validation-error></p>
+            <span *ngIf="mode === 'copy'">Note: only dependencies with matching policy will be copied</span>
+            <mat-form-field floatLabel="never">
+                <input matInput formControlName="basemirror" placeholder="-- Select Base Mirror --" [matAutocomplete]="autoBasemirror" (input)="changeBaseMirror()">
+                <mat-autocomplete #autoBasemirror="matAutocomplete" (optionSelected)="changeBaseMirror()">
+                    <mat-option *ngFor="let entry of basemirrors" value={{entry.name}}>
+                        {{ entry.name }} ({{ entry.architectures }})
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <p><strong>Architectures</strong><app-validation-error [control]="form.get('architectures')"></app-validation-error></p>
+            <mat-checkbox *ngFor="let arch of mirrorArchs; let i = index" formControlName="architecture{{ i }}" (change)="updateArchs()">{{ arch }}</mat-checkbox>
+            <span *ngIf="mirrorArchs.length == 0">Please select a Base Mirror above</span>
+        </div>
 
-        <p><strong>Architectures</strong><app-validation-error [control]="form.get('architectures')"></app-validation-error></p>
-        <!--mat-form-field floatLabel="never" -->
-
-        <mat-checkbox *ngFor="let arch of mirrorArchs; let i = index" formControlName="architecture{{ i }}" (change)="updateArchs()">{{ arch }}</mat-checkbox>
-        <span *ngIf="mirrorArchs.length == 0">Please select Base Mirror</span>
+        <p><strong>Dependency Policy</strong><app-validation-error [control]="form.get('dependencylevel')"></app-validation-error></p>
+        <div *ngIf="form.value.version">
+            Specify which other project versions may use {{projectName}}/{{form.value.version || 'unknown'}}:
+            <br>
+            <mat-form-field floatLabel="never" appearance="standard" *ngIf="form.value.basemirror">
+                <mat-select formControlName="dependencylevel" [(value)]="defaultDependencyLevel">
+                    <mat-option value="strict"><strong>strict</strong>&nbsp;- Use in {{form.value.basemirror}} based projects</mat-option>
+                    <mat-option value="distribution"><strong>dist</strong>&nbsp;- Use in {{form.value.basemirror.split('/')[0]}} based projects</mat-option>
+                    <mat-option value="any"><strong>any</strong>&nbsp;- Use with any base mirror based projects</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <span *ngIf="!form.value.basemirror">Please define a Base Mirror above</span>
+        </div>
+        <span *ngIf="!form.value.version">Please define a Version above</span>
+        <br>
+        <p><strong>CI Builds</strong></p>
+        <mat-checkbox formControlName="cibuilds" matTooltip="Enable/Disable CI Builds"></mat-checkbox>
     </form>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="dialog.close()">Cancel</button>
-    <button mat-button (click)="save()" [disabled]="!form.valid">Ok</button>
+    <app-alert></app-alert>
+    <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
 </div>
-
-
-

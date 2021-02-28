@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
 import {apiURL} from '../lib/url';
 import {TableService, TableDataSource, MoliorResult} from '../lib/table.datasource';
@@ -26,12 +26,23 @@ export class UserService extends TableService<User> {
     }
 
     getAPIParams(params) {
-        return new HttpParams()
-                .set('name', params.get('name'))
-                .set('email', params.get('email'))
-                .set('admin', params.get('admin'))
-                .set('page', params.get('page').toString())
-                .set('page_size', params.get('pagesize').toString());
+        const p: any = {};
+        if (params.get('name')) {
+            p.name = params.get('name');
+        }
+        if (params.get('email')) {
+            p.email = params.get('email');
+        }
+        if (params.get('admin')) {
+            p.admin = params.get('admin');
+        }
+        if (params.get('page')) {
+            p.page = params.get('page');
+        }
+        if (params.get('pagesize')) {
+            p.page_size = params.get('pagesize');
+        }
+        return p;
     }
 
     get(name: string) {
@@ -51,6 +62,10 @@ export class UserService extends TableService<User> {
     }
 
     delete(id: number) {
-        return this.http.delete<User>(`${apiURL()}/api/user/${id}`).subscribe();
+        return this.http.delete<User>(`${apiURL()}/api/user/${id}`);
+    }
+
+    getProjectRoleCandidates(projectname: string) {
+        return this.http.get<User[]>(`${apiURL()}/api2/projectbase/${projectname}/permissions`, {params: {candidates: 'true'}});
     }
 }

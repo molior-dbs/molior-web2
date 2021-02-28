@@ -1,0 +1,134 @@
+td.mat-cell, th.mat-header-cell {
+    padding-left: 10px;
+}
+
+
+// tree
+.branch {
+    transform: rotate(-90deg);
+    width: 3.1em;
+    display: inline-block;
+    margin-right: 2px;
+    max-height: 2px;
+    margin-top: 0px;
+    margin-bottom: 2.3em;
+    margin-left: -0.7em;
+    border-top: 0px;
+    border-bottom: 2px dotted #aaa;
+    border-left: 0px;
+    border-right: 0px;
+}
+.leaf {
+    width: 12px;
+    display: inline-block;
+    margin-right: 2px;
+    max-height: 2px;
+    margin-top: 0px;
+    margin-bottom: 0.8em;
+    margin-left: -1.656em;
+    border-top: 0px;
+    border-bottom: 2px dotted #aaa;
+    border-left: 0px;
+    border-right: 0px;
+}
+.branch2 {
+    transform: rotate(-90deg);
+    width: 2.62em;
+    display: inline-block;
+    margin-right: 2px;
+    max-height: 2px;
+    margin-top: 0px;
+    margin-bottom: 2.02em;
+    margin-left: 1.4em;
+    border-top: 0px;
+    border-bottom: 2px dotted #aaa;
+    border-left: 0px;
+    border-right: 0px;
+}
+.leaf2 {
+    width: 12px;
+    display: inline-block;
+    margin-right: 2px;
+    max-height: 2px;
+    margin-top: 0px;
+    margin-bottom: 0.8em;
+    margin-left: -1.39em;
+    border-top: 0px;
+    border-bottom: 2px dotted #aaa;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.mat-row:nth-child(odd) {
+  background: unset;
+}
+
+
+/* Element | http://localhost:8888/ */
+
+app-build.ng-star-inserted > div:nth-child(3) > h2:nth-child(1) {
+  display: flex;
+  flex-grow: 1;
+}
+
+/* Inline #10 | http://localhost:8888/build/1160 */
+
+.mat-paginator {
+  /* display: block; */
+  display: inline;
+  margin-bottom: 6px;
+}
+
+.mat-paginator-container {
+  /* display: flex; */
+  /* width: 100%; */
+  display: inline;
+}
+
+.mat-paginator-outer-container {
+  /* display: flex; */
+  display: inline;
+}
+
+.mat-paginator-range-actions {
+  /* display: flex; */
+}
+
+/* Element | http://localhost:8888/ */
+
+#mat-checkbox-1 {
+  display: inline;
+  font-size: 12px;
+}
+
+.mat-paginator-range-label {
+  display: inline;
+}
+
+.mat-paginator-range-actions {
+  display: inline;
+}
+
+app-build.ng-star-inserted > div:nth-child(3) {
+  display: flex;
+  align-items: flex-end;
+}
+
+.h2, h2 {
+  /* margin-top: 10px; */
+  /* margin-bottom: 0px; */
+  margin-top: 25px;
+  margin-bottom: 7px;
+}
+
+// set app component for table resize
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  flex-grow: 1;
+}
+
+::ng-deep .duration-tooltip {
+    white-space: pre-line;
+}

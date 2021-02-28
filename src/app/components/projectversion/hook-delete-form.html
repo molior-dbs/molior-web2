@@ -1,0 +1,12 @@
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Delete Post Build Hook</h1>
+<div mat-dialog-content>
+    The post build hook be deleted. This operation cannot be undone.
+</div>
+<div mat-dialog-actions>
+    <app-alert></app-alert>
+    <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="clicked">Ok</button>
+</div>
+
+
+

@@ -1,0 +1,121 @@
+<div>
+    <h1><mat-icon>class</mat-icon>Project {{project.name}}</h1>
+
+    <div class="mat-elevation-z8 info-table">
+        <div>
+            <table>
+                <tr *ngIf="project.description">
+                    <td>{{ project.description }}</td>
+                </tr>
+            </table>
+        </div>
+        <div style="flex-grow: 1; text-align: right;">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="editProject()"><mat-icon>edit</mat-icon>Edit</button>
+                <button mat-menu-item (click)="deleteProject()"><mat-icon>delete</mat-icon>Delete</button>
+            </mat-menu>
+        </div>
+    </div>
+</div>
+
+<nav mat-tab-nav-bar>
+    <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
+       [routerLink]="['/project', project.name, 'versions']">Versions</a>
+    <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
+       [routerLink]="['/project', project.name, 'permissions']">Permissions</a>
+</nav>
+
+<mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
+<div id="table-wrapper" [ngStyle]="{display: 'flex', 'flex-direction': 'column', 'flex-grow': 1 }" (window:resize)="resize2parent()">
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" (wheel)="scroll($event)">
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef><mat-form-field>
+            <input matInput placeholder="Version" #inputName>
+        </mat-form-field></th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]">
+            <strong> {{element.name}} </strong>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="architectures">
+        <th mat-header-cell *matHeaderCellDef>Architectures</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]">
+            {{ element.architectures.join(', ') }}
+        </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="basemirror">
+        <th mat-header-cell *matHeaderCellDef>Base Mirror</th>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{cursor: 'pointer'}" [routerLink]="['/mirror'].concat(element.basemirror.split('/'))">
+            {{element.basemirror}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="is_locked">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}">Locked</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]" [ngStyle]="{'text-align': 'center'}">
+            <mat-icon *ngIf="element.is_locked">lock</mat-icon>
+            <mat-icon *ngIf="!element.is_locked">remove</mat-icon>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ci_builds_enabled">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}">CI Builds</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]" [ngStyle]="{'text-align': 'center'}">
+            <mat-icon *ngIf="element.ci_builds_enabled">done</mat-icon>
+            <mat-icon *ngIf="!element.ci_builds_enabled">remove</mat-icon>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', project.name, element.name]">
+            {{element.description}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef>
+            <button mat-icon-button aria-label="create" (click)="create()"><mat-icon>control_point</mat-icon></button>
+        </th>
+        <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu" id="menu_{{element.id}}" aria-label="">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item [routerLink]="['/project', project.name, element.name]">
+                    <mat-icon>list</mat-icon> Details
+                </button>
+                <button mat-menu-item (click)="edit(element)"><mat-icon>edit</mat-icon>Edit</button>
+                <button mat-menu-item (click)="copy(element)"><mat-icon>content_copy</mat-icon>Copy</button>
+                <button mat-menu-item (click)="overlay(element)"><mat-icon>horizontal_split</mat-icon>Create Overlay</button>
+                <button mat-menu-item (click)="snapshot(element)"><mat-icon>trending_up</mat-icon>Create Release Snapshot</button>
+                <button *ngIf="!element.is_locked" mat-menu-item (click)="lock(element)"><mat-icon>lock</mat-icon>Lock</button>
+                <button mat-menu-item (click)="delete(element)"><mat-icon>delete</mat-icon> Delete</button>
+            </mat-menu>
+        </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" (contextmenu)="contextmenu($event, element)"></tr>
+    <ng-container matColumnDef="footer">
+        <td mat-footer-cell *matFooterCellDef colspan="100%">
+            <div *ngIf="(dataSource.total$ | async) == -1">
+                Loading...
+            </div>
+            <div *ngIf="(dataSource.total$ | async) == 0">
+                No entries found
+            </div>
+            <div *ngIf="(dataSource.total$ | async) === -404" [ngStyle]="{color: 'red'}">
+                Unable to load data ({{dataSource.error$ | async }})
+            </div>
+        </td>
+    </ng-container>
+    <tr mat-footer-row *matFooterRowDef="['footer']" [ngStyle]="(dataSource.total$ | async) < 1 ? {} : {display: 'none'}"></tr>
+</table>
+</div>

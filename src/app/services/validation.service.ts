@@ -1,7 +1,11 @@
 import {Component, Input} from '@angular/core';
 import {FormGroup, FormControl, AbstractControl} from '@angular/forms';
 
-export const urlregex = '^(?:(?:http|https|ftp)://)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$';
+export const urlregex = /^(?:https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\._-]+))+$/;
+export const gitregex = [
+    /^(https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\._-]+))+$/,
+    /^(ssh:\/\/)?(\w+@)?(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)[:/][\w\._-]+(\/[\w\._-]+)+$/,
+];
 
 export class ValidationService {
 
@@ -15,13 +19,14 @@ export class ValidationService {
             invalidValue: 'Invalid value',
             invalidURL: 'Invalid URL',
             invalidEmail: 'Invalid Email',
+            invalidGITURL: 'Invalid GIT URL',
         };
 
         return config[validatorName];
     }
 
     static nameValidator(control) {
-        if (control.value.match(/^[a-z][a-z0-9-]*$/)) {
+        if (control.value.match(/^[a-zA-Z][a-zA-Z0-9-]*$/)) {
             // FIXME: not end with -
             return null;
         } else {
@@ -30,7 +35,7 @@ export class ValidationService {
     }
 
     static versionValidator(control) {
-        if (control.value.match(/^[a-z0-9\.-]*$/)) {
+        if (control.value.match(/^[a-zA-Z0-9\.-]*$/)) {
             // FIXME: not start/end with -
             return null;
         } else {
@@ -44,6 +49,15 @@ export class ValidationService {
         } else {
             return { invalidURL: true };
         }
+    }
+
+    static gitValidator(control) {
+        for (const regex of gitregex) {
+            if (control.value.match(regex) !== null) {
+                return null; // valid
+            }
+        }
+        return { invalidGITURL: true };
     }
 
     static emailValidator(control) {

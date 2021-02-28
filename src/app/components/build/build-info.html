@@ -1,0 +1,74 @@
+<span class="title"><mat-icon>library_books</mat-icon>Build {{build.id}}: {{build.sourcename}} {{build.version}}</span>
+
+<div class="mat-elevation-z8 info-table">
+    <div>
+        <table style="border-collapse: collapse">
+            <tr>
+                <td><strong>Source Name</strong></td>
+                <td>{{build.sourcename}}</td>
+
+                <td *ngIf="build.project.version">
+                    <strong *ngIf="!build.project.is_mirror">Project</strong>
+                    <strong *ngIf="build.project.is_mirror">Mirror</strong>
+                </td>
+                <td *ngIf="!build.project.is_mirror"><a *ngIf="build.project.version" class="link" [routerLink]="['../../project', build.project.name, build.project.version.name]">{{build.project.name}}/{{build.project.version.name}}</a></td>
+                <td *ngIf="build.project.is_mirror"><a *ngIf="build.project.version" class="link" [routerLink]="['../../mirror', build.project.name, build.project.version.name]">{{build.project.name}}/{{build.project.version.name}}</a></td>
+            </tr>
+            <tr *ngIf="build.version">
+                <td><strong>Version</strong></td>
+                <td>{{build.version}}</td>
+
+                <td><strong *ngIf="build.buildvariant">Base Mirror</strong></td>
+                <td><a *ngIf="build.buildvariant && build.buildvariant.base_mirror.name" class="link" [routerLink]="['../../mirror', build.buildvariant.base_mirror.name, build.buildvariant.base_mirror.version]">{{build.buildvariant.base_mirror.name}}/{{build.buildvariant.base_mirror.version}}</a></td>
+            </tr>
+            <tr>
+                <td><strong>State</strong></td>
+                <td>
+                    <mat-icon class="mat-icon notranslate material-icons buildstate buildstate-{{build.buildstate}}" matTooltip="{{build.buildstate}}" [matTooltipPosition]="'left'" [ngStyle]="{'font-size': '19px', height: 'unset', width: 'unset'}">{{buildicon(build.buildstate)}}</mat-icon>
+                    <span [ngClass]="'progress'" *ngIf="build.progress && ( build.buildstate == 'building' || build.buildstate == 'publishing' )">{{build.progress | number:'1.0-0'}}%</span>
+                </td>
+
+                <td><strong *ngIf="build.architecture">Architecture</strong></td>
+                <td>
+                    {{ build.architecture }}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="flex-grow: 1; text-align: right;">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="delete()"><mat-icon>delete</mat-icon> Delete</button>
+            <button mat-menu-item (click)="rebuild()"><mat-icon>replay</mat-icon> Retry Build</button>
+            <button mat-menu-item (click)="buildlatest()"><mat-icon>sync_alt</mat-icon>Check for new builds</button>
+        </mat-menu>
+    </div>
+</div>
+
+<div style="display: flex">
+    <h2 style="flex-grow: 1">Build Log</h2>
+    <div style="display: flex;">
+        <div style="display: inline-block; align-self: flex-end;">
+        <button *ngIf="buildstart_line >= 0" class="link" mat-button [routerLink]="['/build', build.id]" fragment="line-{{buildstart_line}}" style="margin-bottom: 5px;">buildstart</button>
+        <button *ngIf="lintian_line >= 0" class="link" mat-button [routerLink]="['/build', build.id]" fragment="line-{{lintian_line}}" style="margin-bottom: 5px;">lintian</button>
+        </div>
+        <div style="display: inline-block; align-self: flex-end; width: 340px;">
+            <input matInput placeholder="Search..." #inputSearch [ngStyle]="{'margin-bottom': '2px', border: 'lightgrey 1px solid', 'width': '120px'}" (input)="search($event.target.value)">
+        <span *ngIf="totalSearchresults" style="margin-bottom: 5px; display: inline-block"><button class="link" mat-button (click)="searchPrev()">prev</button>{{currentSearchresult}}/{{totalSearchresults}}<button class="link" mat-button (click)="searchNext()">next</button></span>
+        </div>
+
+        <mat-checkbox style="display: inline-block; align-self: flex-end; margin-bottom: 5px;" *ngIf="this.build.buildstate === 'building'" [checked]="follow" (change)="toggleFollow()">follow</mat-checkbox>
+        <button style="display: inline-block; align-self: flex-end; margin-bottom: 5px;" mat-button *ngIf="this.build.buildstate === 'build_failed' && totalerr > 0" (click)="findError()">Find Error ({{currenterr}}/{{totalerr}})</button>
+        <mat-paginator style="display: inline-block; align-self: flex-end; width: 400px; max-width: 400px;" showFirstLastButtons hidePageSize></mat-paginator>
+    </div>
+</div>
+<div id="log-wrapper" class="mat-elevation-z8" (window:resize)="updatePaginator()">
+    <div id="log-scroll" class="log-scroll" tabindex="0" (scroll)="updatePaginator()">
+        <table class="log-table">
+            <tbody id="buildlog">
+            </tbody>
+        </table>
+    </div>
+</div>

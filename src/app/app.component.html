@@ -2,52 +2,57 @@
     <div class="app-header">
 
         <mat-toolbar color="primary">
-            <div class="molior-logo"></div>
+            <a (click)="goToHomePage()" class="molior-logo"></a>
             <div style="text-align: right; width: 100%;" *ngIf="authenticated();">
-                <div [ngStyle]="{display: 'inline-block', 'vertical-align': 'top', 'margin-top': '0px'}">
-                    <mat-icon [ngStyle]="{'font-size': '10px', cursor: 'default', height: '12px', width: '12px', 'margin-right': '5px', 'margin-top': '15px', color: connectionColor$ | async }">lens</mat-icon>
-                </div>
-                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu" [ngStyle]="{'width': 'unset'}">
+		    <span [ngStyle]="{display: 'inline-block', 'vertical-align': 'top', 'margin-top': '3px', 'font-size': '15px'}">{{ getLoggedUserName() }}</span>
                     <mat-icon>person</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                    <button mat-menu-item>
-                        <mat-icon>settings</mat-icon>
-                        <span>Settings</span>
-                    </button>
+                    <!--<button mat-menu-item>-->
+                        <!--<mat-icon>settings</mat-icon>-->
+                        <!--<span>Settings</span>-->
+                    <!--</button>-->
                     <button mat-menu-item (click)="logout()">
                         <mat-icon>logout</mat-icon>
                         <span>Logout</span>
                     </button>
                 </mat-menu>
+                <div [ngStyle]="{display: 'inline-block', 'vertical-align': 'top', 'margin-top': '0px'}">
+                    <mat-icon [ngStyle]="{'font-size': '10px', cursor: 'default', height: '12px', width: '12px', 'margin-right': '5px', 'margin-top': '15px', color: connectionColor$ | async }">lens</mat-icon>
+                </div>
             </div>
         </mat-toolbar>
     </div>
 
-    <div class="app-nav">
+    <div *ngIf="authenticated()" class="app-nav">
         <mat-sidenav mode="side" opened>
             <mat-nav-list>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/builds">
+                <a mat-list-item [ngClass]="activeMenu('build')" routerLink="/builds">
                     <mat-icon>library_books</mat-icon>
                     <span>Builds</span>
                 </a>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/projects">
+                <a mat-list-item [ngClass]="activeMenu('project')" routerLink="/projects">
                     <mat-icon>class</mat-icon>
                     <span>Projects</span>
                 </a>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/mirrors">
+                <a mat-list-item [ngClass]="activeMenu('mirror')" routerLink="/mirrors">
                     <mat-icon>folder_special</mat-icon>
                     <span>Mirrors</span>
                 </a>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/users">
-                    <mat-icon>people</mat-icon>
-                    <span>Users</span>
+                <a mat-list-item [ngClass]="activeMenu('repo')" routerLink="/repos">
+                    <mat-icon svgIcon="git"></mat-icon>
+                    <span>Repos</span>
                 </a>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/nodes">
+                <a mat-list-item [ngClass]="activeMenu('node')" routerLink="/nodes">
                     <mat-icon>developer_board</mat-icon>
                     <span>Nodes</span>
                 </a>
-                <a mat-list-item routerLinkActive="active-link" routerLink="/about">
+                <a mat-list-item [ngClass]="activeMenu('user')" routerLink="/users">
+                    <mat-icon>people</mat-icon>
+                    <span>Users</span>
+                </a>
+                <a mat-list-item [ngClass]="activeMenu('about')" routerLink="/about">
                     <mat-icon>question_answer</mat-icon>
                     <span>About</span>
                 </a>
@@ -60,6 +65,6 @@
     </div>
 
     <div class="app-footer">
-        Molior Debian Build System {{ status.version }}
+        molior {{ status.version }}
     </div>
 </div>
