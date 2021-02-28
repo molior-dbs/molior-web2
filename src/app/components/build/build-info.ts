@@ -244,7 +244,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (line === 'dpkg-buildpackage') {
                         this.buildstart_line = nr;
                     }
-                    if (line.search(/[IE]: Lintian run /) >= 0) {
+                    if (line.search(/Building tag database\.\.\./) >= 0) {
                         this.lintian_line = nr;
                     }
 
