@@ -360,7 +360,9 @@ export class ProjectversionOverlayDialogComponent {
     clicked: boolean;
     projectversion: ProjectVersion;
     form = this.fb.group({
-        name: new FormControl('', [Validators.required]),  // FIXME: name validator
+        name: new FormControl('', [Validators.required,
+                                   Validators.minLength(2),
+                                   ValidationService.versionValidator]),
     });
 
     constructor(public dialog: MatDialogRef<ProjectversionOverlayDialogComponent>,
@@ -396,7 +398,9 @@ export class ProjectversionSnapshotDialogComponent {
     clicked: boolean;
     projectversion: ProjectVersion;
     form = this.fb.group({
-        name: new FormControl('', [Validators.required]),  // FIXME: name validator
+        name: new FormControl('', [Validators.required,
+                                   Validators.minLength(2),
+                                   ValidationService.versionValidator]),
     });
 
     constructor(public dialog: MatDialogRef<ProjectversionSnapshotDialogComponent>,
