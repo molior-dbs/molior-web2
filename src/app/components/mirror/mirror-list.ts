@@ -115,7 +115,8 @@ export class MirrorListComponent extends TableComponent {
 export class MirrorDialogComponent {
     clicked: boolean;
     mirror: Mirror;
-    basemirrors: { [id: string]: string[]; };
+    basemirrorArchs: { [id: string]: string[]; };
+    basemirrors: any[];
     architectures = [ 'amd64', 'i386', 'arm64', 'armhf' ];
     defaultDependencyLevel: 'strict';
     distpreset: string;
@@ -161,12 +162,15 @@ export class MirrorDialogComponent {
         if (data.mirror) {
             this.mirror = data.mirror;
         }
-        this.basemirrors = {};
+        this.basemirrorArchs = {};
+        this.basemirrors = [];
         this.distpreset = '';
         this.mirrorService.getBaseMirrors().subscribe(res => {
-            this.basemirrors = {};
+            this.basemirrorArchs = {};
+            this.basemirrors = [];
             for (const entry of res) {
-                this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
+                this.basemirrorArchs[`${entry.name}/${entry.version}`] = entry.architectures;
+                this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
             }
         });
         this.mirrorService.getMirrors().subscribe(res => {
@@ -267,9 +271,9 @@ export class MirrorDialogComponent {
         this.formArray.get([0]).patchValue({mirrortype: '2'});
         const data = this.formArray.value;
         this.mirrorService.getBaseMirrors(data[0].basemirror).subscribe(res => {
-            this.basemirrors = {};
+            this.basemirrors = [];
             for (const entry of res) {
-                this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
+                this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
             }
         });
         this.chooseAdditionalMirror();
@@ -402,7 +406,8 @@ export class MirrorDialogComponent {
 export class MirrorCopyDialogComponent {
     clicked: boolean;
     mirror: Mirror;
-    basemirrors: { [id: string]: string[]; };
+    basemirrorArchs: { [id: string]: string[]; };
+    basemirrors: any[];
     architectures = [ 'amd64', 'i386', 'arm64', 'armhf' ];
     defaultDependencyLevel: 'strict';
     distpreset: string;
@@ -448,12 +453,15 @@ export class MirrorCopyDialogComponent {
         if (data.mirror) {
             this.mirror = data.mirror;
         }
-        this.basemirrors = {};
+        this.basemirrorArchs = {};
+        this.basemirrors = [];
         this.distpreset = '';
         this.mirrorService.getBaseMirrors().subscribe(res => {
-            this.basemirrors = {};
+            this.basemirrorArchs = {};
+            this.basemirrors = [];
             for (const entry of res) {
-                this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
+                this.basemirrorArchs[`${entry.name}/${entry.version}`] = entry.architectures;
+                this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
             }
         });
         this.mirrorService.getMirrors().subscribe(res => {
@@ -550,9 +558,9 @@ export class MirrorCopyDialogComponent {
         this.formArray.get([0]).patchValue({mirrortype: '2'});
         const data = this.formArray.value;
         this.mirrorService.getBaseMirrors(data[0].basemirror).subscribe(res => {
-            this.basemirrors = {};
+            this.basemirrors = [];
             for (const entry of res) {
-                this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
+                this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
             }
         });
         this.chooseAdditionalMirror();

@@ -23,8 +23,8 @@
             <mat-form-field floatLabel="never">
                 <input matInput formControlName="basemirror" placeholder="-- Select Base Mirror --" [matAutocomplete]="autoBasemirror" (input)="changeBaseMirror()">
                 <mat-autocomplete #autoBasemirror="matAutocomplete" (optionSelected)="changeBaseMirror()">
-                    <mat-option *ngFor="let entry of basemirrors | keyvalue" value={{entry.key}}>
-                        {{ entry.key }} ({{ entry.value }})
+                    <mat-option *ngFor="let entry of basemirrors" value={{entry.name}}>
+                        {{ entry.name }} ({{ entry.architectures }})
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>

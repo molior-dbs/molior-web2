@@ -151,7 +151,8 @@ export class ProjectversionDialogComponent {
     clicked: boolean;
     projectName: string;
     projectversion: ProjectVersion;
-    basemirrors: { [id: string]: string[]; };
+    basemirrorArchs: { [id: string]: string[]; };
+    basemirrors: any[];
     mirrorArchs: string[];
     defaultDependencyLevel: 'strict';
     mode: string;
@@ -197,14 +198,17 @@ export class ProjectversionDialogComponent {
                                   architectures: this.projectversion.architectures,
                                  });
         }
-        this.basemirrors = {};
+        this.basemirrorArchs = {};
+        this.basemirrors = [];
         mirrorService.getBaseMirrors().subscribe(res => {
-            this.basemirrors = {};
+            this.basemirrorArchs = {};
+            this.basemirrors = [];
             for (const entry of res) {
-                this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
+                this.basemirrorArchs[`${entry.name}/${entry.version}`] = entry.architectures;
+                this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
             }
             if (this.mode === 'edit' || this.mode === 'copy') {
-                this.mirrorArchs = this.basemirrors[this.form.value.basemirror];
+                this.mirrorArchs = this.basemirrorArchs[this.form.value.basemirror];
                 this.updateArchs();
                 this.form.get('basemirror').updateValueAndValidity();
             }
@@ -273,15 +277,15 @@ export class ProjectversionDialogComponent {
     }
 
     changeBaseMirror() {
-        if (this.form.value.basemirror && this.form.value.basemirror in this.basemirrors) {
-            this.mirrorArchs = this.basemirrors[this.form.value.basemirror];
+        if (this.form.value.basemirror && this.form.value.basemirror in this.basemirrorArchs) {
+            this.mirrorArchs = this.basemirrorArchs[this.form.value.basemirror];
         } else {
             this.mirrorArchs = [];
         }
         this.mirrorService.getBaseMirrors(this.form.value.basemirror).subscribe(res => {
-            this.basemirrors = {};
+            this.basemirrors = [];
             for (const entry of res) {
-                this.basemirrors[`${entry.name}/${entry.version}`] = entry.architectures;
+                this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
             }
         });
     }

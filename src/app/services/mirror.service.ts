@@ -176,7 +176,7 @@ export class MirrorService extends TableService<Mirror> {
 }
 
 export function BaseMirrorValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    if (control.value !== undefined && this.basemirrors && !this.basemirrors.hasOwnProperty(control.value)) {
+    if (control.value !== undefined && this.basemirrorArchs && !this.basemirrorArchs.hasOwnProperty(control.value)) {
         return { invalidValue: true };
     }
     return null;

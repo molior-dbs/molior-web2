@@ -52,8 +52,8 @@
                             <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
                                 <input matInput formControlName="basemirror" placeholder="-- Select Base Mirror --" [matAutocomplete]="auto" (input)="changeBaseMirror()">
                                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeBaseMirror()">
-                                    <mat-option *ngFor="let entry of basemirrors | keyvalue" [value]="entry.key">
-                                        {{ entry.key }} ({{ entry.value }})
+                                    <mat-option *ngFor="let entry of basemirrors" [value]="entry.name">
+                                        {{ entry.name }} ({{ entry.architectures }})
                                     </mat-option>
                                 </mat-autocomplete>
                             </mat-form-field>
