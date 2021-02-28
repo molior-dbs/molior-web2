@@ -66,9 +66,9 @@
     </ng-container>
 
     <ng-container matColumnDef="sourcename">
-        <th mat-header-cell *matHeaderCellDef>Source name</th>
+        <th mat-header-cell *matHeaderCellDef>Current Build</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.id]">
-            <strong>{{element.sourcename}} {{element.sourceversion}} <span *ngIf="element.sourcearch">[{{element.sourcearch}}]</span></strong>
+            <strong *ngIf="element.sourcename">{{element.sourcename}}/{{element.sourceversion}}</strong><span *ngIf="element.sourcearch"> [{{element.sourcearch}}]</span>
         </td>
     </ng-container>
 
