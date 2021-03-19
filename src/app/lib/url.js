@@ -6,7 +6,7 @@ export function apiURL() {
 
 export function wsURL() {
     let protocol;
-    if (location.protocol === 'https') {
+    if (location.protocol === 'https:') {
         protocol = 'wss://';
     } else {
         protocol = 'ws://';
