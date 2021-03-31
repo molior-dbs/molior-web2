@@ -201,7 +201,7 @@ export class MirrorDialogComponent {
                                               });
             this.formArray.get([2]).patchValue({
                                                 mirrorkeyurl: this.mirror.mirrorkeyurl,
-                                                mirrorkeyids: this.mirror.mirrorkeyids.split(',').join(' '),
+                                                mirrorkeyids: this.mirror.mirrorkeyids.split(/[, ]/).join(' '),
                                                 mirrorkeyserver: this.mirror.mirrorkeyserver
                                               });
             if (this.mirror.mirrorkeyurl !== '') {
@@ -345,7 +345,7 @@ export class MirrorDialogComponent {
         this.clicked = true;
         this.updateArchs();
         const data = this.formArray.value;
-        // FIXME: only send neede key info
+        // FIXME: only send needed key info
         if (!this.mirror) {
             this.mirrorService.create(data[0].mirrorname,
                                       data[0].mirrorversion,
@@ -491,7 +491,7 @@ export class MirrorCopyDialogComponent {
                                           });
         this.formArray.get([2]).patchValue({
                                             mirrorkeyurl: this.mirror.mirrorkeyurl,
-                                            mirrorkeyids: this.mirror.mirrorkeyids.split(',').join(' '),
+                                            mirrorkeyids: this.mirror.mirrorkeyids.split(/[, ]/).join(' '),
                                             mirrorkeyserver: this.mirror.mirrorkeyserver
                                           });
         if (this.mirror.mirrorkeyurl !== '') {
