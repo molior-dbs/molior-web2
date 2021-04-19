@@ -288,6 +288,11 @@ export class ProjectversionDialogComponent {
                 this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
             }
         });
+        this.form.patchValue({architecture0: true});
+        this.form.patchValue({architecture1: true});
+        this.form.patchValue({architecture2: true});
+        this.form.patchValue({architecture3: true});
+        this.updateArchs();
     }
 }
 
