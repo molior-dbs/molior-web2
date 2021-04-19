@@ -1,3 +1,9 @@
+molior-web (1.4.1~rc2) stable; urgency=medium
+
+  * bump version 1.4.1~rc2
+
+ -- Karol Swiderski <szakalboss@gmail.com>  Mon, 19 Apr 2021 10:22:40 +0000
+
 molior-web (1.4.1~rc1) stable; urgency=medium
 
   * bump version 1.4.1~rc1
