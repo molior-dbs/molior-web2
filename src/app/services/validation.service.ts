@@ -26,7 +26,7 @@ export class ValidationService {
     }
 
     static nameValidator(control) {
-        if (control.value.match(/^[a-zA-Z][a-zA-Z0-9-]*$/)) {
+        if (control.value.match(/^[a-zA-Z][a-zA-Z0-9\.-]*$/)) {
             // FIXME: not end with -
             return null;
         } else {
