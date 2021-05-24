@@ -28,13 +28,6 @@ case "$1" in
     if [ -e "/etc/nginx/sites-enabled/default" ]; then
         rm -f /etc/nginx/sites-enabled/default
     fi
-    invoke-rc.d nginx restart
-
-    if [ -f /etc/default/shorewall ]; then
-      if grep -q '^startup=1' /etc/default/shorewall; then
-        invoke-rc.d shorewall restart
-      fi
-    fi
   ;;
 
   abort-upgrade|abort-remove|abort-deconfigure)
