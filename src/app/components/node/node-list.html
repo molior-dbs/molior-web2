@@ -1,3 +1,35 @@
+<h1><mat-icon>dns</mat-icon>Server</h1>
+<div *ngIf="serverInfo" class="mat-elevation-z8 info-table">
+    <table>
+        <tr>
+            <td><strong>Load</strong></td>
+            <td>
+                <mat-icon [ngStyle]="{'color': getLoadColor(serverInfo.load[0]) }" matTooltip="1min: {{ serverInfo.load[0] }}">stop</mat-icon>
+                <mat-icon [ngStyle]="{'color': getLoadColor(serverInfo.load[1]) }" matTooltip="5min: {{ serverInfo.load[1] }}">stop</mat-icon>
+                <mat-icon [ngStyle]="{'color': getLoadColor(serverInfo.load[2]) }" matTooltip="15min: {{serverInfo.load[2] }}">stop</mat-icon>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>CPU cores</strong></td>
+            <td>{{serverInfo.cpu_cores}}</td>
+        </tr>
+        <tr>
+            <td><strong>RAM</strong></td>
+            <td><meter min="0" low="70" optimum="30" high="90" max="100" value="{{serverInfo.ram}}" class="meter-stat" matTooltip="{{serverInfo.ram}} %"></meter></td>
+        </tr>
+        <tr *ngFor="let d of serverInfo.disk | keyvalue">
+            <td><strong>Disk {{d.key}}</strong></td>
+            <td><meter min="0" low="70" optimum="30" high="90" max="100" value="{{d.value}}" class="meter-stat" matTooltip="{{d.value}} %"></meter></td>
+        </tr>
+        <tr>
+            <td><strong>Uptime</strong></td>
+            <td>{{getUptimeSeconds(serverInfo.uptime_seconds)}}</td>
+        </tr>
+    </table>
+</div>
+<br>
+
+
 <h1><mat-icon>developer_board</mat-icon>Nodes</h1>
 <mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
 <div id="table-wrapper" [ngStyle]="{display: 'flex', 'flex-direction': 'column', 'flex-grow': 1 }" (window:resize)="resize2parent()">
