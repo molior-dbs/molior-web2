@@ -26,6 +26,7 @@ export class ProjectversionRepoListComponent extends TableComponent {
     displayedColumns: string[] = [
         'name',
         'last_build',
+        'latest_release',
         'architectures',
         'url',
         'state',
