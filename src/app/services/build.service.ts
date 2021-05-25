@@ -79,8 +79,9 @@ export function buildicon(buildstate) {
     switch (buildstate) {
         case 'new':
             return 'schedule';
-        case 'successful':
         case 'already_exists':
+            return 'remove_circle_outline';
+        case 'successful':
         case 'nothing_done':
             return 'done';
         case 'scheduled':
