@@ -566,7 +566,7 @@ $buildstate-build-failed: 'build_failed';
 $buildstate-already-exists: 'already_exists';
 .buildstate {
     &-#{$buildstate-already-exists} {
-        color: #388e3c;
+        color: #ff8000;
     }
 }
 
