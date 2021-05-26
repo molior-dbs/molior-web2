@@ -37,6 +37,15 @@
         </td>
     </ng-container>
 
+    <ng-container matColumnDef="latest_release">
+        <th mat-header-cell *matHeaderCellDef>Current Release</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
+            <div *ngIf="element.latest_release" style="display: flex; align-items: center; font-weight: bold;">
+                {{element.latest_release.version}}
+            </div>
+        </td>
+    </ng-container>
+
     <ng-container matColumnDef="architectures">
         <th mat-header-cell *matHeaderCellDef>Architectures</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
