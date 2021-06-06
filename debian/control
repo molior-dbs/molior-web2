@@ -8,6 +8,6 @@ Section: misc
 Package: molior-web
 Architecture: all
 Section: misc
-Depends: ${misc:Depends}, lsb-base (>= 3.0-6), nginx-light | nginx, molior-doc
+Depends: ${misc:Depends}, lsb-base (>= 3.0-6), nginx-light | nginx
 Description: Molior Web UI
  Web UI for molior
