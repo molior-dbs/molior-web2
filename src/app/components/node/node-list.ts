@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import {TableComponent} from '../../lib/table.component';
 import {Node, NodeService, NodeDataSource, getLoadColor, getUptime, getMemory, getDisk,
-       memoryAlmostFull, diskAlmostFull} from '../../services/node.service';
+       memoryAlmostFull, diskAlmostFull, getUptimeSeconds} from '../../services/node.service';
+import {ServerInfo, ServerService} from '../../services/server.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
 
 @Component({
@@ -18,19 +19,25 @@ export class NodeListComponent extends TableComponent {
                                   'ip', 'sourcename', 'client_ver', 'uptime_seconds', 'actions'];
     getLoadColor = getLoadColor;
     getUptime = getUptime;
+    getUptimeSeconds = getUptimeSeconds;
     getMemory = getMemory;
     getDisk = getDisk;
     memoryAlmostFull = memoryAlmostFull;
     diskAlmostFull = diskAlmostFull;
+    serverInfo: ServerInfo;
+    timer;
     @ViewChild('input', { static: false }) input: ElementRef;
 
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
                 protected nodeService: NodeService,
+                protected serverService: ServerService,
                 protected moliorService: MoliorService) {
         super(route, router, [['filter', '']]);
         this.dataSource = new NodeDataSource(this.nodeService);
+        this.serverInfo = null;
         this.updateSubscription = null;
+        this.timer = null;
     }
 
     loadData() {
@@ -45,16 +52,26 @@ export class NodeListComponent extends TableComponent {
         this.params.set('filter', this.input.nativeElement.value);
     }
 
+    loadServerInfo() {
+        this.serverService.getInfo().subscribe(r => this.serverInfo = r);
+        this.timer = setTimeout(this.loadServerInfo.bind(this), 15000);
+    }
+
     AfterViewInit() {
         this.updateSubscription = this.moliorService.nodes.subscribe((evt: UpdateEvent) => { this.dataSource.update(evt, true); });
         this.dataSource.setPaginator(this.paginator);
         this.initFilter(this.input.nativeElement);
+        this.loadServerInfo();
     }
 
     OnDestroy() {
         if (this.updateSubscription) {
             this.updateSubscription.unsubscribe();
             this.updateSubscription = null;
+        }
+        if (this.timer) {
+            clearTimeout(this.timer);
+            this.timer = null;
         }
     }
 }

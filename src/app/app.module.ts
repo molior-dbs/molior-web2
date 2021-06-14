@@ -70,6 +70,8 @@ import {NodeListComponent} from './components/node/node-list';
 import {NodeInfoComponent} from './components/node/node-info';
 import {NodeService} from './services/node.service';
 
+import {ServerService} from './services/server.service';
+
 import {UserListComponent, UserDialogComponent, UserDeleteDialogComponent} from './components/user/user-list';
 import {UserInfoComponent} from './components/user/user-info';
 import {UserService} from './services/user.service';
@@ -176,6 +178,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         WebsocketService,
         MoliorService,
         NodeService,
+        ServerService,
         BuildService,
         ProjectService,
         ProjectVersionService,

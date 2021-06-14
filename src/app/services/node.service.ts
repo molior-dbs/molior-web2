@@ -69,14 +69,18 @@ export function getLoadColor(load: number) {
 }
 
 export function getUptime(node: Node): string {
-    const d = Math.floor(node.uptime_seconds / 3600.0 / 24.0);
+    return getUptimeSeconds(node.uptime_seconds);
+}
+
+export function getUptimeSeconds(uptimeSeconds: number): string {
+    const d = Math.floor(uptimeSeconds / 3600.0 / 24.0);
     let h = -1.0;
     if (d > 0) {
-        h = Math.floor((node.uptime_seconds % (d * 24.0 * 3600.0)) / 3600.0);
+        h = Math.floor((uptimeSeconds % (d * 24.0 * 3600.0)) / 3600.0);
     } else {
-        h = Math.floor(node.uptime_seconds / 3600.0);
+        h = Math.floor(uptimeSeconds / 3600.0);
     }
-    const m = Math.floor((node.uptime_seconds % 3600.0) / 60.0);
+    const m = Math.floor((uptimeSeconds % 3600.0) / 60.0);
     if (d > 0) {
         const hrs = `${h}`.padStart(2, '0');
         const mins = `${m}`.padStart(2, '0');
