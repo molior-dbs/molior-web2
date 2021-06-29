@@ -208,8 +208,29 @@ export class ProjectversionDialogComponent {
                 this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
             }
             if (this.mode === 'edit' || this.mode === 'copy') {
+                this.form.patchValue({architecture0: false});
+                this.form.patchValue({architecture1: false});
+                this.form.patchValue({architecture2: false});
+                this.form.patchValue({architecture3: false});
                 this.mirrorArchs = this.basemirrorArchs[this.form.value.basemirror];
-                this.updateArchs();
+                this.mirrorArchs.forEach((item, index) => {
+                    if (this.form.value.architectures.includes(item)) {
+                        switch (index) {
+                            case 0:
+                                this.form.patchValue({architecture0: true});
+                                break;
+                            case 1:
+                                this.form.patchValue({architecture1: true});
+                                break;
+                            case 2:
+                                this.form.patchValue({architecture2: true});
+                                break;
+                            case 3:
+                                this.form.patchValue({architecture3: true});
+                                break;
+                        }
+                    }
+                });
                 this.form.get('basemirror').updateValueAndValidity();
             }
         });
