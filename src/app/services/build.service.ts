@@ -120,6 +120,9 @@ export class BuildService extends TableService<Build> {
         if (params.get('project')) {
             p.project = params.get('project');
         }
+        if (params.get('sourcerepository_id')) {
+            p.sourcerepository_id = params.get('sourcerepository_id');
+        }
         if (params.get('commit')) {
             p.commit = params.get('commit');
         }

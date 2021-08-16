@@ -47,7 +47,7 @@ export class RepositoryInfoComponent extends TableComponent {
     }
 
     loadData() {
-        this.route.paramMap.subscribe((params: ParamMap) => {
+        this.route.parent.paramMap.subscribe((params: ParamMap) => {
             this.repoId = Number(params.get('id'));
             this.http.get<Repository>(`${apiURL()}/api2/repository/${this.repoId}`).subscribe(
                 res => {

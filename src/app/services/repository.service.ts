@@ -8,7 +8,7 @@ import {TableService, TableDataSource, MoliorResult} from '../lib/table.datasour
 import {ProjectVersion} from '../services/project.service';
 
 
-export interface RepoDependents {
+export interface RepoDependentProjectVersions {
     total_result_count: number;
     results: ProjectVersion[];
 }
@@ -116,11 +116,11 @@ export class RepositoryService extends TableService<Repository> {
         return this.http.put(`${apiURL()}/api2/repository/${id}/merge`, {duplicate});
     }
 
-    getRepoDependents(id: number, unlocked: boolean = false) {
+    getRepoDependentProjectVersions(id: number, unlocked: boolean = false) {
         const params: any = {};
         if (unlocked) {
             params.unlocked = 'true';
         }
-        return this.http.get<RepoDependents>(`/api2/repository/${id}/dependents`, {params});
+        return this.http.get<RepoDependentProjectVersions>(`/api2/repository/${id}/dependents`, {params});
     }
 }

@@ -17,6 +17,7 @@ import {MirrorInfoComponent} from './components/mirror/mirror-info';
 import {MirrorAPTSourcesComponent} from './components/mirror/mirror-aptsources';
 import {RepositoryListComponent} from './components/repo/repo-list';
 import {RepositoryInfoComponent} from './components/repo/repo-info';
+import {RepositoryBuildsComponent} from './components/repo/repo-builds';
 import {NodeListComponent} from './components/node/node-list';
 import {NodeInfoComponent} from './components/node/node-info';
 import {UserListComponent} from './components/user/user-list';
@@ -58,7 +59,13 @@ const routes: Routes = [
     { path: 'mirror/:name/:version',         component: MirrorInfoComponent,     canActivate: [AuthGuard] },
     { path: 'mirror/:name/:version/aptsources', component: MirrorAPTSourcesComponent, canActivate: [AuthGuard] },
     { path: 'repos',                         component: RepositoryListComponent, canActivate: [AuthGuard] },
-    { path: 'repo/:id',                      component: RepositoryInfoComponent, canActivate: [AuthGuard] },
+    { path: 'repo/:id',
+        children: [
+            { path: '',                      redirectTo: 'info', pathMatch: 'full' },
+            { path: 'info',                  component: RepositoryInfoComponent, canActivate: [AuthGuard] },
+            { path: 'builds',                component: RepositoryBuildsComponent, canActivate: [AuthGuard] },
+        ]
+    },
     { path: 'nodes',                         component: NodeListComponent,       canActivate: [AuthGuard] },
     { path: 'nodes/:machine_id',             component: NodeInfoComponent,       canActivate: [AuthGuard] },
     { path: 'users',                         component: UserListComponent,       canActivate: [AuthGuard] },
