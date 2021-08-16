@@ -36,7 +36,10 @@ export class BuildDeleteDialogComponent {
         this.clicked = true;
         this.buildService.delete(this.build.id).subscribe( r => {
             this.dialog.close();
-            this.router.navigate(['/builds']);
+            // change url to /builds only on build logpage
+            if (this.router.url.match(/\/build\/\d+/)) {
+                this.router.navigate(['/builds']);
+            }
         },
         err => {
             this.alertService.error(err.error);

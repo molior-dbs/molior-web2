@@ -28,6 +28,8 @@ export class BuildTableComponent extends TableComponent implements OnInit {
     @ViewChild('inputCommit', { static: false }) inputCommit: ElementRef;
     /* tslint:disable-next-line:no-input-rename */
     @Input('projectversion') projectversion: ProjectVersion;
+    /* tslint:disable-next-line:no-input-rename */
+    @Input('repository') repository: Repository;
 
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
@@ -68,6 +70,9 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         const params = this.params;
         if (this.projectversion) {
             params.set('project', this.projectversion.project_name + '/' + this.projectversion.name);
+        }
+        if (this.repository) {
+            params.set('sourcerepository_id', this.repository.id);
         }
         this.dataSource.load('/api/builds', params);
     }

@@ -1,0 +1,34 @@
+<div *ngIf="repository" style="display: flex; flex-direction: column; flex-grow: 1">
+    <h1><mat-icon>layers</mat-icon>Repository<span class="title">&nbsp;{{repository.name}} ({{repository.id}})</span></h1>
+
+    <div class="mat-elevation-z8 info-table">
+        <div>
+            <table>
+                <tr>
+                    <td><strong>Name</strong></td>
+                    <td>{{repository.name}}</td>
+                </tr>
+                <tr>
+                    <td><strong>URL</strong></td>
+                    <td><span class="link">{{repository.url}}</span></td>
+                </tr>
+                <tr>
+                    <td><strong>State</strong></td>
+                    <mat-icon *ngIf="repository.state == 'ready'" class="buildstate-successful">done</mat-icon>
+                    <mat-icon *ngIf="repository.state == 'busy'" class="buildstate-building">sync</mat-icon>
+                    <mat-icon *ngIf="repository.state == 'error'" class="buildstate-build_failed">clear</mat-icon>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <nav mat-tab-nav-bar>
+        <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
+           [routerLink]="['/repo', repository.id, 'info']">Dependent Projects</a>
+        <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
+           [routerLink]="['/repo', repository.id, 'builds']">Dependent Builds</a>
+    </nav>
+
+    <app-build-table [repository]=repository></app-build-table>
+</div>
+
