@@ -90,6 +90,18 @@ export class ProjectService extends TableService<Project> {
     deletePermission(name: string, username: string) {
         return this.http.request('delete', `${apiURL()}/api2/projectbase/${name}/permissions`, {body: {username}});
     }
+
+    createToken(name: string, description: string) {
+        return this.http.post(`${apiURL()}/api2/projectbase/${name}/token`, {description});
+    }
+
+    addToken(name: string, description: string) {
+        return this.http.put(`${apiURL()}/api2/projectbase/${name}/token`, {description});
+    }
+
+    deleteToken(name: string, id: number) {
+        return this.http.request('delete', `${apiURL()}/api2/projectbase/${name}/tokens`, {body: {id}});
+    }
 }
 
 export class ProjectVersionDataSource extends TableDataSource<ProjectVersion> {

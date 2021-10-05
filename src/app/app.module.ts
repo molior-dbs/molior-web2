@@ -39,6 +39,7 @@ import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDelet
         } from './components/project/project-info';
 import {ProjectPermissionsComponent, ProjectPermissionDialogComponent,
         ProjectPermissionDeleteDialogComponent} from './components/project/project-permissions';
+import {ProjectTokensComponent, ProjectTokenDialogComponent, ProjectTokenDeleteDialogComponent} from './components/project/project-tokens';
 import {ProjectversionInfoComponent, DependencyDialogComponent,
         DependencyDeleteDialogComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent, SourcerepoDialogComponent, SourcerepoRemoveDialogComponent,
@@ -73,7 +74,9 @@ import {NodeService} from './services/node.service';
 
 import {UserListComponent, UserDialogComponent, UserDeleteDialogComponent} from './components/user/user-list';
 import {UserInfoComponent} from './components/user/user-info';
-import {UserService} from './services/user.service';
+import {UserService, TokenService} from './services/user.service';
+
+import {TokenListComponent, TokenDialogComponent, TokenDeleteDialogComponent} from './components/account/token-list';
 
 import {WebsocketService, MoliorService} from './services/websocket';
 
@@ -122,6 +125,9 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectPermissionDialogComponent,
         ProjectPermissionDeleteDialogComponent,
         ProjectPermissionsComponent,
+        ProjectTokenDialogComponent,
+        ProjectTokenDeleteDialogComponent,
+        ProjectTokensComponent,
         ProjectversionDialogComponent,
         ProjectversionInfoComponent,
         ProjectversionRepoListComponent,
@@ -144,6 +150,10 @@ import {WebsocketService, MoliorService} from './services/websocket';
         TriggerBuildDialogComponent,
         HookDialogComponent,
         HookDeleteDialogComponent,
+
+        TokenListComponent,
+        TokenDialogComponent,
+        TokenDeleteDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -183,6 +193,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectService,
         ProjectVersionService,
         UserService,
+        TokenService,
         MirrorService,
         ValidationService,
         RepositoryService,
@@ -217,6 +228,10 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       ProjectversionDeleteDialogComponent,
                       ProjectPermissionDialogComponent,
                       ProjectPermissionDeleteDialogComponent,
+                      ProjectTokenDialogComponent,
+                      ProjectTokenDeleteDialogComponent,
+                      TokenDialogComponent,
+                      TokenDeleteDialogComponent,
                       BuildDeleteDialogComponent,
                       BuildRebuildDialogComponent
                      ],

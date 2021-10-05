@@ -1,4 +1,12 @@
-<h1><mat-icon>people</mat-icon>Users</h1>
+<h1><mat-icon>people</mat-icon>Accounts</h1>
+
+<nav mat-tab-nav-bar>
+    <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
+       [routerLink]="['/users']">Users</a>
+    <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
+       [routerLink]="['/tokens']">Tokens</a>
+</nav>
+
 <mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
 <div id="table-wrapper" [ngStyle]="{display: 'flex', 'flex-direction': 'column', 'flex-grow': 1 }" (window:resize)="resize2parent()">
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" (wheel)="scroll($event)">

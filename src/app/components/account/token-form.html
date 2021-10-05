@@ -1,0 +1,21 @@
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon>
+<h1 mat-dialog-titlei *ngIf="!token">Create Authentication Token</h1>
+<h1 mat-dialog-titlei *ngIf="token">Edit Authentication Token</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form">
+            <p>Description <app-validation-error [control]="form.get('description')"></app-validation-error></p>
+            <mat-form-field>
+                <input matInput formControlName="description" required [attr.readonly]="form.value.token.length > 0" cdkFocusInitial>
+            </mat-form-field>
+            <button mat-raised-button (click)="create()" [disabled]="form.value.token.length > 0 || !form.get('description').valid">Create</button>
+            <p>Token</p>
+            <mat-form-field>
+                <input matInput formControlName="token" readonly>
+            </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <app-alert></app-alert>
+    <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="form.value.token.length == 0 || !clicked">Ok</button>
+</div>
