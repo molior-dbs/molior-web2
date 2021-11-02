@@ -190,7 +190,7 @@ export class ProjectversionDialogComponent {
             } else {
                 this.mode = 'edit';
             }
-            this.form.patchValue({version: this.projectversion.name + '-copy',
+            this.form.patchValue({version: this.mode === 'copy' ? this.projectversion.name + '-copy' : this.projectversion.name,
                                   basemirror: this.projectversion.basemirror,
                                   description: this.projectversion.description,
                                   dependencylevel: this.projectversion.dependency_policy,
