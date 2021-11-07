@@ -5,6 +5,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {BehaviorSubject, Observable} from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material';
 
 import {AuthService} from './services/auth.service';
 import {UserService} from './services/user.service';
@@ -39,7 +40,8 @@ export class AppComponent implements OnInit {
         private matIconRegistry: MatIconRegistry,
         private domSanitizer: DomSanitizer,
         protected moliorService: MoliorService,
-        protected http: HttpClient
+        protected http: HttpClient,
+        private dialogs: MatDialog
     ) {
         this.matIconRegistry.addSvgIcon('debian', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/debian.svg'));
         this.matIconRegistry.addSvgIcon('git', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/git.svg'));
@@ -75,6 +77,7 @@ export class AppComponent implements OnInit {
     logout() {
         this.moliorService.disconnect();
         this.authService.logout();
+        this.dialogs.closeAll();
         this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.routerState.snapshot.url }});
     }
 
