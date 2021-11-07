@@ -1,1 +1,1 @@
-activate nginx-reload
+activate-noawait nginx-reload
