@@ -141,6 +141,14 @@ export class ProjectInfoComponent extends TableComponent {
         });
         dialog.afterClosed().subscribe(result => this.loadData());
     }
+
+    extupload(projectversion: ProjectVersion) {
+        const dialog = this.dialog.open(ProjectversionBuilduploadDialogComponent, {
+            data: { projectversion },
+            disableClose: true,
+            width: '600px',
+        });
+    }
 }
 
 @Component({
@@ -450,5 +458,52 @@ export class ProjectversionSnapshotDialogComponent {
             this.alertService.error(err.error);
             this.clicked = false;
         });
+    }
+}
+
+@Component({
+    selector: 'app-buildupload-dialog',
+    templateUrl: '../projectversion/projectversion-buildupload-form.html',
+})
+export class ProjectversionBuilduploadDialogComponent {
+    clicked: boolean;
+    error: boolean;
+    projectversion: ProjectVersion;
+    dependency: string;
+    form = this.fb.group({
+        files: new FormControl(FileList)
+    });
+
+    constructor(public dialog: MatDialogRef<ProjectversionBuilduploadDialogComponent>,
+                private fb: FormBuilder,
+                protected projectversionService: ProjectVersionService,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, dependency: string }
+    ) {
+        this.clicked = false;
+        this.error = false;
+        this.projectversion = data.projectversion;
+        this.dependency = data.dependency;
+    }
+
+    save(): void {
+        this.clicked = true;
+        const element = document.getElementById('fileupload') as HTMLInputElement;
+
+        const formData = new FormData();
+        if (element.files) {
+            Array.from(element.files).forEach(file =>
+                formData.append(file.name, file)
+            );
+        }
+
+        this.projectversionService.buildUpload(this.projectversion, formData).subscribe(
+            r => this.dialog.close(),
+            err => {
+                this.alertService.error(err.error);
+                this.error = true;
+                this.clicked = false;
+            }
+        );
     }
 }

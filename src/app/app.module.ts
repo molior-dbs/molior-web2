@@ -35,13 +35,14 @@ import {ProjectService, ProjectVersionService} from './services/project.service'
 import {RepositoryService} from './services/repository.service';
 
 import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
-        ProjectversionLockDialogComponent, ProjectversionOverlayDialogComponent, ProjectversionSnapshotDialogComponent,
+    ProjectversionLockDialogComponent, ProjectversionOverlayDialogComponent, ProjectversionSnapshotDialogComponent,
+    ProjectversionBuilduploadDialogComponent
         } from './components/project/project-info';
 import {ProjectPermissionsComponent, ProjectPermissionDialogComponent,
         ProjectPermissionDeleteDialogComponent} from './components/project/project-permissions';
 import {ProjectTokensComponent, ProjectTokenDialogComponent, ProjectTokenDeleteDialogComponent} from './components/project/project-tokens';
 import {ProjectversionInfoComponent, DependencyDialogComponent,
-        DependencyDeleteDialogComponent, BuilduploadDialogComponent} from './components/projectversion/projectversion-info';
+        DependencyDeleteDialogComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent, SourcerepoDialogComponent, SourcerepoRemoveDialogComponent,
        } from './components/projectversion/projectversion-repo-list';
 import {TriggerBuildDialogComponent, SourcerepoRecloneDialogComponent} from './components/repo/repo-list';
@@ -134,12 +135,12 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectversionRepoComponent,
         DependencyDialogComponent,
         DependencyDeleteDialogComponent,
-        BuilduploadDialogComponent,
         ProjectDeleteDialogComponent,
         ProjectversionDeleteDialogComponent,
         ProjectversionLockDialogComponent,
         ProjectversionOverlayDialogComponent,
         ProjectversionSnapshotDialogComponent,
+        ProjectversionBuilduploadDialogComponent,
         ProjectversionBuildListComponent,
         ProjectversionAPTSourcesComponent,
         ProjectversionDependentsComponent,
@@ -222,10 +223,10 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       UserDeleteDialogComponent,
                       DependencyDialogComponent,
                       DependencyDeleteDialogComponent,
-                      BuilduploadDialogComponent,
                       ProjectversionLockDialogComponent,
                       ProjectversionOverlayDialogComponent,
                       ProjectversionSnapshotDialogComponent,
+                      ProjectversionBuilduploadDialogComponent,
                       ProjectDeleteDialogComponent,
                       ProjectversionDeleteDialogComponent,
                       ProjectPermissionDialogComponent,

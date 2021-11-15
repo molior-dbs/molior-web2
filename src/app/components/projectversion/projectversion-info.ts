@@ -6,7 +6,8 @@ import {FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import {ProjectVersion, ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
 import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent, ProjectversionOverlayDialogComponent,
-        ProjectversionLockDialogComponent, ProjectversionSnapshotDialogComponent} from '../project/project-info';
+    ProjectversionLockDialogComponent, ProjectversionSnapshotDialogComponent,
+    ProjectversionBuilduploadDialogComponent} from '../project/project-info';
 import {AlertService} from '../../services/alert.service';
 
 @Component({
@@ -152,7 +153,7 @@ export class ProjectversionInfoComponent extends TableComponent {
     }
 
     extupload() {
-        const dialog = this.dialog.open(BuilduploadDialogComponent, {
+        const dialog = this.dialog.open(ProjectversionBuilduploadDialogComponent, {
             data: { projectversion: this.projectversion },
             disableClose: true,
             width: '600px',
@@ -235,54 +236,6 @@ export class DependencyDeleteDialogComponent {
             r => this.dialog.close(),
             err => {
                 this.alertService.error(err.error);
-                this.clicked = false;
-            }
-        );
-    }
-}
-
-@Component({
-    selector: 'app-buildupload-dialog',
-    templateUrl: 'projectversion-buildupload-form.html',
-})
-export class BuilduploadDialogComponent {
-    clicked: boolean;
-    error: boolean;
-    projectversion: ProjectVersion;
-    dependency: string;
-    form = this.fb.group({
-        files: new FormControl(FileList)
-    });
-
-    constructor(public dialog: MatDialogRef<DependencyDialogComponent>,
-                private fb: FormBuilder,
-                protected projectversionService: ProjectVersionService,
-                private alertService: AlertService,
-                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion, dependency: string }
-    ) {
-        this.clicked = false;
-        this.error = false;
-        this.projectversion = data.projectversion;
-        this.dependency = data.dependency;
-    }
-
-    save(): void {
-        this.clicked = true;
-        const element = document.getElementById('fileupload') as HTMLInputElement;
-
-        const formData = new FormData();
-        if (element.files) {
-            for (let i = 0; i < element.files.length; i++) {
-                const file = element.files[i];
-                formData.append(file.name, file);
-            }
-        }
-
-        this.projectversionService.buildUpload(this.projectversion, formData).subscribe(
-            r => this.dialog.close(),
-            err => {
-                this.alertService.error(err.error);
-                this.error = true;
                 this.clicked = false;
             }
         );
