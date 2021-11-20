@@ -8,7 +8,7 @@ import {BuildService, BuildDataSource, buildicon, Build} from '../../services/bu
 import {Repository, RepositoryService} from '../../services/repository.service';
 import {ProjectVersion} from '../../services/project.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
-import {BuildDeleteDialogComponent, BuildRebuildDialogComponent} from './build-list';
+import {BuildDeleteDialogComponent, BuildRebuildDialogComponent, BuildAbortDialogComponent} from './build-list';
 import {TriggerBuildDialogComponent} from '../repo/repo-list';
 import {apiURL} from '../../lib/url';
 
@@ -189,6 +189,14 @@ export class BuildTableComponent extends TableComponent implements OnInit {
             return year + '-' + month + '-' + day + ' ' + hrs + ':' + mins;
         }
         return null;
+    }
+
+    abort(build: Build) {
+        const dialogRef = this.dialog.open(BuildAbortDialogComponent, {
+            data: { build },
+            disableClose: true,
+            width: '40%',
+        });
     }
 
     rebuild(build: Build) {

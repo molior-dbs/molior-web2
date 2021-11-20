@@ -54,7 +54,8 @@ import {ProjectversionDependentsComponent} from './components/projectversion/pro
 import {ProjectversionPermissionsComponent} from './components/projectversion/projectversion-permissions';
 
 import {BuildTableComponent} from './components/build/build-table';
-import {BuildListComponent, BuildDeleteDialogComponent, BuildRebuildDialogComponent} from './components/build/build-list';
+import {BuildListComponent, BuildDeleteDialogComponent, BuildRebuildDialogComponent,
+        BuildAbortDialogComponent} from './components/build/build-list';
 import {BuildInfoComponent} from './components/build/build-info';
 import {BuildService} from './services/build.service';
 
@@ -93,6 +94,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         BuildListComponent,
         BuildDeleteDialogComponent,
         BuildRebuildDialogComponent,
+        BuildAbortDialogComponent,
         BuildInfoComponent,
 
         MirrorListComponent,
@@ -236,7 +238,8 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       TokenDialogComponent,
                       TokenDeleteDialogComponent,
                       BuildDeleteDialogComponent,
-                      BuildRebuildDialogComponent
+                      BuildRebuildDialogComponent,
+                      BuildAbortDialogComponent
                      ],
 })
 export class AppModule { }

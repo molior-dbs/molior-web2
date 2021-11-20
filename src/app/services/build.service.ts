@@ -149,6 +149,10 @@ export class BuildService extends TableService<Build> {
         return this.http.put(`${apiURL()}/api2/build/${id}`, {});
     }
 
+    abort(id: number) {
+        return this.http.post(`${apiURL()}/api2/build/${id}/abort`, {});
+    }
+
     delete(id: number) {
         return this.http.delete(`${apiURL()}/api2/build/${id}`);
     }

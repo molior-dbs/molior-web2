@@ -49,6 +49,34 @@ export class BuildDeleteDialogComponent {
 }
 
 @Component({
+    selector: 'app-build-abort',
+    templateUrl: 'build-abort-form.html',
+})
+export class BuildAbortDialogComponent {
+    clicked: boolean;
+    build: Build;
+    constructor(public dialog: MatDialogRef<BuildAbortDialogComponent>,
+                protected buildService: BuildService,
+                private alertService: AlertService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { build: Build }
+    ) {
+        this.clicked = false;
+        this.build = data.build;
+    }
+
+    save(): void {
+        this.clicked = true;
+        this.buildService.abort(this.build.id).subscribe(
+            r => this.dialog.close(),
+            err => {
+                this.alertService.error(err.error);
+                this.clicked = false;
+            });
+    }
+}
+
+@Component({
     selector: 'app-build-dialog',
     templateUrl: 'build-rebuild-form.html',
 })
