@@ -1,7 +1,7 @@
 <mat-icon style="float: left; padding-top: 4px;">class</mat-icon>
 <h1 mat-dialog-title *ngIf="mode === 'create'">Create Project Version</h1>
 <h1 mat-dialog-title *ngIf="mode === 'edit'">Edit Project Version {{form.value.version}}</h1>
-<h1 mat-dialog-title *ngIf="mode === 'copy'">Copy Project Version {{form.value.version}}</h1>
+<h1 mat-dialog-title *ngIf="mode === 'copy'">Copy Project Version {{projectversion.name}}</h1>
 <div mat-dialog-content>
     <form [formGroup]="form" [ngStyle]="{height: '360px'}">
 
@@ -12,7 +12,11 @@
             </mat-form-field>
         </div>
 
-        <p>Description <app-validation-error [control]="form.get('description')"></app-validation-error></p>
+        <div *ngIf="mode === 'copy'">
+            <mat-checkbox formControlName="buildlatest" matTooltip="Build last releases">Build last releases from {{projectversion.name}}</mat-checkbox>
+        </div>
+
+        <p><strong>Description</strong> <app-validation-error [control]="form.get('description')"></app-validation-error></p>
         <mat-form-field>
             <textarea matInput formControlName="description"></textarea>
         </mat-form-field>

@@ -176,7 +176,8 @@ export class ProjectversionDialogComponent {
         architecture2: new FormControl(true),
         architecture3: new FormControl(true),
         dependencylevel: new FormControl('strict', [Validators.required]),
-        cibuilds: new FormControl(false)
+        cibuilds: new FormControl(false),
+        buildlatest: new FormControl(false)
     });
 
     constructor(public dialog: MatDialogRef<ProjectversionDialogComponent>,
@@ -277,7 +278,8 @@ export class ProjectversionDialogComponent {
                                             this.form.value.dependencylevel,
                                             this.form.value.basemirror,
                                             this.form.value.architectures,
-                                            this.form.value.cibuilds).subscribe(
+                                            this.form.value.cibuilds,
+                                            this.form.value.buildlatest).subscribe(
                 r => {
                     this.dialog.close();
                     this.router.navigate(['/project', this.projectName, this.form.value.version]);

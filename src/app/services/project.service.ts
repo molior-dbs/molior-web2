@@ -173,9 +173,9 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     }
 
     copy(p: ProjectVersion, version: string, description: string, dependencylevel: string, basemirror: string, architectures: string[],
-         cibuilds: boolean) {
+         cibuilds: boolean, buildlatest: boolean) {
         return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/copy`,
-            { name: version, description, dependency_policy: dependencylevel, basemirror, architectures, cibuilds });
+            { name: version, description, dependency_policy: dependencylevel, basemirror, architectures, cibuilds, buildlatest });
     }
 
     lock(p: ProjectVersion) {
