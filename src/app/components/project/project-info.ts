@@ -241,6 +241,7 @@ export class ProjectversionDialogComponent {
                     }
                 });
                 this.form.get('basemirror').updateValueAndValidity();
+                this.changeBaseMirror();
             }
         });
         projectVersionService.getBaseProjects().subscribe(res => {
