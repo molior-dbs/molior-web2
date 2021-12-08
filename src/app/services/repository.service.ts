@@ -18,6 +18,20 @@ export interface Repository {
     name: string;
     state: string;
     url: string;
+    last_gitref: string;
+    architectures: string[];
+    last_build: {
+        id: number;
+        version: string;
+        build_state: string;
+        sourcename: string;
+    };
+    last_successful_build: {
+        id: number;
+        version: string;
+        build_state: string;
+        sourcename: string;
+    };
 }
 
 export class RepositoryDataSource extends TableDataSource<Repository> {
