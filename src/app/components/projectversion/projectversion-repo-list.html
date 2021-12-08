@@ -33,6 +33,13 @@
                     {{buildicon(element.last_build.buildstate)}}
                 </mat-icon>
                 {{element.last_build.version}}
+                <span *ngIf="element.last_successful_build">
+                    <mat-icon class="mat-icon notranslate material-icons buildstate buildstate-{{element.last_successful_build.buildstate}}"
+                        matTooltip="{{element.last_successful_build.buildstate}}" [matTooltipPosition]="'left'" style="margin-right: 5px;">
+                        {{buildicon(element.last_successful_build.buildstate)}}
+                    </mat-icon>
+                    {{element.last_build.version}}
+                </span>
             </div>
         </td>
     </ng-container>
