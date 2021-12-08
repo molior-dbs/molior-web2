@@ -146,8 +146,8 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
             { description, dependency_policy: dependencylevel, cibuilds });
     }
 
-    getDependencies(p: ProjectVersion) {
-        const params: any = {candidates: true};
+    getDependencies(p: ProjectVersion, search: string) {
+        const params: any = {candidates: true, q: search};
         return this.http.get(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependencies`,
                              {params}).pipe(
             /* tslint:disable:no-string-literal */

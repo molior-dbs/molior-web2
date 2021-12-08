@@ -183,7 +183,12 @@ export class DependencyDialogComponent {
     ) {
         this.clicked = false;
         this.projectversion = data.projectversion;
-        projectversionService.getDependencies(data.projectversion).subscribe(res => {
+        this.searchDependencies();
+    }
+
+    searchDependencies() {
+        const search = this.form.value.dependency;
+        this.projectversionService.getDependencies(this.projectversion, search).subscribe(res => {
             this.dependencies = [];
             for (const entry of res) {
                 this.dependencies.push(entry);
