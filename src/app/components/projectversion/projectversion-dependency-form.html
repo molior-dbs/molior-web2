@@ -3,7 +3,7 @@
     <form [formGroup]="form" [ngStyle]="{height: '360px'}">
 
         <p><strong>Dependency</strong><app-validation-error [control]="form.get('dependency')"></app-validation-error></p>
-        <mat-form-field floatLabel="never" style="width: 400px; padding-left: 45px; padding-top: 10px;">
+        <mat-form-field floatLabel="never" style="width: 600px; padding-left: 45px; padding-top: 10px;">
             <input matInput formControlName="dependency" placeholder="-- Select Dependency --" [matAutocomplete]="auto" (input)="searchDependencies()">
             <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let entry of dependencies" [value]="getDependencyName(entry)">
