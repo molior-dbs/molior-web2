@@ -27,6 +27,7 @@ export interface ProjectVersion {
     ci_builds_enabled: boolean;
     dependency_ids: number[];
     dependent_ids: number[];
+    projectversiontype: string;
 }
 
 export interface Permission {

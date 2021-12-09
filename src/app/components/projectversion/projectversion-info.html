@@ -1,4 +1,4 @@
-<h1><mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span></h1>
+<h1><mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span><span class="title" *ngIf="projectversion.projectversiontype!=='regular'">&nbsp;({{projectversion.projectversiontype}})</span></h1>
 <div *ngIf="projectversion.description" [ngStyle]="{ 'padding': '10px' }">{{ projectversion.description }}</div>
 
 <nav mat-tab-nav-bar>

@@ -21,7 +21,8 @@ export class ProjectversionAPTSourcesComponent {
         this.projectversion = {id: -1, name: '', is_locked: false,
                                project_name: '',
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
-                               dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: []};
+                               dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: [],
+                               projectversiontype: 'regular'};
         this.aptSources = '';
         this.aptSourcesCI = '';
         this.route.paramMap.subscribe((params: ParamMap) => {
