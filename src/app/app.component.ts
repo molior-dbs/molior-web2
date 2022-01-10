@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild } from '@angular/core';
+import {Component, ViewChild, AfterViewInit } from '@angular/core';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -9,16 +9,10 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material';
 
 import {AuthService} from './services/auth.service';
 import {UserService} from './services/user.service';
-import {MoliorService} from './services/websocket';
+import {MoliorService, MoliorStatus} from './services/websocket';
 import {HttpClient} from '@angular/common/http';
 import {apiURL} from './lib/url';
 
-interface Status {
-    version: string;
-    sshkey: string;
-    maintenance_mode: boolean;
-    maintenance_message: string;
-}
 
 @Component({
     selector: 'app-root',
@@ -26,11 +20,11 @@ interface Status {
     styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit {
     title = 'molior-web';
     private connectionColor: BehaviorSubject<string>;
     public connectionColor$: Observable<string>;
-    status: Status;
+    status: MoliorStatus;
     date: Date;
 
     constructor(
@@ -65,13 +59,16 @@ export class AppComponent implements OnInit {
         if (this.authenticated()) {
             this.moliorService.connect();
         }
-        this.status = { sshkey: '', version: '', maintenance_mode: false, maintenance_message: '' };
+        this.status = {sshkey: '', gpgurl: '', version_molior_server: '', version_aptly: '',
+                       maintenance_message: '', maintenance_mode: false};
     }
 
-    ngOnInit() {
-        this.http.get<Status>(`${apiURL()}/api/status`).subscribe( r => {
+    ngAfterViewInit() {
+        this.moliorService.getMoliorStatus().subscribe(r => {
             this.status = r;
-        });
+            },
+            err => console.log('Error getting server status', err)
+        );
     }
 
     logout() {

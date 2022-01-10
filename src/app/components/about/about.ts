@@ -2,14 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {apiURL} from '../../lib/url';
-
-interface Status {
-    sshkey: string;
-    gpgurl: string;
-    version: string;
-    maintenance_message: string;
-    maintenance_mode: boolean;
-}
+import {MoliorService, MoliorStatus} from '../../services/websocket';
 
 @Component({
   selector: 'app-about',
@@ -17,16 +10,19 @@ interface Status {
   styleUrls: ['./about.scss']
 })
 export class AboutComponent implements OnInit {
-    status: Status;
+    status: MoliorStatus;
     repoasc: string;
 
-    constructor(protected http: HttpClient) {
-        this.status = {sshkey: '', gpgurl: '', version: '', maintenance_message: '', maintenance_mode: false};
+    constructor(protected http: HttpClient,
+                protected moliorService: MoliorService
+    ) {
+        this.status = {sshkey: '', gpgurl: '', version_molior_server: '', version_aptly: '',
+                       maintenance_message: '', maintenance_mode: false};
         this.repoasc = '';
     }
 
     ngOnInit() {
-        this.http.get<Status>(`${apiURL()}/api/status`).subscribe(r => {
+        this.moliorService.getMoliorStatus().subscribe(r => {
             this.status = r;
             this.http.get<string>(this.status.gpgurl, {responseType: 'text' as 'json'}).subscribe(r2 => this.repoasc = r2);
             },

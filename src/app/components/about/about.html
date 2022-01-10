@@ -1,6 +1,8 @@
 <h1><mat-icon>question_answer</mat-icon>About</h1>
 <h2>Molior - Debian Build System</h2>
-
+<p>Molior Server Version: {{status.version_molior_server}}</p>
+<p>Molior Web Version: {{MoliorWebVersion()}}</p>
+<p>Aptly Version: {{status.version_aptly}}</p>
 <p style="width: 700px">Molior is based on <a class="link" href="https://www.aptly.info/" target="_blank" rel="noreferrer noopener">aptly</a> for managing Debian package repositories and <a class="link" href="https://wiki.debian.org/sbuild" target="_blank" rel="noreferrer noopener">sbuild</a> for building Debian packages for multiple distributions and architectures. </p>
 
 <p style="width: 700px">Molior allows the following via WebUI, REST API or commandline tools:</p>
