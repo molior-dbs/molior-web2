@@ -13,6 +13,7 @@ import {MoliorWebVersion} from '../../lib/version';
 export class AboutComponent implements OnInit {
     status: MoliorStatus;
     repoasc: string;
+    versionMoliorWeb: string;
 
     constructor(protected http: HttpClient,
                 protected moliorService: MoliorService
@@ -20,6 +21,7 @@ export class AboutComponent implements OnInit {
         this.status = {sshkey: '', gpgurl: '', version_molior_server: '', version_aptly: '',
                        maintenance_message: '', maintenance_mode: false};
         this.repoasc = '';
+        this.versionMoliorWeb = MoliorWebVersion();
     }
 
     ngOnInit() {
