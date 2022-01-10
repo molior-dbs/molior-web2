@@ -36,7 +36,7 @@
     </ng-container>
 
     <ng-container matColumnDef="cpu_cores">
-        <th mat-header-cell *matHeaderCellDef>CPU cores</th>
+        <th mat-header-cell *matHeaderCellDef>CPU Cores</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.id]">
             {{element.cpu_cores}}
         </td>
@@ -59,7 +59,7 @@
     </ng-container>
 
     <ng-container matColumnDef="ip">
-        <th mat-header-cell *matHeaderCellDef>IP address</th>
+        <th mat-header-cell *matHeaderCellDef>IP Address</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.id]">
             {{element.ip}}
         </td>
@@ -73,7 +73,7 @@
     </ng-container>
 
     <ng-container matColumnDef="client_ver">
-        <th mat-header-cell *matHeaderCellDef>Client version</th>
+        <th mat-header-cell *matHeaderCellDef>Version</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['./'+element.id]">
             {{element.client_ver}}
         </td>
