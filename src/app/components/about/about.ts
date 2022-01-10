@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 
 import {apiURL} from '../../lib/url';
 import {MoliorService, MoliorStatus} from '../../services/websocket';
+import {MoliorWebVersion} from '../../lib/version';
 
 @Component({
   selector: 'app-about',

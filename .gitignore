@@ -52,3 +52,5 @@ debian/molior-web.debhelper.log
 debian/molior-web.substvars
 debian/molior-web/
 
+# Version
+src/app/lib/version.ts
