@@ -66,8 +66,8 @@ export class UserService extends TableService<User> {
         return this.http.delete<User>(`${apiURL()}/api/user/${id}`);
     }
 
-    getProjectRoleCandidates(projectname: string) {
-        return this.http.get<User[]>(`${apiURL()}/api2/projectbase/${projectname}/permissions`, {params: {candidates: 'true'}});
+    getProjectRoleCandidates(projectname: string, search: string) {
+        return this.http.get<User[]>(`${apiURL()}/api2/projectbase/${projectname}/permissions`, {params: {candidates: 'true', q: search}});
     }
 }
 
