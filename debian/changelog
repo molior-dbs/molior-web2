@@ -1,3 +1,20 @@
+molior-web (1.4.1) stable; urgency=medium
+
+  * node info: rename source name
+  * node info: improve headings
+  * about: improve display versions
+  * about: display molior server, web and aptly versions
+  * projectversion info: add projectversion type
+  * projectversion: display build upload in projectversion list
+  * projectversion edit: fix redirect after editing
+  * login: trim username
+  * source repo: show dependent builds
+  * projectversion copy: check only architectures from the project to be
+    copied
+  * build trigger: fix typo
+
+ -- André Roth <neolynx@gmail.com>  Sun, 16 Jan 2022 15:47:22 +0100
+
 molior-web (1.4.0) stable; urgency=medium
 
   * rewrite in Angular 8
