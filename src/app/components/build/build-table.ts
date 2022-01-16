@@ -8,7 +8,7 @@ import {BuildService, BuildDataSource, buildicon, Build} from '../../services/bu
 import {Repository, RepositoryService} from '../../services/repository.service';
 import {ProjectVersion} from '../../services/project.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
-import {BuildDeleteDialogComponent, BuildRebuildDialogComponent} from './build-list';
+import {BuildDeleteDialogComponent, BuildRebuildDialogComponent, BuildAbortDialogComponent} from './build-list';
 import {TriggerBuildDialogComponent} from '../repo/repo-list';
 import {apiURL} from '../../lib/url';
 
@@ -28,6 +28,8 @@ export class BuildTableComponent extends TableComponent implements OnInit {
     @ViewChild('inputCommit', { static: false }) inputCommit: ElementRef;
     /* tslint:disable-next-line:no-input-rename */
     @Input('projectversion') projectversion: ProjectVersion;
+    /* tslint:disable-next-line:no-input-rename */
+    @Input('repository') repository: Repository;
 
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
@@ -68,6 +70,9 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         const params = this.params;
         if (this.projectversion) {
             params.set('project', this.projectversion.project_name + '/' + this.projectversion.name);
+        }
+        if (this.repository) {
+            params.set('sourcerepository_id', this.repository.id);
         }
         this.dataSource.load('/api/builds', params);
     }
@@ -184,6 +189,14 @@ export class BuildTableComponent extends TableComponent implements OnInit {
             return year + '-' + month + '-' + day + ' ' + hrs + ':' + mins;
         }
         return null;
+    }
+
+    abort(build: Build) {
+        const dialogRef = this.dialog.open(BuildAbortDialogComponent, {
+            data: { build },
+            disableClose: true,
+            width: '40%',
+        });
     }
 
     rebuild(build: Build) {

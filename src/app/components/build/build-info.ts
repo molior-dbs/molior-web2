@@ -45,6 +45,7 @@ const ErrorPatterns = [
     [/: Permission denied/, []],
     [/: error :/, []],
     [/: error CS\d+:/, []],
+    [/:\d+:\d+: E\d+/, []],
 ];
 
 

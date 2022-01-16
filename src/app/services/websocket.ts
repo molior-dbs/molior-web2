@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Subject, Observable, Observer} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
-import {wsURL} from '../lib/url';
+import {wsURL, apiURL} from '../lib/url';
+
 
 @Injectable()
 export class WebsocketService {
@@ -51,6 +53,15 @@ export interface Message {
     data: object;
 }
 
+export interface MoliorStatus {
+    sshkey: string;
+    gpgurl: string;
+    version_molior_server: string;
+    version_aptly: string;
+    maintenance_message: string;
+    maintenance_mode: boolean;
+}
+
 @Injectable()
 export class MoliorService {
     public messages: Subject<Message>;
@@ -63,7 +74,9 @@ export class MoliorService {
     outbox: string[];
     up: boolean;
 
-    constructor(private wsService: WebsocketService) {
+    constructor(private wsService: WebsocketService,
+                protected http: HttpClient
+    ) {
         this.connected = false;
         this.outbox = [];
         this.wsconnect = new Subject<UpdateEvent>();
@@ -83,6 +96,10 @@ export class MoliorService {
                 this.outbox = [];
             }
         });
+    }
+
+    getMoliorStatus() {
+        return this.http.get<MoliorStatus>(`${apiURL()}/api/status`);
     }
 
     disconnected() {

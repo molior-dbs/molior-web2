@@ -246,7 +246,7 @@ export class TriggerBuildDialogComponent {
         this.clicked = false;
         this.repoId = data.repoId;
         this.giturl = data.giturl;
-        this.repositoryService.getRepoDependents(this.repoId, true).subscribe( r => {
+        this.repositoryService.getRepoDependentProjectVersions(this.repoId, true).subscribe( r => {
             const projectversions = [];
             if (r.total_result_count > 0) {
                 for (const res of r.results) {
@@ -254,8 +254,7 @@ export class TriggerBuildDialogComponent {
                 }
                 this.projectversions.next(projectversions);
             }
-        }
-    );
+        });
     }
 
     save(): void {

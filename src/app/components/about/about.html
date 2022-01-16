@@ -1,6 +1,5 @@
 <h1><mat-icon>question_answer</mat-icon>About</h1>
 <h2>Molior - Debian Build System</h2>
-
 <p style="width: 700px">Molior is based on <a class="link" href="https://www.aptly.info/" target="_blank" rel="noreferrer noopener">aptly</a> for managing Debian package repositories and <a class="link" href="https://wiki.debian.org/sbuild" target="_blank" rel="noreferrer noopener">sbuild</a> for building Debian packages for multiple distributions and architectures. </p>
 
 <p style="width: 700px">Molior allows the following via WebUI, REST API or commandline tools:</p>
@@ -18,6 +17,13 @@
     <li><a class="link" href="https://github.com/molior-dbs/molior" target="_blank" rel="noreferrer noopener">Source code hosted on GitHub</a></li>
     <li><a class="link" href="/api/doc" target="_blank" rel="noreferrer noopener">REST API Documentation (swagger)</a></li>
 </ul>
+
+<h2>Versions</h2>
+<table style="border-collapse: collapse; margin-top: 10px;">
+    <tr><td style="padding-right: 10px; padding-bottom: 5px;"><ul style="margin-top: 0px"><li style="margin-bottom: 0px">Molior Server</li></ul></td><td style="padding-bottom: 5px">{{status.version_molior_server}}</td></tr>
+    <tr><td style="padding-right: 10px; padding-bottom: 5px;"><ul style="margin-top: 0px"><li style="margin-bottom: 0px">Molior Web</li></ul></td><td style="padding-bottom: 5px">{{versionMoliorWeb}}</td></tr>
+    <tr><td style="padding-right: 10px; padding-bottom: 5px;"><ul style="margin-top: 0px"><li style="margin-bottom: 0px">Aptly Server</li></ul></td><td style="padding-bottom: 5px">{{status.version_aptly}}</td></tr>
+</table>
 
 <div style="display: flex;">
     <div style="padding-right: 50px; width: 340px;">

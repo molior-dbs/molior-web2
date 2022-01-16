@@ -31,7 +31,8 @@ export class ProjectversionDependentsComponent extends TableComponent {
         this.projectversion = {id: -1, name: this.projectVersion, is_locked: false,
                                project_name: this.projectName,
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
-                               dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: []};
+                               dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: [],
+                               projectversiontype: 'regular'};
         this.dataSource = new ProjectVersionDataSource(projectversionService);
     }
 

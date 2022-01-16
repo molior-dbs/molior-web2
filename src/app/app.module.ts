@@ -35,10 +35,12 @@ import {ProjectService, ProjectVersionService} from './services/project.service'
 import {RepositoryService} from './services/repository.service';
 
 import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
-        ProjectversionLockDialogComponent, ProjectversionOverlayDialogComponent, ProjectversionSnapshotDialogComponent,
+    ProjectversionLockDialogComponent, ProjectversionOverlayDialogComponent, ProjectversionSnapshotDialogComponent,
+    ProjectversionBuilduploadDialogComponent
         } from './components/project/project-info';
 import {ProjectPermissionsComponent, ProjectPermissionDialogComponent,
         ProjectPermissionDeleteDialogComponent} from './components/project/project-permissions';
+import {ProjectTokensComponent, ProjectTokenDialogComponent, ProjectTokenDeleteDialogComponent} from './components/project/project-tokens';
 import {ProjectversionInfoComponent, DependencyDialogComponent,
         DependencyDeleteDialogComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent, SourcerepoDialogComponent, SourcerepoRemoveDialogComponent,
@@ -52,7 +54,8 @@ import {ProjectversionDependentsComponent} from './components/projectversion/pro
 import {ProjectversionPermissionsComponent} from './components/projectversion/projectversion-permissions';
 
 import {BuildTableComponent} from './components/build/build-table';
-import {BuildListComponent, BuildDeleteDialogComponent, BuildRebuildDialogComponent} from './components/build/build-list';
+import {BuildListComponent, BuildDeleteDialogComponent, BuildRebuildDialogComponent,
+        BuildAbortDialogComponent} from './components/build/build-list';
 import {BuildInfoComponent} from './components/build/build-info';
 import {BuildService} from './services/build.service';
 
@@ -65,6 +68,7 @@ import {MirrorService} from './services/mirror.service';
 import {RepositoryListComponent, RepositoryDialogComponent,
         RepoMergeDialogComponent, RepoDeleteDialogComponent} from './components/repo/repo-list';
 import {RepositoryInfoComponent} from './components/repo/repo-info';
+import {RepositoryBuildsComponent} from './components/repo/repo-builds';
 
 import {NodeListComponent} from './components/node/node-list';
 import {NodeInfoComponent} from './components/node/node-info';
@@ -72,7 +76,9 @@ import {NodeService} from './services/node.service';
 
 import {UserListComponent, UserDialogComponent, UserDeleteDialogComponent} from './components/user/user-list';
 import {UserInfoComponent} from './components/user/user-info';
-import {UserService} from './services/user.service';
+import {UserService, TokenService} from './services/user.service';
+
+import {TokenListComponent, TokenDialogComponent, TokenDeleteDialogComponent} from './components/account/token-list';
 
 import {WebsocketService, MoliorService} from './services/websocket';
 
@@ -88,6 +94,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         BuildListComponent,
         BuildDeleteDialogComponent,
         BuildRebuildDialogComponent,
+        BuildAbortDialogComponent,
         BuildInfoComponent,
 
         MirrorListComponent,
@@ -102,6 +109,8 @@ import {WebsocketService, MoliorService} from './services/websocket';
         RepositoryDialogComponent,
         RepoMergeDialogComponent,
         RepoDeleteDialogComponent,
+
+        RepositoryBuildsComponent,
 
         NodeListComponent,
         NodeInfoComponent,
@@ -119,6 +128,9 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectPermissionDialogComponent,
         ProjectPermissionDeleteDialogComponent,
         ProjectPermissionsComponent,
+        ProjectTokenDialogComponent,
+        ProjectTokenDeleteDialogComponent,
+        ProjectTokensComponent,
         ProjectversionDialogComponent,
         ProjectversionInfoComponent,
         ProjectversionRepoListComponent,
@@ -130,6 +142,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectversionLockDialogComponent,
         ProjectversionOverlayDialogComponent,
         ProjectversionSnapshotDialogComponent,
+        ProjectversionBuilduploadDialogComponent,
         ProjectversionBuildListComponent,
         ProjectversionAPTSourcesComponent,
         ProjectversionDependentsComponent,
@@ -141,6 +154,10 @@ import {WebsocketService, MoliorService} from './services/websocket';
         TriggerBuildDialogComponent,
         HookDialogComponent,
         HookDeleteDialogComponent,
+
+        TokenListComponent,
+        TokenDialogComponent,
+        TokenDeleteDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -180,6 +197,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectService,
         ProjectVersionService,
         UserService,
+        TokenService,
         MirrorService,
         ValidationService,
         RepositoryService,
@@ -210,12 +228,18 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       ProjectversionLockDialogComponent,
                       ProjectversionOverlayDialogComponent,
                       ProjectversionSnapshotDialogComponent,
+                      ProjectversionBuilduploadDialogComponent,
                       ProjectDeleteDialogComponent,
                       ProjectversionDeleteDialogComponent,
                       ProjectPermissionDialogComponent,
                       ProjectPermissionDeleteDialogComponent,
+                      ProjectTokenDialogComponent,
+                      ProjectTokenDeleteDialogComponent,
+                      TokenDialogComponent,
+                      TokenDeleteDialogComponent,
                       BuildDeleteDialogComponent,
-                      BuildRebuildDialogComponent
+                      BuildRebuildDialogComponent,
+                      BuildAbortDialogComponent
                      ],
 })
 export class AppModule { }

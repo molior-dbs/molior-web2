@@ -7,7 +7,7 @@
         <p>User Name <app-validation-error [control]="form.get('username')"></app-validation-error></p>
         <strong *ngIf="permission">{{permission.username}}</strong>
         <mat-form-field *ngIf="!permission">
-            <input matInput formControlName="username" required cdkFocusInitial [matAutocomplete]="autoUsername">
+            <input matInput formControlName="username" required cdkFocusInitial [matAutocomplete]="autoUsername" (input)="changeUsername()">
             <mat-autocomplete #autoUsername="matAutocomplete">
                 <ng-container *ngFor="let entry of usernames">
                 <mat-option *ngIf="entry" [value]="entry.username">
@@ -19,7 +19,7 @@
 
         <p>Role<app-validation-error [control]="form.get('role')"></app-validation-error></p>
         <mat-form-field>
-            <mat-select formControlName="role" required cdkFocusInitial>
+            <mat-select formControlName="role" required>
                 <ng-container *ngFor="let entry of ['member', 'manager', 'owner']">
                     <mat-option *ngIf="entry" [value]="entry">
                         {{entry}}

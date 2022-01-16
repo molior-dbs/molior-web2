@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {AbstractControl} from '@angular/forms';
 
 import {apiURL} from '../lib/url';
 import {TableService, TableDataSource, MoliorResult } from '../lib/table.datasource';
@@ -26,6 +27,7 @@ export interface ProjectVersion {
     ci_builds_enabled: boolean;
     dependency_ids: number[];
     dependent_ids: number[];
+    projectversiontype: string;
 }
 
 export interface Permission {
@@ -90,6 +92,18 @@ export class ProjectService extends TableService<Project> {
     deletePermission(name: string, username: string) {
         return this.http.request('delete', `${apiURL()}/api2/projectbase/${name}/permissions`, {body: {username}});
     }
+
+    createToken(name: string, description: string) {
+        return this.http.post(`${apiURL()}/api2/projectbase/${name}/token`, {description});
+    }
+
+    addToken(name: string, description: string) {
+        return this.http.put(`${apiURL()}/api2/projectbase/${name}/token`, {description});
+    }
+
+    deleteToken(name: string, id: number) {
+        return this.http.request('delete', `${apiURL()}/api2/projectbase/${name}/tokens`, {body: {id}});
+    }
 }
 
 export class ProjectVersionDataSource extends TableDataSource<ProjectVersion> {
@@ -122,10 +136,10 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         return this.http.get<ProjectVersion>(`${apiURL()}/api2/project/${name}/${version}`);
     }
 
-    create(project: string, version: string, description: string, dependencylevel: string, basemirror: string, architectures: string[],
-           cibuilds: boolean) {
+    create(project: string, version: string, description: string, dependencylevel: string, basemirror: string, baseproject: string,
+           architectures: string[], cibuilds: boolean) {
         return this.http.post<ProjectVersion>(`${apiURL()}/api2/projectbase/${project}/versions`,
-            { name: version, description, dependency_policy: dependencylevel, basemirror, architectures, cibuilds });
+            { name: version, description, dependency_policy: dependencylevel, basemirror, baseproject, architectures, cibuilds });
     }
 
     edit(project: string, version: string, description: string, dependencylevel: string, cibuilds: boolean) {
@@ -133,8 +147,8 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
             { description, dependency_policy: dependencylevel, cibuilds });
     }
 
-    getDependencies(p: ProjectVersion) {
-        const params: any = {candidates: true};
+    getDependencies(p: ProjectVersion, search: string) {
+        const params: any = {candidates: true, q: search};
         return this.http.get(`${apiURL()}/api2/project/${p.project_name}/${p.name}/dependencies`,
                              {params}).pipe(
             /* tslint:disable:no-string-literal */
@@ -160,10 +174,11 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         return this.http.get<string>(`${apiURL()}/api2/project/${name}/${version}/aptsources`, {params, responseType: 'text' as 'json'});
     }
 
-    copy(p: ProjectVersion, version: string, description: string, dependencylevel: string, basemirror: string, architectures: string[],
-         cibuilds: boolean) {
+    copy(p: ProjectVersion, version: string, description: string, dependencylevel: string, basemirror: string, baseproject: string,
+         architectures: string[], cibuilds: boolean, buildlatest: boolean) {
         return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/copy`,
-            { name: version, description, dependency_policy: dependencylevel, basemirror, architectures, cibuilds });
+            { name: version, description, dependency_policy: dependencylevel, basemirror, baseproject,
+              architectures, cibuilds, buildlatest });
     }
 
     lock(p: ProjectVersion) {
@@ -181,4 +196,40 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     delete(p: ProjectVersion, forceremoval: boolean) {
         return this.http.delete<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}?forceremoval=${forceremoval}`);
     }
+
+    buildUpload(p: ProjectVersion, formData) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/extbuild`, formData);
+    }
+
+    getBaseProjects(search: string = '') {
+        const p: any = {};
+        if (search) {
+            p.q = search;
+        }
+        return this.http.get(`${apiURL()}/api/projectversions`, { params: p }).pipe(
+            /* tslint:disable:no-string-literal */
+            map(res => new MoliorResult<ProjectVersion>(res['total_result_count'], res['results']))
+            /* tslint:enable:no-string-literal */
+            );
+    }
+
 }
+
+export function BaseProjectValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    if (control.value !== undefined && this.baseprojects ) {
+        let found = false;
+        for (const i in this.baseprojects) {
+            if (i) {
+                const base = this.baseprojects[i];
+                if (base.name === control.value) {
+                    found = true;
+                }
+            }
+        }
+        if (!found) {
+            return { invalidValue: true };
+        }
+    }
+    return null;
+}
+

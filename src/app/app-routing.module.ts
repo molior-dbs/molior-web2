@@ -5,6 +5,7 @@ import {BuildInfoComponent} from './components/build/build-info';
 import {ProjectListComponent} from './components/project/project-list';
 import {ProjectInfoComponent} from './components/project/project-info';
 import {ProjectPermissionsComponent} from './components/project/project-permissions';
+import {ProjectTokensComponent} from './components/project/project-tokens';
 import {ProjectversionInfoComponent} from './components/projectversion/projectversion-info';
 import {ProjectversionRepoListComponent} from './components/projectversion/projectversion-repo-list';
 import {ProjectversionRepoComponent} from './components/projectversion/projectversion-repo-info';
@@ -17,10 +18,12 @@ import {MirrorInfoComponent} from './components/mirror/mirror-info';
 import {MirrorAPTSourcesComponent} from './components/mirror/mirror-aptsources';
 import {RepositoryListComponent} from './components/repo/repo-list';
 import {RepositoryInfoComponent} from './components/repo/repo-info';
+import {RepositoryBuildsComponent} from './components/repo/repo-builds';
 import {NodeListComponent} from './components/node/node-list';
 import {NodeInfoComponent} from './components/node/node-info';
 import {UserListComponent} from './components/user/user-list';
 import {UserInfoComponent} from './components/user/user-info';
+import {TokenListComponent} from './components/account/token-list';
 import {AboutComponent} from './components/about/about';
 
 import {LoginComponent} from './components/login/login';
@@ -36,6 +39,7 @@ const routes: Routes = [
             { path: '',                      redirectTo: 'versions', pathMatch: 'full' },
             { path: 'versions',              component: ProjectInfoComponent,    canActivate: [AuthGuard] },
             { path: 'permissions',           component: ProjectPermissionsComponent,        canActivate: [AuthGuard] },
+            { path: 'tokens',                component: ProjectTokensComponent,        canActivate: [AuthGuard] },
             { path: ':version',
                 children: [
                     { path: '',              redirectTo: 'info', pathMatch: 'full' },
@@ -58,11 +62,18 @@ const routes: Routes = [
     { path: 'mirror/:name/:version',         component: MirrorInfoComponent,     canActivate: [AuthGuard] },
     { path: 'mirror/:name/:version/aptsources', component: MirrorAPTSourcesComponent, canActivate: [AuthGuard] },
     { path: 'repos',                         component: RepositoryListComponent, canActivate: [AuthGuard] },
-    { path: 'repo/:id',                      component: RepositoryInfoComponent, canActivate: [AuthGuard] },
+    { path: 'repo/:id',
+        children: [
+            { path: '',                      redirectTo: 'info', pathMatch: 'full' },
+            { path: 'info',                  component: RepositoryInfoComponent, canActivate: [AuthGuard] },
+            { path: 'builds',                component: RepositoryBuildsComponent, canActivate: [AuthGuard] },
+        ]
+    },
     { path: 'nodes',                         component: NodeListComponent,       canActivate: [AuthGuard] },
     { path: 'nodes/:machine_id',             component: NodeInfoComponent,       canActivate: [AuthGuard] },
     { path: 'users',                         component: UserListComponent,       canActivate: [AuthGuard] },
     { path: 'users/:username',               component: UserInfoComponent,       canActivate: [AuthGuard] },
+    { path: 'tokens',                        component: TokenListComponent,      canActivate: [AuthGuard] },
     { path: 'about',                         component: AboutComponent,          canActivate: [AuthGuard] },
     { path: '**', redirectTo: '/builds'}
 ];

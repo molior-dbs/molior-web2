@@ -35,11 +35,24 @@ export class ProjectversionRepoComponent extends TableComponent {
                 protected repositoryService: RepositoryService,
                 protected dialog: MatDialog) {
         super(route, router, []);
-        this.projectversion = {id: -1, name: '', is_locked: false,
-                               project_name: '',
+        this.projectversion = {id: -1, name: '', is_locked: false, project_name: '',
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
-                               dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: []};
-        this.repository = {id: -1, name: '', state: '', url: ''};
+                               dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: [],
+                               projectversiontype: 'regular'};
+        this.repository = {id: -1, name: '', state: '', url: '', last_gitref: '', architectures: [],
+            last_build: {
+                id: -1,
+                version: '',
+                build_state: '',
+                sourcename: ''
+            },
+            last_successful_build: {
+                id: -1,
+                version: '',
+                build_state: '',
+                sourcename: ''
+            },
+        };
         this.dataSource = new RepositoryDataSource(this.repositoryService);
     }
 

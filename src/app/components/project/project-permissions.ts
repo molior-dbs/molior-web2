@@ -120,11 +120,7 @@ export class ProjectPermissionDialogComponent {
         if (this.permission) {
             this.form.patchValue({username: this.permission.username, role: this.permission.role});
         } else {
-            this.userService.getProjectRoleCandidates(this.project.name).subscribe(
-                /* tslint:disable:no-string-literal */
-                res => this.usernames = new MoliorResult<User>(res['total_result_count'], res['results'])
-                /* tslint:enable:no-string-literal */
-            );
+            this.changeUsername();
         }
     }
 
@@ -152,6 +148,14 @@ export class ProjectPermissionDialogComponent {
                 this.alertService.error(err.error);
                 this.clicked = false;
             }
+        );
+    }
+
+    changeUsername() {
+        this.userService.getProjectRoleCandidates(this.project.name, this.form.value.username).subscribe(
+            /* tslint:disable:no-string-literal */
+            res => this.usernames = new MoliorResult<User>(res['total_result_count'], res['results'])
+            /* tslint:enable:no-string-literal */
         );
     }
 }

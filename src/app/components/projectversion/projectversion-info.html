@@ -1,4 +1,4 @@
-<h1><mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span></h1>
+<h1><mat-icon>class</mat-icon>Project <a class="title" [routerLink]="['/project', projectversion.project_name, 'versions']">{{projectversion.project_name}}</a><span class="title">/{{projectversion.name}}</span><span class="title" *ngIf="projectversion.projectversiontype!=='regular'">&nbsp;({{projectversion.projectversiontype}})</span></h1>
 <div *ngIf="projectversion.description" [ngStyle]="{ 'padding': '10px' }">{{ projectversion.description }}</div>
 
 <nav mat-tab-nav-bar>
@@ -51,12 +51,13 @@
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="edit()">   <mat-icon>edit</mat-icon>Edit</button>
+                <button *ngIf="!projectversion.is_locked" mat-menu-item (click)="edit()">   <mat-icon>edit</mat-icon>Edit</button>
                 <button mat-menu-item (click)="copy()">   <mat-icon>content_copy</mat-icon>Copy</button>
                 <button mat-menu-item (click)="overlay()"><mat-icon>horizontal_split</mat-icon>Create Overlay</button>
                 <button mat-menu-item (click)="snapshot()"><mat-icon>trending_up</mat-icon>Create Release Snapshot</button>
                 <button *ngIf="!projectversion.is_locked" mat-menu-item (click)="lock()"><mat-icon>lock</mat-icon>Lock</button>
-                <button mat-menu-item (click)="delete()"><mat-icon>delete</mat-icon>Delete</button>
+                <button *ngIf="!projectversion.is_locked" mat-menu-item (click)="extupload()"><mat-icon>file_upload</mat-icon>Upload external build</button>
+                <button *ngIf="!projectversion.is_locked" mat-menu-item (click)="delete()"><mat-icon>delete</mat-icon>Delete</button>
             </mat-menu>
     </div>
 </div>

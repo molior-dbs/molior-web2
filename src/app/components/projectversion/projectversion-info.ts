@@ -6,7 +6,8 @@ import {FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import {ProjectVersion, ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
 import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent, ProjectversionOverlayDialogComponent,
-        ProjectversionLockDialogComponent, ProjectversionSnapshotDialogComponent} from '../project/project-info';
+    ProjectversionLockDialogComponent, ProjectversionSnapshotDialogComponent,
+    ProjectversionBuilduploadDialogComponent} from '../project/project-info';
 import {AlertService} from '../../services/alert.service';
 
 @Component({
@@ -40,7 +41,8 @@ export class ProjectversionInfoComponent extends TableComponent {
         this.projectversion = {id: -1, name: this.projectVersion, is_locked: false,
                                project_name: this.projectName,
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
-                               dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: []};
+                               dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: [],
+                               projectversiontype: 'regular'};
         this.dataSource = new ProjectVersionDataSource(projectversionService);
     }
 
@@ -151,6 +153,13 @@ export class ProjectversionInfoComponent extends TableComponent {
         return true;
     }
 
+    extupload() {
+        const dialog = this.dialog.open(ProjectversionBuilduploadDialogComponent, {
+            data: { projectversion: this.projectversion },
+            disableClose: true,
+            width: '600px',
+        });
+    }
 }
 
 
@@ -175,7 +184,12 @@ export class DependencyDialogComponent {
     ) {
         this.clicked = false;
         this.projectversion = data.projectversion;
-        projectversionService.getDependencies(data.projectversion).subscribe(res => {
+        this.searchDependencies();
+    }
+
+    searchDependencies() {
+        const search = this.form.value.dependency;
+        this.projectversionService.getDependencies(this.projectversion, search).subscribe(res => {
             this.dependencies = [];
             for (const entry of res) {
                 this.dependencies.push(entry);

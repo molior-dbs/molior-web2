@@ -26,6 +26,8 @@
        [routerLink]="['/project', project.name, 'versions']">Versions</a>
     <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
        [routerLink]="['/project', project.name, 'permissions']">Permissions</a>
+    <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
+       [routerLink]="['/project', project.name, 'tokens']">Tokens</a>
 </nav>
 
 <mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
@@ -95,6 +97,7 @@
                 <button mat-menu-item (click)="overlay(element)"><mat-icon>horizontal_split</mat-icon>Create Overlay</button>
                 <button mat-menu-item (click)="snapshot(element)"><mat-icon>trending_up</mat-icon>Create Release Snapshot</button>
                 <button *ngIf="!element.is_locked" mat-menu-item (click)="lock(element)"><mat-icon>lock</mat-icon>Lock</button>
+                <button *ngIf="!element.is_locked" mat-menu-item (click)="extupload(element)"><mat-icon>file_upload</mat-icon>Upload external build</button>
                 <button mat-menu-item (click)="delete(element)"><mat-icon>delete</mat-icon> Delete</button>
             </mat-menu>
         </td>

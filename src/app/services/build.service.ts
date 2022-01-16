@@ -120,6 +120,9 @@ export class BuildService extends TableService<Build> {
         if (params.get('project')) {
             p.project = params.get('project');
         }
+        if (params.get('sourcerepository_id')) {
+            p.sourcerepository_id = params.get('sourcerepository_id');
+        }
         if (params.get('commit')) {
             p.commit = params.get('commit');
         }
@@ -144,6 +147,10 @@ export class BuildService extends TableService<Build> {
 
     rebuild(id: number) {
         return this.http.put(`${apiURL()}/api2/build/${id}`, {});
+    }
+
+    abort(id: number) {
+        return this.http.post(`${apiURL()}/api2/build/${id}/abort`, {});
     }
 
     delete(id: number) {

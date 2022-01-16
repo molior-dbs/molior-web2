@@ -1,46 +1,33 @@
-<h1><mat-icon>class</mat-icon>Project {{project.name}}</h1>
-<div *ngIf="project.description" [ngStyle]="{ 'padding': '10px' }">{{ project.description }}</div>
+<h1><mat-icon>people</mat-icon>Accounts</h1>
 
 <nav mat-tab-nav-bar>
     <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
-       [routerLink]="['/project', project.name, 'versions']">Versions</a>
+       [routerLink]="['/users']">Users</a>
     <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
-       [routerLink]="['/project', project.name, 'permissions']">Permissions</a>
-    <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
-       [routerLink]="['/project', project.name, 'tokens']">Tokens</a>
+       [routerLink]="['/tokens']">Tokens</a>
 </nav>
 
 <mat-paginator showFirstLastButtons hidePageSize></mat-paginator>
 <div id="table-wrapper" [ngStyle]="{display: 'flex', 'flex-direction': 'column', 'flex-grow': 1 }" (window:resize)="resize2parent()">
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" (wheel)="scroll($event)">
-    <ng-container matColumnDef="username">
+    <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef><mat-form-field>
-            <input matInput placeholder="Username" #inputName>
+            <input matInput placeholder="Description" #inputDescription>
         </mat-form-field></th>
         <td mat-cell *matCellDef="let element">
-            <strong> {{element.username}} </strong>
-        </td>
-    </ng-container>
-
-    <ng-container matColumnDef="role">
-        <th mat-header-cell *matHeaderCellDef><mat-form-field>
-            <input matInput placeholder="Role" #inputRole>
-        </mat-form-field></th>
-        <td mat-cell *matCellDef="let element">
-            <strong> {{element.role}} </strong>
+            <strong> {{element.description}} </strong>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
         <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef>
-            <button mat-icon-button aria-label="add permission" (click)="add()"><mat-icon>control_point</mat-icon></button>
+            <button mat-icon-button aria-label="create token" (click)="create()"><mat-icon>control_point</mat-icon></button>
         </th>
         <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
             <button mat-icon-button [matMenuTriggerFor]="menu" id="menu_{{element.id}}" aria-label="">
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="edit(element)"><mat-icon>edit</mat-icon>Edit</button>
                 <button mat-menu-item (click)="delete(element)"><mat-icon>delete</mat-icon>Delete</button>
             </mat-menu>
         </td>

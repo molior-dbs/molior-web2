@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {FormGroup, FormControl, AbstractControl} from '@angular/forms';
 
-export const urlregex = /^(?:https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\._-]+))+$/;
+export const urlregex = /^(?:https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\._-]+))*$/;
 export const gitregex = [
     /^(https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\._~-]+))+$/,
     /^(ssh:\/\/)?(\w+@)?(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)[:/][\w\._~-]+(\/[\w\._-]+)+$/,
@@ -26,8 +26,7 @@ export class ValidationService {
     }
 
     static nameValidator(control) {
-        if (control.value.match(/^[a-zA-Z][a-zA-Z0-9-]*$/)) {
-            // FIXME: not end with -
+        if (control.value.match(/^[a-zA-Z0-9][a-zA-Z0-9\.-]*[a-zA-Z0-9]+$/)) {
             return null;
         } else {
             return { invalidName: true };

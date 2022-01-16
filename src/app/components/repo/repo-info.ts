@@ -37,7 +37,20 @@ export class RepositoryInfoComponent extends TableComponent {
                 protected route: ActivatedRoute,
                 protected dialog: MatDialog) {
         super(route, router, [['filter_name', '']]);
-        this.repo = {id: 0, name: '', url: '', state: ''};
+        this.repo = {id: -1, name: '', state: '', url: '', last_gitref: '', architectures: [],
+            last_build: {
+                id: -1,
+                version: '',
+                build_state: '',
+                sourcename: ''
+            },
+            last_successful_build: {
+                id: -1,
+                version: '',
+                build_state: '',
+                sourcename: ''
+            },
+        };
         this.dataSource = new ProjectVersionDataSource(projectversionService);
     }
 
@@ -47,7 +60,7 @@ export class RepositoryInfoComponent extends TableComponent {
     }
 
     loadData() {
-        this.route.paramMap.subscribe((params: ParamMap) => {
+        this.route.parent.paramMap.subscribe((params: ParamMap) => {
             this.repoId = Number(params.get('id'));
             this.http.get<Repository>(`${apiURL()}/api2/repository/${this.repoId}`).subscribe(
                 res => {

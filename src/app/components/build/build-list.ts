@@ -36,12 +36,43 @@ export class BuildDeleteDialogComponent {
         this.clicked = true;
         this.buildService.delete(this.build.id).subscribe( r => {
             this.dialog.close();
-            this.router.navigate(['/builds']);
+            // change url to /builds only on build logpage
+            if (this.router.url.match(/\/build\/\d+/)) {
+                this.router.navigate(['/builds']);
+            }
         },
         err => {
             this.alertService.error(err.error);
             this.clicked = false;
         });
+    }
+}
+
+@Component({
+    selector: 'app-build-abort',
+    templateUrl: 'build-abort-form.html',
+})
+export class BuildAbortDialogComponent {
+    clicked: boolean;
+    build: Build;
+    constructor(public dialog: MatDialogRef<BuildAbortDialogComponent>,
+                protected buildService: BuildService,
+                private alertService: AlertService,
+                protected router: Router,
+                @Inject(MAT_DIALOG_DATA) private data: { build: Build }
+    ) {
+        this.clicked = false;
+        this.build = data.build;
+    }
+
+    save(): void {
+        this.clicked = true;
+        this.buildService.abort(this.build.id).subscribe(
+            r => this.dialog.close(),
+            err => {
+                this.alertService.error(err.error);
+                this.clicked = false;
+            });
     }
 }
 
