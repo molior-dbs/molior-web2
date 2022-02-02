@@ -52,7 +52,8 @@ export class MirrorInfoComponent extends TableComponent {
             mirrorkeyids: '',
             mirrorkeyserver: '',
             external_repo: false,
-            dependency_policy: 'strict'
+            dependency_policy: 'strict',
+            mirrorfilter: '',
         };
         this.dataSource = new ProjectVersionDataSource(projectversionService);
     }

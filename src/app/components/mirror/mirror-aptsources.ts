@@ -22,7 +22,8 @@ export class MirrorAPTSourcesComponent {
                         components: '', is_basemirror: false, architectures: [],
                         is_locked: false, with_sources: false, with_installer: false,
                         project_id: -1, state: '', apt_url: '', mirrorkeyurl: '',
-                        mirrorkeyids: '', mirrorkeyserver: '', external_repo: false, dependency_policy: 'strict' };
+                        mirrorkeyids: '', mirrorkeyserver: '', external_repo: false, dependency_policy: 'strict',
+                        mirrorfilter: '' };
         this.aptSources = '';
         this.route.paramMap.subscribe((params: ParamMap) => {
             const mirrorName = params.get('name');

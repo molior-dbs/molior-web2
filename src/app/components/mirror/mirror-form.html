@@ -143,6 +143,19 @@
                     </div>
                 </mat-radio-group>
             </mat-step>
+
+            <mat-step formGroupName="3" [stepControl]="formArray.get('3')">
+                <ng-template matStepLabel>Advanced Options</ng-template>
+                <p style="margin-bottom: 0px;">
+                <app-validation-error [control]="formArray.get('3').get('mirrorfilter')"></app-validation-error>
+                <span style="width: 200px; display: inline-block;"><strong>Exclude Filter</strong>&nbsp;(optional)</span>
+                <mat-form-field style="width: 500px;">
+                    <input formControlName="mirrorfilter" matInput>
+                </mat-form-field>
+                </p>
+                <p>Example: !(Name (= dotnet-sdk-5.0), Version (= 5.0.202-1))</p>
+            </mat-step>
+
         </mat-horizontal-stepper>
     </form>
 </div>

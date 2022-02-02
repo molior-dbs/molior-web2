@@ -148,6 +148,9 @@ export class MirrorDialogComponent {
                  mirrorkeyurl: new FormControl('', [Validators.required]),
                  mirrorkeyids: new FormControl(''),
                  mirrorkeyserver: new FormControl('hkp://keyserver.ubuntu.com:80')
+             }),
+             this.fb.group({
+                 mirrorfilter: new FormControl(''),
              })
          ])
     });
@@ -188,7 +191,7 @@ export class MirrorDialogComponent {
                                                 mirrortype: this.mirror.is_basemirror ? '1' : '2',
                                                 external_repo: this.mirror.external_repo,
                                                 basemirror: this.mirror.basemirror_name,
-                                                dependencylevel: this.mirror.dependency_policy,
+                                                dependencylevel: this.mirror.dependency_policy
                                               });
             this.formArray.get([1]).patchValue({mirrorsrc: this.mirror.with_sources,
                                                 mirrorinst: this.mirror.with_installer,
@@ -203,6 +206,8 @@ export class MirrorDialogComponent {
                                                 mirrorkeyurl: this.mirror.mirrorkeyurl,
                                                 mirrorkeyids: this.mirror.mirrorkeyids.split(/[, ]/).join(' '),
                                                 mirrorkeyserver: this.mirror.mirrorkeyserver
+                                              });
+            this.formArray.get([3]).patchValue({mirrorfilter: this.mirror.mirrorfilter,
                                               });
             if (this.mirror.mirrorkeyurl !== '') {
                 this.formArray.get([2]).patchValue({mirrorkeytype: '1'});
@@ -362,7 +367,8 @@ export class MirrorDialogComponent {
                                       data[2].mirrorkeytype,
                                       data[2].mirrorkeyurl,
                                       data[2].mirrorkeyids,
-                                      data[2].mirrorkeyserver
+                                      data[2].mirrorkeyserver,
+                                      data[3].mirrorfilter,
                                      ).subscribe(
                                         msg => this.dialog.close(),
                                         err => {
@@ -386,7 +392,8 @@ export class MirrorDialogComponent {
                                     data[2].mirrorkeytype,
                                     data[2].mirrorkeyurl,
                                     data[2].mirrorkeyids,
-                                    data[2].mirrorkeyserver
+                                    data[2].mirrorkeyserver,
+                                    data[3].mirrorfilter,
                                    ).subscribe(
                                       msg => this.dialog.close(),
                                       err => {
@@ -439,6 +446,9 @@ export class MirrorCopyDialogComponent {
                  mirrorkeyurl: new FormControl('', [Validators.required]),
                  mirrorkeyids: new FormControl(''),
                  mirrorkeyserver: new FormControl('hkp://keyserver.ubuntu.com:80')
+             }),
+             this.fb.group({
+                 mirrorfilter: new FormControl(''),
              })
          ])
     });
@@ -478,7 +488,7 @@ export class MirrorCopyDialogComponent {
                                             mirrortype: this.mirror.is_basemirror ? '1' : '2',
                                             basemirror: this.mirror.basemirror_name,
                                             external_repo: this.mirror.external_repo,
-                                            dependencylevel: this.mirror.dependency_policy,
+                                            dependencylevel: this.mirror.dependency_policy
                                           });
         this.formArray.get([1]).patchValue({mirrorsrc: this.mirror.with_sources,
                                             mirrorinst: this.mirror.with_installer,
@@ -494,6 +504,7 @@ export class MirrorCopyDialogComponent {
                                             mirrorkeyids: this.mirror.mirrorkeyids.split(/[, ]/).join(' '),
                                             mirrorkeyserver: this.mirror.mirrorkeyserver
                                           });
+        this.formArray.get([3]).patchValue({mirrorfilter: this.mirror.mirrorfilter});
         if (this.mirror.mirrorkeyurl !== '') {
             this.formArray.get([2]).patchValue({mirrorkeytype: '1'});
         } else if (this.mirror.mirrorkeyids !== '') {
@@ -648,7 +659,8 @@ export class MirrorCopyDialogComponent {
                                   data[2].mirrorkeytype,
                                   data[2].mirrorkeyurl,
                                   data[2].mirrorkeyids,
-                                  data[2].mirrorkeyserver
+                                  data[2].mirrorkeyserver,
+                                  data[3].mirrorfilter,
                                  ).subscribe(
                                     msg => this.dialog.close(),
                                     err => {

@@ -31,6 +31,12 @@
                 <td><strong>Distribution</strong></td>
                 <td>{{mirror.distribution}}</td>
             </tr>
+            <tr *ngIf="mirror.mirrorfilter">
+                <td><strong>Filter</strong></td>
+                <td>{{mirror.mirrorfilter}}</td>
+                <td></td>
+                <td></td>
+            </tr>
             <tr>
                 <td><strong>External repo</strong></td>
                 <td>

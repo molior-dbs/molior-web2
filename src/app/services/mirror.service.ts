@@ -31,6 +31,7 @@ export interface Mirror {
     mirrorkeyserver: string;
     external_repo: boolean;
     dependency_policy: string;
+    mirrorfilter: string;
 }
 
 export class MirrorDataSource extends TableDataSource<Mirror> {
@@ -109,7 +110,8 @@ export class MirrorService extends TableService<Mirror> {
            mirrorkeytype: string,
            mirrorkeyurl: string,
            mirrorkeyids: string,
-           mirrorkeyserver: string
+           mirrorkeyserver: string,
+           mirrorfilter: string,
           ) {
         return this.http.post(`${apiURL()}/api2/mirror`,
                                       {mirrorname: mirrorname.trim(),
@@ -127,7 +129,8 @@ export class MirrorService extends TableService<Mirror> {
                                        mirrorkeytype,
                                        mirrorkeyurl: mirrorkeyurl.trim(),
                                        mirrorkeyids: mirrorkeyids.trim(),
-                                       mirrorkeyserver: mirrorkeyserver.trim()
+                                       mirrorkeyserver: mirrorkeyserver.trim(),
+                                       mirrorfilter: mirrorfilter.trim(),
                                       });
     }
 
@@ -146,7 +149,8 @@ export class MirrorService extends TableService<Mirror> {
          mirrorkeytype: string,
          mirrorkeyurl: string,
          mirrorkeyids: string,
-         mirrorkeyserver: string
+         mirrorkeyserver: string,
+         mirrorfilter: string,
         ) {
         return this.http.put(`${apiURL()}/api2/mirror/${mirrorname.trim()}/${mirrorversion.trim()}`,
                                       {mirrortype,
@@ -162,7 +166,8 @@ export class MirrorService extends TableService<Mirror> {
                                        mirrorkeytype,
                                        mirrorkeyurl: mirrorkeyurl.trim(),
                                        mirrorkeyids: mirrorkeyids.trim(),
-                                       mirrorkeyserver: mirrorkeyserver.trim()
+                                       mirrorkeyserver: mirrorkeyserver.trim(),
+                                       mirrorfilter: mirrorfilter.trim(),
                                       });
     }
 
