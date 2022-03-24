@@ -504,7 +504,9 @@ export class MirrorCopyDialogComponent {
                                             mirrorkeyids: this.mirror.mirrorkeyids.split(/[, ]/).join(' '),
                                             mirrorkeyserver: this.mirror.mirrorkeyserver
                                           });
-        this.formArray.get([3]).patchValue({mirrorfilter: this.mirror.mirrorfilter});
+        if (this.mirror.mirrorfilter != null) {
+            this.formArray.get([3]).patchValue({mirrorfilter: this.mirror.mirrorfilter});
+        }
         if (this.mirror.mirrorkeyurl !== '') {
             this.formArray.get([2]).patchValue({mirrorkeytype: '1'});
         } else if (this.mirror.mirrorkeyids !== '') {
