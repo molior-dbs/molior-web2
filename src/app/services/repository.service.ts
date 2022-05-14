@@ -123,7 +123,7 @@ export class RepositoryService extends TableService<Repository> {
     }
 
     trigger(repoUrl: string, gitref: string, targets: string[] = [], forceCI: boolean = true) {
-        return this.http.post(`${apiURL()}/api/build`, {repository: repoUrl, git_ref: gitref, forceCI, targets});
+        return this.http.post(`${apiURL()}/api/build`, {repository: repoUrl, git_ref: gitref, force_ci: forceCI, targets});
     }
 
     mergeDuplicate(id: number, duplicate: number) {
