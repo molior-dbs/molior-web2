@@ -109,6 +109,15 @@ export class ProjectInfoComponent extends TableComponent {
         dialog.afterClosed().subscribe(r => this.loadData());
     }
 
+    rebuild(projectversion: ProjectVersion): void {
+        const dialog = this.dialog.open(ProjectversionRebuildDialogComponent, {
+            data: { projectversion },
+            disableClose: true,
+            width: '40%',
+        });
+        dialog.afterClosed().subscribe(r => this.loadData());
+    }
+
     copy(projectversion: ProjectVersion): void {
         const dialog = this.dialog.open(ProjectversionDialogComponent, {
             data: { projectName: this.project.name, projectversion, copy: true },
@@ -571,5 +580,36 @@ export class ProjectversionBuilduploadDialogComponent {
                 this.clicked = false;
             }
         );
+    }
+}
+
+@Component({
+    selector: 'app-projectversion-rebuild-dialog',
+    templateUrl: '../projectversion/projectversion-rebuild-form.html',
+})
+export class ProjectversionRebuildDialogComponent {
+    clicked: boolean;
+    projectversion: ProjectVersion;
+    constructor(public dialog: MatDialogRef<ProjectversionRebuildDialogComponent>,
+                private fb: FormBuilder,
+                protected projectversionService: ProjectVersionService,
+                protected router: Router,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion }
+    ) {
+        this.clicked = false;
+        this.projectversion = data.projectversion;
+    }
+
+    save(): void {
+        this.clicked = true;
+        this.projectversionService.rebuild(this.projectversion).subscribe( r => {
+            this.dialog.close();
+            this.router.navigate(['/project', this.projectversion.project_name]);
+        },
+        err => {
+            this.alertService.error(err.error);
+            this.clicked = false;
+        });
     }
 }

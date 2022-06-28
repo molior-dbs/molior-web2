@@ -6,7 +6,7 @@ import {FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import {ProjectVersion, ProjectVersionService, ProjectVersionDataSource} from '../../services/project.service';
 import {TableComponent} from '../../lib/table.component';
 import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent, ProjectversionOverlayDialogComponent,
-    ProjectversionLockDialogComponent, ProjectversionSnapshotDialogComponent,
+    ProjectversionLockDialogComponent, ProjectversionSnapshotDialogComponent, ProjectversionRebuildDialogComponent,
     ProjectversionBuilduploadDialogComponent} from '../project/project-info';
 import {AlertService} from '../../services/alert.service';
 
@@ -107,6 +107,14 @@ export class ProjectversionInfoComponent extends TableComponent {
 
     delete() {
         const dialog = this.dialog.open(ProjectversionDeleteDialogComponent, {
+            data: { projectversion: this.projectversion },
+            disableClose: true,
+            width: '40%',
+        });
+    }
+
+    rebuild() {
+        const dialog = this.dialog.open(ProjectversionRebuildDialogComponent, {
             data: { projectversion: this.projectversion },
             disableClose: true,
             width: '40%',

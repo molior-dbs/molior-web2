@@ -99,6 +99,7 @@
                 <button *ngIf="!element.is_locked" mat-menu-item (click)="lock(element)"><mat-icon>lock</mat-icon>Lock</button>
                 <button *ngIf="!element.is_locked" mat-menu-item (click)="extupload(element)"><mat-icon>file_upload</mat-icon>Upload external build</button>
                 <button mat-menu-item (click)="delete(element)"><mat-icon>delete</mat-icon> Delete</button>
+                <button mat-menu-item (click)="rebuild(element)"><mat-icon>redo</mat-icon>Rebuild</button>
             </mat-menu>
         </td>
     </ng-container>

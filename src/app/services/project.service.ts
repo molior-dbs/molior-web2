@@ -197,6 +197,10 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         return this.http.delete<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}?forceremoval=${forceremoval}`);
     }
 
+    rebuild(p: ProjectVersion) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/rebuild`, {});
+    }
+
     buildUpload(p: ProjectVersion, formData) {
         return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/extbuild`, formData);
     }
