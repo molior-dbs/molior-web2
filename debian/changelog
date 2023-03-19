@@ -1,3 +1,13 @@
+molior-web (1.5.0~alpha1) stable; urgency=medium
+
+  * build for 1.5
+  * fix force CI flag
+  * fix displaying architectures with source and installer
+  * fix: mirror copy from older version
+  * mirror: add filter
+
+ -- André Roth <andre.roth@roche.com>  Sun, 19 Mar 2023 18:45:34 +0100
+
 molior-web (1.4.1) stable; urgency=medium
 
   * node info: rename source name
