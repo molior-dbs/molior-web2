@@ -47,8 +47,9 @@ export class ProjectversionAPTSourcesComponent {
                 sources += `<span>${line}\n</span>`;
             } else if (line.startsWith('deb ')) {
                 const it = line.split(' ');
+                const components = it.slice(3).join(' ')
                 sources += '<strong class="debsource">';
-                sources += `<span>${it[0]}</span> <span>${it[1]}</span> <span>${it[2]}</span> <span>${it[3]}</span>`;
+                sources += `<span>${it[0]}</span> <span>${it[1]}</span> <span>${it[2]}</span> <span>${components}</span>`;
                 sources += '</strong>\n';
             } else {
                 sources += line + '\n';

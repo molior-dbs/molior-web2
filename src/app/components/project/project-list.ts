@@ -94,7 +94,7 @@ export class ProjectCreateDialogComponent {
         description: new FormControl('', [Validators.maxLength(255)]),
     });
 
-    constructor(public dialog: MatDialogRef<ProjectDeleteDialogComponent>,
+    constructor(public dialog: MatDialogRef<ProjectCreateDialogComponent>,
                 protected projectService: ProjectService,
                 private fb: FormBuilder,
                 protected router: Router,
