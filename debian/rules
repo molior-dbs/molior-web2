@@ -8,6 +8,8 @@ include /usr/share/dpkg/pkg-info.mk
 
 override_dh_auto_build:
 	echo "export function MoliorWebVersion() { return \"$(DEB_VERSION)\"; }" > src/app/lib/version.ts
+	if dpkg --compare-versions $$(node -v | tr -d 'v') ge 18; then \
+		export NODE_OPTIONS=--openssl-legacy-provider; fi; \
 	PATH=node_modules/.bin:$$PATH ng build --configuration=production --outputHashing=all
 
 override_dh_auto_clean:
