@@ -39,7 +39,7 @@ export class ProjectversionRepoComponent extends TableComponent {
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
                                dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: [],
                                projectversiontype: 'regular'};
-        this.repository = {id: -1, name: '', state: '', url: '', last_gitref: '', architectures: [],
+        this.repository = {id: -1, name: '', state: '', url: '', last_gitref: '', architectures: [], run_lintian: false,
             last_build: {
                 id: -1,
                 version: '',

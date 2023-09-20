@@ -16,6 +16,9 @@
 
         <p><strong>Architectures</strong><app-validation-error [control]="form.get('architectures')"></app-validation-error></p>
         <mat-checkbox *ngFor="let arch of ['amd64', 'i386', 'arm64', 'armhf']; let i = index" formControlName="architecture{{ i }}" (change)="updateArchs()">{{ arch }}</mat-checkbox>
+        
+        <p><strong>Build options</strong><app-validation-error [control]="form.get('runLintian')"></app-validation-error></p>
+        <mat-checkbox formControlName="runLintian">run lintian</mat-checkbox>
 
         <br/>
         <br/>
