@@ -67,6 +67,15 @@
         </td>
     </ng-container>
 
+    <ng-container matColumnDef="runLintian">
+        <th mat-header-cell *matHeaderCellDef>Lintian</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/project', projectversion.project_name, projectversion.name, 'repo', element.id]">
+            <mat-icon *ngIf="element.run_lintian">done</mat-icon>
+            <mat-icon *ngIf="!element.run_lintian">remove</mat-icon>
+        </td>
+    </ng-container>
+
+
     <ng-container matColumnDef="actions">
         <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef>
             <button mat-icon-button aria-label="create" (click)="create()"><mat-icon>control_point</mat-icon></button>

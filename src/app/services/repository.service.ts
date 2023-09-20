@@ -20,6 +20,7 @@ export interface Repository {
     url: string;
     last_gitref: string;
     architectures: string[];
+    run_lintian: boolean;
     last_build: {
         id: number;
         version: string;
@@ -72,9 +73,9 @@ export class RepositoryService extends TableService<Repository> {
             );
     }
 
-    add(projectversion, url, architectures) {
+    add(projectversion, url, architectures, run_lintian) {
         return this.http.post(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/repositories`,
-            { url, architectures });
+            { url, architectures, run_lintian });
     }
 
     reclone(id: number) {
@@ -93,9 +94,9 @@ export class RepositoryService extends TableService<Repository> {
         return this.http.delete(`${apiURL()}/api2/repository/${id}`);
     }
 
-    edit(projectversion, id: number, architectures: string[]) {
+    edit(projectversion, id: number, architectures: string[], run_lintian: boolean) {
         return this.http.put(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/repository/${id}`,
-                             {architectures}
+                             {architectures, run_lintian}
                             );
     }
 

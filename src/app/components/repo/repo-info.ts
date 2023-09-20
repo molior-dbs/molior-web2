@@ -37,7 +37,7 @@ export class RepositoryInfoComponent extends TableComponent {
                 protected route: ActivatedRoute,
                 protected dialog: MatDialog) {
         super(route, router, [['filter_name', '']]);
-        this.repo = {id: -1, name: '', state: '', url: '', last_gitref: '', architectures: [],
+        this.repo = {id: -1, name: '', state: '', url: '', last_gitref: '', architectures: [], run_lintian: false,
             last_build: {
                 id: -1,
                 version: '',
