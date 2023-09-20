@@ -29,6 +29,7 @@ export class ProjectversionRepoListComponent extends TableComponent {
         'architectures',
         'url',
         'state',
+        'runLintian',
         'actions'
     ];
     @ViewChild('inputURL', { static: false }) inputURL: ElementRef;
@@ -138,7 +139,8 @@ export class SourcerepoDialogComponent implements OnInit {
         architecture0: new FormControl(false),
         architecture1: new FormControl(false),
         architecture2: new FormControl(false),
-        architecture3: new FormControl(false)
+        architecture3: new FormControl(false),
+        runLintian: new FormControl(false)
     });
 
     constructor(public dialog: MatDialogRef<SourcerepoDialogComponent>,
@@ -161,6 +163,10 @@ export class SourcerepoDialogComponent implements OnInit {
 
         if (this.repo) {
             this.form.patchValue({url: this.repo.url});
+            if (this.repo.run_lintian) {
+                this.form.patchValue({runLintian: true});
+                this.form.get('runLintian').updateValueAndValidity();
+            } 
             this.form.patchValue({architecture0: false, architecture1: false, architecture2: false, architecture3: false});
             this.repo.architectures.forEach(arch => {
                 switch (arch) {
@@ -185,7 +191,9 @@ export class SourcerepoDialogComponent implements OnInit {
                         break;
                     }
                 }
+
             });
+
         }
         this.updateArchs();
         this.form.controls.url.valueChanges.subscribe(
@@ -202,6 +210,7 @@ export class SourcerepoDialogComponent implements OnInit {
         );
     }
 
+
     updateArchs(): void {
         const architectures = [];
         ['amd64', 'i386', 'arm64', 'armhf'].forEach((item, index) => {
@@ -217,7 +226,7 @@ export class SourcerepoDialogComponent implements OnInit {
         this.clicked = true;
         this.updateArchs();
         if (!this.repo) {
-            this.repositoryService.add(this.data.projectversion, this.form.value.url.trim(), this.form.value.architectures).subscribe(
+            this.repositoryService.add(this.data.projectversion, this.form.value.url.trim(), this.form.value.architectures, this.form.value.runLintian).subscribe(
                 r => this.dialog.close(),
                 err => {
                     this.alertService.error(err.error);
@@ -225,7 +234,7 @@ export class SourcerepoDialogComponent implements OnInit {
                 });
         } else {
             this.repositoryService.edit(this.data.projectversion, this.repo.id,
-                                        this.form.value.architectures).subscribe(
+                                        this.form.value.architectures, this.form.value.runLintian).subscribe(
                 r => this.dialog.close(),
                 err => {
                     this.alertService.error(err.error);
