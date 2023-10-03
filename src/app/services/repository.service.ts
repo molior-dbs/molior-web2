@@ -73,9 +73,9 @@ export class RepositoryService extends TableService<Repository> {
             );
     }
 
-    add(projectversion, url, architectures, run_lintian) {
+    add(projectversion, url, architectures, run_lintian: boolean) {
         return this.http.post(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/repositories`,
-            { url, architectures, run_lintian });
+            { url, architectures, run_lintian: run_lintian ? 'true' : 'false' });
     }
 
     reclone(id: number) {
@@ -96,7 +96,7 @@ export class RepositoryService extends TableService<Repository> {
 
     edit(projectversion, id: number, architectures: string[], run_lintian: boolean) {
         return this.http.put(`${apiURL()}/api2/project/${projectversion.project_name}/${projectversion.name}/repository/${id}`,
-                             {architectures, run_lintian}
+                             {architectures, run_lintian: run_lintian ? 'true' : 'false'}
                             );
     }
 
