@@ -28,6 +28,8 @@ export interface ProjectVersion {
     dependency_ids: number[];
     dependent_ids: number[];
     projectversiontype: string;
+    retention_successful_builds: number;
+    retention_failed_builds: number;
 }
 
 export interface Permission {
@@ -137,14 +139,14 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     }
 
     create(project: string, version: string, description: string, dependencylevel: string, basemirror: string, baseproject: string,
-           architectures: string[], cibuilds: boolean) {
+           architectures: string[], cibuilds: boolean, retentionSuccessfulBuilds: number, retentionFailedBuilds: number) {
         return this.http.post<ProjectVersion>(`${apiURL()}/api2/projectbase/${project}/versions`,
-            { name: version, description, dependency_policy: dependencylevel, basemirror, baseproject, architectures, cibuilds });
+            { name: version, description, dependency_policy: dependencylevel, basemirror, baseproject, architectures, cibuilds, retention_successful_builds: retentionSuccessfulBuilds, retention_failed_builds: retentionFailedBuilds });
     }
 
-    edit(project: string, version: string, description: string, dependencylevel: string, cibuilds: boolean) {
+    edit(project: string, version: string, description: string, dependencylevel: string, cibuilds: boolean, retentionSuccessfulBuilds: number, retentionFailedBuilds: number) {
         return this.http.put<ProjectVersion>(`${apiURL()}/api2/project/${project}/${version}`,
-            { description, dependency_policy: dependencylevel, cibuilds });
+            { description, dependency_policy: dependencylevel, cibuilds, retention_successful_builds: retentionSuccessfulBuilds, retention_failed_builds: retentionFailedBuilds });
     }
 
     getDependencies(p: ProjectVersion, search: string) {
@@ -175,10 +177,10 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
     }
 
     copy(p: ProjectVersion, version: string, description: string, dependencylevel: string, basemirror: string, baseproject: string,
-         architectures: string[], cibuilds: boolean, buildlatest: boolean) {
+         architectures: string[], cibuilds: boolean, buildlatest: boolean, retentionSuccessfulBuilds: number, retentionFailedBuilds: number) {
         return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/copy`,
             { name: version, description, dependency_policy: dependencylevel, basemirror, baseproject,
-              architectures, cibuilds, buildlatest });
+              architectures, cibuilds, buildlatest, retention_successful_builds: retentionSuccessfulBuilds, retention_failed_builds: retentionFailedBuilds });
     }
 
     lock(p: ProjectVersion) {
