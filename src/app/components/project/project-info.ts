@@ -1,7 +1,7 @@
 import {Component, ElementRef, ViewChild, Inject} from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
+import {FormGroup, FormBuilder, FormControl, Validators, FormArray} from '@angular/forms';
 import {MatOptionSelectionChange} from '@angular/material';
 
 import {TableComponent} from '../../lib/table.component';
@@ -165,22 +165,30 @@ export class ProjectversionDialogComponent {
     baseArchs: string[];
     defaultDependencyLevel: 'strict';
     mode: string;
+    retentionSuccessfulBuilds: number;
     form = this.fb.group({
-        version: new FormControl('', [Validators.required,
-                                      Validators.minLength(2),
-                                      ValidationService.versionValidator]),
-        description: new FormControl('', [Validators.maxLength(255)]),
-        basetype: new FormControl('mirror'),
-        basemirror: new FormControl('', [Validators.required, BaseMirrorValidator.bind(this)]),
-        baseproject: new FormControl(''),
-        architectures: new FormControl([]),
-        architecture0: new FormControl(true),
-        architecture1: new FormControl(true),
-        architecture2: new FormControl(true),
-        architecture3: new FormControl(true),
-        dependencylevel: new FormControl('strict', [Validators.required]),
-        cibuilds: new FormControl(false),
-        buildlatest: new FormControl(false)
+        formArray : this.fb.array([
+            this.fb.group({
+                version: new FormControl('', [Validators.required,
+                                        Validators.minLength(2),
+                                        ValidationService.versionValidator]),
+                description: new FormControl('', [Validators.maxLength(255)]),
+                basetype: new FormControl('mirror'),
+                basemirror: new FormControl('', [Validators.required, BaseMirrorValidator.bind(this)]),
+                baseproject: new FormControl(''),
+                architectures: new FormControl([]),
+                architecture0: new FormControl(true),
+                architecture1: new FormControl(true),
+                architecture2: new FormControl(true),
+                architecture3: new FormControl(true),
+                dependencylevel: new FormControl('strict', [Validators.required]),
+                cibuilds: new FormControl(false),
+                buildlatest: new FormControl(false)
+            }),
+            this.fb.group({
+                retentionSuccessfulBuilds: new FormControl([Validators.required, Validators.min(1), Validators.max(5)]),
+            })
+        ])
     });
 
     constructor(public dialog: MatDialogRef<ProjectversionDialogComponent>,
@@ -189,7 +197,7 @@ export class ProjectversionDialogComponent {
                 protected projectVersionService: ProjectVersionService,
                 protected router: Router,
                 private alertService: AlertService,
-                @Inject(MAT_DIALOG_DATA) private data: { projectName: string, projectversion: ProjectVersion, copy: boolean}
+                @Inject(MAT_DIALOG_DATA) private data: { projectName: string, projectversion: ProjectVersion, copy: boolean }
     ) {
         this.clicked = false;
         this.projectName = data.projectName;
@@ -202,13 +210,18 @@ export class ProjectversionDialogComponent {
             } else {
                 this.mode = 'edit';
             }
-            this.form.patchValue({version: this.mode === 'copy' ? this.projectversion.name + '-copy' : this.projectversion.name,
+            this.formArray.get([0]).patchValue({version: this.mode === 'copy' ? this.projectversion.name + '-copy' : this.projectversion.name,
                                   basemirror: this.projectversion.basemirror,
                                   description: this.projectversion.description,
                                   dependencylevel: this.projectversion.dependency_policy,
                                   cibuilds: this.projectversion.ci_builds_enabled,
                                   architectures: this.projectversion.architectures,
                                  });
+
+
+            this.formArray.get([1]).patchValue({
+                retentionSuccessfulBuilds: this.projectversion.retention_successful_builds,
+            })
         }
         this.basemirrors = [];
         this.baseprojects = [];
@@ -218,30 +231,32 @@ export class ProjectversionDialogComponent {
                 this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
             }
             if (this.mode === 'edit' || this.mode === 'copy') {
-                this.form.patchValue({architecture0: false});
-                this.form.patchValue({architecture1: false});
-                this.form.patchValue({architecture2: false});
-                this.form.patchValue({architecture3: false});
+                this.formArray.get([0]).patchValue({architecture0: false});
+                this.formArray.get([0]).patchValue({architecture1: false});
+                this.formArray.get([0]).patchValue({architecture2: false});
+                this.formArray.get([0]).patchValue({architecture3: false});
                 this.baseArchs.forEach((item, index) => {
-                    if (this.form.value.architectures.includes(item)) {
+                    if (this.formArray.get([0]).value.architectures.includes(item)) {
                         switch (index) {
                             case 0:
-                                this.form.patchValue({architecture0: true});
+                                this.formArray.get([0]).patchValue({architecture0: true});
                                 break;
                             case 1:
-                                this.form.patchValue({architecture1: true});
+                                this.formArray.get([0]).patchValue({architecture1: true});
                                 break;
                             case 2:
-                                this.form.patchValue({architecture2: true});
+                                this.formArray.get([0]).patchValue({architecture2: true});
                                 break;
                             case 3:
-                                this.form.patchValue({architecture3: true});
+                                this.formArray.get([0]).patchValue({architecture3: true});
                                 break;
                         }
                     }
                 });
-                this.form.get('basemirror').updateValueAndValidity();
+                this.formArray.get([0]).get('basemirror').updateValueAndValidity();
                 this.changeBaseMirror();
+
+                this.formArray.get([1]).patchValue({retentionSuccessfulBuilds: this.projectversion.retention_successful_builds})
             }
         });
         projectVersionService.getBaseProjects().subscribe(res => {
@@ -254,10 +269,10 @@ export class ProjectversionDialogComponent {
     }
 
     updateArchs(): void {
-        this.form.patchValue({architectures: []});
+        this.formArray.get([0]).patchValue({architectures: []});
         this.baseArchs.forEach((item, index) => {
-            if (this.form.value[`architecture${index}`] === true) {
-                this.form.value.architectures.push(item);
+            if (this.formArray.get([0]).value[`architecture${index}`] === true) {
+                this.formArray.get([0]).value.architectures.push(item);
             }
         });
     }
@@ -268,12 +283,13 @@ export class ProjectversionDialogComponent {
         if (this.mode === 'edit') {
             this.projectVersionService.edit(this.data.projectName,
                                             this.projectversion.name,
-                                            this.form.value.description,
-                                            this.form.value.dependencylevel,
-                                            this.form.value.cibuilds).subscribe(
+                                            this.formArray.get([0]).value.description,
+                                            this.formArray.get([0]).value.dependencylevel,
+                                            this.formArray.get([0]).value.cibuilds,
+                                            this.formArray.get([1]).value.retentionSuccessfulBuilds).subscribe(
                 r => {
                     this.dialog.close();
-                    this.router.navigate(['/project', this.projectName, this.form.value.version]);
+                    this.router.navigate(['/project', this.projectName, this.formArray.get([0]).value.version]);
                 },
                 err => {
                     this.alertService.error(err.error);
@@ -281,17 +297,18 @@ export class ProjectversionDialogComponent {
                 });
         } else if (this.mode === 'copy') {
             this.projectVersionService.copy(this.projectversion,
-                                            this.form.value.version,
-                                            this.form.value.description,
-                                            this.form.value.dependencylevel,
-                                            this.form.value.basemirror,
-                                            this.form.value.baseproject,
-                                            this.form.value.architectures,
-                                            this.form.value.cibuilds,
-                                            this.form.value.buildlatest).subscribe(
+                                            this.formArray.get([0]).value.version,
+                                            this.formArray.get([0]).value.description,
+                                            this.formArray.get([0]).value.dependencylevel,
+                                            this.formArray.get([0]).value.basemirror,
+                                            this.formArray.get([0]).value.baseproject,
+                                            this.formArray.get([0]).value.architectures,
+                                            this.formArray.get([0]).value.cibuilds,
+                                            this.formArray.get([0]).value.buildlatest,
+                                            this.formArray.get([1]).value.retentionSuccessfulBuilds).subscribe(
                 r => {
                     this.dialog.close();
-                    this.router.navigate(['/project', this.projectName, this.form.value.version]);
+                    this.router.navigate(['/project', this.projectName, this.formArray.get([0]).value.version]);
                 },
                 err => {
                     this.alertService.error(err.error);
@@ -299,16 +316,17 @@ export class ProjectversionDialogComponent {
                 });
         } else {
             this.projectVersionService.create(this.data.projectName,
-                                              this.form.value.version,
-                                              this.form.value.description,
-                                              this.form.value.dependencylevel,
-                                              this.form.value.basemirror,
-                                              this.form.value.baseproject,
-                                              this.form.value.architectures,
-                                              this.form.value.cibuilds).subscribe(
+                                              this.formArray.get([0]).value.version,
+                                              this.formArray.get([0]).value.description,
+                                              this.formArray.get([0]).value.dependencylevel,
+                                              this.formArray.get([0]).value.basemirror,
+                                              this.formArray.get([0]).value.baseproject,
+                                              this.formArray.get([0]).value.architectures,
+                                              this.formArray.get([0]).value.cibuilds,
+                                              this.formArray.get([1]).value.retentionSuccessfulBuilds).subscribe(
                 r => {
                     this.dialog.close();
-                    this.router.navigate(['/project', this.projectName, this.form.value.version]);
+                    this.router.navigate(['/project', this.projectName, this.formArray.get([0]).value.version]);
                 },
                 err => {
                     this.alertService.error(err.error);
@@ -318,27 +336,29 @@ export class ProjectversionDialogComponent {
     }
 
     chooseBaseMirror() {
-        this.form.patchValue({baseproject: ''});
-        this.form.get('baseproject').setValidators([]);
-        this.form.get('baseproject').markAsTouched();
-        this.form.get('baseproject').updateValueAndValidity();
-        this.form.get('basemirror').setValidators([Validators.required, BaseMirrorValidator.bind(this)]);
-        this.form.get('basemirror').markAsTouched();
-        this.form.get('basemirror').updateValueAndValidity();
+        const form = this.formArray.get([0]);
+        form.patchValue({baseproject: ''});
+        form.get('baseproject').setValidators([]);
+        form.get('baseproject').markAsTouched();
+        form.get('baseproject').updateValueAndValidity();
+        form.get('basemirror').setValidators([Validators.required, BaseMirrorValidator.bind(this)]);
+        form.get('basemirror').markAsTouched();
+        form.get('basemirror').updateValueAndValidity();
     }
 
     chooseBaseProject() {
-        this.form.patchValue({basemirror: ''});
-        this.form.get('basemirror').setValidators([]);
-        this.form.get('basemirror').markAsTouched();
-        this.form.get('basemirror').updateValueAndValidity();
-        this.form.get('baseproject').setValidators([Validators.required, BaseProjectValidator.bind(this)]);
-        this.form.get('baseproject').markAsTouched();
-        this.form.get('baseproject').updateValueAndValidity();
+        const form = this.formArray.get([0]);
+        form.patchValue({basemirror: ''});
+        form.get('basemirror').setValidators([]);
+        form.get('basemirror').markAsTouched();
+        form.get('basemirror').updateValueAndValidity();
+        form.get('baseproject').setValidators([Validators.required, BaseProjectValidator.bind(this)]);
+        form.get('baseproject').markAsTouched();
+        form.get('baseproject').updateValueAndValidity();
     }
 
     searchBaseMirror() {
-        this.mirrorService.getBaseMirrors(this.form.value.basemirror).subscribe(res => {
+        this.mirrorService.getBaseMirrors(this.formArray.get([0]).value.basemirror).subscribe(res => {
             this.basemirrors = [];
             for (const entry of res) {
                 this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
@@ -347,7 +367,7 @@ export class ProjectversionDialogComponent {
     }
 
     searchBaseProject() {
-        this.projectVersionService.getBaseProjects(this.form.value.baseproject).subscribe(res => {
+        this.projectVersionService.getBaseProjects(this.formArray.get([0]).value.baseproject).subscribe(res => {
             this.baseprojects = [];
             for (const entry of res) {
                 this.baseprojects.push({name: `${entry.project_name}/${entry.name}`, architectures: entry.architectures,
@@ -358,7 +378,7 @@ export class ProjectversionDialogComponent {
 
     changeBaseMirror() {
         this.baseArchs = [];
-        const splitted = this.form.value.basemirror.split('/', 2);
+        const splitted = this.formArray.get([0]).value.basemirror.split('/', 2);
         if (splitted.length === 2) {
             this.mirrorService.get(splitted[0], splitted[1]).subscribe(res => {
                 this.baseArchs = res.architectures;
@@ -366,16 +386,16 @@ export class ProjectversionDialogComponent {
                 // this.form.patchValue({architecture0: true});
             });
         }
-        this.form.patchValue({architecture0: true});
-        this.form.patchValue({architecture1: true});
-        this.form.patchValue({architecture2: true});
-        this.form.patchValue({architecture3: true});
+        this.formArray.get([0]).patchValue({architecture0: true});
+        this.formArray.get([0]).patchValue({architecture1: true});
+        this.formArray.get([0]).patchValue({architecture2: true});
+        this.formArray.get([0]).patchValue({architecture3: true});
         this.updateArchs();
     }
 
     changeBaseProject() {
         this.baseArchs = [];
-        const splitted = this.form.value.baseproject.split('/', 2);
+        const splitted = this.formArray.get([0]).value.baseproject.split('/', 2);
         if (splitted.length === 2) {
             this.projectVersionService.get(splitted[0], splitted[1]).subscribe(res => {
                 this.baseArchs = res.architectures;
@@ -383,11 +403,17 @@ export class ProjectversionDialogComponent {
                 // this.form.patchValue({architecture0: true});
             });
         }
-        this.form.patchValue({architecture0: true});
-        this.form.patchValue({architecture1: true});
-        this.form.patchValue({architecture2: true});
-        this.form.patchValue({architecture3: true});
+        this.formArray.get([0]).patchValue({architecture0: true});
+        this.formArray.get([0]).patchValue({architecture1: true});
+        this.formArray.get([0]).patchValue({architecture2: true});
+        this.formArray.get([0]).patchValue({architecture3: true});
         this.updateArchs();
+    }
+
+    get formArray() {
+        // Typecast, because: reasons
+        // https://github.com/angular/angular-cli/issues/6099
+        return this.form.get('formArray') as FormArray;
     }
 }
 

@@ -4,9 +4,13 @@
 <h1 mat-dialog-title *ngIf="mode === 'copy'">Copy Project Version {{projectversion.name}}</h1>
 <div mat-dialog-content>
     <form [formGroup]="form" [ngStyle]="{height: '360px'}">
+        <mat-horizontal-stepper formArrayName="formArray" linear #stepper>
+            <mat-step formGroupName="0" [stepControl]="formArray.get('0')">
+                <ng-template matStepLabel>Project Version Details</ng-template>
+                <input matInput formControlName="version">
 
         <div *ngIf="mode === 'create' || mode === 'copy'">
-            <p><strong>Project Version</strong><app-validation-error [control]="form.get('version')"></app-validation-error></p>
+            <p><strong>Project Version</strong><app-validation-error [control]="formArray.get('0').get('version')"></app-validation-error></p>
             <mat-form-field>
                 <input matInput formControlName="version" required cdkFocusInitial>
             </mat-form-field>
@@ -16,7 +20,7 @@
             <mat-checkbox formControlName="buildlatest" matTooltip="Build last releases">Build last releases from {{projectversion.name}}</mat-checkbox>
         </div>
 
-        <p><strong>Description</strong> <app-validation-error [control]="form.get('description')"></app-validation-error></p>
+        <p><strong>Description</strong> <app-validation-error [control]="formArray.get('0').get('description')"></app-validation-error></p>
         <mat-form-field>
             <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
@@ -28,8 +32,8 @@
                 <mat-radio-button value="mirror" checked  (change)="chooseBaseMirror()">Mirrors</mat-radio-button>
                 <mat-radio-button value="project" (change)="chooseBaseProject()">Projects</mat-radio-button>
             </mat-radio-group>
-            <app-validation-error [control]="form.get('basemirror')"></app-validation-error>
-            <mat-form-field *ngIf="form.value.basetype == 'mirror'" floatLabel="never">
+            <app-validation-error [control]="formArray.get('0').get('basemirror')"></app-validation-error>
+            <mat-form-field *ngIf="formArray.get('0').value.basetype == 'mirror'" floatLabel="never">
                 <input matInput formControlName="basemirror" placeholder="-- Select Base Mirror --" [matAutocomplete]="autoBasemirror" (input)="searchBaseMirror()">
                 <mat-autocomplete #autoBasemirror="matAutocomplete" (optionSelected)="changeBaseMirror()">
                     <mat-option *ngFor="let entry of basemirrors" value={{entry.name}}>
@@ -37,8 +41,8 @@
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <app-validation-error [control]="form.get('baseproject')"></app-validation-error>
-            <mat-form-field *ngIf="form.value.basetype == 'project'" floatLabel="never">
+            <app-validation-error [control]="formArray.get('0').get('baseproject')"></app-validation-error>
+            <mat-form-field *ngIf="formArray.get('0').value.basetype == 'project'" floatLabel="never">
                 <input matInput formControlName="baseproject" placeholder="-- Select Base Project --" [matAutocomplete]="autoBaseproject" (input)="searchBaseProject()">
                 <mat-autocomplete #autoBaseproject="matAutocomplete" (optionSelected)="changeBaseProject()">
                     <mat-option *ngFor="let entry of baseprojects" value={{entry.name}}>
@@ -46,32 +50,48 @@
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <p><strong>Architectures</strong><app-validation-error [control]="form.get('architectures')"></app-validation-error></p>
+            <p><strong>Architectures</strong><app-validation-error [control]="formArray.get('0').get('architectures')"></app-validation-error></p>
             <mat-checkbox *ngFor="let arch of baseArchs; let i = index" formControlName="architecture{{ i }}" (change)="updateArchs()">{{ arch }}</mat-checkbox>
             <span *ngIf="baseArchs.length == 0">Please select a Base Mirror / Project above</span>
         </div>
 
-        <p><strong>Dependency Policy</strong><app-validation-error [control]="form.get('dependencylevel')"></app-validation-error></p>
-        <div *ngIf="form.value.version">
+        <p><strong>Dependency Policy</strong><app-validation-error [control]="formArray.get('0').get('dependencylevel')"></app-validation-error></p>
+        <div *ngIf="formArray.get('0').value.version">
             Specify which other project versions may use {{projectName}}/{{form.value.version || 'unknown'}}:
             <br>
-            <mat-form-field floatLabel="never" appearance="standard" *ngIf="form.value.basemirror">
+            <mat-form-field floatLabel="never" appearance="standard" *ngIf="formArray.get('0').value.basemirror">
                 <mat-select formControlName="dependencylevel" [(value)]="defaultDependencyLevel">
-                    <mat-option value="strict"><strong>strict</strong>&nbsp;- Use in {{form.value.basemirror}} based projects</mat-option>
-                    <mat-option value="distribution"><strong>dist</strong>&nbsp;- Use in {{form.value.basemirror.split('/')[0]}} based projects</mat-option>
+                    <mat-option value="strict"><strong>strict</strong>&nbsp;- Use in {{formArray.get('0').value.basemirror}} based projects</mat-option>
+                    <mat-option value="distribution"><strong>dist</strong>&nbsp;- Use in {{formArray.get('0').value.basemirror.split('/')[0]}} based projects</mat-option>
                     <mat-option value="any"><strong>any</strong>&nbsp;- Use with any base mirror based projects</mat-option>
                 </mat-select>
             </mat-form-field>
-            <span *ngIf="!form.value.basemirror">Please define a Base Mirror / Project above</span>
+            <span *ngIf="!formArray.get('0').value.basemirror">Please define a Base Mirror / Project above</span>
         </div>
-        <span *ngIf="!form.value.version">Please define a Version above</span>
+        <span *ngIf="!formArray.get('0').value.version">Please define a Version above</span>
         <br>
         <p><strong>CI Builds</strong></p>
         <mat-checkbox formControlName="cibuilds" matTooltip="Enable/Disable CI Builds"></mat-checkbox>
+    </mat-step>
+
+    <mat-step formGroupName="1" [stepControl]="formArray.get('1')">
+        <ng-template matStepLabel>Build Configuration</ng-template>
+        <div style="margin-top: 20px;">
+            <app-validation-error [control]="formArray.get('1').get('retentionSuccessfulBuilds')"></app-validation-error>
+            <p><strong>Specify maximum number of successful builds per source repository to retain:</strong></p>
+            <mat-form-field style="width: 100%;">
+                <input matInput type="number" formControlName="retentionSuccessfulBuilds" min="1" max="5" value="1">
+            </mat-form-field>
+        </div>
+    </mat-step>
+
+    </mat-horizontal-stepper>
     </form>
 </div>
 <div mat-dialog-actions>
     <app-alert></app-alert>
     <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
-    <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
+    <button mat-button (click)="stepper.previous()" *ngIf="stepper.selectedIndex > 0" [disabled]="clicked">Back</button>
+    <button mat-button (click)="stepper.next()"     *ngIf="stepper.selectedIndex < formArray.length - 1" [disabled]="clicked">Next</button>
+    <button mat-button (click)="save()"             *ngIf="stepper.selectedIndex == formArray.length - 1" [disabled]="!form.valid || clicked">Ok</button>
 </div>
