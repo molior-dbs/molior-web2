@@ -116,6 +116,7 @@ export class BuildTableComponent extends TableComponent implements OnInit {
     getRowBackground(buildtype) {
         switch (buildtype) {
             case 'build':
+            case 'cleanup':
             case 'mirror':
                 return '#F5F5F5';
             default:
