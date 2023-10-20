@@ -117,6 +117,8 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         switch (buildtype) {
             case 'build':
             case 'cleanup':
+            case 'copy_projectversion':
+            case 'delete_projectversion':
             case 'mirror':
                 return '#F5F5F5';
             default:

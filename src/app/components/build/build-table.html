@@ -34,9 +34,9 @@
                     <hr [ngClass]="'leaf'" *ngSwitchCase="'chroot'"/>
                     <mat-icon *ngSwitchCase="'chroot'" matTooltip="Schroot Archive" [matTooltipPosition]="'left'">account_tree</mat-icon>
 
-                    <hr [ngClass]="'branch'" *ngSwitchCase="'cleanup'"/>
-                    <hr [ngClass]="'leaf'" *ngSwitchCase="'cleanup'"/>
-                    <mat-icon *ngSwitchCase="'cleanup'" matTooltip="Cleanup Task" [matTooltipPosition]="'left">brush</mat-icon>
+                    <mat-icon *ngSwitchCase="'copy_projectversion'" matTooltip="Copy Projectversion" [matTooltipPosition]="'left'">file_copy</mat-icon>
+                    <mat-icon *ngSwitchCase="'delete_projectversion'" matTooltip="Delete Projectversion" [matTooltipPosition]="'left'">delete_outline</mat-icon>
+                    <mat-icon *ngSwitchCase="'cleanup'" matTooltip="Cleanup Task" [matTooltipPosition]="'left'">brush</mat-icon>
                 </div>
                 <div [ngStyle]="{'margin-top': '10px'}">
                     <strong *ngIf="element.buildtype == 'build'">{{element.sourcename}}</strong>
@@ -47,6 +47,8 @@
                     </span>
                     <strong *ngIf="element.buildtype == 'chroot'">{{element.architecture}}</strong>
                     <strong *ngIf="element.buildtype == 'cleanup'">{{element.sourcename}}</strong>
+                    <strong *ngIf="element.buildtype == 'copy_projectversion'">{{element.sourcename}}</strong>
+                    <strong *ngIf="element.buildtype == 'delete_projectversion'">{{element.sourcename}}</strong>
                 </div>
             </div>
             <div [ngClass]="'progress'" *ngIf="element.progress && (element.buildstate == 'building' || element.buildstate == 'publishing')">{{element.progress | number:'1.0-0'}}%</div>
