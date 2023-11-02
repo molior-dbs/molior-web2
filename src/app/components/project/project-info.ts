@@ -166,6 +166,7 @@ export class ProjectversionDialogComponent {
     defaultDependencyLevel: 'strict';
     mode: string;
     retentionSuccessfulBuilds: number;
+    retentionFailedBuilds: number;
     form = this.fb.group({
         formArray : this.fb.array([
             this.fb.group({
@@ -186,7 +187,8 @@ export class ProjectversionDialogComponent {
                 buildlatest: new FormControl(false)
             }),
             this.fb.group({
-                retentionSuccessfulBuilds: new FormControl([Validators.required, Validators.min(1), Validators.max(5)]),
+                retentionSuccessfulBuilds: new FormControl(1, [Validators.min(1), Validators.max(5)]),
+                retentionFailedBuilds: new FormControl(7, [Validators.min(7)])
             })
         ])
     });
@@ -221,6 +223,7 @@ export class ProjectversionDialogComponent {
 
             this.formArray.get([1]).patchValue({
                 retentionSuccessfulBuilds: this.projectversion.retention_successful_builds,
+                retentionFailedBuilds: this.projectversion.retention_failed_builds,
             })
         }
         this.basemirrors = [];
@@ -257,6 +260,7 @@ export class ProjectversionDialogComponent {
                 this.changeBaseMirror();
 
                 this.formArray.get([1]).patchValue({retentionSuccessfulBuilds: this.projectversion.retention_successful_builds})
+                this.formArray.get([1]).patchValue({retentionFailedBuilds: this.projectversion.retention_failed_builds})
             }
         });
         projectVersionService.getBaseProjects().subscribe(res => {
@@ -286,7 +290,8 @@ export class ProjectversionDialogComponent {
                                             this.formArray.get([0]).value.description,
                                             this.formArray.get([0]).value.dependencylevel,
                                             this.formArray.get([0]).value.cibuilds,
-                                            this.formArray.get([1]).value.retentionSuccessfulBuilds).subscribe(
+                                            this.formArray.get([1]).value.retentionSuccessfulBuilds,
+                                            this.formArray.get([1]).value.retentionFailedBuilds).subscribe(
                 r => {
                     this.dialog.close();
                     this.router.navigate(['/project', this.projectName, this.formArray.get([0]).value.version]);
@@ -305,7 +310,8 @@ export class ProjectversionDialogComponent {
                                             this.formArray.get([0]).value.architectures,
                                             this.formArray.get([0]).value.cibuilds,
                                             this.formArray.get([0]).value.buildlatest,
-                                            this.formArray.get([1]).value.retentionSuccessfulBuilds).subscribe(
+                                            this.formArray.get([1]).value.retentionSuccessfulBuilds,
+                                            this.formArray.get([1]).value.retentionFailedBuilds).subscribe(
                 r => {
                     this.dialog.close();
                     this.router.navigate(['/project', this.projectName, this.formArray.get([0]).value.version]);
@@ -323,7 +329,8 @@ export class ProjectversionDialogComponent {
                                               this.formArray.get([0]).value.baseproject,
                                               this.formArray.get([0]).value.architectures,
                                               this.formArray.get([0]).value.cibuilds,
-                                              this.formArray.get([1]).value.retentionSuccessfulBuilds).subscribe(
+                                              this.formArray.get([1]).value.retentionSuccessfulBuilds,
+                                              this.formArray.get([1]).value.retentionFailedBuilds).subscribe(
                 r => {
                     this.dialog.close();
                     this.router.navigate(['/project', this.projectName, this.formArray.get([0]).value.version]);
