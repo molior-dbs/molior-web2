@@ -27,6 +27,7 @@ import {AppComponent} from './app.component';
 
 import {ValidationService, ValidationErrorComponent} from './services/validation.service';
 import {AboutComponent} from './components/about/about';
+import {AdminComponent} from './components/admin/admin';
 import {LoginComponent} from './components/login/login';
 import {AlertComponent} from './components/alert/alert';
 
@@ -121,6 +122,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         UserInfoComponent,
 
         AboutComponent,
+        AdminComponent,
         LoginComponent,
         AlertComponent,
 

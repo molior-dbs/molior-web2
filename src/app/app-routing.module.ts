@@ -25,6 +25,7 @@ import {UserListComponent} from './components/user/user-list';
 import {UserInfoComponent} from './components/user/user-info';
 import {TokenListComponent} from './components/account/token-list';
 import {AboutComponent} from './components/about/about';
+import {AdminComponent} from './components/admin/admin';
 
 import {LoginComponent} from './components/login/login';
 import {AuthGuard} from './lib/auth.guard';
@@ -75,6 +76,7 @@ const routes: Routes = [
     { path: 'users/:username',               component: UserInfoComponent,       canActivate: [AuthGuard] },
     { path: 'tokens',                        component: TokenListComponent,      canActivate: [AuthGuard] },
     { path: 'about',                         component: AboutComponent,          canActivate: [AuthGuard] },
+    { path: 'admin',                         component: AdminComponent,          canActivate: [AuthGuard] },
     { path: '**', redirectTo: '/builds'}
 ];
 
