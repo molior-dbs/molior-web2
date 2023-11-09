@@ -1,13 +1,13 @@
-.key {
-    font-family: 'Courier New';
-    word-break:break-all;
-    white-space: pre-wrap;
-    font-size: xx-small;
-    width: 370px;
-    user-select: all;
-    margin-top: 10px;
-    height: 100px;
-    overflow-y: auto;
+.admin-content {
+  display: flex; /* Use flexbox layout */
+  justify-content: space-between; /* Distribute content evenly horizontally */
+  align-items: flex-start; /* Align content at the top */
+}
+
+.weekdays-container,
+.time-selection {
+  flex: 1; /* Share available horizontal space equally */
+  padding: 10px; /* Optional padding between the two sections */
 }
 
 p {

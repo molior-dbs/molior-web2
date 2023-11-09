@@ -1,4 +1,20 @@
 <h1><mat-icon>assignment</mat-icon>Admin</h1>
 <h2>Configuration page for settings</h2>
 
-
+<div class="admin-content">
+  <div class="weekdays-container">
+    <h2>Configuration for the cleanup job:</h2>
+    <div *ngFor="let day of weekdays" class="weekday">
+      <input type="checkbox" [(ngModel)]="selectedWeekdays[day]" />
+      <label>{{ day }}</label>
+    </div>
+  </div>
+  <div class="time-selection">
+    <label for="selectedTime">Select a timeslot for the cleanup job:</label>
+    <div class="time-input">
+      <input type="text" id="selectedTime" [(ngModel)]="selectedTime" (input)="onTimeInputChange()" />
+      <button (click)="incrementTime(30)">▲</button>
+      <button (click)="decrementTime(30)">▼</button>
+    </div>
+  </div>
+</div>
