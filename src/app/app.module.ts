@@ -28,6 +28,7 @@ import {AppComponent} from './app.component';
 import {ValidationService, ValidationErrorComponent} from './services/validation.service';
 import {AboutComponent} from './components/about/about';
 import {AdminComponent} from './components/admin/admin';
+import { AdminFormComponent } from './components/admin/admin-form';
 import {LoginComponent} from './components/login/login';
 import {AlertComponent} from './components/alert/alert';
 
@@ -82,6 +83,7 @@ import {UserService, TokenService} from './services/user.service';
 import {TokenListComponent, TokenDialogComponent, TokenDeleteDialogComponent} from './components/account/token-list';
 
 import {WebsocketService, MoliorService} from './services/websocket';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -123,6 +125,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
 
         AboutComponent,
         AdminComponent,
+        AdminFormComponent,
         LoginComponent,
         AlertComponent,
 
@@ -189,7 +192,8 @@ import {WebsocketService, MoliorService} from './services/websocket';
         MatAutocompleteModule,
         MatStepperModule,
         MatRadioModule,
-        MatDialogModule
+        MatDialogModule,
+        CommonModule
     ],
     providers: [
         WebsocketService,
@@ -241,7 +245,8 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       TokenDeleteDialogComponent,
                       BuildDeleteDialogComponent,
                       BuildRebuildDialogComponent,
-                      BuildAbortDialogComponent
+                      BuildAbortDialogComponent,
+                      AdminFormComponent,
                      ],
 })
 export class AppModule { }

@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Edit Settings</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="form-section">
+      <mat-label>Selected Time:</mat-label>
+      <mat-form-field class="time-input">
+        <input matInput formControlName="selectedTime" readonly />
+        <button mat-icon-button class="arrow-button" (click)="incrementTime(5)">
+          <mat-icon>arrow_upward</mat-icon>
+        </button>
+        <button mat-icon-button class="arrow-button" (click)="decrementTime(5)">
+          <mat-icon>arrow_downward</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <div class="form-section weekdays-container">
+      <mat-label>Selected Days:</mat-label>
+      <div *ngFor="let day of weekdays" class="weekday">
+        <mat-checkbox formControlName="{{ day }}"></mat-checkbox>
+        {{ day }}
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <app-alert></app-alert>
+  <button mat-button (click)="dialogRef.close()" [disabled]="clicked">Cancel</button>
+  <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
+</div>
+
+
+
+
