@@ -1,24 +1,28 @@
-<h1 mat-dialog-title>Edit Settings</h1>
+<h1 mat-dialog-title>Edit Settings for the Weekly Cleanup Job</h1>
 <div mat-dialog-content>
   <form [formGroup]="form">
     <div class="form-section">
       <mat-label>Selected Time:</mat-label>
-      <mat-form-field class="time-input">
-        <input matInput formControlName="selectedTime" readonly />
-        <button mat-icon-button class="arrow-button" (click)="incrementTime(5)">
-          <mat-icon>arrow_upward</mat-icon>
-        </button>
-        <button mat-icon-button class="arrow-button" (click)="decrementTime(5)">
-          <mat-icon>arrow_downward</mat-icon>
-        </button>
-      </mat-form-field>
+      <div class="time-input">
+        <select formControlName="selectedHour" (change)="onHourSelected($event.target.value)">
+          <option *ngFor="let hour of hoursArray" [value]="hour">{{ hour.toString().padStart(2, '0') }}</option>
+        </select>
+        <span>:</span>
+        <select formControlName="selectedMinute" (change)="onMinuteSelected($event.target.value)">
+          <option *ngFor="let minute of minutesArray" [value]="minute">{{ minute.toString().padStart(2, '0') }}</option>
+        </select>
+      </div>
     </div>
     <div class="form-section weekdays-container">
       <mat-label>Selected Days:</mat-label>
-      <div *ngFor="let day of weekdays" class="weekday">
+      <div *ngFor="let day of cleanupWeekdays" class="weekday">
         <mat-checkbox formControlName="{{ day }}"></mat-checkbox>
         {{ day }}
       </div>
+    </div>
+    <div class="cleanup-active-checkbox" style="margin-top: 10px;">
+      <label for="cleanupActive">Cleanup Active:</label>
+      <input type="checkbox" formControlName="cleanupActive" />
     </div>
   </form>
 </div>
@@ -27,7 +31,6 @@
   <button mat-button (click)="dialogRef.close()" [disabled]="clicked">Cancel</button>
   <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
 </div>
-
 
 
 

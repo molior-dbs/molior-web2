@@ -35,6 +35,7 @@ import {AlertComponent} from './components/alert/alert';
 import {ProjectListComponent, ProjectCreateDialogComponent, ProjectDeleteDialogComponent} from './components/project/project-list';
 import {ProjectService, ProjectVersionService} from './services/project.service';
 import {RepositoryService} from './services/repository.service';
+import { CleanupService } from './services/admin.service';
 
 import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
     ProjectversionLockDialogComponent, ProjectversionOverlayDialogComponent, ProjectversionSnapshotDialogComponent,
@@ -202,6 +203,7 @@ import { CommonModule } from '@angular/common';
         BuildService,
         ProjectService,
         ProjectVersionService,
+        CleanupService,
         UserService,
         TokenService,
         MirrorService,

@@ -6,8 +6,8 @@
       <td>
         <div class="weekdays-container">
           <h2>Configuration for the cleanup job:</h2>
-          <label for="selectedDays">Selected Days:</label>
-          <div *ngFor="let day of weekdays" class="weekday">
+          <label for="cleanupWeekdays">Selected Days:</label>
+          <div *ngFor="let day of cleanupWeekdays" class="weekday">
             <input type="checkbox" [(ngModel)]="weekdaysForm[day].value" [disabled]="true" />
             {{ day }}
           </div>
@@ -15,10 +15,14 @@
       </td>
       <td>
         <div class="time-selection">
-          <label for="selectedTime">Selected Time:</label>
+          <label for="cleanupTime">Selected Time:</label>
           <div class="time-input">
-            <input type="text" id="selectedTime" [value]="selectedTime" disabled />
+            <input type="text" id="cleanupTime" [value]="cleanupTime" disabled />
           </div>
+        </div>
+        <div class="cleanup-active-checkbox" style="margin-top: 10px;">
+          <label for="cleanupActive">Cleanup Active:</label>
+          <input type="checkbox" [checked]="cleanupActive" disabled />
         </div>
       </td>
       <td>
