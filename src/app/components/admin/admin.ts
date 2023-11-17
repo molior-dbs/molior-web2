@@ -66,6 +66,7 @@ export class AdminComponent implements OnInit{
     this.cleanupWeekdays.forEach(day => {
       weekdaysForm[day] = this.formGroup.get(day) as FormControl;
     });
+
     const cleanupTime = this.formGroup.get('cleanupTime').value;
     const cleanupActive = this.formGroup.get('cleanupActive').value;
 
@@ -87,6 +88,9 @@ export class AdminComponent implements OnInit{
     dialog.afterClosed().subscribe(result => {
       if (result) {
         // Update the component's properties with the values from the dialog result
+        console.log('Result',result)
+        console.log('Result: active',result.cleanupActive)
+        console.log('Result: Cleanupweekdays', result.cleanupWeekdays)
         this.formGroup.patchValue({
           cleanupActive:result.cleanupActive,
           cleanupTime: result.cleanupTime,

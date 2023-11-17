@@ -17,9 +17,10 @@ export class AdminFormComponent implements OnInit {
   hoursArray: number[] = Array.from({ length: 24 }, (_, i) => i); // 0-23 for hours
   minutesArray: number[] = Array.from({ length: 60 }, (_, i) => i); // 0-59 for minutes
   cleanupActive: ['false]'];
+  clicked: boolean;
 
   constructor(
-    private dialogRef: MatDialogRef<AdminFormComponent>,
+    private dialog: MatDialogRef<AdminFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private datePipe: DatePipe,
     protected cleanupService: CleanupService,
@@ -69,21 +70,37 @@ export class AdminFormComponent implements OnInit {
     console.log('Form Controls:', this.form.controls);
     console.log('Form Control (Monday):', this.form.get('Monday'));
     if (this.form.valid) {
-      this.cleanupService.edit(this.form.value.cleanupActive, { ...this.form.value }, this.form.value.cleanupTime).subscribe(
+      const formData = {
+        cleanupTime: this.form.value.cleanupTime,
+        cleanupActive: this.form.value.cleanupActive,
+        cleanupWeekdays: this.form.value.weekdaysForm
+      }
+      this.cleanupService.edit(
+        this.form.value.cleanupActive.toString(),
+        Object.keys(this.form.value)
+        .filter(key => this.cleanupWeekdays.includes(key) && this.form.value[key])
+        .join(','),
+        this.form.value.cleanupTime,).subscribe(
         r => {
-          this.dialogRef.close();
+          this.dialog.close({
+            cleanupActive: this.form.value.cleanupActive,
+            cleanupTime: this.form.value.cleanupTime,
+            weekdaysForm: { ...this.form.value }
+          });
         },
         err => {
           this.alertService.error(err.error);
         }      )
-      this.dialogRef.close({
-        cleanupTime: this.form.value.cleanupTime,
-        weekdaysForm: { ...this.form.value },
-        cleanupActive: this.form.value.cleanupActive,
-      });
-      this.cleanupService.edit(this.form.value.cleanupActive, this.form.value.cleanupWeekdays, this.form.value.cleanupTime,)
+      //this.dialog.close({
+      //  cleanupActive: this.form.value.cleanupActive,
+       // cleanupTime: this.form.value.cleanupTime,
+       // weekdaysForm: { ...this.form.value },
+        
+      };
+      console.log(this.form.value.cleanupWeekdays)
+      //this.cleanupService.edit(this.form.value.cleanupActive, this.form.value.cleanupWeekdays, this.form.value.cleanupTime,)
     }
-  }
+  
 
   onHourSelected(hour: number) {
     this.form.patchValue({ selectedHour: +hour });
