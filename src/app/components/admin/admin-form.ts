@@ -12,20 +12,16 @@ import { AlertService } from 'src/app/services/alert.service';
   providers: [DatePipe, CleanupService],
 })
 export class AdminFormComponent implements OnInit {
-  clicked: boolean;
-  form = this.fb.group({
-    name: new FormControl(''),
-    description: new FormControl(''),
-});
-
   cleanupWeekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  form: FormGroup;
   hoursArray: number[] = Array.from({ length: 24 }, (_, i) => i); // 0-23 for hours
   minutesArray: number[] = Array.from({ length: 60 }, (_, i) => i); // 0-59 for minutes
   cleanupActive: ['false]'];
 
   constructor(
-    public dialog: MatDialogRef<AdminFormComponent>,
+    private dialogRef: MatDialogRef<AdminFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private datePipe: DatePipe,
     protected cleanupService: CleanupService,
     private alertService: AlertService,
     private fb: FormBuilder
@@ -33,13 +29,10 @@ export class AdminFormComponent implements OnInit {
     this.form = this.fb.group({
       selectedHour: [0], // Initialize selectedHour to 0
       selectedMinute: [0], // Initialize selectedMinute to 0
-      cleanupTime: [this.data.cleanupTime.toString, [this.validateTimeFormatAsString]],
-      cleanupActive: [this.data.cleanupActive],
+      cleanupTime: [this.data.cleanupTime.toString, [Validators.required, this.validateTimeFormatAsString]],
+      cleanupActive: [this.data.cleanupActive]
     });
 
-    console.log('Form initialization - Selected Time:', this.data.cleanupTime);
-    console.log('Form initialization - Cleanup Active:', this.data.cleanupActive);
-    console.log('Form initialization - Weekdays:', this.data.weekdaysForm);
   
     this.hoursArray = Array.from({ length: 24 }, (_, i) => i);
     this.minutesArray = Array.from({ length: 12 }, (_, i) => i * 5);
@@ -64,10 +57,6 @@ export class AdminFormComponent implements OnInit {
     this.form.valueChanges.subscribe(value => {
       console.log(value); // Log the form value changes
     });
-
-    console.log('Form Controls - Weekdays:', this.form.controls);
-    console.log('Form:', this.form);
-    console.log('Monday Control:', this.form.controls['Monday']);
   }
 
   validateTimeFormatAsString(control: any) {
@@ -80,23 +69,19 @@ export class AdminFormComponent implements OnInit {
     console.log('Form Controls:', this.form.controls);
     console.log('Form Control (Monday):', this.form.get('Monday'));
     if (this.form.valid) {
-      this.cleanupService.edit(
-        this.form.value.cleanupActive.toString(), // Convert boolean to string
-        Object.keys(this.form.value)
-          .filter(key => this.cleanupWeekdays.includes(key) && this.form.value[key])
-          .join(','),
-          this.form.value.cleanupTime,
-        ).subscribe(
+      this.cleanupService.edit(this.form.value.cleanupActive, { ...this.form.value }, this.form.value.cleanupTime).subscribe(
         r => {
-          this.data.cleanupTime = this.form.value.cleanupTime,
-          this.data.weekdaysForm = { ...this.form.value },
-          this.data.cleanupActive = this.form.value.cleanupActive,
-          console.log('Form Controls (Save) - Weekdays:', this.form.controls);
-          this.dialog.close(this.data);
+          this.dialogRef.close();
         },
         err => {
           this.alertService.error(err.error);
         }      )
+      this.dialogRef.close({
+        cleanupTime: this.form.value.cleanupTime,
+        weekdaysForm: { ...this.form.value },
+        cleanupActive: this.form.value.cleanupActive,
+      });
+      this.cleanupService.edit(this.form.value.cleanupActive, this.form.value.cleanupWeekdays, this.form.value.cleanupTime,)
     }
   }
 
@@ -116,9 +101,6 @@ export class AdminFormComponent implements OnInit {
     const formattedMinute = ('0' + selectedMinute).slice(-2); // Format minute with leading zero
     const newTime = `${formattedHour}:${formattedMinute}`;
     this.form.patchValue({ cleanupTime: newTime });
-  }
-  onWeekdayChanged() {
-    console.log('Form Values:', this.form.value);
   }
 }
 

@@ -62,16 +62,14 @@ export class AdminComponent implements OnInit{
   }
 
   openSettingsDialog() {
-    const weekdaysForm = {};
-    const cleanupWeekdaysFormArray = this.cleanupWeekdays.map(day => this.formGroup.get(day).value);
+    const weekdaysForm: { [key: string]: FormControl } = {};
+    this.cleanupWeekdays.forEach(day => {
+      weekdaysForm[day] = this.formGroup.get(day) as FormControl;
+    });
     const cleanupTime = this.formGroup.get('cleanupTime').value;
     const cleanupActive = this.formGroup.get('cleanupActive').value;
 
-    this.cleanupWeekdays.forEach((day, index) => {
-      weekdaysForm[day] = cleanupWeekdaysFormArray[index];
-    });
-  
-    console.log('Cleanup Weekdays:', cleanupWeekdaysFormArray);
+
     console.log('Cleanup Time:', cleanupTime);
     console.log('Cleanup Active:', cleanupActive);
     console.log('weekdaysForm', weekdaysForm)

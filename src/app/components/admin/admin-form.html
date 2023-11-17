@@ -22,7 +22,7 @@
       <p>no value</p>
     </div>
     <div class="form-section weekdays-container">
-      <p>Select the wekdays: <app-validation-error [control]="form.get('cleanupWeekdays')"></app-validation-error></p>
+      <p>Select the wekdays:</p>
       <div *ngFor="let day of cleanupWeekdays" class="weekday">
         <mat-checkbox formControlName="{{ day }}"></mat-checkbox>
         {{ day }}
