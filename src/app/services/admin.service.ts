@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { TableService } from "../lib/table.datasource";
 
 import {apiURL} from '../lib/url';
+import { Data } from "@angular/router";
 
 
 export interface Cleanup {
@@ -24,5 +25,10 @@ edit(cleanupActive: string, cleanupWeekdays: string, cleanupTime: string) {
                         );
 
 }
+
+getAll() {
+    return this.http.get<Cleanup>(`${apiURL()}/api2/cleanup`);
+}
+
 
 }

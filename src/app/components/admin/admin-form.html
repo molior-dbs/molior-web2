@@ -2,7 +2,7 @@
 <div mat-dialog-content>
   <form [formGroup]="form">
     <div class="form-section">
-      <mat-label>Selected Time:</mat-label>
+      <p>Select a time slot: <app-validation-error [control]="form.get('cleanupTime')"></app-validation-error></p>
       <div class="time-input">
         <select formControlName="selectedHour" (change)="onHourSelected($event.target.value)">
           <option *ngFor="let hour of hoursArray" [value]="hour">{{ hour.toString().padStart(2, '0') }}</option>
@@ -13,22 +13,30 @@
         </select>
       </div>
     </div>
+    <div *ngIf="form.get('cleanupWeekdays')">
+      <!-- Content to display if form.get('cleanupWeekdays') has a value -->
+      <p>has a value</p>
+    </div>
+    <div *ngIf="!form.get('cleanupWeekdays')">
+      <!-- Content to display if form.get('cleanupWeekdays') does not have a value -->
+      <p>no value</p>
+    </div>
     <div class="form-section weekdays-container">
-      <mat-label>Selected Days:</mat-label>
+      <p>Select the wekdays: <app-validation-error [control]="form.get('cleanupWeekdays')"></app-validation-error></p>
       <div *ngFor="let day of cleanupWeekdays" class="weekday">
         <mat-checkbox formControlName="{{ day }}"></mat-checkbox>
         {{ day }}
       </div>
     </div>
     <div class="cleanup-active-checkbox" style="margin-top: 10px;">
-      <label for="cleanupActive">Cleanup Active:</label>
+      <p>Cleanup Active: <app-validation-error [control]="form.get('cleanupActive')"></app-validation-error></p>
       <input type="checkbox" formControlName="cleanupActive" />
     </div>
   </form>
 </div>
 <div mat-dialog-actions>
   <app-alert></app-alert>
-  <button mat-button (click)="dialogRef.close()" [disabled]="clicked">Cancel</button>
+  <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
   <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
 </div>
 
