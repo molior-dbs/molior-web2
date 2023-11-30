@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "target": "http://molior-api:9999",
+    "secure": false
+  }
+}
