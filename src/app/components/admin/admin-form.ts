@@ -70,11 +70,10 @@ export class AdminFormComponent implements OnInit {
     console.log('Form Controls:', this.form.controls);
     console.log('Form Control (Monday):', this.form.get('Monday'));
     if (this.form.valid) {
-      const formData = {
-        cleanupTime: this.form.value.cleanupTime,
-        cleanupActive: this.form.value.cleanupActive,
-        cleanupWeekdays: this.form.value.weekdaysForm
-      }
+      const weekdaysForm = {}; // Restructure weekdays form controls
+      this.cleanupWeekdays.forEach(day => {
+      weekdaysForm[day] = this.form.get(day).value;
+      });
       this.cleanupService.edit(
         this.form.value.cleanupActive.toString(),
         Object.keys(this.form.value)
@@ -85,7 +84,7 @@ export class AdminFormComponent implements OnInit {
           this.dialog.close({
             cleanupActive: this.form.value.cleanupActive,
             cleanupTime: this.form.value.cleanupTime,
-            weekdaysForm: { ...this.form.value }
+            cleanupWeekdays: weekdaysForm,
           });
         },
         err => {

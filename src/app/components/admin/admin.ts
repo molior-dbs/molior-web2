@@ -91,10 +91,19 @@ export class AdminComponent implements OnInit{
         console.log('Result',result)
         console.log('Result: active',result.cleanupActive)
         console.log('Result: Cleanupweekdays', result.cleanupWeekdays)
+
+        for (const day in result.cleanupWeekdays) {
+          if (result.cleanupWeekdays.hasOwnProperty(day)) {
+            const control = this.formGroup.get(day);
+            if (control) {
+              control.patchValue(result.cleanupWeekdays[day]);
+            }
+          }
+        }
+
         this.formGroup.patchValue({
           cleanupActive:result.cleanupActive,
           cleanupTime: result.cleanupTime,
-          cleanupWeekdays: result.cleanupWeekdays
         })
       }
     });
