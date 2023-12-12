@@ -76,7 +76,7 @@ const routes: Routes = [
     { path: 'users/:username',               component: UserInfoComponent,       canActivate: [AuthGuard] },
     { path: 'tokens',                        component: TokenListComponent,      canActivate: [AuthGuard] },
     { path: 'about',                         component: AboutComponent,          canActivate: [AuthGuard] },
-    { path: 'admin',                         component: AdminComponent,          canActivate: [AuthGuard] },
+    { path: 'admin',                         component: AdminComponent,          canActivate: [AuthGuard],      data: { is_admin: true } },
     { path: '**', redirectTo: '/builds'}
 ];
 
