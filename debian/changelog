@@ -1,3 +1,29 @@
+molior-web (1.5.0~alpha13.1) stable; urgency=medium
+
+  * admin page: fix build error and remove logging
+  * admin-page: restrict access to admin users
+  * fix PUT API for weekly cleanup job
+  * build for 1.5
+  * docker: support websockets and file uploads in ng-serve proxy
+  * add proxy conf for docker
+  * fix PUT API for weekly cleanup job
+  * fix GET API
+  * add GET API for weekly cleanup job
+  * add CleanupService for PUT request
+  * make cleanup weekday and time settings configureable
+  * add cleanup weekday and time settings to admin page
+  * create admin page
+  * projectversion: add setting for failed build retention
+  * builds table: show copy/delete projectversion label
+  * add buildtype cleanup
+  * projectversion: add stepper for retentionSuccessfulBuild
+    Configuration
+  * fix error at checkbox for runLintian
+  * add checkbox for runLintian
+  * ...
+
+ -- André Roth <neolynx@gmail.com>  Fri, 15 Dec 2023 17:23:19 +0100
+
 molior-web (1.4.1) stable; urgency=medium
 
   * node info: rename source name
