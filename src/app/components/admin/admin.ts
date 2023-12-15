@@ -69,12 +69,6 @@ export class AdminComponent implements OnInit{
 
     const cleanupTime = this.formGroup.get('cleanupTime').value;
     const cleanupActive = this.formGroup.get('cleanupActive').value;
-
-
-    console.log('Cleanup Time:', cleanupTime);
-    console.log('Cleanup Active:', cleanupActive);
-    console.log('weekdaysForm', weekdaysForm)
-    console.log(typeof weekdaysForm);
   
     const dialog = this.dialog.open(AdminFormComponent, {
       width: '400px',
@@ -88,9 +82,6 @@ export class AdminComponent implements OnInit{
     dialog.afterClosed().subscribe(result => {
       if (result) {
         // Update the component's properties with the values from the dialog result
-        console.log('Result',result)
-        console.log('Result: active',result.cleanupActive)
-        console.log('Result: Cleanupweekdays', result.cleanupWeekdays)
 
         for (const day in result.cleanupWeekdays) {
           if (result.cleanupWeekdays.hasOwnProperty(day)) {

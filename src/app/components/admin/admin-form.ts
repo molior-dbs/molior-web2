@@ -20,7 +20,7 @@ export class AdminFormComponent implements OnInit {
   clicked: boolean;
 
   constructor(
-    private dialog: MatDialogRef<AdminFormComponent>,
+    public dialog: MatDialogRef<AdminFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private datePipe: DatePipe,
     protected cleanupService: CleanupService,
@@ -44,8 +44,6 @@ export class AdminFormComponent implements OnInit {
       this.form.addControl(day, new FormControl(initialValue));
     });
 
-    console.log('Initial weekdaysForm values:', this.data.weekdaysForm);
-
     // Check if there's an existing selected time to populate the dropdowns
     if (this.data.cleanupTime) {
       const [selectedHour, selectedMinute] = this.data.cleanupTime.split(':').map(Number);
@@ -56,7 +54,6 @@ export class AdminFormComponent implements OnInit {
   ngOnInit() {
     // Optional: You can subscribe to value changes if needed
     this.form.valueChanges.subscribe(value => {
-      console.log(value); // Log the form value changes
     });
   }
 
@@ -66,9 +63,6 @@ export class AdminFormComponent implements OnInit {
   }
 
   save() {
-    console.log('Form:', this.form);
-    console.log('Form Controls:', this.form.controls);
-    console.log('Form Control (Monday):', this.form.get('Monday'));
     if (this.form.valid) {
       const weekdaysForm = {}; // Restructure weekdays form controls
       this.cleanupWeekdays.forEach(day => {
@@ -96,7 +90,6 @@ export class AdminFormComponent implements OnInit {
        // weekdaysForm: { ...this.form.value },
         
       };
-      console.log(this.form.value.cleanupWeekdays)
       //this.cleanupService.edit(this.form.value.cleanupActive, this.form.value.cleanupWeekdays, this.form.value.cleanupTime,)
     }
   
