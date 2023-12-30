@@ -1,3 +1,9 @@
+molior-web (1.5.0~alpha13.2) stable; urgency=medium
+
+  * add s3 publish support
+
+ -- André Roth <neolynx@gmail.com>  Sat, 30 Dec 2023 20:49:40 +0100
+
 molior-web (1.5.0~alpha13.1) stable; urgency=medium
 
   * admin page: fix build error and remove logging
