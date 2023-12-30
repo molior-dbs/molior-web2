@@ -1,0 +1,24 @@
+<mat-icon style="float: left; padding-top: 4px;">class</mat-icon><h1 mat-dialog-title>Publish to S3</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form">
+        <p><strong>Publish to S3</strong></p>
+        <mat-checkbox formControlName="publish_s3"></mat-checkbox>
+
+        <p><strong>S3 Endpoint</strong><app-validation-error [control]="form.get('s3_endpoint')"></app-validation-error></p>
+        <mat-form-field floatLabel="never">
+            <mat-select formControlName="s3_endpoint" [disabled]="!form.value.publish_s3">
+                <mat-option *ngFor="let endpoint of s3_endpoints" value="{{endpoint}}">{{endpoint}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <p><strong>Publish Path</strong><app-validation-error [control]="form.get('s3_path')"></app-validation-error></p>
+        <mat-form-field [disabled]="!form.value.publish_s3">
+            <input matInput formControlName="s3_path" [readonly]="!form.value.publish_s3" required>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <app-alert></app-alert>
+    <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+    <button mat-button (click)="save()" [disabled]="clicked || error">Ok</button>
+</div>

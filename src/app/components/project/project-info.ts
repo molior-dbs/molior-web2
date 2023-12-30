@@ -150,6 +150,15 @@ export class ProjectInfoComponent extends TableComponent {
             width: '600px',
         });
     }
+
+    publishS3(projectversion: ProjectVersion) {
+        const dialog = this.dialog.open(ProjectversionS3DialogComponent, {
+            data: { projectversion },
+            disableClose: true,
+            width: '600px',
+        });
+        dialog.afterClosed().subscribe(result => this.loadData());
+    }
 }
 
 @Component({
@@ -597,6 +606,53 @@ export class ProjectversionBuilduploadDialogComponent {
         }
 
         this.projectversionService.buildUpload(this.projectversion, formData).subscribe(
+            r => this.dialog.close(),
+            err => {
+                this.alertService.error(err.error);
+                this.error = true;
+                this.clicked = false;
+            }
+        );
+    }
+}
+
+@Component({
+    selector: 'app-s3-dialog',
+    templateUrl: '../projectversion/projectversion-s3-form.html',
+})
+export class ProjectversionS3DialogComponent {
+    clicked: boolean;
+    error: boolean;
+    projectversion: ProjectVersion;
+    s3_endpoints: [];
+    form = this.fb.group({
+        s3_endpoint: new FormControl(""),
+        s3_path: new FormControl(""),
+        publish_s3: new FormControl(false)
+    });
+
+    constructor(public dialog: MatDialogRef<ProjectversionS3DialogComponent>,
+                private fb: FormBuilder,
+                protected projectversionService: ProjectVersionService,
+                private alertService: AlertService,
+                @Inject(MAT_DIALOG_DATA) private data: { projectversion: ProjectVersion}
+    ) {
+        this.clicked = false;
+        this.error = false;
+        this.projectversion = data.projectversion;
+        this.s3_endpoints = [];
+        projectversionService.getS3Endpoints().subscribe(res => this.s3_endpoints = res);
+        this.form.patchValue({
+            publish_s3: this.projectversion.publish_s3,
+            s3_endpoint: this.projectversion.s3_endpoint,
+            s3_path: this.projectversion.s3_path,
+        })
+    }
+
+    save(): void {
+        this.clicked = true;
+
+        this.projectversionService.publishS3(this.projectversion, this.form.value).subscribe(
             r => this.dialog.close(),
             err => {
                 this.alertService.error(err.error);

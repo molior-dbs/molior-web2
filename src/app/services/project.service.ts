@@ -30,6 +30,9 @@ export interface ProjectVersion {
     projectversiontype: string;
     retention_successful_builds: number;
     retention_failed_builds: number;
+    publish_s3: boolean;
+    s3_endpoint: string;
+    s3_path: string;
 }
 
 export interface Permission {
@@ -213,6 +216,14 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
             map(res => new MoliorResult<ProjectVersion>(res['total_result_count'], res['results']))
             /* tslint:enable:no-string-literal */
             );
+    }
+
+    publishS3(p: ProjectVersion, data) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/s3`, data);
+    }
+
+    getS3Endpoints() {
+        return this.http.get<[]>(`${apiURL()}/api2/s3`);
     }
 
 }
