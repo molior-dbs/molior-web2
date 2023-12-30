@@ -215,6 +215,14 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
             );
     }
 
+    publishS3(p: ProjectVersion, data) {
+        return this.http.post<string>(`${apiURL()}/api2/project/${p.project_name}/${p.name}/s3`, data);
+    }
+
+    getS3Endpoints() {
+        return this.http.get<[]>(`${apiURL()}/api2/s3`);
+    }
+
 }
 
 export function BaseProjectValidator(control: AbstractControl): { [key: string]: boolean } | null {

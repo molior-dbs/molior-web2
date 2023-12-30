@@ -7,7 +7,7 @@ import {ProjectVersion, ProjectVersionService, ProjectVersionDataSource} from '.
 import {TableComponent} from '../../lib/table.component';
 import {ProjectversionDialogComponent, ProjectversionDeleteDialogComponent, ProjectversionOverlayDialogComponent,
     ProjectversionLockDialogComponent, ProjectversionSnapshotDialogComponent,
-    ProjectversionBuilduploadDialogComponent} from '../project/project-info';
+    ProjectversionBuilduploadDialogComponent, ProjectversionS3DialogComponent} from '../project/project-info';
 import {AlertService} from '../../services/alert.service';
 
 @Component({
@@ -155,6 +155,14 @@ export class ProjectversionInfoComponent extends TableComponent {
 
     extupload() {
         const dialog = this.dialog.open(ProjectversionBuilduploadDialogComponent, {
+            data: { projectversion: this.projectversion },
+            disableClose: true,
+            width: '600px',
+        });
+    }
+
+    publishS3() {
+        const dialog = this.dialog.open(ProjectversionS3DialogComponent, {
             data: { projectversion: this.projectversion },
             disableClose: true,
             width: '600px',

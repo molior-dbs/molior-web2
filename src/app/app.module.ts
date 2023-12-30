@@ -39,7 +39,7 @@ import { CleanupService } from './services/admin.service';
 
 import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
     ProjectversionLockDialogComponent, ProjectversionOverlayDialogComponent, ProjectversionSnapshotDialogComponent,
-    ProjectversionBuilduploadDialogComponent
+    ProjectversionBuilduploadDialogComponent, ProjectversionS3DialogComponent
         } from './components/project/project-info';
 import {ProjectPermissionsComponent, ProjectPermissionDialogComponent,
         ProjectPermissionDeleteDialogComponent} from './components/project/project-permissions';
@@ -149,6 +149,7 @@ import { CommonModule } from '@angular/common';
         ProjectversionOverlayDialogComponent,
         ProjectversionSnapshotDialogComponent,
         ProjectversionBuilduploadDialogComponent,
+        ProjectversionS3DialogComponent,
         ProjectversionBuildListComponent,
         ProjectversionAPTSourcesComponent,
         ProjectversionDependentsComponent,
@@ -237,6 +238,7 @@ import { CommonModule } from '@angular/common';
                       ProjectversionOverlayDialogComponent,
                       ProjectversionSnapshotDialogComponent,
                       ProjectversionBuilduploadDialogComponent,
+                      ProjectversionS3DialogComponent,
                       ProjectDeleteDialogComponent,
                       ProjectversionDeleteDialogComponent,
                       ProjectPermissionDialogComponent,
