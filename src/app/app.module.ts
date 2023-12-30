@@ -36,7 +36,7 @@ import {RepositoryService} from './services/repository.service';
 
 import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
     ProjectversionLockDialogComponent, ProjectversionOverlayDialogComponent, ProjectversionSnapshotDialogComponent,
-    ProjectversionBuilduploadDialogComponent
+    ProjectversionBuilduploadDialogComponent, ProjectversionS3DialogComponent
         } from './components/project/project-info';
 import {ProjectPermissionsComponent, ProjectPermissionDialogComponent,
         ProjectPermissionDeleteDialogComponent} from './components/project/project-permissions';
@@ -143,6 +143,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         ProjectversionOverlayDialogComponent,
         ProjectversionSnapshotDialogComponent,
         ProjectversionBuilduploadDialogComponent,
+        ProjectversionS3DialogComponent,
         ProjectversionBuildListComponent,
         ProjectversionAPTSourcesComponent,
         ProjectversionDependentsComponent,
@@ -229,6 +230,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       ProjectversionOverlayDialogComponent,
                       ProjectversionSnapshotDialogComponent,
                       ProjectversionBuilduploadDialogComponent,
+                      ProjectversionS3DialogComponent,
                       ProjectDeleteDialogComponent,
                       ProjectversionDeleteDialogComponent,
                       ProjectPermissionDialogComponent,
