@@ -42,7 +42,8 @@ export class ProjectversionInfoComponent extends TableComponent {
                                project_name: this.projectName,
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
                                dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: [],
-                               projectversiontype: 'regular', retention_successful_builds: 1, retention_failed_builds: 7 };
+                               projectversiontype: 'regular', retention_successful_builds: 1, retention_failed_builds: 7,
+                               publish_s3: false, s3_endpoint: '', s3_path: ''};
         this.dataSource = new ProjectVersionDataSource(projectversionService);
     }
 
@@ -167,6 +168,7 @@ export class ProjectversionInfoComponent extends TableComponent {
             disableClose: true,
             width: '600px',
         });
+        dialog.afterClosed().subscribe(result => this.loadData());
     }
 }
 

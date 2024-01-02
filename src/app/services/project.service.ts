@@ -30,6 +30,9 @@ export interface ProjectVersion {
     projectversiontype: string;
     retention_successful_builds: number;
     retention_failed_builds: number;
+    publish_s3: boolean;
+    s3_endpoint: string;
+    s3_path: string;
 }
 
 export interface Permission {

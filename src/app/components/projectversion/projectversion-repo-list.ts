@@ -45,7 +45,8 @@ export class ProjectversionRepoListComponent extends TableComponent {
                                project_name: '',
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
                                dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: [],
-                               projectversiontype: 'regular', retention_successful_builds: 1, retention_failed_builds: 7 };
+                               projectversiontype: 'regular', retention_successful_builds: 1, retention_failed_builds: 7,
+                               publish_s3: false, s3_endpoint: '', s3_path: ''};
         this.buildicon = buildicon;
     }
 
@@ -166,7 +167,7 @@ export class SourcerepoDialogComponent implements OnInit {
             if (this.repo.run_lintian) {
                 this.form.patchValue({runLintian: true});
                 this.form.get('runLintian').updateValueAndValidity();
-            } 
+            }
             this.form.patchValue({architecture0: false, architecture1: false, architecture2: false, architecture3: false});
             this.repo.architectures.forEach(arch => {
                 switch (arch) {

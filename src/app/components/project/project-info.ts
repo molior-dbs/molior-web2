@@ -157,6 +157,7 @@ export class ProjectInfoComponent extends TableComponent {
             disableClose: true,
             width: '600px',
         });
+        dialog.afterClosed().subscribe(result => this.loadData());
     }
 }
 
@@ -641,6 +642,11 @@ export class ProjectversionS3DialogComponent {
         this.projectversion = data.projectversion;
         this.s3_endpoints = [];
         projectversionService.getS3Endpoints().subscribe(res => this.s3_endpoints = res);
+        this.form.patchValue({
+            publish_s3: this.projectversion.publish_s3,
+            s3_endpoint: this.projectversion.s3_endpoint,
+            s3_path: this.projectversion.s3_path,
+        })
     }
 
     save(): void {
