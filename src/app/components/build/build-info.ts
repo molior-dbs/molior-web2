@@ -174,6 +174,63 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+    addLogLine(line) {
+        // console.log(`add: ${line} (${line.length})`);
+        const nr = this.loglines + 1;
+        const tbody2 = document.getElementById('buildlog') as HTMLTableElement;
+        const row = tbody2.insertRow(this.loglines);
+        row.id = `row-${nr}`;
+        const linenr = row.insertCell(0);
+        linenr.innerHTML = `<a href="build/${this.build.id}#line-${nr}" id="line-${nr}" class="line">${nr}</a>`;
+        linenr.className = 'lognr';
+        const logline = row.insertCell(1);
+        logline.innerHTML = this.ansiup.ansi_to_html(line);
+        logline.className = 'logline';
+
+        if (line === 'dpkg-buildpackage') {
+            this.buildstart_line = nr;
+        }
+        if (line.search(/Building tag database\.\.\./) >= 0) {
+            this.lintian_line = nr;
+        }
+
+        // Error Finder
+        if (this.build.buildstate !== 'successful') {
+            for (const pattern of ErrorPatterns) {
+                if (line.search(pattern[0] as RegExp) >= 0) {
+                    const falsepositives = pattern[1] as [];
+                    let found = false;
+                    for (const fps of falsepositives) {
+                        found = true;
+                        for (const fp of fps as RegExp[]) {
+                            if (line.search(fp) === -1) {
+                                found = false;
+                                break;
+                            }
+                        }
+                        if (found) {
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        row.className = 'errorline';
+                        break;
+                    }
+                }
+            }
+        }
+
+        this.loglines += 1;
+        this.lastrow = row;
+    }
+
+    replaceLogLine(line) {
+        //console.log(`replace: ${line} (${line.length})`);
+        const row = document.getElementById(`row-${this.loglines}`) as HTMLTableElement;
+        const logline = row.children[1];
+        logline.innerHTML = this.ansiup.ansi_to_html(line);
+    }
+
     fetchLogs(id: number) {
         this.buildService.get(id).subscribe((res: Build) => {
             this.build = res;
@@ -216,73 +273,46 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                     return;
                 }
                 let data = log.data as unknown as string;
+
                 if (this.incompleteline !== '') {
                     data = this.incompleteline + data;
                     this.incompleteline = '';
                 }
-                const lines = data.split('\n');
-                if (data[data.length - 1] === '\n') {
-                    lines.pop();
-                } else {
-                    this.incompleteline = lines.pop();
-                }
-                let lastrow = null;
-                const tbody2 = document.getElementById('buildlog') as HTMLTableElement;
-                lines.forEach( line => {
+
+                this.lastrow = null;
+                while (data.length) {
+                    var cr = data.indexOf("\x0d");
+                    var lf = data.indexOf("\x0a");
+                    if (cr != -1 && lf != -1) {
+                        if (cr < lf) {
+                            this.replaceLogLine(data.substr(0, cr));
+                            data = data.substr(cr + 1);
+                        } else {
+                            this.addLogLine(data.substr(0, lf));
+                            data = data.substr(lf + 1);
+                        }
+                    } else {
+                        if (cr != -1) {
+                            this.replaceLogLine(data.substr(0, cr));
+                            data = data.substr(cr + 1);
+                        } else if (lf != -1) {
+                            this.addLogLine(data.substr(0, lf));
+                            data = data.substr(lf + 1);
+                        } else {
+                            this.incompleteline = data;
+                            data = "";
+                        }
+                    }
                     if (!this.up) {
                         return;
                     }
-                    const nr = this.loglines + 1;
-                    const row = tbody2.insertRow(this.loglines);
-                    row.id = `row-${nr}`;
-                    const linenr = row.insertCell(0);
-                    linenr.innerHTML = `<a href="build/${this.build.id}#line-${nr}" id="line-${nr}" class="line">${nr}</a>`;
-                    linenr.className = 'lognr';
-                    const logline = row.insertCell(1);
-                    logline.innerHTML = this.ansiup.ansi_to_html(line);
-                    logline.className = 'logline';
+                }
 
-                    if (line === 'dpkg-buildpackage') {
-                        this.buildstart_line = nr;
-                    }
-                    if (line.search(/Building tag database\.\.\./) >= 0) {
-                        this.lintian_line = nr;
-                    }
-
-                    // Error Finder
-                    if (this.build.buildstate !== 'successful') {
-                        for (const pattern of ErrorPatterns) {
-                            if (line.search(pattern[0] as RegExp) >= 0) {
-                                const falsepositives = pattern[1] as [];
-                                let found = false;
-                                for (const fps of falsepositives) {
-                                    found = true;
-                                    for (const fp of fps as RegExp[]) {
-                                        if (line.search(fp) === -1) {
-                                            found = false;
-                                            break;
-                                        }
-                                    }
-                                    if (found) {
-                                        break;
-                                    }
-                                }
-                                if (!found) {
-                                    row.className = 'errorline';
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    this.loglines += 1;
-                    lastrow = row;
-                });
-                if (lastrow && this.up && ( this.build.buildstate === 'building' ||
+                if (this.lastrow && this.up && ( this.build.buildstate === 'building' ||
                                             this.build.buildstate === 'needs_publish' ||
                                             this.build.buildstate === 'publishing' )) {
                     if (this.follow) {
-                        lastrow.scrollIntoView();
+                        this.lastrow.scrollIntoView();
                     }
                     this.updatePaginator();
                 }
