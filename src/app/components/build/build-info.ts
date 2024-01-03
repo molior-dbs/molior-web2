@@ -73,6 +73,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     currentSearchresult: number;
     buildstart_line: number;
     lintian_line: number;
+    lastrow: any;
     @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
     constructor(protected route: ActivatedRoute,
@@ -122,6 +123,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.currentSearchresult = 0;
         this.buildstart_line = -1;
         this.lintian_line = -1;
+        this.lastrow = null;
     }
 
     ngOnInit() {
