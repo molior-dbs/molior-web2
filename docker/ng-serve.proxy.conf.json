@@ -1,18 +1,18 @@
 {
     "/api/websocket": {
-        "target": "http://api:9999",
+        "target": "http://molior:9999",
         "secure": false,
         "ws": true
     },
     "/api": {
-        "target": "http://api:9999",
+        "target": "http://molior:9999",
         "secure": false,
         "pathRewrite": {
             "^/server": ""
         }
     },
     "/internal": {
-        "target": "http://api:9999",
+        "target": "http://molior:9999",
         "secure": false
     }
 }
