@@ -13,10 +13,24 @@
                 </td>
                 <td *ngIf="!build.project.is_mirror"><a *ngIf="build.project.version" class="link" [routerLink]="['../../project', build.project.name, build.project.version.name]">{{build.project.name}}/{{build.project.version.name}}</a></td>
                 <td *ngIf="build.project.is_mirror"><a *ngIf="build.project.version" class="link" [routerLink]="['../../mirror', build.project.name, build.project.version.name]">{{build.project.name}}/{{build.project.version.name}}</a></td>
+                <td *ngIf="build.parent_id">
+                    <strong>Parent Build</strong>
+                </td>
+                <td><a *ngIf="build.parent_id" [routerLink]="['../../build', build.parent_id]">
+                    {{ build.buildtype === 'source' ? 'build' : (build.buildtype === 'deb' ? 'source' : (build.buildtype === 'chroot' ? 'mirror' : '')) }}</a></td>
             </tr>
             <tr *ngIf="build.version">
                 <td><strong>Version</strong></td>
                 <td>{{build.version}}</td>
+                <td *ngIf="build.children && build.children.length > 0"></td>
+                <td *ngIf="build.children && build.children.length > 0">
+                    <strong>Children Build(s)</strong>
+                <td *ngIf="build.children && build.children.length > 0">
+                    <ng-container *ngFor="let child of build.children; let last = last">
+                        <a [routerLink]="['../../build', child.id]">
+                            {{ build.buildtype === 'build' ? 'source' : (build.buildtype === 'source' ? 'deb' : (build.buildtype === 'mirror' ? 'chroot' : '')) }}</a>
+                    </ng-container>
+                </td>
 
                 <td><strong *ngIf="build.buildvariant">Base Mirror</strong></td>
                 <td><a *ngIf="build.buildvariant && build.buildvariant.base_mirror.name" class="link" [routerLink]="['../../mirror', build.buildvariant.base_mirror.name, build.buildvariant.base_mirror.version]">{{build.buildvariant.base_mirror.name}}/{{build.buildvariant.base_mirror.version}}</a></td>

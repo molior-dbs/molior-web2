@@ -22,6 +22,8 @@ export interface Build {
     git_ref: string;
     branch: string;
     sourcerepository_id: number;
+    parent_id: number;
+    children: Child[];
     project: {id: number; name: string, is_mirror: boolean;
               version: {id: number; name: string; is_locked: boolean}};
     buildvariant: {name: string;
@@ -29,6 +31,11 @@ export interface Build {
                    base_mirror: {id: number; name: string; version: string}
                   };
     progress: number;
+}
+
+export interface Child {
+    id: number;
+    buildtype: string;
 }
 
 export class BuildDataSource extends TableDataSource<Build> {
@@ -161,4 +168,3 @@ export class BuildService extends TableService<Build> {
         return this.http.delete(`${apiURL()}/api2/build/${id}`);
     }
 }
-
