@@ -1,0 +1,33 @@
+<h1><mat-icon>assignment</mat-icon>Admin</h1>
+<h2>Configuration page for settings</h2>
+<nav mat-tab-nav-bar>
+  <a mat-tab-link routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive"
+     [routerLink]="['/admin']">Cleanup Job</a>
+  <a mat-tab-link routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive"
+     [routerLink]="['/retention']">Package Retention</a>
+     <a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive"
+     [routerLink]="['/maintenance_config']">Maintenance</a>
+</nav>
+<div class="admin-content">
+  <table>
+    <tr>
+      <td>
+        <div class="maintenance-mode"></div>
+        <h2>Maintenance mode:</h2>
+        <p>Maintenance mode enabled:</p>
+        <input type="checkbox" [checked]="formGroup.get('maintenanceMode').value" disabled>
+        <p>Set maintenance message:</p>
+        <div>
+          <div id="displayed-message">
+            <i>{{ formGroup.get('maintenanceMessage').value }}</i>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="edit-maintenance-button">
+          <button mat-raised-button color="primary" (click)="openMaintenanceSettingsDialog()">Edit Settings</button>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

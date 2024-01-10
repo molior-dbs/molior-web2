@@ -1,0 +1,23 @@
+.form-section {
+    margin-bottom: 16px; /* Add space between sections */
+  }
+  
+  .time-input {
+    display: flex;
+    align-items: center;
+  }
+  
+  .arrow-button {
+    font-size: 16px; /* Adjust the font size for smaller arrows */
+    color: blue; /* Set the color to blue */
+    margin-left: 8px; /* Add some space between the input and the first arrow */
+  }
+  
+  /* Add space between labels and input fields */
+  mat-form-field {
+    margin-top: 8px;
+  }
+  
+  .weekdays-container .weekday {
+    margin-top: 8px;
+  }

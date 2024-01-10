@@ -1,0 +1,30 @@
+/* Styling the body to have a purple background */
+body {
+    background-color: #571845 !important;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Styling for the container holding the maintenance message */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #571845;
+    padding: 20px;
+  }
+  mat-icon {
+    margin-bottom: 20px;
+    font-size: 80px;
+    color: #571845
+  }
+  
+  /* Styling the maintenance message to be bold */
+  .message {
+    font-weight: bold;
+    font-size: 60px;
+  }

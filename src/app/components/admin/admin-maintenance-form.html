@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Edit Settings for the Maintenance Details</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="maintenance-mode-checkbox" style="margin-top: 10px;">
+      <p>Maintenance mode enabled: <app-validation-error [control]="form.get('maintenanceMode')"></app-validation-error></p>
+      <input type="checkbox" formControlName="maintenanceMode" />
+    </div>
+    <div class="maintenance-message-input" style="margin-top: 10px">
+        <p>Enter the maintenance message:</p>
+        <input type="text" formControlName="maintenanceMessage"/>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <app-alert></app-alert>
+  <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+  <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
+</div>
+
+
+

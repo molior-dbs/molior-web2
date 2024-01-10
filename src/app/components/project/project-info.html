@@ -82,7 +82,11 @@
 
     <ng-container matColumnDef="actions">
         <th mat-header-cell [ngClass]="'action-menu'" *matHeaderCellDef>
-            <button mat-icon-button aria-label="create" (click)="create()"><mat-icon>control_point</mat-icon></button>
+            <button mat-icon-button aria-label="create" [matMenuTriggerFor]="menu"><mat-icon>control_point</mat-icon></button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="create()">Create Project Version</button>
+                <!-- <button mat-menu-item (click)="import()">Import Project Version</button> -->
+            </mat-menu>
         </th>
         <td mat-cell [ngClass]="'action-menu'" *matCellDef="let element">
             <button mat-icon-button [matMenuTriggerFor]="menu" id="menu_{{element.id}}" aria-label="">
@@ -99,6 +103,7 @@
                 <button *ngIf="!element.is_locked" mat-menu-item (click)="lock(element)"><mat-icon>lock</mat-icon>Lock</button>
                 <button *ngIf="!element.is_locked" mat-menu-item (click)="extupload(element)"><mat-icon>file_upload</mat-icon>Upload external build</button>
                 <button *ngIf="!element.is_locked" mat-menu-item (click)="publishS3(element)"><mat-icon>file_upload</mat-icon>Publish to S3</button>
+                <!-- <button mat-menu-item (click)="export(element)"><mat-icon>import_export</mat-icon>Export Project Version</button> -->
                 <button mat-menu-item (click)="delete(element)"><mat-icon>delete</mat-icon> Delete</button>
             </mat-menu>
         </td>

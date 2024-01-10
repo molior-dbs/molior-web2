@@ -26,6 +26,8 @@ export class AppComponent implements AfterViewInit {
     public connectionColor$: Observable<string>;
     status: MoliorStatus;
     date: Date;
+    maintenanceMode: boolean = false;
+    isAdmin: boolean = false;
 
     constructor(
         private authService: AuthService,
@@ -58,9 +60,11 @@ export class AppComponent implements AfterViewInit {
         });
         if (this.authenticated()) {
             this.moliorService.connect();
+            this.checkAdminPermissions();
         }
         this.status = {sshkey: '', gpgurl: '', version_molior_server: '', version_aptly: '',
                        maintenance_message: '', maintenance_mode: false};
+        this.checkMaintenanceMode();
     }
 
     ngAfterViewInit() {
@@ -102,5 +106,28 @@ export class AppComponent implements AfterViewInit {
         }
         return '';
     }
-}
+    checkMaintenanceMode() {
+        this.moliorService.getMoliorStatus().subscribe(
+            (data: MoliorStatus) => {
+                this.maintenanceMode = data.maintenance_mode;
+            },
+            (error) => {
+                console.error('Error fetching maintenance mode:', error);
+            }
+        );
+    }
 
+    checkAdminPermissions() {
+        const currentUser = this.authService.currentUserValue;
+        if (currentUser) {
+            this.authService.checkAdminPrivilege(currentUser.username).subscribe(
+                (isAdmin: boolean) => {
+                    this.isAdmin = isAdmin;
+                },
+                (error) => {
+                    console.error('Error fetching admin status:', error);
+                }
+            );
+        }
+    }
+}

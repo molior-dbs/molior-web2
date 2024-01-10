@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>Edit Settings for the Weekly Cleanup Job</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="form-section">
+      <p>Select a time slot: <app-validation-error [control]="form.get('cleanupTime')"></app-validation-error></p>
+      <div class="time-input">
+        <select formControlName="selectedHour" (change)="onHourSelected($event.target.value)">
+          <option *ngFor="let hour of hoursArray" [value]="hour">{{ hour.toString().padStart(2, '0') }}</option>
+        </select>
+        <span>:</span>
+        <select formControlName="selectedMinute" (change)="onMinuteSelected($event.target.value)">
+          <option *ngFor="let minute of minutesArray" [value]="minute">{{ minute.toString().padStart(2, '0') }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-section weekdays-container">
+      <p>Select the wekdays:</p>
+      <div *ngFor="let day of cleanupWeekdays" class="weekday">
+        <mat-checkbox formControlName="{{ day }}"></mat-checkbox>
+        {{ day }}
+      </div>
+    </div>
+    <div class="cleanup-active-checkbox" style="margin-top: 10px;">
+      <p>Cleanup Active: <app-validation-error [control]="form.get('cleanupActive')"></app-validation-error></p>
+      <input type="checkbox" formControlName="cleanupActive" />
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <app-alert></app-alert>
+  <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
+  <button mat-button (click)="save()" [disabled]="!(formModified)  || clicked">Ok</button>
+</div>
+
+
+

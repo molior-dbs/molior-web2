@@ -1,0 +1,44 @@
+.admin-content {
+  display: flex; /* Use flexbox layout */
+  justify-content: space-between; /* Distribute content evenly horizontally */
+  align-items: flex-start; /* Align content at the top */
+}
+
+.weekdays-container,
+.time-selection {
+  flex: 1; /* Share available horizontal space equally */
+  padding: 10px; /* Optional padding between the two sections */
+}
+
+p {
+    line-height: 1.25;
+    margin-bottom: 0px;
+}
+
+ul {
+  margin-bottom: 0px;
+  margin-top: 10px;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+.edit-settings-button button {
+  background-color: #571845;
+  color: white;
+}
+
+.start-cleanup-button button {
+  background-color: #571845;
+  color: white;
+}
+
+.edit-maintenance-button button {
+  background-color: #571845;
+  color: white;
+}
+.edit-retention-button button {
+  background-color: #571845;
+  color: white;
+}

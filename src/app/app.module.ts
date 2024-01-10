@@ -27,12 +27,17 @@ import {AppComponent} from './app.component';
 
 import {ValidationService, ValidationErrorComponent} from './services/validation.service';
 import {AboutComponent} from './components/about/about';
+import {AdminComponent, AdminRetentionComponent} from './components/admin/admin';
+import { AdminMaintenanceComponent } from './components/admin/admin';
+import { AdminFormComponent } from './components/admin/admin-form';
+import { AdminMaintenanceFormComponent } from './components/admin/admin-maintenance-form';
 import {LoginComponent} from './components/login/login';
 import {AlertComponent} from './components/alert/alert';
 
 import {ProjectListComponent, ProjectCreateDialogComponent, ProjectDeleteDialogComponent} from './components/project/project-list';
 import {ProjectService, ProjectVersionService} from './services/project.service';
 import {RepositoryService} from './services/repository.service';
+import { CleanupService } from './services/admin.service';
 
 import {ProjectInfoComponent, ProjectversionDialogComponent, ProjectversionDeleteDialogComponent,
     ProjectversionLockDialogComponent, ProjectversionOverlayDialogComponent, ProjectversionSnapshotDialogComponent,
@@ -81,6 +86,8 @@ import {UserService, TokenService} from './services/user.service';
 import {TokenListComponent, TokenDialogComponent, TokenDeleteDialogComponent} from './components/account/token-list';
 
 import {WebsocketService, MoliorService} from './services/websocket';
+import { CommonModule } from '@angular/common';
+import { MaintenanceComponent } from './components/maintenance/maintenance';
 
 @NgModule({
     declarations: [
@@ -96,6 +103,8 @@ import {WebsocketService, MoliorService} from './services/websocket';
         BuildRebuildDialogComponent,
         BuildAbortDialogComponent,
         BuildInfoComponent,
+
+        MaintenanceComponent,
 
         MirrorListComponent,
         MirrorInfoComponent,
@@ -121,6 +130,11 @@ import {WebsocketService, MoliorService} from './services/websocket';
         UserInfoComponent,
 
         AboutComponent,
+        AdminComponent,
+        AdminRetentionComponent,
+        AdminMaintenanceComponent,
+        AdminFormComponent,
+        AdminMaintenanceFormComponent,
         LoginComponent,
         AlertComponent,
 
@@ -189,7 +203,8 @@ import {WebsocketService, MoliorService} from './services/websocket';
         MatAutocompleteModule,
         MatStepperModule,
         MatRadioModule,
-        MatDialogModule
+        MatDialogModule,
+        CommonModule
     ],
     providers: [
         WebsocketService,
@@ -198,6 +213,7 @@ import {WebsocketService, MoliorService} from './services/websocket';
         BuildService,
         ProjectService,
         ProjectVersionService,
+        CleanupService,
         UserService,
         TokenService,
         MirrorService,
@@ -243,7 +259,9 @@ import {WebsocketService, MoliorService} from './services/websocket';
                       TokenDeleteDialogComponent,
                       BuildDeleteDialogComponent,
                       BuildRebuildDialogComponent,
-                      BuildAbortDialogComponent
+                      BuildAbortDialogComponent,
+                      AdminFormComponent,
+                      AdminMaintenanceFormComponent,
                      ],
 })
 export class AppModule { }
