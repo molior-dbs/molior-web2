@@ -25,9 +25,11 @@ import {UserListComponent} from './components/user/user-list';
 import {UserInfoComponent} from './components/user/user-info';
 import {TokenListComponent} from './components/account/token-list';
 import {AboutComponent} from './components/about/about';
+import {AdminComponent, AdminMaintenanceComponent, AdminRetentionComponent} from './components/admin/admin';
 
 import {LoginComponent} from './components/login/login';
 import {AuthGuard} from './lib/auth.guard';
+import { MaintenanceComponent } from './components/maintenance/maintenance';
 
 const routes: Routes = [
     { path: 'login',                         component: LoginComponent },
@@ -75,7 +77,12 @@ const routes: Routes = [
     { path: 'users/:username',               component: UserInfoComponent,       canActivate: [AuthGuard] },
     { path: 'tokens',                        component: TokenListComponent,      canActivate: [AuthGuard] },
     { path: 'about',                         component: AboutComponent,          canActivate: [AuthGuard] },
-    { path: '**', redirectTo: '/builds'}
+    { path: 'admin',                         component: AdminComponent,          canActivate: [AuthGuard],      data: { is_admin: true } },
+    { path: 'retention',                     component: AdminRetentionComponent, canActivate: [AuthGuard],      data: { is_admin: true } },
+    { path: 'maintenance_config',            component: AdminMaintenanceComponent, canActivate: [AuthGuard],    data: { is_admin: true } },
+    { path: 'maintenance', component: MaintenanceComponent},
+    { path: '**', redirectTo: '/builds'},
+
 ];
 
 @NgModule({
