@@ -1,3 +1,10 @@
+molior-web (1.5.0~alpha18) stable; urgency=medium
+
+  * more ng-server proxy config to molior repo
+  * docker: update proxy config
+
+ -- André Roth <neolynx@gmail.com>  Sun, 14 Jan 2024 18:39:04 +0100
+
 molior-web (1.5.0~alpha17) stable; urgency=medium
 
   * fix build
