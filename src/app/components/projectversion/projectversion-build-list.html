@@ -24,7 +24,7 @@
               <tr>
                   <td><strong>APT Repository</strong></td>
                   <td><a class="link" href="{{ projectversion.apt_url }}" target="_blank">{{ projectversion.apt_url }}</a></td>
-  
+
                   <td><strong>State</strong></td>
                   <td>
                       <mat-icon *ngIf="projectversion.is_locked">lock</mat-icon>
@@ -34,22 +34,36 @@
               <tr>
                   <td><strong>Base Mirror</strong></td>
                   <td><a class="link" [routerLink]="['/mirror/' + projectversion.basemirror ]">{{ projectversion.basemirror }}</a></td>
-  
+
                   <td><strong>Dependency policy</strong></td>
                   <td>{{ projectversion.dependency_policy }}</td>
               </tr>
               <tr>
                   <td><strong>Architectures</strong></td>
                   <td>{{ projectversion.architectures.join(', ') }}</td>
-  
+
                   <td><strong>CI Builds</strong></td>
                   <td>
                       <mat-icon *ngIf="projectversion.ci_builds_enabled">done</mat-icon>
                       <mat-icon *ngIf="!projectversion.ci_builds_enabled">remove</mat-icon>
                   </td>
               </tr>
+              <tr>
+                <td><strong>Retention Successful Builds</strong></td>
+                <td>{{projectversion.retention_successful_builds}} build(s)</td>
+                <td><strong>Retention Failed Builds</strong></td>
+                <td>{{projectversion.retention_failed_builds}} day(s)</td>
+              </tr>
           </table>
       </div>
+      <div style="flex-grow: 1; text-align: right;">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button *ngIf="!projectversion.is_locked" mat-menu-item (click)="edit()">   <mat-icon>edit</mat-icon>Edit Retention Policy</button>
+        </mat-menu>
+</div>
    </div>
    <br/>
 

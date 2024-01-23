@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Edit Package Retention Policy</h2>
+<mat-dialog-content>
+  <!-- Add input fields for retention values -->
+  <div>
+    <label for="successfulBuilds">Cleanup Retention for Successful Builds:</label>
+    <p>Specify maximum number of <strong>successful</strong> builds per source repository to retain:</p>
+    <input type="number" id="successfulBuilds" [formControl]="retentionSuccessfulBuilds" min="1" max="5"/>
+    <div *ngIf="retentionSuccessfulBuilds.invalid && (retentionSuccessfulBuilds.dirty || retentionSuccessfulBuilds.touched)">
+      <div *ngIf="retentionSuccessfulBuilds.errors?.required">Required</div>
+      <div *ngIf="retentionSuccessfulBuilds.errors?.min || retentionSuccessfulBuilds.errors?.max">
+        Please enter a value between 1 and 5 (inclusive).
+      </div>
+    </div>
+  </div>
+  <div>
+    <br>
+    <label for="failedBuilds">Cleanup Retention for Failed Builds:</label>
+    <p>Specify how many days you want to keep <strong>failed</strong> builds for:</p>
+    <input type="number" id="failedBuilds" [formControl]="retentionFailedBuilds" min="7" />
+    <div *ngIf="retentionFailedBuilds.invalid && (retentionFailedBuilds.dirty || retentionFailedBuilds.touched)">
+      <div *ngIf="retentionFailedBuilds.errors?.required">Required</div>
+      <div *ngIf="retentionFailedBuilds.errors?.min">
+        Please enter a value greater than or equal to 7.
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" [disabled]="retentionSuccessfulBuilds.invalid || retentionFailedBuilds.invalid" (click)="save()">Save</button>
+</mat-dialog-actions>
