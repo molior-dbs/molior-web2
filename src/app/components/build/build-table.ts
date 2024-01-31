@@ -22,6 +22,9 @@ export class BuildTableComponent extends TableComponent implements OnInit {
     dataSource: BuildDataSource;
     displayedColumns: string[];
     updateSubscription;
+    selectedBuildStates: Array<string> = [];
+    buildStates: string[] = ['building', 'build_failed', 'needs_build', 'needs_publish'];
+    @ViewChild('inputBuildState', {static: false}) inputBuildState: ElementRef;
     @ViewChild('inputSearch', { static: false }) inputSearch: ElementRef;
     @ViewChild('inputMaintainer', { static: false }) inputMaintainer: ElementRef;
     @ViewChild('inputProject', { static: false }) inputProject: ElementRef;
@@ -38,13 +41,15 @@ export class BuildTableComponent extends TableComponent implements OnInit {
                 protected repositoryService: RepositoryService,
                 protected dialog: MatDialog,
                 protected http: HttpClient) {
-        super(route, router, [['search', ''],
+        super(route, router, [['buildstate', ''],
+                              ['search', ''],
                               ['maintainer', ''],
                               ['commit', ''],
                              ]);
         this.dataSource = new BuildDataSource(buildService);
         this.buildicon = buildicon;
         this.updateSubscription = null;
+        this.buildStates = this.mergeBuildStates(this.buildStates);
     }
 
     ngOnInit() {
@@ -74,6 +79,29 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         if (this.repository) {
             params.set('sourcerepository_id', this.repository.id);
         }
+
+        let selectedStates = [];
+
+        this.selectedBuildStates.forEach(state => {
+            switch (state) {
+                case 'successful/already_exists/nothing_done':
+                    selectedStates = selectedStates.concat(['successful', 'already_exists', 'nothing_done']);
+                    break;
+                case 'publishing/publish_failed':
+                    selectedStates = selectedStates.concat(['publishing', 'publish_failed']);
+                    break;
+                case 'new/scheduled':
+                    selectedStates = selectedStates.concat(['new', 'scheduled']);
+                    break;
+                default:
+                    selectedStates.push(state);
+                    break;
+            }
+        });
+
+        selectedStates = [...new Set(selectedStates)];
+        params.set('buildstate', selectedStates);
+
         this.dataSource.load('/api/builds', params);
     }
 
@@ -84,9 +112,10 @@ export class BuildTableComponent extends TableComponent implements OnInit {
             this.inputProject.nativeElement.value = this.params.get('search_project');
         }
         this.inputCommit.nativeElement.value = this.params.get('commit');
-    }
+      }
 
     setParams() {
+        this.params.set('buildstate', this.selectedBuildStates.join(','));
         this.params.set('search', this.inputSearch.nativeElement.value);
         this.params.set('maintainer', this.inputMaintainer.nativeElement.value);
         if (!this.projectversion) {
@@ -105,6 +134,11 @@ export class BuildTableComponent extends TableComponent implements OnInit {
         this.initFilter(this.inputCommit.nativeElement);
         this.updateSubscription = this.moliorService.builds.subscribe((evt: UpdateEvent) => { this.dataSource.update(evt); });
     }
+
+    mergeBuildStates(states: string[]): string[] {
+        const mergedStates = ['successful/already_exists/nothing_done', 'publishing/publish_failed', 'new/scheduled'];
+        return states.filter(state => !mergedStates.includes(state)).concat(mergedStates);
+      }
 
     OnDestroy() {
         if (this.updateSubscription) {
