@@ -3,8 +3,24 @@
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" (wheel)="scroll($event)">
 
     <ng-container matColumnDef="buildstate">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '26px'}"></th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'text-align': 'right'}" [routerLink]="['/build', element.id]">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field>
+            <mat-label>Buildstate</mat-label>
+            <mat-select [(value)]="selectedBuildStates" placeholder="Select build state" multiple (selectionChange)="loadData()">
+              <mat-option *ngFor="let state of buildStates" [value]="state">
+                <mat-icon>
+                    {{
+                        state === 'successful/already_exists/nothing_done' ? 'done' :
+                        state === 'publishing/publish_failed' ? 'publish' :
+                        state === 'new/scheduled' ? 'schedule' :
+                        buildicon(state) }}
+                </mat-icon>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'text-align': 'center'}" [routerLink]="['/build', element.id]">
+
             <mat-icon class="mat-icon notranslate material-icons buildstate buildstate-{{element.buildstate}}" matTooltip="{{element.buildstate}}" [matTooltipPosition]="'left'">{{buildicon(element.buildstate)}}</mat-icon>
     </ng-container>
 

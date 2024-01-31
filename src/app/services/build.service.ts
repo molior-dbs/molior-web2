@@ -108,6 +108,10 @@ export class BuildService extends TableService<Build> {
 
     getAPIParams(params) {
         const p: any = {};
+        if (params.get('buildstate')) {
+            p.buildstate = params.get('buildstate');
+        }
+
         if (params.get('search')) {
             p.search = params.get('search');
         }
