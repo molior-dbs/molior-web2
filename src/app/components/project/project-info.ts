@@ -11,6 +11,7 @@ import {MirrorService, Mirror, BaseMirrorValidator} from '../../services/mirror.
 import {ValidationService} from '../../services/validation.service';
 import {AlertService} from '../../services/alert.service';
 import {ProjectCreateDialogComponent, ProjectDeleteDialogComponent} from './project-list';
+import { RepositoryService } from 'src/app/services/repository.service';
 
 @Component({
     selector: 'app-projectversions',
@@ -30,11 +31,13 @@ export class ProjectInfoComponent extends TableComponent {
         'actions'
     ];
     @ViewChild('inputName', { static: false }) inputName: ElementRef;
+    @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
                 protected projectService: ProjectService,
                 protected projectversionService: ProjectVersionService,
+                protected repositoryService: RepositoryService,
                 protected dialog: MatDialog) {
         super(route, router, [['filter_name', '']]);
         this.project = {id: -1, name: '', description: ''};
@@ -158,6 +161,65 @@ export class ProjectInfoComponent extends TableComponent {
             width: '600px',
         });
         dialog.afterClosed().subscribe(result => this.loadData());
+    }
+
+    importProjectVersion(){
+        this.fileInput.nativeElement.click();
+        }
+
+    handle(e) {
+        const tempFile = e.target.files[0];
+        if (tempFile) {
+            // Create FormData object and append file
+            const formData = new FormData();
+            formData.append('json', tempFile);
+
+            this.projectversionService.importProjectVersion(formData)
+                .subscribe(
+                    (response) => {
+                    const projectversion = response.projectversion
+                    const sourcerepositories = response.sourcerepositories
+                    this.router.navigate(['/project', this.project.name, projectversion.name])
+                    sourcerepositories.forEach(repository => {
+                        this.repositoryService.add(projectversion, repository.url, projectversion.architectures, repository.run_lintian)
+                            .subscribe(
+                                () => {},
+                                (error) => {
+                                    console.error('Error adding repository:', error)
+                                }
+                            );
+                    });
+                },
+                    (error) => {
+                        console.error('Error uploading file:', error)
+                    }
+                )
+        }
+    }
+
+    export(element: ProjectVersion) {
+        this.projectversionService.export(element.project_name, element.name).subscribe(
+            (res: ProjectVersion) => {
+                const projectName = res.project_name;
+                const versionName = res.name;
+                const filename = `${projectName}_${versionName}.projectversion_export.json`;
+
+                const jsonBlob = new Blob([JSON.stringify(res)], { type: 'application/json' });
+                const url = window.URL.createObjectURL(jsonBlob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            },
+            (error) => {
+                console.error('API Error:', error);
+            });
+
     }
 }
 

@@ -33,6 +33,14 @@ export interface ProjectVersion {
     publish_s3: boolean;
     s3_endpoint: string;
     s3_path: string;
+    sourcerepositories: Sourcerepository[];
+}
+
+export interface Sourcerepository {
+    id: number;
+    name: string;
+    url: string;
+    run_lintian: boolean;
 }
 
 export interface Permission {
@@ -52,7 +60,6 @@ export class ProjectService extends TableService<Project> {
     constructor(protected http: HttpClient) {
         super(http);
     }
-
     getAPIParams(params) {
         const p: any = {};
         if (params.get('filter_name')) {
@@ -226,6 +233,14 @@ export class ProjectVersionService extends TableService<ProjectVersion> {
         return this.http.get<[]>(`${apiURL()}/api2/s3`);
     }
 
+    export(name: string, version: string) {
+        return this.http.get<ProjectVersion>(`${apiURL()}/api2/project/${name}/${version}/export`);
+    }
+
+    importProjectVersion(formData: FormData){
+        return this.http.post<any>(`${apiURL()}/api2/projectbase/projectversion/import`, formData)
+    }
+
 }
 
 export function BaseProjectValidator(control: AbstractControl): { [key: string]: boolean } | null {
@@ -245,4 +260,3 @@ export function BaseProjectValidator(control: AbstractControl): { [key: string]:
     }
     return null;
 }
-

@@ -23,7 +23,7 @@ export class ProjectversionAPTSourcesComponent {
                                apt_url: '', architectures: [], basemirror: '', is_mirror: false, description: '',
                                dependency_policy: 'strict', ci_builds_enabled: false, dependency_ids: [], dependent_ids: [],
                                projectversiontype: 'regular', retention_successful_builds: 1, retention_failed_builds: 7,
-                               publish_s3: false, s3_endpoint: '', s3_path: ''};
+                               publish_s3: false, s3_endpoint: '', s3_path: '', sourcerepositories: []};
         this.aptSources = '';
         this.aptSourcesCI = '';
         this.route.paramMap.subscribe((params: ParamMap) => {
