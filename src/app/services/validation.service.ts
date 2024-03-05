@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {FormGroup, FormControl, AbstractControl} from '@angular/forms';
 
-export const urlregex = /^(?:https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\._-]+))*$/;
+export const urlregex = /^(?:https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\.\:_-]+))*$/;
 export const gitregex = [
     /^(https?:\/\/)(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)(?:(\/[\w\._~-]+))+$/,
     /^(ssh:\/\/)?(\w+@)?(?:([\w\._-]+)(\.[\w\._-]+)+(:\d+)?)[:/][\w\._~-]+(\/[\w\._-]+)+$/,
