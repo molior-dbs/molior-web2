@@ -1,3 +1,28 @@
+molior-web (1.5.0~alpha21) stable; urgency=medium
+
+  * add buildstate filter to build table
+  * implement admin page
+  * projectversion view: showing retention info with hamburger to edit
+  * projectversion: duplicate info box to all tabs
+  * build: improve log output
+  * add s3 support
+  * build for 1.5
+  * implement Package Retention
+  * builds table: show copy/delete projectversion label
+  * add buildtype cleanup
+  * add checkbox for runLintian
+  * extend README.md
+  * build for bookworm
+  * fixed build error
+  * mirror edit: fix switching mirror key type
+  * build for 1.5
+  * fix components
+  * fix force CI flag
+  * fix displaying architectures with source and installer
+  * ...
+
+ -- madeleinefr <madeleine.frohnholzer@gmail.com>  Thu, 18 Apr 2024 15:25:50 +0200
+
 molior-web (1.4.1) stable; urgency=medium
 
   * node info: rename source name
