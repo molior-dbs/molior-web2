@@ -1,13 +1,12 @@
 <mat-icon style="float: left; padding-top: 4px;">class</mat-icon>
 <h1 mat-dialog-title *ngIf="mode === 'create'">Create Project Version</h1>
-<h1 mat-dialog-title *ngIf="mode === 'edit'">Edit Project Version {{form.value.version}}</h1>
+<h1 mat-dialog-title *ngIf="mode === 'edit'">Edit Project Version {{formArray.get('0').get('version').value}}</h1>
 <h1 mat-dialog-title *ngIf="mode === 'copy'">Copy Project Version {{projectversion.name}}</h1>
 <div mat-dialog-content>
     <form [formGroup]="form" [ngStyle]="{height: '360px'}">
         <mat-horizontal-stepper formArrayName="formArray" linear #stepper>
             <mat-step formGroupName="0" [stepControl]="formArray.get('0')">
                 <ng-template matStepLabel>Project Version Details</ng-template>
-                <input matInput formControlName="version">
 
         <div *ngIf="mode === 'create' || mode === 'copy'">
             <p><strong>Project Version</strong><app-validation-error [control]="formArray.get('0').get('version')"></app-validation-error></p>
