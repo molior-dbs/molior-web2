@@ -4,6 +4,7 @@ import { AdminFormComponent } from './admin-form';
 import { AdminMaintenanceFormComponent } from './admin-maintenance-form';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CleanupService, Cleanup } from 'src/app/services/admin.service';
+import { AdminRetentionFormComponent } from './admin-retention-form';
 
 
 @Component({
@@ -128,29 +129,6 @@ export class AdminComponent implements OnInit{
       }
     )
   }
-
-  openMaintenanceSettingsDialog() {
-    const maintenanceMode = this.formGroup.get('maintenanceMode').value;
-    const maintenanceMessage = this.formGroup.get('maintenanceMessage').value;
-
-    const dialog = this.dialog.open(AdminMaintenanceFormComponent, {
-      width: '400px',
-      data: {
-        maintenanceMode,
-        maintenanceMessage,
-      },
-    });
-
-    dialog.afterClosed().subscribe(result => {
-      if (result) {
-        // Update the component's properties with the values from the dialog result
-        this.formGroup.patchValue({
-          maintenanceMode: result.maintenanceMode,
-          maintenanceMessage: result.maintenanceMessage,
-        })
-      }
-    });
-  }
 }
 
 @Component({
@@ -158,8 +136,61 @@ export class AdminComponent implements OnInit{
   templateUrl: './admin-retention.html',
   styleUrls: ['./admin.scss'],
 })
-export class AdminRetentionComponent {
+export class AdminRetentionComponent implements OnInit{
   formGroup: FormGroup
+
+  constructor(
+    public dialog: MatDialog,
+    private cleanupService: CleanupService,
+    public formBuilder: FormBuilder
+    ) {
+      this.formGroup = this.formBuilder.group({
+        retentionSuccessfulBuilds: 1,
+        retentionFailedBuilds: 7,
+    });
+  }
+
+  ngOnInit() {
+    this.getRetentionData();
+
+  }
+
+  getRetentionData(){
+    this.cleanupService.getRetentionDetails().subscribe(
+      (data: any) => {
+        this.formGroup.patchValue({
+          retentionSuccessfulBuilds: data.retention_successful_builds,
+          retentionFailedBuilds: data.retention_failed_builds,
+        });
+      },
+      (error) => {
+        console.error('Error fetching retention data:', error)
+      }
+    )
+  }
+
+  openRetentionSettingsDialog() {
+    const retentionSuccessfulBuilds = this.formGroup.get('retentionSuccessfulBuilds').value;
+    const retentionFailedBuilds = this.formGroup.get('retentionFailedBuilds').value;
+
+    const dialog = this.dialog.open(AdminRetentionFormComponent, {
+      width: '400px',
+      data: {
+        retentionSuccessfulBuilds,
+        retentionFailedBuilds,
+      },
+    });
+
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        // Update the component's properties with the values from the dialog result
+        this.formGroup.patchValue({
+          retentionSuccessfulBuilds: result.retentionSuccessfulBuilds,
+          retentionFailedBuilds: result.retentionFailedBuilds,
+        })
+      }
+    });
+  }
 
   }
 

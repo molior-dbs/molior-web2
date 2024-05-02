@@ -5,39 +5,39 @@ import { CleanupService } from 'src/app/services/admin.service';
 import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
-  selector: 'app-admin-maintenance-form',
-  templateUrl: './admin-maintenance-form.html',
+  selector: 'app-admin-retention-form',
+  templateUrl: './admin-retention-form.html',
   styleUrls: ['./admin-form.scss'],
   providers: [ CleanupService ],
 })
-export class AdminMaintenanceFormComponent {
+export class AdminRetentionFormComponent {
   form: FormGroup;
-  maintenanceMode: string = '';
-  maintenanceMessage: string = '';
+  retentionSuccessfulBuilds: number;
+  retentionFailedBuilds: number;
   clicked: boolean;
 
   constructor(
-    public dialog: MatDialogRef<AdminMaintenanceFormComponent>,
+    public dialog: MatDialogRef<AdminRetentionFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     protected cleanupService: CleanupService,
     private alertService: AlertService,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      maintenanceMode: [this.data.maintenanceMode],
-      maintenanceMessage: [this.data.maintenanceMessage],
+      retentionSuccessfulBuilds: [this.data.retentionSuccessfulBuilds, [Validators.required, Validators.min(1), Validators.max(5)]],
+      retentionFailedBuilds: [this.data.retentionFailedBuilds, [Validators.required, Validators.min(7)]],
     });
   }
 
   save() {
     if (this.form.valid) {
-      this.cleanupService.editMaintenanceDetails(
-        this.form.value.maintenanceMode.toString(),
-        this.form.value.maintenanceMessage).subscribe(
+      this.cleanupService.editRetentionDetails(
+        this.form.value.retentionSuccessfulBuilds,
+        this.form.value.retentionFailedBuilds).subscribe(
         r => {
           this.dialog.close({
-            maintenanceMode: this.form.value.maintenanceMode,
-            maintenanceMessage: this.form.value.maintenanceMessage,
+            retentionSuccessfulBuilds: this.form.value.retentionSuccessfulBuilds,
+            retentionFailedBuilds: this.form.value.retentionFailedBuilds,
           });
         },
         err => {
@@ -45,4 +45,8 @@ export class AdminMaintenanceFormComponent {
         }      )
       };
     }
+
+  onNoClick(): void {
+      this.dialog.close();
+  }
  }

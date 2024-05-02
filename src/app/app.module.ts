@@ -88,6 +88,7 @@ import {TokenListComponent, TokenDialogComponent, TokenDeleteDialogComponent} fr
 import {WebsocketService, MoliorService} from './services/websocket';
 import { CommonModule } from '@angular/common';
 import { MaintenanceComponent } from './components/maintenance/maintenance';
+import { AdminRetentionFormComponent } from './components/admin/admin-retention-form';
 
 @NgModule({
     declarations: [
@@ -135,6 +136,7 @@ import { MaintenanceComponent } from './components/maintenance/maintenance';
         AdminMaintenanceComponent,
         AdminFormComponent,
         AdminMaintenanceFormComponent,
+        AdminRetentionFormComponent,
         LoginComponent,
         AlertComponent,
 
@@ -262,6 +264,7 @@ import { MaintenanceComponent } from './components/maintenance/maintenance';
                       BuildAbortDialogComponent,
                       AdminFormComponent,
                       AdminMaintenanceFormComponent,
+                      AdminRetentionFormComponent,
                      ],
 })
 export class AppModule { }

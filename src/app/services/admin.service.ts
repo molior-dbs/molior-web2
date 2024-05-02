@@ -17,6 +17,11 @@ export interface Maintenance {
     maintenanceMessage: string;
 }
 
+export interface Retention {
+    retentionSuccessfulBuilds: number;
+    retentionFailedBuilds: number;
+}
+
 @Injectable()
 export class CleanupService extends TableService<Cleanup> {
     constructor(protected http: HttpClient) {
@@ -45,6 +50,16 @@ getMaintenanceDetails() {
 editMaintenanceDetails(maintenanceMode: string, maintenanceMessage: string) {
     return this.http.put(`${apiURL()}/api2/maintenance`,
                         {maintenance_mode: maintenanceMode, maintenance_message: maintenanceMessage}
+                        );
+}
+
+getRetentionDetails() {
+    return this.http.get<Retention>(`${apiURL()}/api2/retention`);
+}
+
+editRetentionDetails(retentionSuccessfulBuilds: number, retentionFailedBuilds: number) {
+    return this.http.put(`${apiURL()}/api2/retention`,
+                        {retention_successful_builds: retentionSuccessfulBuilds, retention_failed_builds: retentionFailedBuilds}
                         );
 }
 
