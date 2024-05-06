@@ -53,7 +53,7 @@ import {ProjectversionRepoListComponent, SourcerepoDialogComponent, SourcerepoRe
 import {TriggerBuildDialogComponent, SourcerepoRecloneDialogComponent} from './components/repo/repo-list';
 import {ProjectversionRepoComponent, HookDialogComponent,
         HookDeleteDialogComponent} from './components/projectversion/projectversion-repo-info';
-import {ProjectversionBuildListComponent, ProjectversionRetentionEditDialogComponent} from './components/projectversion/projectversion-build-list';
+import {ProjectversionBuildListComponent} from './components/projectversion/projectversion-build-list';
 import {ProjectversionAPTSourcesComponent} from './components/projectversion/projectversion-aptsources';
 import {ProjectversionDependentsComponent} from './components/projectversion/projectversion-dependents';
 import {ProjectversionPermissionsComponent} from './components/projectversion/projectversion-permissions';
@@ -154,7 +154,6 @@ import { AdminRetentionFormComponent } from './components/admin/admin-retention-
         DependencyDialogComponent,
         DependencyDeleteDialogComponent,
         ProjectDeleteDialogComponent,
-        ProjectversionRetentionEditDialogComponent,
         ProjectversionDeleteDialogComponent,
         ProjectversionLockDialogComponent,
         ProjectversionOverlayDialogComponent,
@@ -250,7 +249,6 @@ import { AdminRetentionFormComponent } from './components/admin/admin-retention-
                       ProjectversionSnapshotDialogComponent,
                       ProjectversionBuilduploadDialogComponent,
                       ProjectversionS3DialogComponent,
-                      ProjectversionRetentionEditDialogComponent,
                       ProjectDeleteDialogComponent,
                       ProjectversionDeleteDialogComponent,
                       ProjectPermissionDialogComponent,

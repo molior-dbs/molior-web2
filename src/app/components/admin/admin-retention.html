@@ -20,8 +20,10 @@
           <p>Default value (days) for how many days you want to keep failed builds for: <strong>{{ formGroup.get('retentionFailedBuilds').value }}</strong></p>
         </div>
       </td>
+      </tr>
+      <tr>
       <td>
-        <div class="edit-retention-button">
+        <div class="edit-retention-button" style="margin-top: 30px;">
           <button mat-raised-button color="primary" (click)="openRetentionSettingsDialog()">Edit Settings</button>
         </div>
       </td>

@@ -3,11 +3,11 @@
   <form [formGroup]="form">
     <div class="maintenance-mode-checkbox" style="margin-top: 10px;">
       <p>Maintenance mode enabled: <app-validation-error [control]="form.get('maintenanceMode')"></app-validation-error></p>
-      <input type="checkbox" formControlName="maintenanceMode" />
+      <input type="checkbox" formControlName="maintenanceMode" (change)="toggleMaintenanceMessage($event.target.checked)"/>
     </div>
     <div class="maintenance-message-input" style="margin-top: 10px">
         <p>Enter the maintenance message:</p>
-        <input type="text" formControlName="maintenanceMessage"/>
+        <input type="text" formControlName="maintenanceMessage" [disabled]="!form.get('maintenanceMode').value"/>
     </div>
   </form>
 </div>
@@ -16,6 +16,3 @@
   <button mat-button (click)="dialog.close()" [disabled]="clicked">Cancel</button>
   <button mat-button (click)="save()" [disabled]="!form.valid || clicked">Ok</button>
 </div>
-
-
-

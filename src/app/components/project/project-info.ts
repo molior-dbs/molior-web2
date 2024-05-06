@@ -12,6 +12,7 @@ import {ValidationService} from '../../services/validation.service';
 import {AlertService} from '../../services/alert.service';
 import {ProjectCreateDialogComponent, ProjectDeleteDialogComponent} from './project-list';
 import { RepositoryService } from 'src/app/services/repository.service';
+import { CleanupService } from 'src/app/services/admin.service';
 
 @Component({
     selector: 'app-projectversions',
@@ -260,16 +261,20 @@ export class ProjectversionDialogComponent {
                 buildlatest: new FormControl(false)
             }),
             this.fb.group({
-                retentionSuccessfulBuilds: new FormControl(1, [Validators.min(1), Validators.max(5)]),
-                retentionFailedBuilds: new FormControl(7, [Validators.min(7)])
+                enableSuccessfulRetention: new FormControl(false),
+                retentionSuccessfulBuilds: new FormControl({ value: 0, disabled: true }),
+                enableFailedRetention: new FormControl(false),
+                retentionFailedBuilds: new FormControl({ value: 0, disabled: true })
             })
         ])
     });
+
 
     constructor(public dialog: MatDialogRef<ProjectversionDialogComponent>,
                 private fb: FormBuilder,
                 protected mirrorService: MirrorService,
                 protected projectVersionService: ProjectVersionService,
+                private cleanupService: CleanupService,
                 protected router: Router,
                 private alertService: AlertService,
                 @Inject(MAT_DIALOG_DATA) private data: { projectName: string, projectversion: ProjectVersion, copy: boolean }
@@ -295,10 +300,29 @@ export class ProjectversionDialogComponent {
                });
 
             this.formArray.get([1]).patchValue({
+                enableSuccessfulRetention: this.projectversion.retention_successful_builds !== 0,
+                enableFailedRetention: this.projectversion.retention_failed_builds !== 0,
                 retentionSuccessfulBuilds: this.projectversion.retention_successful_builds,
                 retentionFailedBuilds: this.projectversion.retention_failed_builds,
-            })
-        }
+            });
+            this.toggleRetention('successful', this.formArray.get('1').get('enableSuccessfulRetention').value);
+            this.toggleRetention('failed', this.formArray.get('1').get('enableFailedRetention').value);
+        } else if (this.mode == 'create'){
+                this.cleanupService.getRetentionDetails().subscribe((data: any) => {
+                    const retentionSuccessfulBuilds = data.retention_successful_builds;
+                    const retentionFailedBuilds= data.retention_failed_builds;
+
+                this.formArray.get([1]).patchValue({
+                    retentionSuccessfulBuilds,
+                    retentionFailedBuilds,
+                    enableSuccessfulRetention: retentionSuccessfulBuilds > 0,
+                    enableFailedRetention: retentionFailedBuilds > 0,
+                })
+                this.toggleRetention('successful', this.formArray.get('1').get('enableSuccessfulRetention').value);
+                this.toggleRetention('failed', this.formArray.get('1').get('enableFailedRetention').value);
+              });
+            }
+
         this.basemirrors = [];
         this.baseprojects = [];
         mirrorService.getBaseMirrors().subscribe(res => {
@@ -333,9 +357,40 @@ export class ProjectversionDialogComponent {
         });
     }
 
+    getRetentionDetails() {
+        this.cleanupService.getRetentionDetails().subscribe(
+            (data: any) => {
+            this.formArray.get([1]).patchValue({
+                retentionSuccessfulBuilds: data.retention_successful_builds,
+                retentionFailedBuilds: data.retention_failed_builds,
+            });
+        },
+        (error) => {
+            console.error('Error fetching retention data:', error)
+          });
+    }
+
+    toggleRetention(type: string, enableRetention: boolean): void {
+        const retentionGroup = this.formArray.get('1');
+        const retentionField = type === 'successful' ? 'retentionSuccessfulBuilds' : 'retentionFailedBuilds';
+        if (!enableRetention) {
+            retentionGroup.get(retentionField).setValue(0);
+            retentionGroup.get(retentionField).disable();
+        } else {
+            retentionGroup.get(retentionField).enable();
+            if (!retentionGroup.get(retentionField).value || retentionGroup.get(retentionField).value === false) {
+                this.cleanupService.getRetentionDetails().subscribe((data: any) => {
+                    const intValue = parseInt(data['retention_' + type + '_builds'], 10);
+                    retentionGroup.get(retentionField).setValue(intValue);
+                });
+            }
+        }
+    }
+
     save(): void {
         this.clicked = true;
         this.updateArchs();
+
         if (this.mode === 'edit') {
             this.projectVersionService.edit(this.data.projectName,
                                             this.projectversion.name,
@@ -381,11 +436,12 @@ export class ProjectversionDialogComponent {
                                               this.formArray.get([0]).value.baseproject,
                                               this.formArray.get([0]).value.architectures,
                                               this.formArray.get([0]).value.cibuilds,
-                                              this.formArray.get([1]).value.retentionSuccessfulBuilds,
-                                              this.formArray.get([1]).value.retentionFailedBuilds).subscribe(
+                                              this.formArray.get([1, 'retentionSuccessfulBuilds']).value,
+                                              this.formArray.get([1, 'retentionFailedBuilds']).value).subscribe(
                 r => {
-                    this.dialog.close();
+                    this.dialog.close(this.formArray.get([1]).value.retentionSuccessfulBuilds);
                     this.router.navigate(['/project', this.projectName, this.formArray.get([0]).value.version]);
+                    console.log()
                 },
                 err => {
                     this.alertService.error(err.error);

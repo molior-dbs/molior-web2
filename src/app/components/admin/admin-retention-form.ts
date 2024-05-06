@@ -10,7 +10,7 @@ import { AlertService } from 'src/app/services/alert.service';
   styleUrls: ['./admin-form.scss'],
   providers: [ CleanupService ],
 })
-export class AdminRetentionFormComponent {
+export class AdminRetentionFormComponent implements OnInit{
   form: FormGroup;
   retentionSuccessfulBuilds: number;
   retentionFailedBuilds: number;
@@ -24,20 +24,38 @@ export class AdminRetentionFormComponent {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      retentionSuccessfulBuilds: [this.data.retentionSuccessfulBuilds, [Validators.required, Validators.min(1), Validators.max(5)]],
-      retentionFailedBuilds: [this.data.retentionFailedBuilds, [Validators.required, Validators.min(7)]],
+      enableSuccessfulRetention: [this.data.retentionSuccessfulBuilds > 0],
+      enableFailedRetention: [this.data.retentionFailedBuilds > 0],
+      retentionSuccessfulBuilds: [{ value: this.data.retentionSuccessfulBuilds, disabled: this.data.retentionSuccessfulBuilds === 0 }, [Validators.required]],
+      retentionFailedBuilds: [{value: this.data.retentionFailedBuilds, disabled: this.data.retentionFailedBuilds === 0 }, [Validators.required]],
     });
+  }
+
+  ngOnInit() {
+    if (!this.form.get('enableSuccessfulRetention').value) {
+      this.form.get('retentionSuccessfulBuilds').disable();
+    }
+    if (!this.form.get('enableFailedRetention').value) {
+      this.form.get('retentionFailedBuilds').disable();
+    }
   }
 
   save() {
     if (this.form.valid) {
+      const formValue = { ...this.form.value };
+      if (!this.form.get('retentionSuccessfulBuilds').enabled) {
+        formValue.retentionSuccessfulBuilds = 0;
+      }
+      if (!this.form.get('retentionFailedBuilds').enabled) {
+        formValue.retentionFailedBuilds = 0;
+      }
       this.cleanupService.editRetentionDetails(
-        this.form.value.retentionSuccessfulBuilds,
-        this.form.value.retentionFailedBuilds).subscribe(
+        formValue.retentionSuccessfulBuilds,
+        formValue.retentionFailedBuilds).subscribe(
         r => {
           this.dialog.close({
-            retentionSuccessfulBuilds: this.form.value.retentionSuccessfulBuilds,
-            retentionFailedBuilds: this.form.value.retentionFailedBuilds,
+            retentionSuccessfulBuilds: formValue.retentionSuccessfulBuilds,
+            retentionFailedBuilds: formValue.retentionFailedBuilds,
           });
         },
         err => {
@@ -48,5 +66,17 @@ export class AdminRetentionFormComponent {
 
   onNoClick(): void {
       this.dialog.close();
+  }
+
+  toggleRetention(type: string, enableRetention: boolean): void {
+    const controlName = `retention${type.charAt(0).toUpperCase() + type.slice(1)}Builds`;
+    const originalValue = this.data[`retention${type.charAt(0).toUpperCase() + type.slice(1)}Builds`];
+    if (!enableRetention) {
+      this.form.get(controlName).setValue(0);
+      this.form.get(controlName).disable();
+    } else {
+      this.form.get(controlName).setValue(originalValue);
+      this.form.get(controlName).enable();
+    }
   }
  }

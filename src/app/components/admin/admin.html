@@ -11,20 +11,20 @@
 <div class="admin-content">
   <table>
     <tr>
-      <td>
+      <td class="left-selection">
         <div class="weekdays-container">
           <h2>Configuration for the cleanup job:</h2>
-          <label for="cleanupWeekdays">Selected Days:</label>
+          <label for="cleanupWeekdays" style="margin-bottom: 10px;">Selected Days:</label>
           <div *ngFor="let day of cleanupWeekdays" class="weekday">
             <input type="checkbox" [checked]="formGroup.get(day)?.value" disabled />
             {{ day }}
           </div>
         </div>
       </td>
-      <td>
+      <td class="right-selection">
         <div class="time-selection">
           <label for="cleanupTime">Selected Time:</label>
-          <div class="time-input">
+          <div class="time-input" style="margin-top: 10px;">
             <input type="text" id="cleanupTime" [value]="formGroup.get('cleanupTime').value" disabled />
           </div>
         </div>
@@ -33,14 +33,14 @@
           <input type="checkbox" [checked]="formGroup.get('cleanupActive').value" disabled />
         </div>
       </td>
-      <td>
+    </tr>
+    <tr>
+      <td colspan="2">
         <div class="edit-settings-button">
           <button mat-raised-button color="primary" (click)="openSettingsDialog()">Edit Settings</button>
         </div>
-      </td>
-      <td>
         <div class="start-cleanup-button">
-          <button mat-raised-button color="primary" (click)="startManualCleanup()">Start Manual Cleanup</button>
+          <button mat-raised-button color="primary" (click)="startManualCleanup()" disabled>Start Manual Cleanup</button>
         </div>
       </td>
     </tr>

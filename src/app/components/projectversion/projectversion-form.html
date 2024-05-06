@@ -76,18 +76,24 @@
     <mat-step formGroupName="1" [stepControl]="formArray.get('1')">
         <ng-template matStepLabel>Package Retention</ng-template>
         <div style="margin-top: 20px;">
+            <mat-checkbox formControlName="enableSuccessfulRetention" (change)="toggleRetention('successful', $event.checked)">Enable Successful Builds Retention</mat-checkbox>
+            <div>
             <app-validation-error [control]="formArray.get('1').get('retentionSuccessfulBuilds')"></app-validation-error>
             <p><strong>Cleanup Retention for Successful Builds:</strong></p>
             <p>Specify maximum number of <strong>successful</strong> builds per source repository to retain:</p>
             <mat-form-field style="width: 100%;">
-                <input matInput type="number" formControlName="retentionSuccessfulBuilds" min="1" max="5" value="1">
+                <input matInput type="number" formControlName="retentionSuccessfulBuilds" min="0" [disabled]="!enableRetentionSuccess">
             </mat-form-field>
+            </div>
+            <mat-checkbox formControlName="enableFailedRetention" (change)="toggleRetention('failed', $event.checked)">Enable Failed Builds Retention</mat-checkbox>
+            <div>
             <app-validation-error [control]="formArray.get('1').get('retentionFailedBuilds')"></app-validation-error>
             <p><strong>Cleanup Retention for Failed Builds:</strong></p>
             <p>Specify how many days you want to keep <strong>failed</strong> builds for:</p>
             <mat-form-field style="width: 100%;">
-                <input matInput type="number" formControlName="retentionFailedBuilds" min="1" value="7">
+                <input matInput type="number" formControlName="retentionFailedBuilds" min="0" [disabled]="!enableRetentionFailed">
             </mat-form-field>
+            </div>
         </div>
     </mat-step>
 

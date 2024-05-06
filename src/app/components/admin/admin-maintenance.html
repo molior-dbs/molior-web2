@@ -13,7 +13,7 @@
     <tr>
       <td>
         <div class="maintenance-mode"></div>
-        <h2>Maintenance mode:</h2>
+        <h2>Configuration of Maintenance mode:</h2>
         <p>Maintenance mode enabled:</p>
         <input type="checkbox" [checked]="formGroup.get('maintenanceMode').value" disabled>
         <p>Set maintenance message:</p>
@@ -23,8 +23,10 @@
           </div>
         </div>
       </td>
+      </tr>
+      <tr>
       <td>
-        <div class="edit-maintenance-button">
+        <div class="edit-maintenance-button" style="margin-top: 30px;">
           <button mat-raised-button color="primary" (click)="openMaintenanceSettingsDialog()">Edit Settings</button>
         </div>
       </td>

@@ -56,14 +56,6 @@
               </tr>
           </table>
       </div>
-      <div style="flex-grow: 1; text-align: right;">
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-            <button *ngIf="!projectversion.is_locked" mat-menu-item (click)="edit()">   <mat-icon>edit</mat-icon>Edit Retention Policy</button>
-        </mat-menu>
-</div>
    </div>
    <br/>
 

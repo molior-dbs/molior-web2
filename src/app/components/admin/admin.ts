@@ -100,8 +100,6 @@ export class AdminComponent implements OnInit{
 
     dialog.afterClosed().subscribe(result => {
       if (result) {
-        // Update the component's properties with the values from the dialog result
-
         for (const day in result.cleanupWeekdays) {
           if (result.cleanupWeekdays.hasOwnProperty(day)) {
             const control = this.formGroup.get(day);
@@ -183,7 +181,6 @@ export class AdminRetentionComponent implements OnInit{
 
     dialog.afterClosed().subscribe(result => {
       if (result) {
-        // Update the component's properties with the values from the dialog result
         this.formGroup.patchValue({
           retentionSuccessfulBuilds: result.retentionSuccessfulBuilds,
           retentionFailedBuilds: result.retentionFailedBuilds,

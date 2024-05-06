@@ -25,8 +25,17 @@ export class AdminMaintenanceFormComponent {
   ) {
     this.form = this.fb.group({
       maintenanceMode: [this.data.maintenanceMode],
-      maintenanceMessage: [this.data.maintenanceMessage],
+      maintenanceMessage: [{ value: this.data.maintenanceMessage, disabled: !this.data.maintenanceMode }, Validators.required],
     });
+  }
+
+  toggleMaintenanceMessage(checked: boolean): void {
+    const maintenanceMessageControl = this.form.get('maintenanceMessage');
+    if (checked) {
+      maintenanceMessageControl.enable();
+    } else {
+      maintenanceMessageControl.disable();
+    }
   }
 
   save() {

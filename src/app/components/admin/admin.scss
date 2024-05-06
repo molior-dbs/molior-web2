@@ -8,6 +8,14 @@
 .time-selection {
   flex: 1; /* Share available horizontal space equally */
   padding: 10px; /* Optional padding between the two sections */
+  margin-bottom: 10px;
+}
+.weekdays-container h2 {
+  margin-bottom: 20px; /* Add margin-bottom to create space between the h2 and label */
+}
+
+.weekdays-container > label {
+  margin-bottom: 20px; /* Add margin-bottom to create space after the label */
 }
 
 p {
@@ -25,11 +33,13 @@ li {
 }
 
 .edit-settings-button button {
+  margin-top: 10px;
   background-color: #571845;
   color: white;
 }
 
 .start-cleanup-button button {
+  margin-top: 10px;
   background-color: #571845;
   color: white;
 }
@@ -41,4 +51,12 @@ li {
 .edit-retention-button button {
   background-color: #571845;
   color: white;
+}
+
+.left-section {
+  vertical-align: top; /* Align the left section to the top */
+}
+
+.right-section {
+  vertical-align: top; /* Align the right section to the top */
 }
