@@ -195,7 +195,10 @@ export class SourcerepoDialogComponent implements OnInit {
 
             });
 
+        } else {
+            this.form.patchValue({architecture0: true});
         }
+
         this.updateArchs();
         this.form.controls.url.valueChanges.subscribe(
             url => {
