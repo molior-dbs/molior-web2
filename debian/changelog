@@ -1,3 +1,28 @@
+molior-web (1.5.0~beta1) stable; urgency=medium
+
+  * about: resize key boxes
+  * remove obsolete projectversion input field
+  * add link to parent/child build on build view
+  * implement admin page
+  * implement import and export of project version
+  * add buildstate filter to build table
+  * implement admin page
+  * projectversion view: showing retention info with hamburger to edit
+  * projectversion: duplicate info box to all tabs
+  * build: improve log output
+  * add s3 support
+  * build for 1.5
+  * implement Package Retention
+  * builds table: show copy/delete projectversion label
+  * add buildtype cleanup
+  * add checkbox for runLintian
+  * extend README.md
+  * build for bookworm
+  * fixed build error
+  * ...
+
+ -- André Roth <neolynx@gmail.com>  Fri, 17 May 2024 20:58:50 +0200
+
 molior-web (1.4.1) stable; urgency=medium
 
   * node info: rename source name
