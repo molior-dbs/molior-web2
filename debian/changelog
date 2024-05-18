@@ -1,3 +1,10 @@
+molior-web (1.5.0~beta4) stable; urgency=medium
+
+  * build list: resize buildtype filter
+  * fix table growing size
+
+ -- André Roth <neolynx@gmail.com>  Sat, 18 May 2024 21:03:07 +0200
+
 molior-web (1.5.0~beta3) stable; urgency=medium
 
   * fix copy
