@@ -12,6 +12,27 @@
         </td>
     </ng-container>
 
+    <ng-container matColumnDef="projectversionCount">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{minWidth: '10em', textAlign: 'center'}"># Versions</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['../project/'+element.name]" style="text-align: center;">
+            <span *ngIf="element.projectversionCount">{{element.projectversionCount}}</span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="buildCount">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{minWidth: '10em', textAlign: 'center'}"># Builds</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['../project/'+element.name]" style="text-align: center;">
+            <span *ngIf="element.buildCount">{{element.buildCount}}</span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cibuildCount">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{minWidth: '10em', textAlign: 'center'}"># CI Builds</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['../project/'+element.name]" style="text-align: center;">
+            <span *ngIf="element.cibuildCount">{{element.cibuildCount}}</span>
+        </td>
+    </ng-container>
+
     <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: '100%'}">Description</th>
         <td mat-cell *matCellDef="let element" [routerLink]="['../project/'+element.name]">

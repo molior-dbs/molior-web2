@@ -23,6 +23,8 @@ export class ProjectInfoComponent extends TableComponent {
     project: Project;
     displayedColumns: string[] = [
         'name',
+        'buildCount',
+        'cibuildCount',
         'architectures',
         'basemirror',
         'is_locked',

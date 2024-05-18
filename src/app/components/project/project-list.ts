@@ -21,6 +21,9 @@ export class ProjectListComponent extends TableComponent {
     dataSource: ProjectDataSource;
     displayedColumns: string[] = [
         'name',
+        'projectversionCount',
+        'buildCount',
+        'cibuildCount',
         'description',
         'actions'
     ];
