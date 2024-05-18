@@ -82,9 +82,9 @@ export class TableComponent implements AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit() {
+        this.calculateSize();
         this.sParams = this.route.queryParams.subscribe(params => {
             this.params.load(params);
-            this.calculateSize();
 
             if (this.firstload) {
                 this.firstload = false;
@@ -141,7 +141,10 @@ export class TableComponent implements AfterViewInit, OnDestroy {
         const parent = document.getElementById('table-wrapper') as HTMLElement;
         if (parent) {
             (parent.firstChild as HTMLTableElement).style.display = 'none';
-            const rows = Math.floor((parent.getBoundingClientRect().height - this.rowHeight - (this.rowHeight / 2)) / this.rowHeight);
+            let y0 = parent.offsetTop;
+            const footer = document.getElementById('container') as HTMLElement;
+            let y1 = footer.offsetHeight;
+            const rows = Math.floor((y1 - y0) / this.rowHeight) - 2;
             (parent.firstChild as HTMLTableElement).style.display = 'table';
             if (+this.params.get('pagesize') !== rows) {
                 this.params.set('pagesize', rows);
