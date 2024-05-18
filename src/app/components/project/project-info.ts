@@ -305,31 +305,9 @@ export class ProjectversionDialogComponent {
                 this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
             }
             if (this.mode === 'edit' || this.mode === 'copy') {
-                this.formArray.get([0]).patchValue({architecture0: false});
-                this.formArray.get([0]).patchValue({architecture1: false});
-                this.formArray.get([0]).patchValue({architecture2: false});
-                this.formArray.get([0]).patchValue({architecture3: false});
-                this.baseArchs.forEach((item, index) => {
-                    if (this.formArray.get([0]).value.architectures.includes(item)) {
-                        switch (index) {
-                            case 0:
-                                this.formArray.get([0]).patchValue({architecture0: true});
-                                break;
-                            case 1:
-                                this.formArray.get([0]).patchValue({architecture1: true});
-                                break;
-                            case 2:
-                                this.formArray.get([0]).patchValue({architecture2: true});
-                                break;
-                            case 3:
-                                this.formArray.get([0]).patchValue({architecture3: true});
-                                break;
-                        }
-                    }
-                });
+                this.selectProjectArchs();
                 this.formArray.get([0]).get('basemirror').updateValueAndValidity();
                 this.changeBaseMirror();
-
                 this.formArray.get([1]).patchValue({retentionSuccessfulBuilds: this.projectversion.retention_successful_builds})
                 this.formArray.get([1]).patchValue({retentionFailedBuilds: this.projectversion.retention_failed_builds})
             }
@@ -454,20 +432,27 @@ export class ProjectversionDialogComponent {
         });
     }
 
+    selectProjectArchs() {
+        let i = 0;
+        this.baseArchs.forEach( basearch => {
+            if (this.projectversion.architectures.includes(basearch)) {
+                let patch = {};
+                patch[`architecture${i}`] = true;
+                this.formArray.get([0]).patchValue(patch);
+            }
+            i += 1;
+        });
+    }
+
     changeBaseMirror() {
         this.baseArchs = [];
         const splitted = this.formArray.get([0]).value.basemirror.split('/', 2);
         if (splitted.length === 2) {
             this.mirrorService.get(splitted[0], splitted[1]).subscribe(res => {
                 this.baseArchs = res.architectures;
-                // FIXME: if arch in orog archs:
-                // this.form.patchValue({architecture0: true});
+                this.selectProjectArchs();
             });
         }
-        this.formArray.get([0]).patchValue({architecture0: true});
-        this.formArray.get([0]).patchValue({architecture1: true});
-        this.formArray.get([0]).patchValue({architecture2: true});
-        this.formArray.get([0]).patchValue({architecture3: true});
         this.updateArchs();
     }
 
@@ -477,14 +462,9 @@ export class ProjectversionDialogComponent {
         if (splitted.length === 2) {
             this.projectVersionService.get(splitted[0], splitted[1]).subscribe(res => {
                 this.baseArchs = res.architectures;
-                // FIXME: if arch in orog archs:
-                // this.form.patchValue({architecture0: true});
+                this.selectProjectArchs();
             });
         }
-        this.formArray.get([0]).patchValue({architecture0: true});
-        this.formArray.get([0]).patchValue({architecture1: true});
-        this.formArray.get([0]).patchValue({architecture2: true});
-        this.formArray.get([0]).patchValue({architecture3: true});
         this.updateArchs();
     }
 
