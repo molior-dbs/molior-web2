@@ -251,10 +251,10 @@ export class ProjectversionDialogComponent {
                 basemirror: new FormControl('', [Validators.required, BaseMirrorValidator.bind(this)]),
                 baseproject: new FormControl(''),
                 architectures: new FormControl([]),
-                architecture0: new FormControl(true),
-                architecture1: new FormControl(true),
-                architecture2: new FormControl(true),
-                architecture3: new FormControl(true),
+                architecture0: new FormControl(false),
+                architecture1: new FormControl(false),
+                architecture2: new FormControl(false),
+                architecture3: new FormControl(false),
                 dependencylevel: new FormControl('strict', [Validators.required]),
                 cibuilds: new FormControl(false),
                 buildlatest: new FormControl(false)
@@ -285,14 +285,14 @@ export class ProjectversionDialogComponent {
             } else {
                 this.mode = 'edit';
             }
-            this.formArray.get([0]).patchValue({version: this.mode === 'copy' ? this.projectversion.name + '-copy' : this.projectversion.name,
-                                  basemirror: this.projectversion.basemirror,
-                                  description: this.projectversion.description,
-                                  dependencylevel: this.projectversion.dependency_policy,
-                                  cibuilds: this.projectversion.ci_builds_enabled,
-                                  architectures: this.projectversion.architectures,
-                                 });
-
+            this.formArray.get([0]).patchValue({
+               version: this.mode === 'copy' ? this.projectversion.name + '-copy' : this.projectversion.name,
+               basemirror: this.projectversion.basemirror,
+               description: this.projectversion.description,
+               dependencylevel: this.projectversion.dependency_policy,
+               cibuilds: this.projectversion.ci_builds_enabled,
+               architectures: this.projectversion.architectures,
+               });
 
             this.formArray.get([1]).patchValue({
                 retentionSuccessfulBuilds: this.projectversion.retention_successful_builds,
@@ -307,11 +307,12 @@ export class ProjectversionDialogComponent {
                 this.basemirrors.push({name: `${entry.name}/${entry.version}`, architectures: entry.architectures});
             }
             if (this.mode === 'edit' || this.mode === 'copy') {
-                this.selectProjectArchs();
                 this.formArray.get([0]).get('basemirror').updateValueAndValidity();
                 this.changeBaseMirror();
                 this.formArray.get([1]).patchValue({retentionSuccessfulBuilds: this.projectversion.retention_successful_builds})
                 this.formArray.get([1]).patchValue({retentionFailedBuilds: this.projectversion.retention_failed_builds})
+            } else {  // create
+                this.formArray.get([0]).patchValue({architecture0: true});
             }
         });
         projectVersionService.getBaseProjects().subscribe(res => {
@@ -435,6 +436,8 @@ export class ProjectversionDialogComponent {
     }
 
     selectProjectArchs() {
+        if (!this.projectversion)
+            return;
         let i = 0;
         this.baseArchs.forEach( basearch => {
             if (this.projectversion.architectures.includes(basearch)) {
@@ -455,7 +458,6 @@ export class ProjectversionDialogComponent {
                 this.selectProjectArchs();
             });
         }
-        this.updateArchs();
     }
 
     changeBaseProject() {
@@ -467,7 +469,6 @@ export class ProjectversionDialogComponent {
                 this.selectProjectArchs();
             });
         }
-        this.updateArchs();
     }
 
     get formArray() {
