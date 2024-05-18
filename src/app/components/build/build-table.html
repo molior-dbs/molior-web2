@@ -3,10 +3,9 @@
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" (wheel)="scroll($event)">
 
     <ng-container matColumnDef="buildstate">
-        <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field>
-            <mat-label>Buildstate</mat-label>
-            <mat-select [(value)]="selectedBuildStates" placeholder="Select build state" multiple (selectionChange)="loadData()">
+        <th mat-header-cell *matHeaderCellDef style="width: 40px;">
+          <mat-form-field style="width: 40px;">
+            <mat-select [(value)]="selectedBuildStates" multiple (selectionChange)="loadData()">
               <mat-option *ngFor="let state of buildStates" [value]="state">
                 <mat-icon>
                     {{
