@@ -10,6 +10,7 @@ import {BuildService, Build, buildicon} from '../../services/build.service';
 import {MoliorService, UpdateEvent} from '../../services/websocket';
 import {RepositoryService} from '../../services/repository.service';
 import {BuildDeleteDialogComponent, BuildRebuildDialogComponent} from './build-list';
+import { DecimalPipe } from '@angular/common';
 
 
 const ErrorPatterns = [
@@ -53,6 +54,7 @@ const ErrorPatterns = [
     selector: 'app-build',
     templateUrl: 'build-info.html',
     styleUrls: ['build-info.scss'],
+    providers: [DecimalPipe]
 })
 export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     build: Build;
@@ -81,7 +83,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                 protected repositoryService: RepositoryService,
                 protected router: Router,
                 protected moliorService: MoliorService,
-                protected dialog: MatDialog) {
+                protected dialog: MatDialog,
+                private decimalPipe: DecimalPipe) {
         this.buildicon = buildicon;
         this.build = {id: -1,
             can_rebuild: false,
@@ -157,6 +160,18 @@ export class BuildInfoComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.scrollToLog(row);
             }
         });
+
+        if(this.paginator) {
+            this.paginator._intl.itemsPerPageLabel = 'Per page';
+            this.paginator._intl.getRangeLabel = (page: number, pageSize: number, length: number) => {
+                if (length === 0 || pageSize === 0) {
+                    return `0 of ${this.decimalPipe.transform(length, '1.0-0')}`;
+                }
+                const start = page * pageSize + 1;
+                const end = Math.min((page + 1) * pageSize, length);
+                return `${this.decimalPipe.transform(start, '1.0-0')} - ${this.decimalPipe.transform(end, '1.0-0')} of ${this.decimalPipe.transform(length, '1.0-0')}`;
+            };
+        }
     }
 
     ngOnDestroy() {
