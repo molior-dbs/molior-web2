@@ -350,6 +350,10 @@ a {
     padding: 15px 15px 0px 15px;
 }
 
+.menu-spacer {
+    height:16px
+}
+
 // info
 .info-table {
     width: unset;
@@ -588,4 +592,3 @@ $buildstate-nothing-done: 'nothing_done';
     background-color: $primary-color;
     color: white;
 }
-

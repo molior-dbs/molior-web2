@@ -16,7 +16,7 @@ export class AdminFormComponent implements OnInit {
   form: FormGroup;
   hoursArray: number[] = Array.from({ length: 24 }, (_, i) => i); // 0-23 for hours
   minutesArray: number[] = Array.from({ length: 60 }, (_, i) => i); // 0-59 for minutes
-  cleanupActive: ['false]'];
+  cleanupActive: ['false'];
   clicked: boolean;
   formModified: boolean = false;
 
@@ -31,11 +31,11 @@ export class AdminFormComponent implements OnInit {
     this.form = this.fb.group({
       selectedHour: [0], // Initialize selectedHour to 0
       selectedMinute: [0], // Initialize selectedMinute to 0
-      cleanupTime: [this.data.cleanupTime.toString, [Validators.required, this.validateTimeFormatAsString]],
+      cleanupTime: [this.data.cleanupTime, [Validators.required, this.validateTimeFormatAsString]],
       cleanupActive: [this.data.cleanupActive]
     });
 
-  
+
     this.hoursArray = Array.from({ length: 24 }, (_, i) => i);
     this.minutesArray = Array.from({ length: 12 }, (_, i) => i * 5);
 
@@ -51,11 +51,10 @@ export class AdminFormComponent implements OnInit {
       this.form.patchValue({ selectedHour, selectedMinute });
     }
   }
-  
+
   ngOnInit() {
     // Optional: You can subscribe to value changes if needed
-    this.form.valueChanges.subscribe(value => {
-      console.log(value); // Log the form value changes
+    this.form.valueChanges.subscribe(() => {
       this.formModified = true;
     });
   }
@@ -89,7 +88,7 @@ export class AdminFormComponent implements OnInit {
         }      )
       };
     }
-  
+
 
   onHourSelected(hour: number) {
     this.form.patchValue({ selectedHour: +hour });
