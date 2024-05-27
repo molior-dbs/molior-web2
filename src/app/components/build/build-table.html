@@ -5,7 +5,7 @@
     <ng-container matColumnDef="buildstate">
         <th mat-header-cell *matHeaderCellDef style="width: 40px;">
           <mat-form-field style="width: 40px;">
-            <mat-select [(value)]="selectedBuildStates" multiple (selectionChange)="loadData()">
+            <mat-select [(value)]="selectedBuildStates" multiple (selectionChange)="loadData()" panelClass="buildstate-select">
               <mat-option *ngFor="let state of buildStates" [value]="state">
                 <mat-icon>
                     {{

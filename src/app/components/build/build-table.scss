@@ -2,6 +2,10 @@ td.mat-cell, th.mat-header-cell {
     padding-left: 10px;
 }
 
+::ng-deep .mat-select-panel.buildstate-select {
+  max-width: 80px;
+  min-width: calc(30% + 64px) !important;
+}
 
 // tree
 .branch {
