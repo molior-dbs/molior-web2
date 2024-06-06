@@ -569,6 +569,13 @@ $buildstate-build-failed: 'build_failed';
     }
 }
 
+$buildstate-already-failed: 'already_failed';
+.buildstate {
+    &-#{$buildstate-already-failed} {
+        color: #A20000;
+    }
+}
+
 $buildstate-already-exists: 'already_exists';
 .buildstate {
     &-#{$buildstate-already-exists} {

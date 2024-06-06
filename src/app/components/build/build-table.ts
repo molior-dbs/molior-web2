@@ -23,7 +23,7 @@ export class BuildTableComponent extends TableComponent implements OnInit {
     displayedColumns: string[];
     updateSubscription;
     selectedBuildStates: Array<string> = [];
-    buildStates: string[] = ['building', 'build_failed', 'needs_build', 'needs_publish'];
+    buildStates: string[] = ['building', 'needs_build', 'needs_publish'];
     @ViewChild('inputBuildState', {static: false}) inputBuildState: ElementRef;
     @ViewChild('inputSearch', { static: false }) inputSearch: ElementRef;
     @ViewChild('inputMaintainer', { static: false }) inputMaintainer: ElementRef;
@@ -93,6 +93,9 @@ export class BuildTableComponent extends TableComponent implements OnInit {
                 case 'new/scheduled':
                     selectedStates = selectedStates.concat(['new', 'scheduled']);
                     break;
+                case 'build_failed/already_failed':
+                    selectedStates = selectedStates.concat(['build_failed', 'already_failed']);
+                    break;
                 default:
                     selectedStates.push(state);
                     break;
@@ -136,7 +139,7 @@ export class BuildTableComponent extends TableComponent implements OnInit {
     }
 
     mergeBuildStates(states: string[]): string[] {
-        const mergedStates = ['successful/already_exists/nothing_done', 'publishing/publish_failed', 'new/scheduled'];
+        const mergedStates = ['successful/already_exists/nothing_done', 'publishing/publish_failed', 'new/scheduled', 'build_failed/already_failed'];
         return states.filter(state => !mergedStates.includes(state)).concat(mergedStates);
       }
 

@@ -94,6 +94,8 @@ export function buildicon(buildstate) {
             return 'schedule';
         case 'build_failed':
             return 'clear';
+        case 'already_failed':
+            return 'clear';
         case 'building':
             return 'sync';
         case 'publishing':

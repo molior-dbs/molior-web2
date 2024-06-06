@@ -12,6 +12,7 @@
                         state === 'successful/already_exists/nothing_done' ? 'done' :
                         state === 'publishing/publish_failed' ? 'publish' :
                         state === 'new/scheduled' ? 'schedule' :
+                        state === 'build_failed/already_failed' ? 'clear' :
                         buildicon(state) }}
                 </mat-icon>
               </mat-option>
