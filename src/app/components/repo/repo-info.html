@@ -10,7 +10,7 @@
                 </tr>
                 <tr>
                     <td><strong>URL</strong></td>
-                    <td><span class="link">{{repo.url}}</span></td>
+                    <td><a [href]="transformUrl(repo.url)" target="_blank" class="link">{{repo.url}}</a></td>
                 </tr>
                 <tr>
                     <td><strong>State</strong></td>

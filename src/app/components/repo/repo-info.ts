@@ -123,4 +123,17 @@ export class RepositoryInfoComponent extends TableComponent {
             data: {repo: this.repo}, disableClose: true, width: '40%'});
         dialog.afterClosed().subscribe(result => this.loadData()); // FIXME needed?
     }
+
+    transformUrl(url: string): string {
+        const sshPattern = /^git@ssh\.code\.roche\.com:(.+)\/(.+)\.git$/;
+        const match = url.match(sshPattern);
+
+        if (match) {
+            const group = match[1];
+            const repo = match[2];
+            return `https://code.roche.com/${group}/${repo}`;
+        }
+
+        return url;
+      }
 }

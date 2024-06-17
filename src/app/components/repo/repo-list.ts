@@ -95,6 +95,22 @@ export class RepositoryListComponent extends TableComponent {
             data: {repo}, disableClose: true, width: '40%'});
         dialog.afterClosed().subscribe(result => this.loadData()); // FIXME needed?
     }
+
+    transformUrl(url: string): string {
+        // Check if the URL is an SSH URL
+        const sshPattern = /^git@ssh\.code\.roche\.com:(.+)\/(.+)\.git$/;
+        const match = url.match(sshPattern);
+
+        if (match) {
+            // Transform the SSH URL to an HTTP URL
+            const group = match[1];
+            const repo = match[2];
+            return `https://code.roche.com/${group}/${repo}`;
+        }
+
+        // If it's not an SSH URL, return the original URL
+        return url;
+    }
 }
 
 @Component({
