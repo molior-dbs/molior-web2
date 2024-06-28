@@ -1,3 +1,19 @@
+molior-web (1.5.0~beta5) stable; urgency=medium
+
+  * make source repo open in new tab when clicking url
+  * show repo name in dialog when removing from projecversion and
+    deleting from repo list
+  * add icon of buildstate already_failed to buildstate filter, build
+    table
+  * buildstate filter: make dropdown filter smaller
+  * fix wrongly assigned value at cleanup dialog and remove logging
+  * buildlog: convert linenumbers to integer format
+  * add git repository dialog: pre-enable architecture
+  * small fix
+  * handle package retention
+
+ -- André Roth <neolynx@gmail.com>  Fri, 28 Jun 2024 15:22:10 +0200
+
 molior-web (1.5.0~beta4) stable; urgency=medium
 
   * build list: resize buildtype filter
