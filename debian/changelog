@@ -1,3 +1,9 @@
+molior-web (1.5.0~beta6) stable; urgency=medium
+
+  * hide inactuve button
+
+ -- André Roth <neolynx@gmail.com>  Mon, 01 Jul 2024 00:07:11 +0200
+
 molior-web (1.5.0~beta5) stable; urgency=medium
 
   * make source repo open in new tab when clicking url
