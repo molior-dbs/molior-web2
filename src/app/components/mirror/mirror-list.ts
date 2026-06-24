@@ -67,29 +67,32 @@ export class MirrorListComponent extends TableComponent {
                 return 'schedule';
             case 'ready':
                 return 'done';
+            case 'init_error':
             case 'error':
                 return 'error';
             case 'updating':
                 return 'sync';
             case 'publishing':
                 return 'publish';
+            case 'init':
             default:
                 return 'more_horiz';
         }
     }
 
     create() {
-        const dialogRef = this.dialog.open(MirrorDialogComponent, {data: {mirror: null}, disableClose: true, width: '900px'});
+        const dialogRef = this.dialog.open(MirrorDialogComponent, {data: {mirror: null}, disableClose: true, width: '1200px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
     edit(mirror) {
-        const dialogRef = this.dialog.open(MirrorDialogComponent, {data: {mirror}, disableClose: true, width: '900px'});
+        const dialogRef = this.dialog.open(MirrorDialogComponent, {data: {mirror}, disableClose: true, width: '1200px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
     copy(mirror) {
-        const dialogRef = this.dialog.open(MirrorCopyDialogComponent, {data: {mirror}, disableClose: true, width: '900px'});
+        const dialogRef = this.dialog.open(MirrorCopyDialogComponent, {data: {mirror}, disableClose: true, width: '1200px'});
+
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
@@ -104,6 +107,10 @@ export class MirrorListComponent extends TableComponent {
 
     update(id: number) {
         this.mirrorService.update(id).subscribe();
+    }
+
+    log(e) {
+        console.log(e);
     }
 }
 

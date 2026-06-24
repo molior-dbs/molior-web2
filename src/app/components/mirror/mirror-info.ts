@@ -91,12 +91,12 @@ export class MirrorInfoComponent extends TableComponent {
     }
 
     edit() {
-        const dialogRef = this.dialog.open(MirrorDialogComponent, { data: { mirror: this.mirror }, disableClose: true, width: '900px'});
+        const dialogRef = this.dialog.open(MirrorDialogComponent, { data: { mirror: this.mirror }, disableClose: true, width: '1200px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
     copy() {
-        const dialogRef = this.dialog.open(MirrorCopyDialogComponent, { data: { mirror: this.mirror }, disableClose: true, width: '900px'});
+        const dialogRef = this.dialog.open(MirrorCopyDialogComponent, { data: { mirror: this.mirror }, disableClose: true, width: '1200px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
 
