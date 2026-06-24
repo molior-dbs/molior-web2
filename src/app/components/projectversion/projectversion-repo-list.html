@@ -46,6 +46,14 @@
             </tr>
         </table>
     </div>
+    <div style="flex-grow: 1; text-align: right;">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="export()">   <mat-icon>content_copy</mat-icon>Export Repositories</button>
+            </mat-menu>
+    </div>
 </div>
 <br/>
 

@@ -119,6 +119,11 @@ export class ProjectversionRepoListComponent extends TableComponent {
             projectversion: this.projectversion, repoId, giturl}, disableClose: true, width: '900px'});
         dialogRef.afterClosed().subscribe(result => this.loadData());
     }
+
+    export() {
+        console.log("hello tiger")
+    }
+
 }
 
 @Component({
